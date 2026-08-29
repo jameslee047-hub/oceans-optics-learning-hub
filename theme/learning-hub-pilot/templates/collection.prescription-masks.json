@@ -1,0 +1,257 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "172777884384f48a06": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_ReQU9F": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_ReQU9F"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "image_banner_UTJKeB": {
+      "type": "image-banner",
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "image": "shopify://shop_images/More_Than_Mobile_0b8d693a-245f-44e5-922c-a72718c8a28e.png",
+        "image_2": "shopify://shop_images/More_Than_Desk_1.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://pages/contact",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": false
+      }
+    },
+    "collection_list_nb8NTK": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_yRxpQR": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "featured_collection_e8DDVQ": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "farsighted-prescription-dive-mask"
+          }
+        },
+        "featured_collection_HB3Cb9": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "all-our-masks"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_yRxpQR",
+        "featured_collection_e8DDVQ",
+        "featured_collection_HB3Cb9"
+      ],
+      "settings": {
+        "title": "Choose your vision:",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "color_scheme": "background-2",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_h1_title_collection": false,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "snorkel_101_guide_GdzFxh": {
+      "type": "Snorkel-101-guide",
+      "name": "Snorkeling 101 promo",
+      "settings": {}
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 8,
+        "columns_desktop": 4,
+        "color_scheme": "background-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
+    "featured_collection_aqgrBt": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Your adventure begins here:",
+        "heading_size": "h1",
+        "description": "<p>Choose your Mask!</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "prescription-masks",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_DDe8WU": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_enbC3i": {
+          "type": "heading",
+          "settings": {
+            "heading": "Our mission is to provide clarity through vision and knowledge. We offer prescription masks along with the essential skills needed to explore the underwater world safely and efficiently",
+            "set_h1": false,
+            "heading_size": "h2"
+          }
+        },
+        "button_VWE9Wj": {
+          "type": "button",
+          "settings": {
+            "button_label": "Hear about our Story",
+            "button_link": "shopify://pages/contact",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_enbC3i",
+        "button_VWE9Wj"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
+    },
+    "17152440046bc5a1ee": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_3wwk6x": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join Our Community on Instagram!",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_3wwk6x"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "rich_text_3FkCki": {
+      "type": "rich-text",
+      "blocks": {
+        "button_tAhqFg": {
+          "type": "button",
+          "settings": {
+            "button_label": "Follow Us",
+            "button_link": "https://www.instagram.com/oceansoptics_/",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "button_tAhqFg"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": false,
+        "padding_top": 44,
+        "padding_bottom": 44
+      }
+    }
+  },
+  "order": [
+    "172777884384f48a06",
+    "image_banner_UTJKeB",
+    "collection_list_nb8NTK",
+    "banner",
+    "snorkel_101_guide_GdzFxh",
+    "product-grid",
+    "featured_collection_aqgrBt",
+    "rich_text_DDe8WU",
+    "17152440046bc5a1ee",
+    "rich_text_3FkCki"
+  ]
+}

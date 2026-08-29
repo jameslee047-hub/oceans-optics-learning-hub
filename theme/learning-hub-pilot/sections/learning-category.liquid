@@ -1,0 +1,101 @@
+{{ 'learning-hub.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign category_title = metaobject.title.value | default: 'Learning category'
+  assign short_description = metaobject.short_description.value
+  assign category_image = metaobject.image.value
+  assign lesson_count = 0
+
+  for lesson in metaobjects.learning_lesson.values
+    assign lesson_category = lesson.category.value
+    if lesson_category != blank and lesson_category.system.id == metaobject.system.id
+      assign lesson_count = lesson_count | plus: 1
+    endif
+  endfor
+%}
+
+<section class="learning-hub learning-category color-{{ section.settings.color_scheme }} gradient">
+  <div class="learning-category-hero">
+    <div class="page-width learning-hub__intro">
+      <div>
+        <nav class="learning-breadcrumbs" aria-label="Breadcrumbs">
+          <a href="/pages/learn">Learning Hub</a>
+          <span aria-hidden="true">/</span>
+          <span>{{ category_title | escape }}</span>
+        </nav>
+
+        <p class="learning-kicker">Learning Category</p>
+        <h1>{{ category_title | escape }}</h1>
+
+        {% if short_description != blank %}
+          <p class="learning-hub__lead">{{ short_description | escape }}</p>
+        {% endif %}
+      </div>
+
+      {% if category_image != blank and category_image.preview_image != blank %}
+        {{ category_image.preview_image | image_url: width: 900 | image_tag: loading: 'eager', widths: '375, 550, 750, 900', alt: category_title }}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="learning-category-list">
+    <div class="page-width">
+      <div class="learning-hub__section-heading">
+        <div>
+          <p class="learning-hub__eyebrow">Lessons</p>
+          <h2>{{ category_title | escape }}</h2>
+        </div>
+      </div>
+
+      {% if lesson_count > 0 %}
+        <div class="learning-grid">
+          {% for lesson in metaobjects.learning_lesson.values %}
+            {% liquid
+              assign lesson_category = lesson.category.value
+              assign include_lesson = false
+              if lesson_category != blank and lesson_category.system.id == metaobject.system.id
+                assign include_lesson = true
+              endif
+            %}
+
+            {% if include_lesson %}
+              <a class="learning-card" href="/pages/learn/{{ lesson.system.handle }}">
+                <span class="learning-card__meta">
+                  {% if lesson.estimated_reading_time.value != blank %}
+                    {{ lesson.estimated_reading_time.value | escape }}
+                  {% endif %}
+                </span>
+                <h3>{{ lesson.title.value | escape }}</h3>
+                {% if lesson.short_description.value != blank %}
+                  <p>{{ lesson.short_description.value | escape }}</p>
+                {% endif %}
+                <span class="learning-card__footer">Open lesson</span>
+              </a>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% else %}
+        <p class="learning-empty">Lessons will appear here when entries in this category are published.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Learning category",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Learning category"
+    }
+  ]
+}
+{% endschema %}

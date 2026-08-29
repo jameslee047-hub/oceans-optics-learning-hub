@@ -1,0 +1,75 @@
+<!-- Cart Page - Note Section -->
+<div class="cart-note-section">
+    <label for="cart-note-label" id="cart-note-label">More than JUST a mask: We personally check every order to ensure you get the closest diopter match.</label>
+    <textarea id="cart-note" name="attributes[Order Note]" rows="4" style="width: 100%;" placeholder="Leave your sphere reading here...">{{ cart.attributes['Order Note'] }}</textarea>
+
+    <!-- Checkbox Section for Missing Authorization -->
+    <div id="prescription-checkbox-section" style="margin-top: 10px; display: none;">
+        <input type="checkbox" id="cart-prescription-checkbox" name="prescription-authorization">
+        <label for="cart-prescription-checkbox">I authorize weakening my prescription by up to -0.75 to account for magnification.</label>
+        <span id="info-icon" title="We sometimes need to adjust your prescription slightly to provide the best vision underwater due to magnification effects.">i</span>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const noteField = document.getElementById('cart-note');
+        const noteLabel = document.getElementById('cart-note-label');
+        const checkboxSection = document.getElementById('prescription-checkbox-section');
+        const cartCheckboxField = document.getElementById('cart-prescription-checkbox');
+
+        // Retrieve the saved note and authorization status
+        const noteValue = '{{ cart.attributes["Order Note"] }}' || '';
+        const checkboxAuth = '{{ cart.attributes["Authorization Granted"] }}' === 'Authorization Granted';
+
+        // Display appropriate messages based on the retrieved note value
+        if (noteValue.length > 0) {
+            noteLabel.innerHTML = `More than JUST a mask!<br>Thank you, <span style="color: #B95E05;">"${noteValue.replace(/ *\([^)]*\) */g, "")}"</span> has been linked to the order.`;
+            noteField.style.display = 'none';
+        } else {
+            noteLabel.textContent = "More than JUST a mask: We personally check every order to ensure you get the closest diopter match.";
+            noteField.style.display = 'block';
+        }
+
+        // Display the checkbox section if authorization wasn't given on the product page
+        if (!checkboxAuth) {
+            checkboxSection.style.display = 'block';
+        }
+
+        // Handle checkbox click event to save authorization status
+        cartCheckboxField.addEventListener('change', function() {
+            const authorizationStatus = cartCheckboxField.checked ? 'Authorization Granted' : 'Authorization Not Granted';
+
+            fetch('/cart/update.js', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    attributes: {
+                        'Authorization Granted': authorizationStatus
+                    }
+                })
+            }).then(response => {
+                if (response.ok) {
+                    if (cartCheckboxField.checked) {
+                        noteLabel.innerHTML += `<br><span style="color: #B95E05;">Prescription adjustment authorization received.</span>`;
+                        checkboxSection.style.display = 'none';
+                    }
+                } else {
+                    console.error('Failed to update authorization status');
+                }
+            }).catch(error => {
+                console.error('Failed to update authorization status');
+            });
+        });
+    });
+</script>
+
+{% schema %}
+{
+  "name": "Cart Note Section",
+  "settings": []
+}
+{% endschema %}

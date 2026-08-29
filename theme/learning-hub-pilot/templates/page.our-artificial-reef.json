@@ -1,0 +1,435 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "responsive_banner_YGt4NQ": {
+      "type": "Responsive-banner",
+      "name": "Responsive Banner",
+      "settings": {
+        "use_same_image": false,
+        "desktop_image": "shopify://shop_images/Presciption_snorkel_mask_turned_into_artificial_coral_reef.png",
+        "mobile_image": "shopify://shop_images/Presciption_snorkel_mask_turned_into_artificial_coral_reef_1.png",
+        "banner_heading": "",
+        "banner_text": "",
+        "button_text": "",
+        "button_link": "",
+        "banner_max_width": 1620,
+        "desktop_height": 300,
+        "mobile_height": 160,
+        "image_fit": "cover",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "heading_font_size": 2,
+        "text_font_size": 1,
+        "mobile_heading_font_size": 1.5,
+        "mobile_text_font_size": 0.9,
+        "content_position_horizontal": "50%",
+        "content_position_vertical": "50%",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_background_color": "#333333"
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "rich_text_khdDRw": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_8n6bYq": {
+          "type": "heading",
+          "settings": {
+            "heading": "Our Artificial Reef Project",
+            "set_h1": true,
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_8n6bYq"
+      ],
+      "disabled": true,
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 24
+      }
+    },
+    "image_with_text_dFU6LJ": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_qAdqTf": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why We Decided to Embark on This Project</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_fNxrNa": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Oceans Optics is the pinnacle of a small business, founded by two professional dive instructors, snorkel enthusiasts, and ocean lovers who have arguably spent more time in the ocean than on land (or at least dream to).</p><h3><strong>How Prescription Snorkel masks are transforming the Ocean</strong></h3><p>While Oceans Optics was created to help people  with blurry vision see clearly and experience snorkeling with confidence, we knew from the start that this was about more than just prescription snorkel masks, we wanted to use this company as a vessel to protect the very thing we encourage our community to explore, the ocean. Magical, transcendent, yet fragile.</p><p>We wanted to be that small part of someone’s day where they hear good, powerful, uplifting news.</p><p>And what better way than by using proceeds from corrective snorkel masks to plant coral reefs, instead of destroying them?</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_qAdqTf",
+        "text_fNxrNa"
+      ],
+      "disabled": true,
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/about_us_our_story_setting_up_oceans_optics.jpg",
+        "height": "medium",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 48,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_aLKWKm": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_LenbBF": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>What Is an Artificial Coral Reef?</strong>",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_LenbBF"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "image_banner_R97eDe": {
+      "type": "image-banner",
+      "name": "image-banner-M&D",
+      "settings": {
+        "image": "shopify://shop_images/Artificial_reefs_with_new_coral_growth.png",
+        "image_2": "shopify://shop_images/Artificial_reefs_with_new_coral_growth.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true,
+        "fetchpriority_high": false
+      }
+    },
+    "rich_text_kBhqqq": {
+      "type": "rich-text",
+      "blocks": {
+        "text_yRtGrV": {
+          "type": "text",
+          "settings": {
+            "text": "<p>An artificial reef is a specially designed structure, often made from materials like concrete or steel, that’s placed on the ocean floor to encourage marine life to grow and thrive.</p><p>In our case, it’s a custom-built steel structure shaped like a prescription scuba mask and sunk beneath the surface, where we attach living coral fragments. Over time, these corals grow and attract fish and other sea creatures, transforming the structure into a living reef, a safe haven for marine life.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_yRtGrV"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "multicolumn_YUXRqy": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_9NAJKp": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Restores_habitat.png",
+            "title": "<strong>Restores Marine Habitats</strong>",
+            "title_h3": true,
+            "text": "<p>Provides a stable foundation where corals can attach and grow, creating a new home for fish, crustaceans, and countless marine species.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_ThMr6A": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Promotes_research.png",
+            "title": "<strong>Promotes Research and Education </strong>",
+            "title_h3": true,
+            "text": "<p>Offers valuable opportunities for studying coral growth, reef restoration, and marine conservation.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_MfD6Yn": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Eases_Pressure.png",
+            "title": "<strong>Eases Pressure on Natural Reefs</strong>",
+            "title_h3": true,
+            "text": "<p>By creating an alternative habitat, it helps divert activitys such as diving away from fragile natural reefs, giving them time to recover.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_QHTzjH": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Inspire_awarness.png",
+            "title": "<strong>Inspires Ocean Awareness</strong>",
+            "title_h3": true,
+            "text": "<p>Projects like ours connect people to the ocean, showing how human creativity can play a role in restoring balance beneath the waves.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_9NAJKp",
+        "column_ThMr6A",
+        "column_MfD6Yn",
+        "column_QHTzjH"
+      ],
+      "custom_css": [
+        ".title-wrapper-with-link {justify-content: center; text-align: center;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "<strong>Benefits of an Artificial Reef</strong>",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "circle",
+        "columns_desktop": 4,
+        "column_alignment": "center",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 16,
+        "padding_bottom": 36
+      }
+    },
+    "multirow_famGQ9": {
+      "type": "multirow",
+      "blocks": {
+        "row_QVMbLm": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Gav_and_james.png",
+            "caption": "step 1",
+            "heading": "Professional Marine Conservation Partnership",
+            "text": "<p>First, we teamed up with Global Reef, a marine conservation organization based in Koh Tao, Thailand. This partnership allowed us to ensure our project was executed correctly and designed to maximize its benefits. Global Reef works hand in hand with the Thai Department of Marine & Coastal Resources, ensuring every reef project meets the highest standards.</p><p>They also handle upkeep, coral planting, and monitoring coral growth, using the reef as a resource for ongoing research.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_VyaMHV": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Design.png",
+            "caption": "STEP 2",
+            "heading": "Design Phase",
+            "text": "<p>Next, we had to dream up a structure that would first be optimal for coral growth and secondly serve as a cozy home for fish and other marine species. </p><p>Of course, we added a bit of Oceans Optics flair, creating a sturdy, prescription scuba mask-shaped structure with plenty of little crevices for fish to call home and ample space for coral planting.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_pdwRB9": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Construction.png",
+            "caption": "Step 3",
+            "heading": "Construction Phase",
+            "text": "<p>We had the mask welded using roughly 100kg of marine-safe steel rebar and reinforced to ensure long-term integrity on the ocean floor. </p><p>The structure took around 20 days to be completed, including all the finishing touches to help it replicate an Oceans Optics prescription snorkel mask (as best is possible with steal rebar..)</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_4TbMCd": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Sinking.png",
+            "caption": "Step 4",
+            "heading": "Sinking Phase",
+            "text": "<p>Once the structure was complete, it was time to sink the reef to the ocean floor. We selected a safe, sandy location that wouldn’t disrupt nearby natural reefs. </p><p>A team of highly trained divers then carefully lowered the structure into position.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_tebiin": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Planting.png",
+            "caption": "Step 5",
+            "heading": "Planting Corals Phase",
+            "text": "<p>After allowing some time for the sediment to settle, Global Reef’s team of marine biologists and certified coral planters (including our founder James) began planting the first round of corals. </p><p>For this structure and location, we used staghorn corals (from the branching coral family Acropora). </p><p>The coral planters collect broken bits of coral from nearby reefs and give them new life by attaching them to the steel structure.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_JQhpq7": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Growth_and_monitoring.png",
+            "caption": "Step 6",
+            "heading": "Growth and Monitoring",
+            "text": "<p>Now it’s time to let the ocean work its magic as we watch the reef grow and transform into a thriving haven for marine species. </p><p>Global Reef will provide us with regular updates, ensure the reef remains in good condition, and plant new corals as needed.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "row_QVMbLm",
+        "row_VyaMHV",
+        "row_pdwRB9",
+        "row_4TbMCd",
+        "row_tebiin",
+        "row_JQhpq7"
+      ],
+      "name": "t:sections.multirow.presets.name",
+      "settings": {
+        "image_height": "small",
+        "desktop_image_width": "medium",
+        "heading_size": "h2",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "image_layout": "alternate-left",
+        "section_color_scheme": "",
+        "row_color_scheme": "",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_qzgqK8": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_DTXRmR": {
+          "type": "heading",
+          "settings": {
+            "heading": "Future Plans for MORE",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_f7Jkzh": {
+          "type": "text",
+          "settings": {
+            "text": "<p>As Oceans Optics continues to grow, so will our network of reefs around the world.</p><p> We already have some feelers in the water for where the next reef will take place, and currently, Panama is looking like a prime candidate! We’ve connected with an incredible coral movement there that’s doing amazing reef-building work, and we can’t wait to collaborate.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_DTXRmR",
+        "text_f7Jkzh"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "image_banner_3BCNbC": {
+      "type": "image-banner",
+      "name": "image-banner-M&D",
+      "settings": {
+        "image": "shopify://shop_images/map_mobile.png",
+        "image_2": "shopify://shop_images/Untitled_design_d0b4aeae-0b53-41ac-87a6-0c5866f077e8.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false,
+        "fetchpriority_high": false
+      }
+    },
+    "video_PWc4LY": {
+      "type": "video",
+      "name": "t:sections.video.presets.name",
+      "settings": {
+        "heading": "See the video of the reef being sunk in the Gulf of Thailand",
+        "heading_size": "h1",
+        "enable_video_looping": true,
+        "video": "shopify://files/videos/Official Reef Sinking.mp4",
+        "video_url": "https://youtu.be/pjAXq9AtsiE",
+        "cover_image": "shopify://shop_images/Presciption_snorkel_mask_turned_into_artificial_coral_reef_1.png",
+        "description": "Watch us turn a prescription snorkel mask into an Artificial Corl Reef and sink it!",
+        "full_width": false,
+        "color_scheme": "",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "responsive_banner_YGt4NQ",
+    "main",
+    "rich_text_khdDRw",
+    "image_with_text_dFU6LJ",
+    "rich_text_aLKWKm",
+    "image_banner_R97eDe",
+    "rich_text_kBhqqq",
+    "multicolumn_YUXRqy",
+    "multirow_famGQ9",
+    "rich_text_qzgqK8",
+    "image_banner_3BCNbC",
+    "video_PWc4LY"
+  ]
+}

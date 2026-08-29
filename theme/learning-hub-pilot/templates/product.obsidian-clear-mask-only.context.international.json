@@ -1,0 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.obsidian-clear-mask-only.json",
+  "context": {
+    "market": "aus"
+  },
+  "sections": {
+    "image_banner_7HdRzq": {
+      "settings": {
+        "image": "shopify://shop_images/Guide_Mobile_9de60337-7347-492b-993c-5fb7e3e91e83.png",
+        "image_2": "shopify://shop_images/Guide_Desk_1.png",
+        "banner_link": "shopify://pages/free-guide",
+        "image_height": "medium",
+        "show_text_box": false
+      },
+      "blocks": {}
+    },
+    "featured_collection_LWYGGi": {
+      "settings": {
+        "show_view_all": false,
+        "products_to_show": 25,
+        "image_ratio": "square",
+        "quick_add": "none"
+      },
+      "blocks": {}
+    }
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "type": "learning_lesson",
+  "handle": "golden-rules-for-safer-snorkeling",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Golden Rules for Safer Snorkeling",
+    "short_description": "A short pre-water briefing covering the core habits every snorkeler should remember before entering the water.",
+    "lesson_type": "Safety briefing",
+    "category": "safety-conditions",
+    "estimated_reading_time": "1-3 minutes",
+    "hero_media": null,
+    "lesson_body": "## Golden Rules for Safer Snorkeling\n\nBefore you think about gear, location, or technique, get the basic habits right. These are the rules that keep a simple snorkel from becoming stressful.\n\nRead them like a quick pre-water briefing from an instructor.\n\n## The Rules\n\n1. Snorkel with a buddy.\n   Keep visual contact and agree on a simple check-in system before you enter the water.\n\n2. Carry a way to signal.\n   A whistle, float, or other visible support item can help you get attention when you need it.\n\n3. Slow down.\n   Rushing leads to mistakes. Take your time and keep the pace calm.\n\n4. Know your limits.\n   Do not let peer pressure push you into a situation that causes stress or overexertion.\n\n5. Check the conditions before you go in.\n   Pay attention to tides, currents, rip currents, and changing environmental conditions.\n\n6. Respect marine life.\n   Do not harass, touch, or disturb marine life. Treat coral and dead coral with care.\n\n7. Stay hydrated and do not go too far.\n   Keep the session manageable and avoid drifting beyond a comfortable distance.\n\n8. Avoid alcohol and drugs.\n   Do not snorkel under the influence. Clear judgment matters in the water.\n\n9. Pay attention to breathing, discomfort, and panic.\n   Keep your breathing slow and steady, take breaks, and do not ignore discomfort or panic.\n\n10. Follow equipment guidance.\n    Use your mask and snorkel equipment according to the manufacturer's guidance.\n\n## Knowledge Check\n\n**Q1. What comes first in this briefing?**\n\n- A. Duck diving\n- B. Snorkeling with a buddy\n- C. Choosing fins\n\n**Correct:** B\n\n**Explanation:** The buddy system is the first rule in this safety briefing.\n\n**Q2. Which condition should you pay attention to before entering?**\n\n- A. Rip current\n- B. Mask skirt color\n- C. Fin strap style\n\n**Correct:** A\n\n**Explanation:** Rip currents are part of the environmental conditions snorkelers should notice before entering.\n\n**Q3. What should you do if peer pressure is pushing you beyond your comfort level?**\n\n- A. Keep going so you do not slow the group down\n- B. Stay within your limits\n- C. Swim farther away from shore\n\n**Correct:** B\n\n**Explanation:** The lesson emphasizes knowing your limits and avoiding stressful or overexerting situations.",
+    "instructor_tips": "- If you feel rushed, pressured, uncomfortable, or unsure about the conditions, slow down and reset before entering.\n- Buddy, signal, limits, and conditions come before everything else.",
+    "common_mistakes": "- Getting excited about entering the water and skipping the simple checks.\n- Assuming calm breathing will happen automatically instead of keeping the pace steady from the start.",
+    "safety_notes": "- This is a pre-water briefing, not a complete safety course.",
+    "key_takeaways": [
+      "Do not snorkel alone.",
+      "Keep the pace calm.",
+      "Know your limits and avoid pressure.",
+      "Check environmental conditions before entering.",
+      "Respect marine life and coral.",
+      "Do not ignore discomfort, panic, or impaired judgment."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R07",
+        "title": "Health, Readiness and Personal Responsibility",
+        "handle": "health-readiness-and-personal-responsibility"
+      },
+      {
+        "lesson_id": "R09",
+        "title": "Surface Safety Devices",
+        "handle": "surface-safety-devices"
+      },
+      {
+        "lesson_id": "R10",
+        "title": "Pre-Snorkel Checklist and Planning",
+        "handle": "pre-snorkel-checklist-and-planning"
+      },
+      {
+        "lesson_id": "R14",
+        "title": "Buddy Communication and Awareness",
+        "handle": "buddy-communication-and-awareness"
+      },
+      {
+        "lesson_id": "R16",
+        "title": "Snorkeling Emergencies & First Aid Awareness",
+        "handle": "snorkeling-emergencies-and-first-aid-awareness"
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [
+      {
+        "handle": "pre-snorkel-checklist",
+        "label": "Pre snorkel checklist",
+        "url": null,
+        "gid": null,
+        "file_gid": null
+      }
+    ],
+    "primary_cta": null,
+    "lesson_id": "R08",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Golden Rules for Safer Snorkeling | Oceans Optics Learning Hub",
+    "meta_description": "A short instructor-style briefing on buddy checks, conditions, limits, marine life, and safer snorkeling habits."
+  }
+}

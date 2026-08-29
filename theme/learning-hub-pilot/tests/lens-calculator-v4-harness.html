@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Lens Calculator v4 — Local Validation Harness</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--
+  LOCAL VALIDATION HARNESS — NOT PART OF THE SHOPIFY THEME.
+  Not deployed, not pushed, not linked from any Liquid section or template.
+  Loads the real theme/learning-hub-pilot/assets/lens-calculator-master.js
+  via a relative <script src>. Contains NO calculation logic of its own —
+  every number shown here comes from calling into that file's public API.
+  See theme/learning-hub-pilot/tests/lens-calculator-v4-harness.README.md
+  (embedded below as comments) for how to run it.
+-->
+<style>
+  :root {
+    --oo-blue: #023059;
+    --oo-orange: #B95E05;
+    --oo-white: #FFFFFF;
+    --oo-bg: #f4f6f8;
+    --oo-ok: #1a7a3c;
+    --oo-warn: #B95E05;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Lato', Arial, sans-serif;
+    background: var(--oo-bg);
+    color: var(--oo-blue);
+    margin: 0;
+    padding: 24px;
+  }
+  h1 {
+    font-size: 22px;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    font-size: 13px;
+    opacity: 0.75;
+    margin: 0 0 20px;
+  }
+  .dev-banner {
+    background: var(--oo-orange);
+    color: var(--oo-white);
+    font-weight: 700;
+    font-size: 13px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 18px;
+  }
+
+  .presets {
+    background: #fff;
+    border: 1px solid rgba(2,48,89,0.15);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+  .presets h2 { font-size: 14px; margin: 0 0 10px; }
+  .presets .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .preset-btn {
+    background: #fff;
+    border: 1px solid var(--oo-blue);
+    color: var(--oo-blue);
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 7px 10px;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+  .preset-btn:hover { background: rgba(2,48,89,0.08); }
+
+  .eyes {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 18px;
+  }
+  @media (max-width: 820px) {
+    .eyes { grid-template-columns: 1fr; }
+  }
+
+  .eye-card {
+    background: #fff;
+    border: 1px solid rgba(2,48,89,0.15);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .eye-card h2 {
+    font-size: 16px;
+    margin: 0 0 12px;
+  }
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  .field label {
+    display: block;
+    font-size: 11px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+  .field input {
+    width: 100%;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 6px 8px;
+    border: 1px solid rgba(2,48,89,0.35);
+    border-radius: 6px;
+    color: var(--oo-blue);
+  }
+  .field input:disabled {
+    background: rgba(2,48,89,0.05);
+    color: rgba(2,48,89,0.4);
+  }
+  .known-field {
+    margin-top: 8px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(2,48,89,0.2);
+  }
+  .known-field label {
+    font-size: 11px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 3px;
+  }
+  .known-field input {
+    width: 140px;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 6px 8px;
+    border: 1px solid rgba(2,48,89,0.35);
+    border-radius: 6px;
+    color: var(--oo-blue);
+  }
+
+  .calc-btn {
+    display: block;
+    width: 100%;
+    background: var(--oo-orange);
+    color: var(--oo-white) !important;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 16px;
+    border: none;
+    border-radius: 999px;
+    padding: 14px;
+    cursor: pointer;
+    margin-bottom: 22px;
+  }
+  .calc-btn:hover, .calc-btn:focus, .calc-btn:active { color: var(--oo-white) !important; }
+
+  .results {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+  @media (max-width: 820px) {
+    .results { grid-template-columns: 1fr; }
+  }
+
+  .result-card {
+    background: var(--oo-blue);
+    color: var(--oo-white);
+    border-radius: 12px;
+    padding: 16px 18px;
+  }
+  .result-card h3 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .result-row:last-child { border-bottom: none; }
+  .result-row .label { opacity: 0.75; }
+  .result-row .value { font-weight: 700; text-align: right; }
+
+  .se-note {
+    font-size: 11px;
+    opacity: 0.8;
+    margin-top: 6px;
+    font-style: italic;
+  }
+
+  .stock-lens {
+    background: rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-top: 10px;
+    text-align: center;
+  }
+  .stock-lens .value {
+    font-size: 26px;
+    font-weight: 700;
+  }
+  .stock-lens .caption {
+    font-size: 11px;
+    opacity: 0.8;
+  }
+
+  .match-box {
+    margin-top: 10px;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .match-box.match { background: var(--oo-ok); color: #fff; }
+  .match-box.differs { background: var(--oo-orange); color: #fff; }
+  .match-box.empty { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6); font-weight: 400; }
+
+  .errors {
+    background: rgba(185,94,5,0.15);
+    border: 1px solid var(--oo-orange);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 12px;
+    margin-top: 8px;
+  }
+  .errors ul { margin: 4px 0 0; padding-left: 16px; }
+
+  footer {
+    margin-top: 26px;
+    font-size: 12px;
+    opacity: 0.65;
+  }
+</style>
+</head>
+<body>
+
+<div class="dev-banner">LOCAL VALIDATION HARNESS — not deployed, not part of the live or published theme</div>
+<h1>Lens Calculator v4 — Local Validation Harness</h1>
+<p class="subtitle">Loads the real <code>assets/lens-calculator-master.js</code>. No calculation logic lives in this page.</p>
+
+<div class="presets">
+  <h2>Preset test cases</h2>
+  <div class="row" id="preset-row"></div>
+</div>
+
+<div class="eyes">
+  <div class="eye-card">
+    <h2>Right Eye (OD)</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="r-sph">SPH</label>
+        <input type="text" id="r-sph" placeholder="-3.00">
+      </div>
+      <div class="field">
+        <label for="r-cyl">CYL</label>
+        <input type="text" id="r-cyl" placeholder="-1.50">
+      </div>
+      <div class="field">
+        <label for="r-axis">AXIS</label>
+        <input type="text" id="r-axis" placeholder="180">
+      </div>
+      <div class="field">
+        <label for="r-add">ADD (optional)</label>
+        <input type="text" id="r-add" placeholder="">
+      </div>
+    </div>
+    <div class="known-field">
+      <label for="r-known">Known / expected lens (optional)</label>
+      <input type="text" id="r-known" placeholder="e.g. -3.00">
+    </div>
+  </div>
+
+  <div class="eye-card">
+    <h2>Left Eye (OS)</h2>
+    <div class="field-grid">
+      <div class="field">
+        <label for="l-sph">SPH</label>
+        <input type="text" id="l-sph" placeholder="-3.00">
+      </div>
+      <div class="field">
+        <label for="l-cyl">CYL</label>
+        <input type="text" id="l-cyl" placeholder="-1.50">
+      </div>
+      <div class="field">
+        <label for="l-axis">AXIS</label>
+        <input type="text" id="l-axis" placeholder="180">
+      </div>
+      <div class="field">
+        <label for="l-add">ADD (optional)</label>
+        <input type="text" id="l-add" placeholder="">
+      </div>
+    </div>
+    <div class="known-field">
+      <label for="l-known">Known / expected lens (optional)</label>
+      <input type="text" id="l-known" placeholder="e.g. -3.00">
+    </div>
+  </div>
+</div>
+
+<button class="calc-btn" id="calc-btn" type="button">Calculate Both Eyes</button>
+
+<div class="results">
+  <div class="result-card" id="r-result"></div>
+  <div class="result-card" id="l-result"></div>
+</div>
+
+<footer>
+  Master file version: <span id="lc-version">—</span> ·
+  Loaded from <code>../assets/lens-calculator-master.js</code> ·
+  This harness contains no algorithm code of its own.
+</footer>
+
+<script src="../assets/lens-calculator-master.js"></script>
+<script>
+(function () {
+  var LC = window.OOLensCalculator;
+  var versionEl = document.getElementById('lc-version');
+  if (!LC) {
+    versionEl.textContent = 'FAILED TO LOAD — check the local server is running from the repo root and this file is served, not opened directly.';
+    document.getElementById('calc-btn').disabled = true;
+    return;
+  }
+  versionEl.textContent = LC.VERSION;
+
+  // --------------------------------------------------------------------
+  // Preset test cases
+  // --------------------------------------------------------------------
+  var presets = [
+    { label: 'No CYL — myopia', right: { sphere: '-3.00', cylinder: '0.00', axis: '' }, left: { sphere: '-3.00', cylinder: '0.00', axis: '' } },
+    { label: 'Medium minus-CYL — myopia', right: { sphere: '-3.00', cylinder: '-1.25', axis: '90' }, left: { sphere: '-3.00', cylinder: '-1.25', axis: '90' } },
+    { label: 'Medium plus-CYL — myopia', right: { sphere: '-4.25', cylinder: '1.25', axis: '0' }, left: { sphere: '-4.25', cylinder: '1.25', axis: '0' } },
+    { label: 'High CYL — myopia', right: { sphere: '-3.00', cylinder: '-2.50', axis: '45' }, left: { sphere: '-3.00', cylinder: '-2.50', axis: '45' } },
+    { label: 'No CYL — hyperopia', right: { sphere: '2.50', cylinder: '0.00', axis: '' }, left: { sphere: '2.50', cylinder: '0.00', axis: '' } },
+    { label: 'Medium minus-CYL — hyperopia', right: { sphere: '3.25', cylinder: '-1.75', axis: '60' }, left: { sphere: '3.25', cylinder: '-1.75', axis: '60' } },
+    { label: 'Medium plus-CYL — hyperopia', right: { sphere: '1.50', cylinder: '1.50', axis: '110' }, left: { sphere: '1.50', cylinder: '1.50', axis: '110' } },
+    { label: 'High CYL — hyperopia', right: { sphere: '2.25', cylinder: '-2.75', axis: '5' }, left: { sphere: '2.25', cylinder: '-2.75', axis: '5' } },
+    { label: 'Equivalent pair — minus form (-3.00/-1.50x180)', right: { sphere: '-3.00', cylinder: '-1.50', axis: '180' }, left: { sphere: '-3.00', cylinder: '-1.50', axis: '180' } },
+    { label: 'Equivalent pair — plus form (-4.50/+1.50x90)', right: { sphere: '-4.50', cylinder: '1.50', axis: '90' }, left: { sphere: '-4.50', cylinder: '1.50', axis: '90' } }
+  ];
+
+  var presetRow = document.getElementById('preset-row');
+  presets.forEach(function (p) {
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'preset-btn';
+    btn.textContent = p.label;
+    btn.addEventListener('click', function () {
+      document.getElementById('r-sph').value = p.right.sphere;
+      document.getElementById('r-cyl').value = p.right.cylinder;
+      document.getElementById('r-axis').value = p.right.axis;
+      document.getElementById('l-sph').value = p.left.sphere;
+      document.getElementById('l-cyl').value = p.left.cylinder;
+      document.getElementById('l-axis').value = p.left.axis;
+      calculate();
+    });
+    presetRow.appendChild(btn);
+  });
+
+  // --------------------------------------------------------------------
+  // Calculation + rendering
+  // --------------------------------------------------------------------
+  function readEye(prefix) {
+    return {
+      sphere: document.getElementById(prefix + '-sph').value,
+      cylinder: document.getElementById(prefix + '-cyl').value,
+      axis: document.getElementById(prefix + '-axis').value,
+      add: document.getElementById(prefix + '-add').value
+    };
+  }
+
+  function classify(normalized) {
+    if (normalized.isPlano) return 'Plano';
+    if (normalized.sphere > 0) return 'Hyperopic';
+    if (normalized.sphere < 0) return 'Myopic';
+    // sphere === 0 but cylinder != 0
+    return 'Astigmatism-only (no spherical component)';
+  }
+
+  function incrementUsed(recommendation) {
+    var v = parseFloat(recommendation);
+    if (v === 0) return 'n/a (plano)';
+    return v > 0 ? '1.00 D (farsighted stock)' : '0.50 D (nearsighted stock)';
+  }
+
+  function transpositionOccurred(originalCylinder) {
+    var c = parseFloat(originalCylinder);
+    return !isNaN(c) && c > 0;
+  }
+
+  function renderResult(containerId, eyeLabel, prefix) {
+    var container = document.getElementById(containerId);
+    var raw = readEye(prefix);
+    var knownRaw = document.getElementById(prefix + '-known').value.trim();
+
+    var result = LC.calculateEyeRecommendation(raw, eyeLabel);
+
+    var html = '<h3>' + eyeLabel + '</h3>';
+
+    if (!result.valid) {
+      html += '<div class="errors"><strong>Cannot calculate:</strong><ul>' +
+        result.errors.map(function (e) { return '<li>' + escapeHtml(e) + '</li>'; }).join('') +
+        '</ul></div>';
+      container.innerHTML = html;
+      return;
+    }
+
+    var orig = result.original;
+    var norm = result.normalized;
+
+    html += row('ORIGINAL RX', fmt(orig.sphere) + ' / ' + fmt(orig.cylinder) + (norm.axis !== null || orig.axis !== null ? ' x' + (orig.axis === null ? '—' : orig.axis) : ''));
+    html += row('NORMALIZED SPH', fmt(norm.sphere));
+    html += row('NORMALIZED CYL', fmt(norm.cylinder));
+    html += row('NORMALIZED AXIS', norm.axis === null ? '—' : norm.axis);
+    html += row('CYL BAND', norm.cylinderBand);
+    html += row('TRANSPOSITION OCCURRED', transpositionOccurred(orig.cylinder) ? 'Yes (original CYL was plus)' : 'No (already minus-cylinder or CYL = 0)');
+    html += row('CLASSIFICATION', classify(norm));
+
+    var se = orig.sphere + orig.cylinder / 2;
+    html += row('SPHERICAL EQUIVALENT (SE)', fmt(se));
+    html += '<div class="se-note">Reference only — SE is NOT the recommendation formula.</div>';
+
+    html += '<div class="stock-lens">';
+    html += '<div class="value">' + result.recommendation + '</div>';
+    html += '<div class="caption">V4 recommended stock lens · increment: ' + incrementUsed(result.recommendation) + '</div>';
+    html += '</div>';
+
+    if (result.addNotice) {
+      html += '<div class="errors" style="background:rgba(255,255,255,0.12); border-color:rgba(255,255,255,0.3);">Your prescription includes an ADD value. This standard lens recommendation is based on your distance prescription and does not incorporate near/additional power.</div>';
+    }
+
+    // Known / expected comparison.
+    if (knownRaw === '') {
+      html += '<div class="match-box empty">No known/expected value entered.</div>';
+    } else {
+      var known = parseFloat(knownRaw);
+      var v4Val = parseFloat(result.recommendation);
+      if (isNaN(known)) {
+        html += '<div class="match-box differs">Could not parse known/expected value "' + escapeHtml(knownRaw) + '".</div>';
+      } else {
+        var diff = Math.abs(known - v4Val);
+        if (diff < 0.005) {
+          html += '<div class="match-box match">MATCH — V4: ' + result.recommendation + ' · Known: ' + fmt(known) + '</div>';
+        } else {
+          html += '<div class="match-box differs">DIFFERS BY ' + diff.toFixed(2) + ' D — V4: ' + result.recommendation + ' · Known: ' + fmt(known) + '</div>';
+        }
+      }
+    }
+
+    container.innerHTML = html;
+  }
+
+  function row(label, value) {
+    return '<div class="result-row"><span class="label">' + label + '</span><span class="value">' + value + '</span></div>';
+  }
+
+  function fmt(n) {
+    if (n === null || n === undefined || isNaN(n)) return '—';
+    var s = n >= 0 ? '+' : '';
+    return s + n.toFixed(2);
+  }
+
+  function escapeHtml(s) {
+    var div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  function calculate() {
+    renderResult('r-result', 'Right Eye (OD)', 'r');
+    renderResult('l-result', 'Left Eye (OS)', 'l');
+  }
+
+  document.getElementById('calc-btn').addEventListener('click', calculate);
+
+  // Calculate on Enter from any input field.
+  document.querySelectorAll('input').forEach(function (el) {
+    el.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') calculate();
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

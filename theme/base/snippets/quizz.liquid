@@ -1,0 +1,12 @@
+<!-- In your template file, e.g., templates/index.liquid or templates/page.liquid -->
+<div class="quiz-container">
+    <h1>How Well Do You Know the Ocean?</h1>
+    <div id="quiz"></div>
+    <button id="submit">Next</button>
+    <div id="results"></div>
+    <button id="retry" style="display:none;">Retry</button>
+</div>
+
+<!-- Include CSS and JavaScript -->
+<link rel="stylesheet" href="{{ 'quizz.css' | asset_url }}">
+<script src="{{ 'quizz.js' | asset_url }}"></script>

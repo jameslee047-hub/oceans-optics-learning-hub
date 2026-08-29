@@ -1,0 +1,177 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_zYDjDk": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/DSC04589_c049cbb6-4870-4f4f-b3b5-5755e34380ac.jpg",
+        "image_2": "shopify://shop_images/DSC04589_c049cbb6-4870-4f4f-b3b5-5755e34380ac.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://pages/contact",
+        "image_height": "small",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "accent-1",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "breadcrumbs_yfD7Tj": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_h1_title_collection": false,
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 24,
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "oo_quiz_card_zQJMPg": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "image_with_text_qWXYQE": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_E69MFB": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why choose our prescription masks?</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_hHzPwm": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Snorkeling with blurry vision isn’t just inconvenient—it’s unsafe. Our prescription masks bring peace of mind, allowing you to explore the underwater world with clarity and confidence. Imagine the freedom of seeing every detail sharply. Made with soft, hypoallergenic silicone, HD tempered glass, and an ergonomic fit, our masks ensure your safety and comfort.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_7nJjeX": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop our Masks",
+            "button_link": "shopify://collections/all-our-masks",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_E69MFB",
+        "text_hHzPwm",
+        "button_7nJjeX"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/6x7_Ben.png",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "center",
+        "content_layout": "overlap",
+        "section_color_scheme": "background-2",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "1720073053bc388be0": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_iEEHmV": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_iEEHmV"
+      ],
+      "settings": {
+        "include_margins": false
+      }
+    }
+  },
+  "order": [
+    "image_banner_zYDjDk",
+    "breadcrumbs_yfD7Tj",
+    "banner",
+    "product-grid",
+    "oo_quiz_card_zQJMPg",
+    "image_with_text_qWXYQE",
+    "1720073053bc388be0"
+  ]
+}

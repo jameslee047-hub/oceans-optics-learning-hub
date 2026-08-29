@@ -1,0 +1,91 @@
+{{ 'learning-hub.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign pathway_title = metaobject.title.value | default: 'Learning pathway'
+  assign short_description = metaobject.short_description.value
+  assign pathway_image = metaobject.image.value
+  assign ordered_lessons = metaobject.ordered_lessons.value
+%}
+
+<section class="learning-hub learning-pathway color-{{ section.settings.color_scheme }} gradient">
+  <div class="learning-pathway-hero">
+    <div class="page-width learning-hub__intro">
+      <div>
+        <nav class="learning-breadcrumbs" aria-label="Breadcrumbs">
+          <a href="/pages/learn">Learning Hub</a>
+          <span aria-hidden="true">/</span>
+          <span>{{ pathway_title | escape }}</span>
+        </nav>
+
+        <p class="learning-kicker">Learning Pathway</p>
+        <h1>{{ pathway_title | escape }}</h1>
+
+        {% if short_description != blank %}
+          <p class="learning-hub__lead">{{ short_description | escape }}</p>
+        {% endif %}
+
+        {% if ordered_lessons != blank %}
+          <div class="learning-meta">
+            <span class="learning-meta__item">{{ ordered_lessons.size }} lessons</span>
+          </div>
+        {% endif %}
+      </div>
+
+      {% if pathway_image != blank and pathway_image.preview_image != blank %}
+        {{ pathway_image.preview_image | image_url: width: 900 | image_tag: loading: 'eager', widths: '375, 550, 750, 900', alt: pathway_title }}
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="learning-pathway-list">
+    <div class="page-width">
+      <div class="learning-hub__section-heading">
+        <div>
+          <p class="learning-hub__eyebrow">Sequence</p>
+          <h2>{{ pathway_title | escape }}</h2>
+        </div>
+      </div>
+
+      {% if ordered_lessons != blank %}
+        <ol class="learning-steps">
+          {% for lesson in ordered_lessons %}
+            <li class="learning-step">
+              <span class="learning-step__number">{{ forloop.index }}</span>
+              <div>
+                <h3>
+                  <a href="/pages/learn/{{ lesson.system.handle }}">
+                    {{ lesson.title.value | escape }}
+                  </a>
+                </h3>
+                {% if lesson.short_description.value != blank %}
+                  <p>{{ lesson.short_description.value | escape }}</p>
+                {% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ol>
+      {% else %}
+        <p class="learning-empty">Pathway lessons will appear here when the pathway entry is published.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Learning pathway",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Learning pathway"
+    }
+  ]
+}
+{% endschema %}

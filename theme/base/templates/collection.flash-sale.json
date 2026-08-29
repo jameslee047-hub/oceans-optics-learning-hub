@@ -1,0 +1,312 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_UTJKeB": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_Tp9YD6": {
+          "type": "heading",
+          "settings": {
+            "heading": "Prescription Scuba Diving Masks & Gear for Sale",
+            "heading_size": "h1"
+          }
+        },
+        "text_jQe7hC": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_Tp9YD6",
+        "text_jQe7hC"
+      ],
+      "custom_css": [],
+      "settings": {
+        "image": "shopify://shop_images/Oceans_optics_Sale_collection_image.png",
+        "image_2": "shopify://shop_images/DSC03215.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "middle-left",
+        "show_text_box": false,
+        "desktop_content_alignment": "left",
+        "color_scheme": "inverse",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "stack_images_on_mobile": true,
+        "show_text_below": false,
+        "fetchpriority_high": false
+      }
+    },
+    "breadcrumbs_g3ngfU": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "rich_text_aUewbJ": {
+      "type": "rich-text",
+      "blocks": {
+        "text_jUdp7y": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Save on prescription snorkeling masks and scuba mask styles designed for clear underwater vision and everyday comfort. Featuring tempered glass prescription lens options, soft silicone skirt seals, and a secure fit for divers who want reliable gear without compromising visibility.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_jUdp7y"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 36,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
+    "featured_collection_aqgrBt": {
+      "type": "featured-collection",
+      "disabled": true,
+      "settings": {
+        "title": "Get ready to gear up! Take advantage of our exclusive offers.",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "flash-sale",
+        "products_to_show": 25,
+        "columns_desktop": 3,
+        "full_width": true,
+        "show_view_all": false,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "image_banner_FaBfwP": {
+      "type": "image-banner",
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "image": "shopify://shop_images/Mobile_Guide_88951d2f-e86c-4f02-aca9-531937caef1d.svg",
+        "image_2": "shopify://shop_images/Desktop_Guide_ccc9486e-03f2-436d-81b9-7cb7798708bc.svg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false,
+        "fetchpriority_high": false
+      }
+    },
+    "guide_product_page_HeiKDe": {
+      "type": "guide-product-page",
+      "name": "Snorkeling 101 - Product Page",
+      "settings": {}
+    },
+    "rich_text_htiDQq": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_QbYNza": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Top Prescription Scuba Masks for Sale – Don't Wait!</strong>",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_TYL6hM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>A quality prescription dive mask can make every underwater experience more comfortable and enjoyable. Many low-volume and dual lens designs offer a wider field of vision, a more secure seal around the nose and bridge, and a better overall fit for recreational divers and snorkelers alike. Whether you prefer a frameless style or a classic scuba setup, the right mask helps reduce leaks and improves visibility underwater.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_QbYNza",
+        "text_TYL6hM"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_h1_title_collection": false,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "multirow_6WEEdM": {
+      "type": "multirow",
+      "blocks": {
+        "row_4VipQf": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Carosel_Ad.jpg",
+            "caption": "USE OUR EXCLUSIVE",
+            "heading": "<strong>Lens Calculator Tool</strong>",
+            "text": "<p>Did you know that due to water magnifiation we see objects 33% larger underwater. Our tool is specifically designed to help you adjust your vision correctly for perfct  underwater clarity.</p>",
+            "button_label": "Find out more",
+            "button_link": "shopify://pages/prescription-lenses-calculator-tool"
+          }
+        }
+      },
+      "block_order": [
+        "row_4VipQf"
+      ],
+      "disabled": true,
+      "settings": {
+        "image_height": "adapt",
+        "desktop_image_width": "medium",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "image_layout": "alternate-right",
+        "section_color_scheme": "background-2",
+        "row_color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "mobile_content_alignment": "center",
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "1728180942ffb8d9dc": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_RU6fXL": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_RU6fXL"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "17152440046bc5a1ee": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_3wwk6x": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join Our Community on Instagram!",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_3wwk6x"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "custom_liquid_eDxjEE": {
+      "type": "custom-liquid",
+      "name": "Sale FAQ",
+      "settings": {
+        "custom_liquid": "<section id=\"collection-faq-section\" class=\"faq-container\" aria-labelledby=\"collection-faq-title\">\n<h2 id=\"collection-faq-title\" class=\"faq-title\">Scuba Masks for Sale FAQ</h2>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What should I look for in scuba masks for sale?</h3></summary>\n<div class=\"faq-answer\">\n<p>When comparing scuba diving masks for sale, comfort and fit should come first. A soft silicone skirt, tempered glass lenses, and a secure strap system help reduce leaks and improve visibility underwater. Many divers also prefer low-volume or dual-lens designs for a wider field of view and easier mask clearing.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are prescription options available during a scuba mask sale?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many scuba mask sale collections include prescription-ready models with corrective lenses for nearsighted or farsighted divers. These masks are designed to improve underwater clarity while maintaining the same comfort, durability, and performance as standard diving masks.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I order a prescription scuba mask with different lens strengths for each eye?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many prescription scuba masks let you choose a different lens strength for each eye, which is especially helpful if your vision prescription is not the same on both sides. Popular models on sale, like the RX Obsidian Prescription Dive Mask, are designed to make customization simple while still providing a comfortable fit and clear underwater visibility for both scuba diving and snorkeling.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are affordable prescription scuba masks reliable for deeper dives?</h3></summary>\n<div class=\"faq-answer\">\n<p>Absolutely. Many affordable scuba masks are designed for deeper dives and regular diving equipment use. The most important thing is choosing a mask with a comfortable mask strap, anti-fog lenses, and a secure seal around the nose bridge to reduce discomfort underwater.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are there seasonal sales on prescription scuba masks for snorkeling and diving?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many shops run seasonal sales on prescription scuba masks throughout the year, especially before summer vacations and holiday travel. It’s often a great time to find best selling masks, lightweight designs, or even a dual-lens mask at a better price.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Do prescription scuba mask sales include different styles and full-face options?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many masks on sale come in different styles, including full-face mask and dual-lens designs. Depending on the mask you choose, some models offer a wider field of peripheral vision, easier breathing, and a more comfortable fit for exploring the underwater world.</p>\n</div>\n</details>\n\n</section>\n\n<script type=\"application/ld+json\">\n{\n\"@context\": \"https://schema.org\",\n\"@type\": \"FAQPage\",\n\"mainEntity\": [\n{\n\"@type\": \"Question\",\n\"name\": \"What should I look for in scuba masks for sale?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"When comparing scuba diving masks for sale, comfort and fit should come first. A soft silicone skirt, tempered glass lenses, and a secure strap system help reduce leaks and improve visibility underwater. Many divers also prefer low-volume or dual-lens designs for a wider field of view and easier mask clearing.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are prescription options available during a scuba mask sale?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many scuba mask sale collections include prescription-ready models with corrective lenses for nearsighted or farsighted divers. These masks are designed to improve underwater clarity while maintaining the same comfort, durability, and performance as standard diving masks.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I order a prescription scuba mask with different lens strengths for each eye?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many prescription scuba masks let you choose a different lens strength for each eye, which is especially helpful if your vision prescription is not the same on both sides. Popular models on sale, like the RX Obsidian Prescription Dive Mask, are designed to make customization simple while still providing a comfortable fit and clear underwater visibility for both scuba diving and snorkeling.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are affordable prescription scuba masks reliable for deeper dives?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Absolutely. Many affordable scuba masks are designed for deeper dives and regular diving equipment use. The most important thing is choosing a mask with a comfortable mask strap, anti-fog lenses, and a secure seal around the nose bridge to reduce discomfort underwater.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are there seasonal sales on prescription scuba masks for snorkeling and diving?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many shops run seasonal sales on prescription scuba masks throughout the year, especially before summer vacations and holiday travel. It’s often a great time to find best selling masks, lightweight designs, or even a dual-lens mask at a better price.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Do prescription scuba mask sales include different styles and full-face options?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many masks on sale come in different styles, including full-face mask and dual-lens designs. Depending on the mask you choose, some models offer a wider field of peripheral vision, easier breathing, and a more comfortable fit for exploring the underwater world.\"\n}\n}\n]\n}\n</script>\n\n<style>\n.faq-container {\nmax-width: 700px;\nmargin: 20px auto;\npadding: 20px;\nborder-top: 1px solid #023059;\nfont-family: 'Lato', sans-serif;\n}\n.faq-title {\nfont-size: 24px;\nfont-weight: bold;\ncolor: #023059;\ntext-align: center;\nmargin-bottom: 15px;\n}\n.faq-item {\nborder-bottom: 1px solid #ddd;\nmargin-bottom: 10px;\n}\n.faq-question {\nfont-size: 16px;\nbackground-color: #ffffff;\ncolor: #023059;\npadding: 10px;\ncursor: pointer;\nborder: 1px solid #023059;\nborder-radius: 5px;\nmargin: 0;\nfont-weight: 700;\ndisplay: flex;\nalign-items: baseline;\n}\n.faq-question h3 {\nfont-size: 16px;\ncolor: #023059;\nfont-weight: 700;\nmargin: 0;\n}\n.faq-answer {\npadding: 10px;\nfont-size: 14px;\nbackground-color: #f9f9f9;\ncolor: #333;\nfont-weight: 400;\n}\n.faq-answer p { margin: 0 0 8px 0; }\n.faq-answer p:last-child { margin-bottom: 0; }\n.faq-answer a { color: #B95e05; text-decoration: none; }\n.faq-answer a:hover { text-decoration: underline; }\ndetails summary::-webkit-details-marker { display: none; }\ndetails[open] .faq-question::before { content: \"▾ \"; }\ndetails:not([open]) .faq-question::before { content: \"▸ \"; }\n</style>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "image_banner_UTJKeB",
+    "breadcrumbs_g3ngfU",
+    "rich_text_aUewbJ",
+    "product-grid",
+    "featured_collection_aqgrBt",
+    "image_banner_FaBfwP",
+    "guide_product_page_HeiKDe",
+    "rich_text_htiDQq",
+    "banner",
+    "multirow_6WEEdM",
+    "1728180942ffb8d9dc",
+    "17152440046bc5a1ee",
+    "custom_liquid_eDxjEE"
+  ]
+}

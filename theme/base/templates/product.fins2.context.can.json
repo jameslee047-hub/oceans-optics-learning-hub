@@ -1,0 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.fins2.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_jeppgc": {
+          "settings": {
+            "content": "<h5>Orders $70+ ship free. Every order is carefully packed with quality guaranteed. Fast, trackable delivery in 3–10 days.</h5>"
+          }
+        }
+      }
+    }
+  }
+}

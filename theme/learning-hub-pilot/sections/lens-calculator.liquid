@@ -1,0 +1,1153 @@
+<!-- Oceans Optics Underwater Lens Calculator -->
+
+<style>
+html, body { overflow-x: hidden; width: 100%; }
+#calculator-container *,
+.calculator-recommendations * { font-family: "Lato", sans-serif; }
+
+#calculator-container {
+  min-height: 400px;
+  max-width: min(440px, 100vw - 16px);
+  margin: 5px auto;
+  padding: 12px;
+  border-radius: 10px;
+  background: #fff;
+  border: 2px solid #023059;
+  display: block;
+  text-align: center;
+  box-sizing: border-box;
+}
+
+#lens-calculator h2,
+#lens-calculator h3,
+#lens-calculator label { color: #023059; }
+#lens-calculator p {
+  color: #023059; margin-bottom: 20px; font-weight: 400; line-height: normal; font-size: 18px;
+}
+
+/* Tooltips */
+.tooltip {
+  display: inline-block; cursor: pointer; position: relative; z-index: 10;
+}
+.mask-card .tooltip svg { width: 20px; height: 20px; margin-left: 2px; }
+
+.tooltip .tooltiptext {
+  width: 190px; max-width: calc(100vw - 24px);
+  background: #023059; color: #fff;
+  padding: 10px; text-align: center;
+  border-radius: 6px; font-size: 13px; line-height: 1.5;
+  position: absolute; left: 50%; top: 30px;
+  --offset: 0px;
+  transform: translateX(calc(-50% + var(--offset)));
+  visibility: hidden; opacity: 0; transition: opacity .2s, visibility .2s;
+  pointer-events: auto; will-change: transform; z-index: 9999;
+}
+.tooltip .tooltiptext::after {
+  content: " "; position: absolute; bottom: 100%; left: 50%; margin-left: -5px;
+  border-width: 5px; border-style: solid; border-color: transparent transparent #023059 transparent;
+}
+.mask-card .tooltip .tooltiptext { width: 230px; font-size: 11px; }
+.mask-card .tooltip .tooltiptext::after { left: 40.5%; }
+
+.tooltip:hover .tooltiptext,
+.tooltip.open .tooltiptext { visibility: visible !important; opacity: 1 !important; }
+
+#lens-calculator p .tooltip .tooltiptext { left: 0; transform: none; }
+#lens-calculator p .tooltip .tooltiptext::after { left: 12px; margin-left: 0; }
+
+.input-help {
+  position: absolute; top: 8px; right: 10px; width: 22px; height: 22px;
+  display: inline-flex; align-items: center; justify-content: flex-end; z-index: 20;
+}
+.input-help svg { width: 22px; height: 22px; fill: #B95E05; }
+.input-help .tooltiptext { right: 0; left: auto; top: 26px; transform: none; width: 180px; }
+.input-help .tooltiptext::after { left: auto; right: 12px; margin-left: 0; }
+
+/* CYL section wrapper */
+.cyl-section {
+  width: 100%;
+  margin: 12px 0 0;
+  padding: 12px 8px 4px;
+  border-top: 1px solid rgba(2,48,89,0.15);
+  box-sizing: border-box;
+}
+
+/* CYL label row - centered with optional tooltip */
+.cyl-label-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.cyl-label-row .cyl-label {
+  color: #023059;
+  font-weight: 800;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.cyl-label-row .tooltip {
+  display: inline-flex;
+}
+.cyl-label-row .tooltip svg {
+  width: 18px;
+  height: 18px;
+  fill: #B95E05;
+  display: block;
+}
+.cyl-label-row .tooltip .tooltiptext {
+  left: 0;
+  transform: none;
+  top: 28px;
+  width: 180px;
+}
+.cyl-label-row .tooltip .tooltiptext::after {
+  left: 8px;
+  margin-left: 0;
+}
+
+/* CYL controls - button + dropdown */
+.cyl-controls {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  justify-content: center;
+}
+.cyl-controls .cyl-sign-btn {
+  width: 26px;
+  height: 26px;
+  border: 1px solid #023059;
+  border-radius: 6px;
+  background: #fff;
+  color: #023059;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+  padding: 0;
+}
+.cyl-controls select {
+  width: 120px;
+  height: 26px;
+  min-width: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  border: 1px solid #023059;
+  border-radius: 8px;
+  background: #fff;
+  color: #023059;
+  padding: 0 4px;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: center;
+}
+.cyl-controls select:focus {
+  outline: 2px solid #b95e05;
+  outline-offset: 1px;
+}
+
+/* Input groups */
+#lens-calculator .input-group {
+  position: relative;
+  display: flex; flex-wrap: wrap; gap: 0; align-items: center; margin-bottom: 10px;
+  padding: 12px 8px 14px; text-align: center; border: 2px solid #023059;
+  border-radius: 20px; justify-content: center; box-sizing: border-box; flex: 1; min-width: 0;
+}
+#lens-calculator .input-group label {
+  margin-bottom: 10px; font-weight: 700; font-size: 14px; display: block; padding-right: 28px; width: 100%;
+}
+.input-group__wrapper {
+  display: flex; gap: 8px; justify-content: space-between;
+  width: 100%; box-sizing: border-box;
+}
+.input-group__inner { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; justify-content: center; }
+
+/* Sign buttons */
+#lens-calculator .input-group #rightEyeSphereSign,
+#lens-calculator .input-group #leftEyeSphereSign {
+  width: 40px; height: 40px; border: 1px solid #023059; border-radius: 10px;
+  background: #fff; color: #023059; font-size: 20px; font-weight: 800; cursor: pointer; line-height: 1;
+}
+
+/* Picker */
+.picker-wrapper { display: inline-flex; align-items: center; gap: 1px; }
+.picker-dot { color: #023059; font-weight: 800; margin: 0 1px; }
+.picker-wrapper select {
+  appearance: none; -webkit-appearance: none; -moz-appearance: none;
+  border: 0; border-radius: 8px; background: #fff; color: #023059;
+  padding: 11px 8px; font-size: 15px; font-weight: 800; width: 40px; min-width: 0;
+  text-align: center; text-align-last: center; line-height: 1.2; box-sizing: border-box;
+  box-shadow: inset 0 0 0 1px #023059;
+}
+.picker-wrapper select:focus { outline: 2px solid #b95e05; outline-offset: 1px; }
+
+/* CYL section wrapper */
+.cyl-section {
+  width: 100%;
+  margin: 12px 0 0;
+  padding: 12px 8px 4px;
+  border-top: 1px solid rgba(2,48,89,0.15);
+  box-sizing: border-box;
+}
+
+/* CTA */
+#final-calculate-button {
+  padding: 10px 20px; border: 2px solid #b95e05; background: #b95e05; color: #fff;
+  border-radius: 30px; cursor: pointer; font-weight: 700; text-align: center;
+  display: block; margin: 20px auto; font-size: 22px; box-shadow: 0 4px 6px rgba(0,0,0,.1);
+}
+
+/* Results */
+.result-summary {
+  background: #f0f6ff; border: 2px solid #023059; border-radius: 12px;
+  padding: 16px; margin-top: 15px; text-align: center; display: none;
+}
+.result-summary .result-label {
+  font-size: 12px; font-weight: 800; color: #023059;
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px;
+}
+.result-summary .result-values {
+  display: flex; justify-content: center; align-items: flex-start; gap: 20px;
+}
+.result-summary .result-eye { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.result-summary .result-eye-label { font-size: 12px; font-weight: 700; color: #023059; }
+.result-summary .result-eye-value { font-size: 28px; font-weight: 900; color: #023059; }
+.result-summary .result-divider { font-size: 28px; color: #023059; opacity: 0.3; padding-top: 18px; }
+.result-note { font-size: 12px; color: #666; margin-top: 10px; font-style: italic; }
+.error-message { color: red; font-weight: 700; text-align: center; margin-top: 10px; display: none; }
+
+/* Success header */
+.success-header {
+  background: linear-gradient(135deg, #023059 0%, #034a7b 100%);
+  color: white; padding: 25px; border-radius: 10px; margin: 30px auto 20px;
+  text-align: center; max-width: 800px; box-shadow: 0 4px 12px rgba(2,48,89,0.3);
+}
+.success-header h2 { margin: 0 0 10px; font-size: 24px; color: white; }
+.success-header .lens-display { margin: 15px 0 0; font-size: 18px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.3); }
+.success-header .lens-display strong { font-size: 22px; color: #ffd700; }
+
+/* Lens highlight */
+.your-lenses-highlight {
+  background: transparent; border: 2px solid #023059; color: #023059;
+  padding: 4px 15px 12px 15px; border-radius: 8px; margin: 10px 0 15px 0;
+  text-align: center; font-weight: 700;
+}
+.your-lenses-highlight .title { font-size: 11px; margin: 0 0 8px 0; letter-spacing: 0.5px; color: #023059; font-weight: 800; text-transform: uppercase; }
+.your-lenses-highlight .lenses { display: flex; justify-content: center; align-items: flex-start; gap: 15px; font-size: 16px; line-height: 1.4; color: #023059; }
+.your-lenses-highlight .lens-column { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.your-lenses-highlight .lens-label { font-size: 12px; font-weight: 700; }
+.your-lenses-highlight .lens-value { font-size: 20px; font-weight: 800; }
+.your-lenses-highlight .divider { font-size: 20px; font-weight: 400; color: #023059; opacity: 0.5; }
+
+/* Match badge */
+.match-badge {
+  position: absolute; top: 10px; right: 10px; background: #B95E05; color: white;
+  padding: 8px 12px; border-radius: 20px; font-size: 11px; font-weight: 700;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2); animation: pulse 2s infinite; z-index: 10;
+}
+@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+
+/* Card grid */
+.mask-grid { display: flex; gap: 20px; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; justify-content: center; }
+.mask-grid > h1 { font-size: 30px; }
+.mask-card {
+  background: #fff; border: 1px solid #ddd; border-radius: 10px; overflow: hidden;
+  display: flex; flex-direction: column; width: calc(33.333% - 20px); position: relative;
+}
+.recomment-headline { width: 100%; }
+.mask-image { width: 80%; height: 280px; object-fit: contain; background: #fff; margin: 0 auto; transition: opacity 0.15s ease; }
+@media (max-width: 800px) { .mask-card { width: 45%; } .mask-image { width: 95%; height: auto; } }
+@media (max-width: 500px) { .mask-card { width: 95%; } }
+
+.card-content { padding: 1rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+.mask-title { font-weight: 800; font-size: 1.5rem; margin: 0; color: #023059; display: flex; justify-content: space-between; gap: 10px; align-items: flex-start; }
+.mask-title .price-slot { font-size: 1rem; font-weight: 800; white-space: nowrap; }
+
+.lens-meta { margin: .25rem 0 .75rem; color: #023059; font-size: 1rem; line-height: 1.35; }
+.lens-meta .meta-row { display: flex; align-items: flex-start; gap: 8px; margin: .18rem 0; }
+.lens-meta .meta-row strong { font-weight: 900; }
+.lens-meta .meta-row.meta-included { color: #023059; font-weight: 600; gap: 6px; }
+.meta-muted { color: rgba(2,48,89,.75); font-weight: 700; font-size: .95rem; }
+
+.btn-row { display: flex; gap: 10px; margin-top: .75rem; flex-wrap: wrap; }
+.btn { display: block; width: 100%; padding: 14px 24px; border-radius: 50px; text-decoration: none; font-size: 18px; text-align: center; cursor: pointer; border: none; font-weight: 700; transition: all 0.3s ease; }
+.product-link { background: #B95E05; color: #fff; }
+.product-link:hover { background: #9a4e04; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(185,94,5,0.4); }
+
+.fit-helper { margin-top: .45rem; font-weight: 800; font-size: .95rem; color: #023059; }
+.fit-helper a { color: #B95E05; text-decoration: underline; }
+.fit-note { margin-top: .5rem; color: rgba(2,48,89,.8); font-size: .98rem; font-weight: 700; line-height: 1.25; }
+
+.calculator-recommendations { margin-bottom: 20px; scroll-margin-top: 20px; }
+
+/* Swatches */
+.swatch-section { padding: 8px 12px 6px; border-top: 1px solid #eee; }
+.swatch-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.swatch-row-label { font-size: 12px; font-weight: 700; color: #6b7280; min-width: 38px; flex-shrink: 0; }
+.swatch-dots { display: flex; gap: 5px; flex-wrap: wrap; }
+.swatch-dot {
+  width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid rgba(0,0,0,0.18);
+  cursor: pointer; padding: 0; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+  position: relative;
+}
+.swatch-dot:hover::after {
+  content: attr(title);
+  position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+  background: #023059; color: #fff; font-size: 10px; font-weight: 700;
+  padding: 3px 7px; border-radius: 4px; white-space: nowrap; pointer-events: none; z-index: 100;
+}
+.swatch-dot.active { outline: 2px solid #B95E05; outline-offset: 2px; }
+.swatch-dot.light { border-color: #b0b8c4; }
+.swatch-selected { font-size: 12px; color: #475569; margin: 2px 0 6px 46px; }
+
+/* Mobile */
+@media (max-width: 560px) {
+  .input-group__wrapper { gap: 6px; }
+  #lens-calculator .input-group { padding: 10px 4px 12px; border-radius: 16px; }
+  #lens-calculator .input-group label { font-size: 12px; margin-bottom: 8px; }
+  .picker-wrapper select { width: 34px; padding: 9px 4px; font-size: 14px; }
+  #lens-calculator .input-group #rightEyeSphereSign,
+  #lens-calculator .input-group #leftEyeSphereSign { width: 36px; height: 36px; font-size: 18px; }
+  .input-help { right: 4px; top: 6px; }
+  
+  /* CYL section mobile adjustments */
+  .cyl-section { 
+    padding: 8px 4px 4px; 
+    margin: 16px 0 0;
+  }
+  .cyl-label-row {
+    margin-bottom: 6px;
+  }
+  .cyl-label-row .cyl-label {
+    font-size: 11px;
+  }
+  .cyl-controls { 
+    gap: 6px; 
+  }
+  .cyl-controls .cyl-sign-btn { 
+    width: 32px; 
+    height: 32px; 
+    font-size: 13px; 
+  }
+  .cyl-controls select { 
+    width: 130px;
+    height: 32px;
+    font-size: 11px; 
+    padding: 0 4px; 
+  }
+  
+  .success-header { padding: 20px 15px; }
+  .success-header h2 { font-size: 20px; }
+  .your-lenses-highlight .lenses { font-size: 18px; }
+  .mask-title { font-size: 1.3rem; }
+}
+
+.tooltip .tooltiptext.measuring { visibility: hidden !important; opacity: 0 !important; }
+@keyframes bounce { 0%,20%,50%,80%,100% { transform: translateY(0); } 40% { transform: translateY(-6px); } 60% { transform: translateY(-3px); } }
+</style>
+
+<h2 style="text-align:center;color:#023059;font-family:'Lato',sans-serif;margin:20px auto 10px;max-width:440px;">Use Our Exclusive Underwater Lens Calculator Tool</h2>
+
+<div id="calculator-container">
+  <div id="lens-calculator">
+    <p>
+      <span class="tooltip" aria-label="Underwater Rx note">
+        <svg viewBox="0 0 24 24" width="22" height="22" style="margin-right:4px;vertical-align:middle;">
+          <circle cx="12" cy="12" r="10" fill="#B95E05" opacity=".12"></circle>
+          <path d="M11 10h2v7h-2zm0-3h2v2h-2z" fill="#B95E05"></path>
+        </svg>
+        <span class="tooltiptext">Underwater, light bends differently and can make your usual prescription feel too strong. We lower it slightly to prevent overmagnification.</span>
+      </span>
+      Step 1: Enter your prescription to find your recommended underwater lens strength
+    </p>
+
+    <div class="input-group__wrapper">
+
+      <!-- RIGHT EYE -->
+      <div class="input-group">
+        <label for="rightEyeSphere">Right SPH (OD)</label>
+        <span class="tooltip input-help" aria-label="Sign help">
+          <svg viewBox="0 0 25 30"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg>
+          <span class="tooltiptext"><strong>[−] minus</strong> for Myopia (nearsighted), <strong>[+] plus</strong> for Hyperopia (farsighted).</span>
+        </span>
+        <div class="input-group__inner">
+          <button type="button" id="rightEyeSphereSign" class="notactivated" onclick="toggleSign(this)">+/-</button>
+          <div class="picker-wrapper" data-side="right">
+            <select id="rightInt" aria-label="Right integer"></select>
+            <span class="picker-dot">.</span>
+            <select id="rightFrac" aria-label="Right quarter"></select>
+          </div>
+          <input type="hidden" id="rightEyeSphere" value="0.00">
+        </div>
+        <div class="cyl-section">
+          <div class="cyl-label-row">
+            <span class="cyl-label">Right CYL</span>
+            <span class="tooltip" aria-label="About cylinder">
+              <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" style="fill:#B95E05;display:block;"><circle cx="12" cy="12" r="12" opacity=".14"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg>
+              <span class="tooltiptext">Check your CYL value and its + or − sign. Select 0.00 if you have no astigmatism.</span>
+            </span>
+          </div>
+          <div class="cyl-controls">
+            <button type="button" id="cyl-sign-right" class="cyl-sign-btn" onclick="toggleCylSign(this)">+/-</button>
+            <select id="cyl-range-right">
+              <option value="none">0.00</option>
+              <option value="low">0.25 – 0.75</option>
+              <option value="medium">1.00 – 1.75</option>
+              <option value="high">2.00 – 3.00</option>
+              <option value="very-high">3.25+</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEFT EYE -->
+      <div class="input-group">
+        <label for="leftEyeSphere">Left SPH (OS)</label>
+        <div class="input-group__inner">
+          <button type="button" id="leftEyeSphereSign" class="notactivated" onclick="toggleSign(this)">+/-</button>
+          <div class="picker-wrapper" data-side="left">
+            <select id="leftInt" aria-label="Left integer"></select>
+            <span class="picker-dot">.</span>
+            <select id="leftFrac" aria-label="Left quarter"></select>
+          </div>
+          <input type="hidden" id="leftEyeSphere" value="0.00">
+        </div>
+        <div class="cyl-section">
+          <div class="cyl-label-row">
+            <span class="cyl-label">Left CYL</span>
+          </div>
+          <div class="cyl-controls">
+            <button type="button" id="cyl-sign-left" class="cyl-sign-btn" onclick="toggleCylSign(this)">+/-</button>
+            <select id="cyl-range-left">
+              <option value="none">0.00</option>
+              <option value="low">0.25 – 0.75</option>
+              <option value="medium">1.00 – 1.75</option>
+              <option value="high">2.00 – 3.00</option>
+              <option value="very-high">3.25+</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <button id="final-calculate-button" onclick="calculateLensStrength()">Find My Lenses</button>
+
+    <div class="error-message" id="error-message"></div>
+
+    <div class="result-summary" id="result-summary">
+      <div class="result-label">Your Recommended Underwater Lens Strength</div>
+      <div class="result-values">
+        <div class="result-eye">
+          <div class="result-eye-label">Right (OD)</div>
+          <div class="result-eye-value" id="recommendedRight">--</div>
+        </div>
+        <div class="result-divider">|</div>
+        <div class="result-eye">
+          <div class="result-eye-label">Left (OS)</div>
+          <div class="result-eye-value" id="recommendedLeft">--</div>
+        </div>
+      </div>
+      <div class="result-note">This is your recommended starting strength. If unsure, <a href="mailto:info@oceansoptics.com" style="color:#B95E05;">email us your prescription</a> and we will confirm.</div>
+    </div>
+  </div>
+</div>
+
+<div class="calculator-recommendations">
+  <div class="mask-grid" id="maskGrid"></div>
+</div>
+
+<script>
+let calculatedRight = "";
+let calculatedLeft = "";
+
+const COLOR_MAP = {
+  'Aqua':'#38CFFA','Black':'#1a1a1a','Blue':'#005BD3','Clear':'#D6EAF8',
+  'Gold':'#D49A06','Pink':'#FFC0CB','Red':'#F61F1F','Rose Pink':'#C9637A',
+  'Silver':'#D3D3D3','White':'#FFFFFF','Yellow':'#FFE500'
+};
+const LIGHT_COLORS = new Set(['White','Clear','Yellow','Silver','Gold']);
+
+const maskData = [
+  {
+    name: "Rx Rover",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-small-1-50-6-00-60219480539469.png?v=1740542314",
+    link: "https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask",
+    lensType: "minus", allowsDifferentEyes: true,
+    diopterMin: -1.50, diopterMax: -6.00, diopterStep: 0.50,
+    quickNote: "Low volume feel and secure seal, popular with freedivers and smaller profiles.",
+    swatches: {
+      frameColors: ['Black','Blue','Pink','White','Yellow'],
+      sealColors: ['Black','White'],
+      defaultFrame: 'Black', defaultSeal: 'Black',
+      variantMap: {
+        'Black/Black':  { url: 'https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask?variant=50139438973261', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-small-1-50-6-00-60219480539469.png?v=1740542314' },
+        'Blue/Black':   { url: 'https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask?variant=50139439726925', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-small-1-50-6-00-60219480277325.png?v=1740542314' },
+        'Pink/Black':   { url: 'https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask?variant=50139440480589', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-small-1-50-6-00-60219480375629.png?v=1740542314' },
+        'White/Black':  { url: 'https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask?variant=50139439333709', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-small-1-50-6-00-60219480408397.png?v=1740542314' },
+        'Yellow/Black': { url: 'https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask?variant=50139440087373', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-small-1-50-6-00-60219480441165.png?v=1758777238' },
+        'Black/White':  { url: 'https://oceansoptics.com/products/white-rx-rover-nearsighted-prescription-dive-mask?variant=50144516079949', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-rover-nearsighted-prescription-freediving-mask-with-snorkel-case-black-white-1-5-left-1-5-right-59341836747085.png?v=1738036258' },
+        'Blue/White':   { url: 'https://oceansoptics.com/products/white-rx-rover-nearsighted-prescription-dive-mask?variant=50144515359053', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-rover-nearsighted-prescription-freediving-mask-with-snorkel-case-59341836943693.png?v=1758778499' },
+        'Pink/White':   { url: 'https://oceansoptics.com/products/white-rx-rover-nearsighted-prescription-dive-mask?variant=50144516800845', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-rover-nearsighted-prescription-freediving-mask-with-snorkel-case-pink-white-1-5-left-1-5-right-59341836976461.png?v=1738036258' },
+        'White/White':  { url: 'https://oceansoptics.com/products/white-rx-rover-nearsighted-prescription-dive-mask?variant=50144515719501', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-rover-nearsighted-prescription-freediving-mask-with-snorkel-case-all-white-1-5-left-1-5-right-59341836681549.png?v=1738036258' },
+        'Yellow/White': { url: 'https://oceansoptics.com/products/white-rx-rover-nearsighted-prescription-dive-mask?variant=50144516440397', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-rover-nearsighted-prescription-freediving-mask-with-snorkel-case-yellow-white-1-5-left-1-5-right-59341836714317.png?v=1738036258' }
+      }
+    }
+  },
+  {
+    name: "Rx Obsidian",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-all-black-60219667284301.png?v=1772173654",
+    link: "https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling",
+    lensType: "minus", allowsDifferentEyes: true,
+    diopterMin: -1.00, diopterMax: -9.00, diopterStep: 0.50,
+    quickNote: "Most balanced all-round mask, fitting a wide range of faces comfortably.",
+    swatches: {
+      frameColors: ['Aqua','Black','Blue','Pink','Red','Yellow'],
+      sealColors: ['Black','Clear'],
+      defaultFrame: 'Black', defaultSeal: 'Black',
+      variantMap: {
+        'Aqua/Black':   { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=50963758547277', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-aqua-with-black-60219667349837.png?v=1772173654' },
+        'Black/Black':  { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=50148668899661', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-all-black-60219667284301.png?v=1772173654' },
+        'Blue/Black':   { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=51121887641933', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-blue-with-black-60219667382605.png?v=1772173654' },
+        'Pink/Black':   { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=50148670112077', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-pink-with-black-60219667415373.png?v=1772173654' },
+        'Red/Black':    { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=50148669489485', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-snorkel-dive-mask-medium-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-red-with-black-1146123877.png?v=1772173654' },
+        'Yellow/Black': { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=50148670734669', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-yellow-with-black-60219667448141.png?v=1772173654' },
+        'Aqua/Clear':   { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=52697208193357', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-aqua-clear-1200392465.png?v=1772173654' },
+        'Black/Clear':  { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=52697208160589', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-black-clear-1200392466.png?v=1772173654' },
+        'Blue/Clear':   { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=52697208258893', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-blue-clear-1200392464.png?v=1772173654' },
+        'Pink/Clear':   { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=52697208291661', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-pink-clear-1200392462.png?v=1772173654' },
+        'Red/Clear':    { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=52697208226125', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-red-clear-1200392463.png?v=1772173654' },
+        'Yellow/Clear': { url: 'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling?variant=52697208324429', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-yellow-clear-1200392461.png?v=1772173654' }
+      }
+    }
+  },
+  {
+  name: "Rx Titan",
+  img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Rx_Titan_Prescription_Snorkel_Scuba_Diving_Corrective_Mask_Blue_Black.png?v=1783153840",
+  link: "https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask",
+  lensType: "minus",
+  allowsDifferentEyes: true,
+  diopterMin: -1.50,
+  diopterMax: -6.00,
+  diopterStep: 0.50,
+  quickNote: "Roomier large fit with a wider nose pocket, ideal for medium to large faces.",
+  swatches: {
+    frameColors: ['Black', 'Blue', 'Pink', 'Red', 'Yellow'],
+    sealColors: ['Black', 'Clear'],
+    defaultFrame: 'Blue',
+    defaultSeal: 'Black',
+    variantMap: {
+      'Black/Black': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54202866336077',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Rx_Titan_Prescription_Snorkel_Scuba_Diving_Corrective_Mask_Black_Black.png?v=1783154101'
+      },
+      'Black/Clear': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54202866499917',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask-the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask-black-clear-1248014644.png?v=1783422911'
+      },
+      'Blue/Black': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54202866401613',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Rx_Titan_Prescription_Snorkel_Scuba_Diving_Corrective_Mask_Blue_Black.png?v=1783153840'
+      },
+      'Blue/Clear': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54202866565453',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask-the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask-blue-clear-1248014643.png?v=1783476836'
+      },
+      'Pink/Black': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54202866434381',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Rx_Titan_Prescription_Snorkel_Scub_Diving_Corrective_Mask_Pink_Black.png?v=1783152533'
+      },
+      'Pink/Clear': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54202866598221',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask-the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask-pink-clear-1248014642.png?v=1783422795'
+      },
+      'Red/Black': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54202866467149',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Rx_Titan_Prescription_Snorkel_Scuba_Diving_Corrective_Mask_Red_Black.png?v=1783153821'
+      },
+      'Red/Clear': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54203206041933',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask-the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask-red-clear-1248014641.png?v=1783422733'
+      },
+      'Yellow/Black': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54202866368845',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Rx_Titan_Prescription_Snorkel_Scuba_Diving_Corrective_Mask_Yellow_Black.png?v=1783154139'
+      },
+      'Yellow/Clear': {
+        url: 'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask?variant=54202866532685',
+        img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Rx_Titan_Prescription_Snorkel_Scub_Diving_Corrective_Mask_Yellow_Clear.png?v=1783418895'
+      }
+    }
+  }
+},
+{
+    name: "Rx Lumix",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-scuba-dive-mask-aluminum-rx-lumix-prescription-scuba-dive-mask-aluminum-black-black-1211959645.png?v=1766128771",
+    link: "https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0",
+    lensType: "minus", allowsDifferentEyes: true,
+    diopterMin: -1.50, diopterMax: -6.00, diopterStep: 0.50,
+    quickNote: "Aluminium frame with a forgiving seal that adapts well to many face shapes.",
+    swatches: {
+      frameColors: ['Aqua','Black','Gold','Rose Pink','Silver'],
+      sealColors: ['Black','White'],
+      defaultFrame: 'Black', defaultSeal: 'Black',
+      variantMap: {
+        'Aqua/Black':      { url: 'https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0?variant=50070250946893', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-scuba-dive-mask-aluminum-rx-lumix-prescription-scuba-dive-mask-aluminum-blue-black-1211959643.png?v=1766129013' },
+        'Black/Black':     { url: 'https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0?variant=50461180199245', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-scuba-dive-mask-aluminum-rx-lumix-prescription-scuba-dive-mask-aluminum-black-black-1211959645.png?v=1766128771' },
+        'Gold/Black':      { url: 'https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0?variant=50461180264781', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-scuba-dive-mask-aluminum-rx-lumix-prescription-scuba-dive-mask-aluminum-gold-black-1211959644.png?v=1766129612' },
+        'Rose Pink/Black': { url: 'https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0?variant=50461180297549', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-scuba-dive-mask-aluminum-rx-lumix-prescription-scuba-dive-mask-aluminum-rose-pink-black-1211959641.png?v=1766129251' },
+        'Silver/Black':    { url: 'https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0?variant=50461180232013', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-scuba-dive-mask-aluminum-rx-lumix-prescription-scuba-dive-mask-aluminum-silver-black-1211959642.png?v=1766128652' },
+        'Aqua/White':      { url: 'https://oceansoptics.com/products/rx-lumix-optical-dive-mask-aluminum-white-series?variant=50461311336781', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-blue-white-aluminum-1211959654.png?v=1766129131' },
+        'Black/White':     { url: 'https://oceansoptics.com/products/rx-lumix-optical-dive-mask-aluminum-white-series?variant=50461311369549', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-black-white-1211959656.png?v=1766129371' },
+        'Gold/White':      { url: 'https://oceansoptics.com/products/rx-lumix-optical-dive-mask-aluminum-white-series?variant=50461311435085', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-gold-white-1211959657.png?v=1766129730' },
+        'Rose Pink/White': { url: 'https://oceansoptics.com/products/rx-lumix-optical-dive-mask-aluminum-white-series?variant=50461311467853', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-rose-pink-1211959655.png?v=1766129491' },
+        'Silver/White':    { url: 'https://oceansoptics.com/products/rx-lumix-optical-dive-mask-aluminum-white-series?variant=50461311402317', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-rx-lumix-prescription-snorkel-dive-mask-aluminum-white-silver-white-1211959652.png?v=1766128892' }
+      }
+    }
+  },
+  {
+    name: "Rx Obsidian Farsighted",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-all-black-60219667284301.png?v=1772173654",
+    link: "https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask",
+    lensType: "plus", allowsDifferentEyes: true,
+    diopterMin: 1.00, diopterMax: 5.00, diopterStep: 1.00,
+    quickNote: "Dedicated farsighted mask for clear close-up vision underwater.",
+    swatches: {
+      frameColors: ['Aqua','Black','Blue','Pink','Red','Yellow'],
+      sealColors: ['Black','Clear'],
+      defaultFrame: 'Black', defaultSeal: 'Black',
+      variantMap: {
+        'Aqua/Black':   { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486443853', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-aqua-with-black-60219667349837.png?v=1772173654' },
+        'Black/Black':  { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486476621', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-all-black-60219667284301.png?v=1772173654' },
+        'Blue/Black':   { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486542157', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-blue-with-black-60219667382605.png?v=1772173654' },
+        'Pink/Black':   { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486509389', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-pink-with-black-60219667415373.png?v=1772173654' },
+        'Red/Black':    { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486574925', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-snorkel-dive-mask-medium-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-red-with-black-1146123877.png?v=1772173654' },
+        'Yellow/Black': { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486607693', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-yellow-with-black-60219667448141.png?v=1772173654' },
+        'Aqua/Clear':   { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486640461', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-aqua-clear-1200392465.png?v=1772173654' },
+        'Black/Clear':  { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486673229', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-black-clear-1200392466.png?v=1772173654' },
+        'Blue/Clear':   { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486738765', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-blue-clear-1200392464.png?v=1772173654' },
+        'Pink/Clear':   { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486705997', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-pink-clear-1200392462.png?v=1772173654' },
+        'Red/Clear':    { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486804301', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-red-clear-1200392463.png?v=1772173654' },
+        'Yellow/Clear': { url: 'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask?variant=53151486771533', img: 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-yellow-clear-1200392461.png?v=1772173654' }
+      }
+    }
+  }
+];
+
+const swatchState = {};
+
+function initSwatchState(mask) {
+  if (!mask.swatches || swatchState[mask.name]) return;
+  swatchState[mask.name] = { frame: mask.swatches.defaultFrame, seal: mask.swatches.defaultSeal };
+}
+
+function getVariantKey(mask) {
+  if (!mask.swatches) return null;
+  const s = swatchState[mask.name];
+  if (!s) return null;
+  return `${s.frame}/${s.seal}`;
+}
+
+function getVariantUrl(mask) {
+  const key = getVariantKey(mask);
+  if (!key || !mask.swatches) return mask.link;
+  return mask.swatches.variantMap[key]?.url ?? mask.link;
+}
+
+function getVariantImg(mask) {
+  const key = getVariantKey(mask);
+  if (!key || !mask.swatches) return mask.img;
+  return mask.swatches.variantMap[key]?.img ?? mask.img;
+}
+
+const priceCache = new Map();
+async function fetchPriceHTML(mask) {
+  if (!mask?.link) return "";
+  if (priceCache.has(mask.link)) return priceCache.get(mask.link);
+  try {
+    const r = await fetch(mask.link + ".js");
+    if (r.ok) {
+      const data = await r.json();
+      const cents = (data.variants || []).map(v => v.price).filter(Number.isFinite);
+      const min = cents.length ? Math.min(...cents) : (Number.isFinite(data.price) ? data.price : null);
+      if (Number.isFinite(min)) {
+        const html = `<span class="price-chip">${(min/100).toLocaleString(undefined,{style:"currency",currency:"USD"})}</span>`;
+        priceCache.set(mask.link, html);
+        return html;
+      }
+    }
+  } catch(e) {}
+  priceCache.set(mask.link, "");
+  return "";
+}
+
+function toggleSign(btn) {
+  btn.classList.remove("notactivated");
+  if (btn.innerText === "+/-") btn.innerText = "-";
+  else if (btn.innerText === "-") btn.innerText = "+";
+  else btn.innerText = "+/-";
+}
+function toggleCylSign(btn) {
+  if (btn.innerText === "+/-") btn.innerText = "-";
+  else if (btn.innerText === "-") btn.innerText = "+";
+  else btn.innerText = "-";
+}
+
+const QUARTERS = ["00","25","50","75"];
+const QUARTER_MAP = { "00":"0.00","25":"0.25","50":"0.50","75":"0.75" };
+
+function buildIntOptions(sel) {
+  sel.innerHTML = "";
+  for (let i = 0; i <= 10; i++) {
+    const o = document.createElement("option");
+    o.value = String(i); o.textContent = i; sel.appendChild(o);
+  }
+}
+function buildFracOptions(sel, allowAll = true) {
+  sel.innerHTML = "";
+  QUARTERS.forEach(q => {
+    const o = document.createElement("option");
+    o.value = q; o.textContent = q; sel.appendChild(o);
+  });
+  if (!allowAll) { sel.value = "00"; Array.from(sel.options).forEach(o => { if (o.value !== "00") o.disabled = true; }); }
+}
+function updateHidden(side) {
+  const intSel = document.getElementById(side + "Int");
+  const fracSel = document.getElementById(side + "Frac");
+  const hidden = document.getElementById(side + "EyeSphere");
+  const intVal = parseInt(intSel.value, 10);
+  const frac = parseFloat(QUARTER_MAP[fracSel.value] || "0.00");
+  if (intVal === 10 && fracSel.value !== "00") buildFracOptions(fracSel, false);
+  hidden.value = (intVal + frac).toFixed(2);
+}
+function initPicker(side) {
+  const intSel = document.getElementById(side + "Int");
+  const fracSel = document.getElementById(side + "Frac");
+  buildIntOptions(intSel); buildFracOptions(fracSel, true);
+  intSel.value = "0"; fracSel.value = "00"; updateHidden(side);
+  intSel.addEventListener("change", () => { buildFracOptions(fracSel, parseInt(intSel.value,10) < 10); updateHidden(side); });
+  fracSel.addEventListener("change", () => updateHidden(side));
+  [intSel, fracSel].forEach(sel => {
+    sel.addEventListener("wheel", e => {
+      e.preventDefault();
+      const next = Math.max(0, Math.min(sel.options.length-1, sel.selectedIndex + Math.sign(e.deltaY)));
+      sel.selectedIndex = next;
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+    }, { passive: false });
+  });
+}
+document.addEventListener("DOMContentLoaded", () => { initPicker("left"); initPicker("right"); });
+
+function buildSwatchSection(mask, card) {
+  if (!mask.swatches) return null;
+  initSwatchState(mask);
+  const s = mask.swatches;
+  const section = document.createElement("div");
+  section.className = "swatch-section";
+
+  function buildRow(label, colors, type) {
+    const row = document.createElement("div");
+    row.className = "swatch-row";
+    const lbl = document.createElement("span");
+    lbl.className = "swatch-row-label"; lbl.textContent = label;
+    row.appendChild(lbl);
+    const dots = document.createElement("div");
+    dots.className = "swatch-dots";
+    colors.forEach(color => {
+      const btn = document.createElement("button");
+      btn.className = "swatch-dot" + (LIGHT_COLORS.has(color) ? " light" : "");
+      btn.style.background = COLOR_MAP[color] || "#ccc";
+      btn.title = color;
+      btn.setAttribute("data-color", color);
+      btn.setAttribute("data-type", type);
+      const isActive = type === "frame" ? swatchState[mask.name].frame === color : swatchState[mask.name].seal === color;
+      if (isActive) btn.classList.add("active");
+      btn.addEventListener("click", () => {
+        if (type === "frame") {
+          swatchState[mask.name].frame = color;
+          const compatible = Object.keys(s.variantMap).some(k => k.startsWith(color+"/") && k.endsWith("/"+swatchState[mask.name].seal));
+          if (!compatible) {
+            const fb = Object.keys(s.variantMap).find(k => k.startsWith(color+"/"));
+            if (fb) swatchState[mask.name].seal = fb.split("/")[1];
+          }
+        } else {
+          swatchState[mask.name].seal = color;
+          const compatible = Object.keys(s.variantMap).some(k => k.endsWith("/"+color) && k.startsWith(swatchState[mask.name].frame+"/"));
+          if (!compatible) {
+            const fb = Object.keys(s.variantMap).find(k => k.endsWith("/"+color));
+            if (fb) swatchState[mask.name].frame = fb.split("/")[0];
+          }
+        }
+        refreshCard(mask, card);
+      });
+      dots.appendChild(btn);
+    });
+    row.appendChild(dots);
+    return row;
+  }
+
+  section.appendChild(buildRow("Frame", s.frameColors, "frame"));
+  section.appendChild(buildRow("Seal", s.sealColors, "seal"));
+
+  const selected = document.createElement("div");
+  selected.className = "swatch-selected";
+  selected.setAttribute("data-swatch-label", mask.name);
+  selected.textContent = `${swatchState[mask.name].frame} frame / ${swatchState[mask.name].seal} seal`;
+  section.appendChild(selected);
+  return section;
+}
+
+function refreshCard(mask, card) {
+  const url = getVariantUrl(mask);
+  const img = getVariantImg(mask);
+  card.querySelectorAll("a.btn").forEach(a => a.href = url);
+  const imgEl = card.querySelector(".mask-image");
+  if (imgEl && imgEl.src !== img) {
+    imgEl.style.opacity = "0";
+    setTimeout(() => { imgEl.src = img; imgEl.style.opacity = "1"; }, 150);
+  }
+  card.querySelectorAll(".swatch-dot").forEach(btn => {
+    const color = btn.getAttribute("data-color");
+    const type = btn.getAttribute("data-type");
+    btn.classList.toggle("active", type === "frame" ? swatchState[mask.name].frame === color : swatchState[mask.name].seal === color);
+  });
+  const label = card.querySelector(`[data-swatch-label="${mask.name}"]`);
+  if (label) label.textContent = `${swatchState[mask.name].frame} frame / ${swatchState[mask.name].seal} seal`;
+}
+
+function lensOptionsText(mask) {
+  if (mask.lensType === "minus") return `${mask.diopterMin.toFixed(2)} to ${mask.diopterMax.toFixed(2)} (steps of ${mask.diopterStep.toFixed(2)})`;
+  if (mask.lensType === "plus") return `+${mask.diopterMin.toFixed(2)} to +${mask.diopterMax.toFixed(2)} (steps of ${mask.diopterStep.toFixed(2)})`;
+  return "Coming soon";
+}
+
+function renderCards(cards, container) {
+  container.innerHTML = "";
+  cards.forEach(async mask => {
+    const card = document.createElement("div");
+    card.className = "mask-card";
+
+    const badge = document.createElement("div");
+    badge.className = "match-badge";
+    badge.textContent = "✓ MATCHES YOUR RX";
+    card.appendChild(badge);
+
+    const imgEl = document.createElement("img");
+    imgEl.src = getVariantImg(mask);
+    imgEl.alt = mask.name;
+    imgEl.className = "mask-image";
+    imgEl.width = 400; imgEl.height = 400;
+
+    const content = document.createElement("div");
+    content.className = "card-content";
+
+    const title = document.createElement("div");
+    title.className = "mask-title";
+    title.innerHTML = `<span>${mask.name}</span><span class="price-slot"></span>`;
+    const priceSlot = title.querySelector(".price-slot");
+    if (mask.link) fetchPriceHTML(mask).then(html => { priceSlot.innerHTML = html; });
+
+    const yourLenses = document.createElement("div");
+    yourLenses.className = "your-lenses-highlight";
+    yourLenses.innerHTML = `
+      <div class="title">Suggested Lens Strength</div>
+      <div class="lenses">
+        <div class="lens-column"><div class="lens-label">Right (OD)</div><div class="lens-value">${calculatedRight}</div></div>
+        <div class="divider">|</div>
+        <div class="lens-column"><div class="lens-label">Left (OS)</div><div class="lens-value">${calculatedLeft}</div></div>
+      </div>`;
+
+    const meta = document.createElement("div");
+    meta.className = "lens-meta";
+    meta.innerHTML = `
+      <div class="meta-row"><strong>Lens Options:</strong> <span class="meta-muted">${lensOptionsText(mask)}</span></div>
+      <div class="meta-row"><strong>Different lens per eye:</strong> <span class="meta-muted">Yes</span></div>
+      <div class="meta-row meta-included">✓ <strong>Tempered Glass Lenses</strong></div>
+      <div class="meta-row meta-included">✓ <strong>Snorkeling</strong></div>
+      <div class="meta-row meta-included">✓ <strong>Scuba</strong></div>
+      <div class="meta-row meta-included">✓ <strong>Freediving</strong></div>`;
+
+    const note = document.createElement("div");
+    note.className = "fit-note";
+    note.textContent = mask.quickNote || "";
+
+    const helper = document.createElement("div");
+    helper.className = "fit-helper";
+    helper.innerHTML = `Need help choosing a fit? <a href="https://oceansoptics.com/pages/how-to-check-if-a-mask-will-fit-you-online" target="_blank" rel="noopener">View our Mask Sizing Helper</a>`;
+
+    const btnRow = document.createElement("div");
+    btnRow.className = "btn-row";
+    const link = document.createElement("a");
+    link.href = getVariantUrl(mask);
+    link.target = "_blank"; link.rel = "noopener";
+    link.className = "btn product-link";
+    link.textContent = "View Your Mask";
+    btnRow.appendChild(link);
+
+    content.appendChild(title);
+    content.appendChild(yourLenses);
+    content.appendChild(meta);
+    const swatchSection = buildSwatchSection(mask, card);
+    if (swatchSection) content.appendChild(swatchSection);
+    if (mask.quickNote) content.appendChild(note);
+    content.appendChild(helper);
+    content.appendChild(btnRow);
+
+    card.appendChild(imgEl);
+    card.appendChild(content);
+    container.appendChild(card);
+  });
+}
+
+function parseSigned(str) {
+  const s = String(str || "").trim();
+  if (s === "0" || s === "0.00") return { sign: "zero", value: 0 };
+  const sign = s.startsWith("+") ? "plus" : (s.startsWith("-") ? "minus" : "unknown");
+  const value = Number(s.replace(/[^\d.]/g, ""));
+  return { sign, value: Number.isFinite(value) ? value : 0 };
+}
+function supportsDiopter(mask, signedStr) {
+  const parsed = parseSigned(signedStr);
+  if (mask.lensType === "minus" && parsed.sign !== "minus") return false;
+  if (mask.lensType === "plus" && parsed.sign !== "plus") return false;
+  const abs = parsed.value;
+  const low = Math.min(Math.abs(mask.diopterMin), Math.abs(mask.diopterMax));
+  const high = Math.max(Math.abs(mask.diopterMin), Math.abs(mask.diopterMax));
+  return abs >= low - 1e-9 && abs <= high + 1e-9;
+}
+function findMatchingMasks(leftStr, rightStr) {
+  const L = parseSigned(leftStr);
+  const R = parseSigned(rightStr);
+  let effectiveSign = null;
+  if (L.sign !== "zero") effectiveSign = L.sign;
+  if (R.sign !== "zero") {
+    if (effectiveSign && effectiveSign !== R.sign) return { type: "mixed", matches: [] };
+    effectiveSign = R.sign;
+  }
+  if (!effectiveSign || (effectiveSign !== "minus" && effectiveSign !== "plus")) return { type: "invalid", matches: [] };
+  const matches = maskData.filter(m => {
+    if (effectiveSign === "minus" && m.lensType !== "minus") return false;
+    if (effectiveSign === "plus" && m.lensType !== "plus") return false;
+    const supportsLeft = L.sign === "zero" || supportsDiopter(m, leftStr);
+    const supportsRight = R.sign === "zero" || supportsDiopter(m, rightStr);
+    return supportsLeft && supportsRight;
+  });
+  return { type: effectiveSign, matches };
+}
+
+function displayResults(power, id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = power;
+  el.style.color = "#023059";
+}
+
+function createSuccessHeader(leftStr, rightStr, matchCount) {
+  const header = document.createElement("div");
+  header.className = "success-header";
+  header.innerHTML = `
+    <h2>✓ Your Prescription Calculated!</h2>
+    <div class="lens-display">Right: <strong>${rightStr}</strong> &nbsp;|&nbsp; Left: <strong>${leftStr}</strong></div>
+    <div class="lens-display" style="font-size:16px;border-top:none;padding-top:5px;">${matchCount} mask${matchCount===1?"":"s"} available with your lens strength</div>`;
+  return header;
+}
+
+function snapToHalf(valueAbs, bias) {
+  const x = Math.max(0, Number(valueAbs || 0));
+  const down = Math.floor(x * 2 + 1e-9) / 2;
+  const up = Math.ceil(x * 2 - 1e-9) / 2;
+  if (Math.abs(x - down) < 1e-9) return down;
+  if (bias === "weaker") return down;
+  if (bias === "stronger") return up;
+  return Math.abs(x-down) <= Math.abs(up-x) ? down : up;
+}
+
+function calcOne(sphere, sign, side) {
+  const cylRange = document.getElementById(`cyl-range-${side}`)?.value || "none";
+  const cylSignBtn = document.getElementById(`cyl-sign-${side}`);
+  const cylSign = cylSignBtn ? cylSignBtn.innerText : "+/-";
+  const isCylMinus = cylSign === "-";
+  const val = Math.max(0, Number(sphere || 0));
+  const isFar = sign === "+";
+
+  if (isFar) {
+    if (Math.abs(val - 0.50) < 1e-6 || Math.abs(val - 0.75) < 1e-6) {
+      if (!isCylMinus && cylRange !== "none") return "+1.00";
+      return "0.00";
+    }
+    let result;
+    if (cylRange === "none" || cylRange === "low") {
+      result = Math.floor(val + 1e-9);
+      if (result === 0) result = 1;
+    } else if (cylRange === "medium") {
+      result = isCylMinus ? Math.floor(val + 1e-9) : Math.ceil(val - 1e-9);
+    } else if (cylRange === "high") {
+      result = Math.round(val);
+    } else {
+      result = isCylMinus ? Math.round(Math.max(0, val - 0.75)) : Math.round(val + 0.75);
+    }
+    if (result > 5.00) result = 5.00;
+    if (result > 0 && result < 1.00) result = 1.00;
+    if (result === 0) return "0.00";
+    return `+${result.toFixed(2)}`;
+  }
+
+  const whole = Math.floor(val + 1e-9);
+  const frac = Math.round((val - whole) * 100) / 100;
+  let targetAbs = val, bias = "nearest";
+
+  if (cylRange === "none" || cylRange === "low") {
+    const reduce = (Math.abs(frac-0.25)<1e-6 || Math.abs(frac-0.75)<1e-6) ? 0.25 : 0.50;
+    targetAbs = Math.max(0, val - reduce); bias = "weaker";
+  } else if (cylRange === "medium") {
+    if (isCylMinus) { targetAbs = val; bias = "nearest"; }
+    else { targetAbs = Math.max(0, val - 0.50); bias = "weaker"; }
+  } else if (cylRange === "high") {
+    if (isCylMinus) { targetAbs = val; bias = "stronger"; }
+    else { targetAbs = val; bias = "weaker"; }
+  } else {
+    if (isCylMinus) { targetAbs = val + 0.75; bias = "nearest"; }
+    else { targetAbs = Math.max(0, val - 0.75); bias = "nearest"; }
+  }
+
+  if ((cylRange === "high" || cylRange === "very-high") && val <= 0.75 && val > 0) return "-1.00";
+
+  let recAbs = snapToHalf(targetAbs, bias);
+  if (recAbs > 9.00) recAbs = 9.00;
+  if (recAbs > 0 && recAbs < 1.00) recAbs = 1.00;
+  return recAbs === 0 ? "0.00" : `-${recAbs.toFixed(2)}`;
+}
+
+function calculateLensStrength() {
+  const leftSphere = parseFloat(document.getElementById("leftEyeSphere").value) || 0;
+  const rightSphere = parseFloat(document.getElementById("rightEyeSphere").value) || 0;
+  const leftSign = document.getElementById("leftEyeSphereSign").innerText;
+  const rightSign = document.getElementById("rightEyeSphereSign").innerText;
+  const leftCylRange = document.getElementById("cyl-range-left").value;
+  const rightCylRange = document.getElementById("cyl-range-right").value;
+  const leftCylSign = document.getElementById("cyl-sign-left").innerText;
+  const rightCylSign = document.getElementById("cyl-sign-right").innerText;
+  const msg = document.getElementById("error-message");
+
+  if (leftSign === "+/-" || rightSign === "+/-") {
+    msg.textContent = "Error: Choose + or − for both eyes.";
+    msg.style.display = "block";
+    ["#leftEyeSphereSign","#rightEyeSphereSign"].forEach(sel => {
+      const el = document.querySelector(sel);
+      el.style.animation = "none";
+      setTimeout(() => el.style.animation = "bounce 1s", 50);
+    });
+    return;
+  }
+  if ((leftCylSign === "+/-" && leftCylRange !== "none") || (rightCylSign === "+/-" && rightCylRange !== "none")) {
+    msg.textContent = "Please select + or − for your CYL values, or select 0.00 if you have no cylinder.";
+    msg.style.display = "block";
+    return;
+  }
+  msg.style.display = "none";
+
+  const adjLeft = calcOne(leftSphere, leftSign, "left");
+  const adjRight = calcOne(rightSphere, rightSign, "right");
+
+  calculatedLeft = adjLeft;
+  calculatedRight = adjRight;
+
+  displayResults(adjRight, "recommendedRight");
+  displayResults(adjLeft, "recommendedLeft");
+  document.getElementById("result-summary").style.display = "block";
+
+  const grid = document.getElementById("maskGrid");
+  grid.innerHTML = "";
+
+  if (leftSign !== rightSign) {
+    grid.innerHTML = '<h1 class="recomment-headline">We currently do not have masks that support different lens types (nearsighted + farsighted) for each eye. Please contact us for custom solutions.</h1>';
+    return;
+  }
+
+  if (adjLeft === "0.00" && adjRight === "0.00") {
+    const successHeader = createSuccessHeader(adjLeft, adjRight, maskData.length);
+    grid.appendChild(successHeader);
+    renderCards(maskData, grid);
+    setTimeout(() => document.querySelector(".calculator-recommendations").scrollIntoView({ behavior: "smooth", block: "start" }), 300);
+    return;
+  }
+
+  if (leftSign === "+" && (rightSphere > 5 || leftSphere > 5)) {
+    grid.innerHTML = '<h1 class="recomment-headline">Our farsighted lenses go up to +5.00</h1>';
+    const best = findMatchingMasks("+5.00","+5.00");
+    if (best.matches.length) renderCards(best.matches, grid);
+    return;
+  }
+  if (leftSign === "-" && (rightSphere > 9 || leftSphere > 9)) {
+    grid.innerHTML = '<h1 class="recomment-headline">Our nearsighted lenses go up to -9.00</h1>';
+    const best = findMatchingMasks("-9.00","-9.00");
+    if (best.matches.length) renderCards(best.matches, grid);
+    return;
+  }
+
+  const match = findMatchingMasks(adjLeft, adjRight);
+  if (match.type === "minus" || match.type === "plus") {
+    if (match.matches.length === 0) {
+      grid.innerHTML = '<h1 class="recomment-headline">We could not find an exact match in the active catalog right now.</h1>';
+    } else {
+      const successHeader = createSuccessHeader(adjLeft, adjRight, match.matches.length);
+      grid.appendChild(successHeader);
+      renderCards(match.matches, grid);
+      setTimeout(() => document.querySelector(".calculator-recommendations").scrollIntoView({ behavior: "smooth", block: "start" }), 300);
+    }
+  }
+}
+
+(function() {
+  const GUTTER = 12;
+  function clampTooltip(tip) {
+    const bubble = tip.querySelector(".tooltiptext");
+    if (!bubble) return;
+    bubble.classList.add("measuring");
+    bubble.style.display = "block";
+    bubble.style.setProperty("--offset", "0px");
+    void bubble.offsetHeight;
+    const rect = bubble.getBoundingClientRect();
+    let offset = 0;
+    if (rect.left < GUTTER) offset = GUTTER - rect.left;
+    else if (rect.right > (window.innerWidth - GUTTER)) offset = (window.innerWidth - GUTTER) - rect.right;
+    bubble.style.setProperty("--offset", offset + "px");
+    bubble.style.display = "";
+    bubble.classList.remove("measuring");
+  }
+  function openTip(tip) { tip.classList.add("open"); clampTooltip(tip); }
+  function closeAll(ex = null) {
+    document.querySelectorAll(".tooltip.open").forEach(t => {
+      if (ex && t === ex) return;
+      t.classList.remove("open");
+      const b = t.querySelector(".tooltiptext");
+      if (b) b.style.setProperty("--offset", "0px");
+    });
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".tooltip").forEach(tip => {
+      tip.addEventListener("click", e => {
+        e.preventDefault();
+        tip.classList.contains("open") ? tip.classList.remove("open") : (closeAll(tip), openTip(tip));
+      });
+      tip.addEventListener("mouseenter", () => clampTooltip(tip));
+    });
+    document.addEventListener("click", e => { if (!e.target.closest(".tooltip")) closeAll(); }, true);
+    ["resize","scroll","orientationchange"].forEach(evt => {
+      window.addEventListener(evt, () => document.querySelectorAll(".tooltip.open").forEach(clampTooltip));
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Lens Calculator Main",
+  "settings": [],
+  "presets": [{ "name": "Lens Calculator Main" }]
+}
+{% endschema %}

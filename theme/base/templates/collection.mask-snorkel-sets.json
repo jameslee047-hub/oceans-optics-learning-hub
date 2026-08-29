@@ -1,0 +1,194 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_qVBYRf": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_ggHEUX": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Snorkel Fearlessly, Shop RX</strong>",
+            "heading_size": "h0"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ggHEUX"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/DALL_E_2024-04-19_14.54.56_-_Create_a_realistic_split_shot_image_showing_part_underwater_and_part_above_the_surface_on_a_sunny_day._Below_the_waterline_the_scene_should_be_vibran_bea07978-40d6-4b6b-b973-60f361d214bd.webp",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "inverse",
+        "image_behavior": "ambient",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "breadcrumbs_zrnMpc": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": ""
+      }
+    },
+    "featured_collection_c69mVH": {
+      "type": "featured-collection",
+      "custom_css": [],
+      "settings": {
+        "title": "Mask & Snorkel Sets",
+        "heading_size": "h1",
+        "description": "<p>Explore with unstoppable confidence..</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "mask-snorkel-sets",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_DDe8WU": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_enbC3i": {
+          "type": "heading",
+          "settings": {
+            "heading": "\"Our mission is to provide you with perfect clarity and transform you into a fearless aquatic adventurer.\"",
+            "set_h1": false,
+            "heading_size": "h2"
+          }
+        },
+        "button_VWE9Wj": {
+          "type": "button",
+          "settings": {
+            "button_label": "Read about Our Story",
+            "button_link": "shopify://pages/contact",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_enbC3i",
+        "button_VWE9Wj"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
+    },
+    "snorkel_101_guide_7xJAkx": {
+      "type": "Snorkel-101-guide",
+      "name": "Snorkeling 101 promo",
+      "settings": {}
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_h1_title_collection": false,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 8,
+        "columns_desktop": 4,
+        "color_scheme": "background-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
+    "17152440046bc5a1ee": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_3wwk6x": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join Our Community on Instagram!",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_3wwk6x"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "image_banner_qVBYRf",
+    "breadcrumbs_zrnMpc",
+    "featured_collection_c69mVH",
+    "rich_text_DDe8WU",
+    "snorkel_101_guide_7xJAkx",
+    "banner",
+    "product-grid",
+    "17152440046bc5a1ee"
+  ]
+}

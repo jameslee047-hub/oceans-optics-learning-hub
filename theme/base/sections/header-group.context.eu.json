@@ -1,0 +1,70 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "header-group.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "announcement-bar": {
+      "settings": {},
+      "blocks": {
+        "announcement_ccRHYY": {
+          "settings": {
+            "text": "FREE Shipping - All orders over $70"
+          }
+        },
+        "announcement_7JrpV3": {
+          "disabled": false,
+          "settings": {
+            "text": "GET 10% OFF TODAY! Use DISCOUNT Code OCEAN10 at checkout",
+            "link": "https://oceansoptics.com/discount/OCEAN10"
+          }
+        },
+        "announcement_N9j7N": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Buy 2 Masks, Get 20% OFF!!",
+            "link": ""
+          }
+        },
+        "announcement_tJPXKY": {
+          "disabled": true,
+          "settings": {}
+        },
+        "announcement_RJW73": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "GET 20%0FF EVERYTHING - USE CODE BLACKFRIDAY20 AT CHECKOUT",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_ccRHYY",
+        "announcement_Y9M6Lx",
+        "announcement_DMUWnU",
+        "announcement_8zTiBc",
+        "announcement_7JrpV3",
+        "announcement_N9j7N",
+        "announcement_tJPXKY",
+        "announcement_RJW73"
+      ]
+    },
+    "header": {
+      "settings": {
+        "show_line_separator": false
+      },
+      "blocks": {}
+    }
+  }
+}

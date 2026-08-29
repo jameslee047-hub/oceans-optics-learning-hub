@@ -1,0 +1,417 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_MHRbVK": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "judge_me_reviews_preview_badge_E6dLV8": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "avada_trust_badge_upsell_app_badge_v2_block_yDEFLj": {
+          "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-badge-v2-block/45454b7f-f6a7-4852-b770-8e0c3992a226",
+          "settings": {
+            "badge_id": "AVD-85040007"
+          }
+        },
+        "custom_liquid_QGa4e6": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\">\n  <title>Rx Action</title>\n  <style>\n    /* --- Color Palette --- \n       Blue (text):   #023059\n       Orange (buttons): #B95E05\n    */\n\n    body {\n      margin: 0;\n      padding: 0;\n      font-family: Arial, sans-serif;\n      background: #f0f0f0;\n      color: #333;\n      line-height: 1.5;\n    }\n\n    .container {\n      max-width: 1200px;\n      margin: 40px auto;\n      padding: 0 20px;\n    }\n\n    .mask-grid {\n      display: grid;\n      grid-template-columns: repeat(1, 1fr);\n      gap: 20px;\n      max-width: 1200px;\n      margin: 0 auto;\n    }\n\n    /* Mask Card */\n    .mask-card {\n      background: #fff;\n      border: 1px solid #ddd;\n      border-radius: 6px;\n      overflow: hidden;\n      display: flex;\n      flex-direction: column;\n    }\n\n    .mask-image {\n      width: 95%;\n      height: 300px;\n      object-fit: cover;\n      background: #eee;\n      margin: 0 auto;\n    }\n\n    @media (max-width: 800px) {\n      .mask-image {\n        width: 95%;\n        height: auto;\n        object-fit: contain;\n      }\n    }\n\n    /* Card Content */\n    .card-content {\n      padding: 1rem;\n      flex: 1;\n      display: flex;\n      flex-direction: column;\n      justify-content: space-between;\n    }\n\n    .mask-title {\n      font-weight: bold;\n      font-size: 1.1rem;\n      margin: 0 0 0.5rem;\n      color: #023059;\n    }\n\n    .size-category {\n      font-size: 0.9rem;\n      color: #666;\n      margin-bottom: 0.75rem;\n      font-style: italic;\n    }\n\n    /* Table */\n    .range-table {\n      width: 100%;\n      border-collapse: collapse;\n      margin: 0.1rem 0;\n    }\n    .range-table th,\n    .range-table td {\n      border: 1px solid #eee;\n      padding: 0.1rem;\n      text-align: center;\n      font-size: 0.9rem;\n    }\n    .range-table th {\n      background: #f9f9f9;\n      font-weight: bold;\n    }\n\n    .mask-notes {\n      font-size: 0.9rem;\n      color: #666;\n      margin-top: 0.5rem;\n    }\n\n    /* Buttons */\n    .btn {\n      display: inline-block;\n      margin-top: 0.5rem;\n      padding: 0.5rem 1rem;\n      border-radius: 4px;\n      text-decoration: none;\n      font-size: 0.9rem;\n      text-align: center;\n      cursor: pointer;\n      border: none;\n    }\n\n    .convert-btn {\n      background: #B95E05;\n      color: #fff;\n      margin-right: 1rem;\n    }\n    .convert-btn:hover {\n      background: #9a4e04;\n    }\n\n    .product-link {\n      background: #023059;\n      color: #fff;\n      text-decoration: none;\n    }\n    .product-link:hover {\n      background: #012345;\n    }\n  </style>\n</head>\n<body>\n\n<div class=\"container\">\n  <div class=\"mask-grid\" id=\"maskGrid\"></div>\n</div>\n\n<script>\nconst maskData = [\n  {\n    name: \"Rx Action\",\n    sizeCategory: \"Large\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-action-prescription-snorkel-mask-w-cam-mount-large-prescription-snorkel-mask-with-gopro-mount-black-large-face-2-00-farsighted-hyperopia-60876838076749.png?v=1731242688\",\n    link: \"https://oceansoptics.com/products/prescription-scuba-diving-mask-with-camera-mount\",\n    \n    currentUnits: \"cm\",\n    widthMinCM: 10.5, widthMaxCM: 12.5, widthOptCM: 11.25,\n    heightMinCM: 7.9, heightMaxCM: 10,  heightOptCM: 8.75,\n    widthMinIN: 4.13, widthMaxIN: 4.92, widthOptIN: 4.42,\n    heightMinIN: 3.11, heightMaxIN: 3.94, heightOptIN: 3.44,\n    notes: \"Lens: Near & Far. Black only with Action Camera Mount.\"\n  }\n];\n\nfunction renderAllCards() {\n  const grid = document.getElementById(\"maskGrid\");\n  grid.innerHTML = \"\";\n\n  maskData.forEach((mask, index) => {\n    const card = document.createElement(\"div\");\n    card.className = \"mask-card\";\n\n    const imgEl = document.createElement(\"img\");\n    imgEl.src = mask.img;\n    imgEl.alt = mask.name;\n    imgEl.className = \"mask-image\";\n\n    const contentDiv = document.createElement(\"div\");\n    contentDiv.className = \"card-content\";\n\n    const titleEl = document.createElement(\"div\");\n    titleEl.className = \"mask-title\";\n    titleEl.textContent = mask.name;\n\n    const sizeEl = document.createElement(\"div\");\n    sizeEl.className = \"size-category\";\n    sizeEl.textContent = `Size Category: ${mask.sizeCategory}`;\n\n    let wMin, wMax, wOpt, hMin, hMax, hOpt, label;\n    if (mask.currentUnits === \"cm\") {\n      wMin = mask.widthMinCM;\n      wMax = mask.widthMaxCM;\n      wOpt = mask.widthOptCM;\n      hMin = mask.heightMinCM;\n      hMax = mask.heightMaxCM;\n      hOpt = mask.heightOptCM;\n      label = \"cm\";\n    } else {\n      wMin = mask.widthMinIN;\n      wMax = mask.widthMaxIN;\n      wOpt = mask.widthOptIN;\n      hMin = mask.heightMinIN;\n      hMax = mask.heightMaxIN;\n      hOpt = mask.heightOptIN;\n      label = \"in\";\n    }\n\n    const table = document.createElement(\"table\");\n    table.className = \"range-table\";\n    table.innerHTML = `\n      <thead>\n        <tr>\n          <th></th>\n          <th>Min (${label})</th>\n          <th>Max (${label})</th>\n          <th>Optimal (${label})</th>\n        </tr>\n      </thead>\n      <tbody>\n        <tr>\n          <td><strong>Width</strong></td>\n          <td>${wMin}</td>\n          <td>${wMax}</td>\n          <td>${wOpt}</td>\n        </tr>\n        <tr>\n          <td><strong>Height</strong></td>\n          <td>${hMin}</td>\n          <td>${hMax}</td>\n          <td>${hOpt}</td>\n        </tr>\n      </tbody>\n    `;\n\n    const notesEl = document.createElement(\"div\");\n    notesEl.className = \"mask-notes\";\n    notesEl.textContent = mask.notes || \"\";\n\n    const btnContainer = document.createElement(\"div\");\n    const convertBtn = document.createElement(\"button\");\n    convertBtn.className = \"btn convert-btn\";\n    convertBtn.textContent = mask.currentUnits === \"cm\" \n      ? \"Switch to in\" \n      : \"Switch to cm\";\n    convertBtn.onclick = () => toggleUnits(index);\n\n    const linkEl = document.createElement(\"a\");\n    linkEl.href = mask.link;\n    linkEl.target = \"_blank\";\n    linkEl.className = \"btn product-link\";\n    linkEl.textContent = \"View Product\";\n\n    btnContainer.appendChild(convertBtn);\n    btnContainer.appendChild(linkEl);\n\n    contentDiv.appendChild(titleEl);\n    contentDiv.appendChild(sizeEl);\n    contentDiv.appendChild(table);\n    contentDiv.appendChild(notesEl);\n    contentDiv.appendChild(btnContainer);\n\n    card.appendChild(imgEl);\n    card.appendChild(contentDiv);\n\n    grid.appendChild(card);\n  });\n}\n\nfunction toggleUnits(index) {\n  maskData[index].currentUnits = (maskData[index].currentUnits === \"cm\") ? \"in\" : \"cm\";\n  renderAllCards();\n}\n\nrenderAllCards();\n</script>\n</body>\n</html>"
+          }
+        },
+        "collapsible_tab_WE8egq": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Mask Description",
+            "icon": "clipboard",
+            "content": "<h5><strong>RX Action – Dive In with Confidence</strong></h5><h5>See more, swim longer, and enjoy every moment underwater with the RX Action mask — built for comfort, clarity, and real adventure.</h5><h5>Corrective lenses for nearsighted eyes mean you won’t miss a thing. Choose from our available strengths or mix and match for your perfect fit.<br/></h5><h5>Pick the exact lens powers you need from our dropdown — it's simple and tailored to you.<br/></h5><h5>The soft silicone skirt creates a gentle seal to keep water out — perfect for longer swims and bigger smiles.<br/></h5><h5>Easy to slip on and off, with no hair-pulling or adjusting mid-swim.<br/></h5><h5>Spacious without being bulky, this mask feels great from the first dive to the last.<br/></h5><h5>Want farsighted correction instead? <a href=\"https://oceansoptics.com/products/farsighted-prescription-diving-mask-snorkelling\">Check out the farsighted version here.</a></h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_ePNTQH": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Mask Sizing Chart",
+            "icon": "ruler",
+            "content": "",
+            "page": "rx-action-cam-mask-sizing-guideline-chart"
+          }
+        },
+        "collapsible_tab_H8fT3L": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Prescription Lens Info",
+            "icon": "eye",
+            "content": "<h5>This mask features nearsighted (SPH) lenses in negative diopters (e.g., -1.00, -1.75, -2.00).</h5><h5>Underwater magnification enlarges objects by ~33% – we recommend selecting a lens 0.25 to 0.75 diopters lower for optimal clarity. (e.g., a -2.75 can choose -2.50 or -2.00).</h5><h5>Tempered glass lenses for strength, safety, and clear underwater vision.</h5><h5>Need help? Chat with us live or email <a href=\"mailto:info@oceansoptics.com\" target=\"_blank\"><span style=\"text-decoration:underline\">info@oceansoptics.com</span></a></h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_NQ99dm": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More than JUST Free Shipping!",
+            "icon": "truck",
+            "content": "<h5>Every order is carefully packed and delivered free of charge—Quality guaranteed! [3-10 days]</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_9tDHed": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "30 Day FREE Returns",
+            "icon": "return",
+            "content": "<h5>Take advantage of our FREE 30 days from delivery return policy—shop with confidence. See our full <a href=\"/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\">return policy</a> for more info.</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_xT4JNb": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More than JUST a Guide!",
+            "icon": "heart",
+            "content": "<h5><strong>Snorkelling 101 is Your Ultimate Guide to Better Aquatic Adventures!</strong><br/><br/>Now <strong>free</strong> with every order! Access your eGuide instantly after checkout or via email, and dive in at your own leisure.</h5>",
+            "page": ""
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_E6dLV8",
+        "title",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "avada_trust_badge_upsell_app_badge_v2_block_yDEFLj",
+        "custom_liquid_QGa4e6",
+        "collapsible_tab_WE8egq",
+        "collapsible_tab_ePNTQH",
+        "collapsible_tab_H8fT3L",
+        "collapsible_tab_NQ99dm",
+        "collapsible_tab_9tDHed",
+        "collapsible_tab_xT4JNb",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "media_size": "medium",
+        "constrain_to_viewport": false,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_UWJUiq": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_gBfmQf": {
+          "type": "heading",
+          "settings": {
+            "heading": "The RX Action by Oceans Optics",
+            "heading_size": "h1"
+          }
+        },
+        "text_UDtyit": {
+          "type": "text",
+          "settings": {
+            "text": "<h5>Designed for those who crave both clarity and adventure, the <strong>RX Carbon Dive Mask</strong> offers precision vision and ultimate comfort for every dive. With <strong>RX-ready lenses</strong>, it’s easy to customize for crystal-clear underwater vision, whether you’re nearsighted or farsighted.</h5><h5>This mask is ideal for adventurers looking to <strong>document their underwater experience</strong>. The built-in <strong>action camera mount</strong> allows you to attach your GoPro or other action cameras, so you can effortlessly capture every breathtaking moment. Perfect for travel vloggers, underwater photographers, or anyone wanting to relive their dives with precision.</h5><h5>The <strong>elastic headband</strong> provides a comfortable, tangle-free fit, keeping your hair out of the way, while the <strong>silicone skirt</strong> ensures a secure, leak-proof seal no matter your face shape. Plus, the <strong>quick-release strap</strong> lets you easily adjust your fit, making it perfect for on-the-go dives.</h5>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_gBfmQf",
+        "text_UDtyit"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 100,
+        "padding_bottom": 52
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "multicolumn_nbRhUi": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_W4DAaX": {
+          "type": "column",
+          "disabled": true,
+          "settings": {
+            "title": "<strong>RX Action by Oceans Optics</strong>",
+            "text": "<h5><strong>Ultimate Comfort</strong>: Our mask features a cutting-edge elastic headband for a snug, tangle-free fit.</h5><h5><strong>Snorkel-Ready</strong>: Equipped with a built-in holder to keep your snorkel in place and ready for action.</h5><h5><strong>Stay Secure</strong>: Our mask boasts a unique push-release strap system, ensuring a secure fit even in challenging conditions.</h5><h5><strong>Custom Fit:</strong> Designed with a spacious nose pocket to accommodate a variety of face shapes, providing a comfortable and leak-free seal.</h5><h5><strong>Skin-Friendly: </strong>Crafted from hypoallergenic food-grade liquid silicone, ensuring a safe and gentle experience on your skin.</h5><h5><strong>Capture Every Moment: </strong>Integrated action camera mount allows you to record your underwater adventures hands-free.</h5><h5><strong>Expert Guidance:</strong> Includes a complimentary guide to enhance your underwater exploration experience.</h5>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_3zCjnd": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>All Our Masks Have:</strong>",
+            "text": "<h5>HD Tempered Glass (Scratch Proof) </h5><h5>Ultra clear lenses</h5><h5>Hypoallergenic liquid    silicone skirt </h5><h5>Double skirt edge comfort seal for leak-proof fit</h5><h5>Interchangeable lenses, to account for Prescription changes over time </h5>",
+            "link_label": "Shop All Masks",
+            "link": "shopify://collections/all-our-masks"
+          }
+        }
+      },
+      "block_order": [
+        "column_W4DAaX",
+        "column_3zCjnd"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "half",
+        "image_ratio": "adapt",
+        "columns_desktop": 1,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "collapsible_content_8nM8eK": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_yRcQpn": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Take a quiz to find your perfect mask",
+            "icon": "question_mark",
+            "row_content": "",
+            "page": "find-my-mask-quizz"
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_yRcQpn"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "Want to check it's right for you?",
+        "heading": "Free Find My Mask Quiz",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "color_scheme": "inverse",
+        "container_color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_banner_7epRyn": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Action_Mobile.png",
+        "image_2": "shopify://shop_images/Action_Desktop.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "image_banner_T7Aqwp": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Mobile_Guide_88951d2f-e86c-4f02-aca9-531937caef1d.svg",
+        "image_2": "shopify://shop_images/Desktop_Guide_ccc9486e-03f2-436d-81b9-7cb7798708bc.svg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "17277818712c93fb1c": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_MYpkXG": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_MYpkXG"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "featured_collection_KngcLk": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Check Our New I Can Sea Club Tees",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "i-can-sea-shirts",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-2",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "171594525703490a04": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_mwHXac": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_mwHXac"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_MHRbVK",
+    "main",
+    "rich_text_UWJUiq",
+    "related-products",
+    "multicolumn_nbRhUi",
+    "collapsible_content_8nM8eK",
+    "image_banner_7epRyn",
+    "image_banner_T7Aqwp",
+    "17277818712c93fb1c",
+    "featured_collection_KngcLk",
+    "171594525703490a04"
+  ]
+}

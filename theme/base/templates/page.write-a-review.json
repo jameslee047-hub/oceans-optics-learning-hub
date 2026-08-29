@@ -1,0 +1,187 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_k7dNye": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_4a6yHy": {
+          "type": "heading",
+          "settings": {
+            "heading": "Show your mask. Share the clarity",
+            "heading_size": "h1"
+          }
+        },
+        "text_Eb3hEP": {
+          "type": "text",
+          "settings": {
+            "text": "Upload a photo of you in your mask and we’ll send $10 Gift Card.",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_4a6yHy",
+        "text_Eb3hEP"
+      ],
+      "name": "image-banner-M&D",
+      "settings": {
+        "image": "shopify://shop_images/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-1146123876.jpg",
+        "image_2": "shopify://shop_images/prescription-dive-mask-rx-obsidian-prescription-diving-mask-medium-prescription-dive-mask-clear-medium-1-50-8-00-1146123876.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "medium",
+        "desktop_content_position": "middle-left",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": true
+      }
+    },
+    "rich_text_8AEr8r": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_hfkDHG": {
+          "type": "heading",
+          "settings": {
+            "heading": "How to earn your $10",
+            "heading_size": "h0"
+          }
+        },
+        "text_fUfjYg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Tap your mask below to <strong>open the review form</strong>.</p><p>Write a short review and <strong>attach at least one photo of you wearing the mask</strong>.</p><p><strong>Submit the review</strong>, you will receive your $10 Gift Card via email.</p><p><em><strong>Gift card details: Apply code at checkout. Anyone can use it. One per customer. Valid 365 days. Min order $50.</strong></em></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_hfkDHG",
+        "text_fUfjYg"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 32,
+        "padding_bottom": 52
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "multicolumn_FNJned": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_cf8mxR": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/prescription-dive-mask-rx-mako-farsighted-prescription-snorkel-diving-mask-prescription-dive-mask-farsighted-small-medium-faces-black-1146123872.jpg",
+            "title": "Front View",
+            "text": "<p>Perfect for showing how the mask fits your face! A straight-on photo helps others see the overall look, lens size, and coverage.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_pn9yix": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/prescription-dive-mask-rx-mako-farsighted-prescription-snorkel-diving-mask-prescription-dive-mask-farsighted-small-medium-faces-black-1146123871.jpg",
+            "title": "Side View",
+            "text": "<p>Great for showing comfort and profile fit, like how the skirt seals around your face or how the strap sits behind your head.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_cf8mxR",
+        "column_pn9yix"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "What a great review photo looks like!",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 2,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_kJ3dKN": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_jHJHAF": {
+          "type": "heading",
+          "settings": {
+            "heading": "Review Your Mask",
+            "heading_size": "h1"
+          }
+        },
+        "text_nPKWcV": {
+          "type": "text",
+          "settings": {
+            "text": "<p><em>By uploading, you allow Oceans Optics to feature your photo to help new adventurers find their perfect fit!</em></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_jHJHAF",
+        "text_nPKWcV"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 32,
+        "padding_bottom": 0
+      }
+    },
+    "custom_liquid_gGJtLw": {
+      "type": "custom-liquid",
+      "custom_css": [],
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div class=\"oo-review-grid\">\n  {%- comment -%} RX Obsidian {%- endcomment -%}\n  {%- assign p = all_products['the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling'] -%}\n  {%- if p -%}\n  <a class=\"oo-card\" href=\"{{ p.url }}#judgeme\">\n    <img src=\"{{ p.featured_image | img_url: '600x600' }}\" alt=\"{{ p.title | escape }}\">\n    <h3>{{ p.title }}</h3>\n    <span class=\"oo-btn\">Write review and add photo</span>\n  </a>\n  {%- endif -%}\n\n  {%- comment -%} RX Rover {%- endcomment -%}\n  {%- assign p = all_products['rx-rover-nearsighted-prescription-freediving-scuba-dive-mask'] -%}\n  {%- if p -%}\n  <a class=\"oo-card\" href=\"{{ p.url }}#review\">\n    <img src=\"{{ p.featured_image | img_url: '600x600' }}\" alt=\"{{ p.title | escape }}\">\n    <h3>{{ p.title }}</h3>\n    <span class=\"oo-btn\">Write review and add photo</span>\n  </a>\n  {%- endif -%}\n\n  {%- comment -%} RX Lumix {%- endcomment -%}\n  {%- assign p = all_products['professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0'] -%}\n  {%- if p -%}\n  <a class=\"oo-card\" href=\"{{ p.url }}#review\">\n    <img src=\"{{ p.featured_image | img_url: '600x600' }}\" alt=\"{{ p.title | escape }}\">\n    <h3>{{ p.title }}</h3>\n    <span class=\"oo-btn\">Write review and add photo</span>\n  </a>\n  {%- endif -%}\n</div>\n\n<style>\n/* Grid */\n.oo-review-grid{\n  display:grid; gap:14px;\n  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));\n  max-width:1100px; margin:0 auto;\n}\n\n/* Card layout (flex column so we can pin the button at the bottom) */\n.oo-card{\n  display:flex; flex-direction:column; align-items:center; text-align:center;\n  text-decoration:none; color:inherit;\n  border:1px solid #eee; border-radius:14px; padding:12px; background:#fff;\n  transition:transform .12s ease, box-shadow .12s ease;\n}\n.oo-card:hover{ transform:translateY(-2px); box-shadow:0 6px 18px rgba(0,0,0,.06); }\n\n/* Images: consistent square, no cropping */\n.oo-card img{\n  width:100% !important;\n  aspect-ratio:1 / 1 !important;\n  object-fit:contain !important;\n  background:#f6f8fb;\n  border-radius:12px;\n}\n\n/* Titles: clamp to exactly 3 lines so all cards line up */\n.oo-card h3{\n  margin:12px 0 8px;\n  line-height:1.3;\n  display:-webkit-box;\n  -webkit-line-clamp:3;               /* show up to 3 lines */\n  -webkit-box-orient:vertical;\n  overflow:hidden;\n  min-height:3.9em;                    /* 3 × 1.3 line-height */\n}\n\n/* Button: centered and pinned to the bottom of each card */\n.oo-btn{\n  margin-top:auto;                     /* pushes CTA to the bottom */\n  align-self:center;\n  display:inline-block;\n  padding:10px 14px;\n  border-radius:999px;\n  font-weight:700;\n  border:2px solid #B95E05;            /* orange outline */\n  background:#fff;                     /* white bg */\n  color:#B95E05;                       /* orange text */\n  transition:background .15s ease, color .15s ease, border-color .15s ease;\n}\n.oo-card:hover .oo-btn,\n.oo-btn:hover{\n  background:#B95E05;                  /* orange bg on hover */\n  color:#fff;                          /* white text on hover */\n  border-color:#B95E05;\n}\n\n/* Mobile polish */\n@media (max-width:480px){\n  .oo-card h3{ font-size:2rem; }\n}\n</style>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "image_banner_k7dNye",
+    "rich_text_8AEr8r",
+    "main",
+    "multicolumn_FNJned",
+    "rich_text_kJ3dKN",
+    "custom_liquid_gGJtLw"
+  ]
+}

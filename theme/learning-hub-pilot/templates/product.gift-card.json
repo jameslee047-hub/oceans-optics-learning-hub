@@ -1,0 +1,489 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown",
+            "swatch_shape": "circle"
+          }
+        },
+        "text_BUV3et": {
+          "type": "text",
+          "settings": {
+            "text": "<a href=\"/pages/prescription-lenses\" target=\"_blank\" title=\"Prescription Lenses\">Lens guide</a>",
+            "text_style": "body"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        },
+        "complementary_wFyY66": {
+          "type": "complementary",
+          "settings": {
+            "block_heading": "You may need one of these..",
+            "make_collapsible_row": false,
+            "icon": "price_tag",
+            "product_list_limit": 10,
+            "products_per_page": 3,
+            "pagination_style": "counter",
+            "image_ratio": "square",
+            "enable_quick_add": true
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "rating",
+        "price",
+        "variant_picker",
+        "text_BUV3et",
+        "quantity_selector",
+        "buy_buttons",
+        "share",
+        "description",
+        "complementary_wFyY66"
+      ],
+      "settings": {
+        "enable_sticky_info": false,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "media_size": "small",
+        "constrain_to_viewport": false,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "none",
+        "mobile_thumbnails": "hide",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "rich_text_TXKjWz": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_TYdqPm": {
+          "type": "heading",
+          "settings": {
+            "heading": "Give the gift of underwater clarity with an <strong>Oceans Optics Gift Card</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_kdfjAT": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>Delivered directly to their inbox or printable for a personal touch, it's perfect for anyone ready to explore with sharp, crystal-clear vision. </h4><h4>Tick the I want to send as a git box: Add recipients email, name and you can write an optional message. Let us know when you would like us to send it or leave it blank for it to be issued within 12 hours.</h4><h4>The recipient can shop online or contact us directly for personalized assistance to find the ideal mask, lenses, and gear for their ultimate aquatic adventure. We are more than happy to help them with the process of ensuring the mask is the best fit, the lenses are a perfect match for underwater clarity and comfort, and also that they have a pleasant experience throughout. Rest assured knowing that we will look after them. </h4><h4>Help someone dive into legendary moments with the gift of vision and finally being able to say \"I'm in the I can sea club\"</h4>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_TYdqPm",
+        "text_kdfjAT"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "image_with_text_mJemBB": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_VfEQqU": {
+          "type": "heading",
+          "settings": {
+            "heading": "Free E-guide",
+            "heading_size": "h2"
+          }
+        },
+        "text_i4kmNw": {
+          "type": "text",
+          "settings": {
+            "text": "<p><em>\"Oceans Optics promises more than just visual clarity\"</em></p><p><strong>Your passport to conquering challenges, mastering skills, and elevating your aquatic adventures. A guide written by professionals, to help you explore and stay safely within the boundaries.</strong></p><p></p>",
+            "text_style": "body"
+          }
+        },
+        "button_zi4P3k": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_VfEQqU",
+        "text_i4kmNw",
+        "button_zi4P3k"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/Free_OceanWise_guide_1.gif",
+        "height": "small",
+        "desktop_image_width": "small",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "accent-1",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn_pWnyqr": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_bdkxyt": {
+          "type": "column",
+          "settings": {
+            "title": "Frame description",
+            "text": "<p>Shape: Square</p><p>Color: Cammo</p><p>Material: PC </p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_rghct3": {
+          "type": "column",
+          "settings": {
+            "title": "Lens information",
+            "text": "<p>Lens material - Tempered Glass</p><p>Lens thickness: 4mm</p><p>Anti fog insert: Available</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_gaXYpE": {
+          "type": "column",
+          "settings": {
+            "title": "Strap information",
+            "text": "<p>Strap material: Hypoallergenic soft silicone</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_Wrzw8w": {
+          "type": "column",
+          "settings": {
+            "title": "Buckle information",
+            "text": "<p>Material: PC</p><p>Style: Non slip, Lift</p><p>Adjustable: Yes</p><p></p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_zzf4XN": {
+          "type": "column",
+          "settings": {
+            "title": "Product dimensions",
+            "text": "<p>Seal skrt width:</p><p>Seak skirt height:</p><p>Frame width:</p><p>frame height:</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_4E9ciU": {
+          "type": "column",
+          "settings": {
+            "title": "Fitting style",
+            "text": "<p>Face type: Would fit many shapes, possibly not auitable for very narrow or very wide faces.</p><p>Nose: Medium/large size pocket.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_bdkxyt",
+        "column_rghct3",
+        "column_gaXYpE",
+        "column_Wrzw8w",
+        "column_zzf4XN",
+        "column_4E9ciU"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Look at those specs..",
+        "heading_size": "h2",
+        "image_width": "third",
+        "image_ratio": "square",
+        "columns_desktop": 2,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multirow_GMwYfU": {
+      "type": "multirow",
+      "blocks": {
+        "row_4NAeaL": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/308_cammo.png",
+            "caption": "Look at those",
+            "heading": "SPECS",
+            "text": "<ul><li>Durable PC frame</li><li>Tempered glass lenses (4.0mm thickness). </li><li>The aluminum alloy military anode-treated frame.</li><li>Hypoallergenic soft silicone skirt </li><li>Non slip secure buckle</li></ul>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_cdYfGD": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/308_cam.png",
+            "caption": "will it fit",
+            "heading": "My Face",
+            "text": "<p>Always better to take some measurements to ensure a nice fit. Read our blog on how to measure your face to fit a mask for tips and guidance.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_AKEcBY": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/308cam.png",
+            "caption": "Maximised safety",
+            "heading": "Tempered glass",
+            "text": "<p>OceansOptics prioritizes safety and clarity with tempered glass for our masks. Five times stronger than regular glass, it withstands pressure changes, transport, and remains scratch-resistant for unparalleled durability underwater.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_pAdYtq": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "caption": "Skin safe",
+            "heading": "Hypoallergenic",
+            "text": "<p>OceansOptics prioritizes comfort with soft food-grade silicone, perfect for sensitive skin. Our masks guarantee maximum comfort, providing a truly optimized in-water experience for your underwater adventures.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_4kNcMU": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/308_cammo_buckle.png",
+            "caption": "Non slip secure",
+            "heading": "Buckle",
+            "text": "<p>Designed for ease of use. Gently pull the straps to the disired snugness and the buckle will lock in place. Simply lift buckle to release and loosen the strap. </p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_7bAmte": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "caption": "Dont miss a",
+            "heading": "Fish",
+            "text": "<p>This 120° viewing angle allows for maximum sightings. The angle also helps ensure maximum light is coming into the lens to keep reefs colourful and your buddys by your side</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_FW3r66": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/see_clearly__1.png",
+            "caption": "Choose the correct",
+            "heading": "Prescription",
+            "text": "<p>Use our Oceans Optics Lens Calculator tool to help you find the perfect Set-up.</p><p>We offer short sighted and farsighted prescriptions ranging from 0 to -8.0 (myopia) and 0 to +5.0.</p><p>*Clear Lenses available too*</p>",
+            "button_label": "Find out more",
+            "button_link": "shopify://pages/prescription-lenses-calculator-tool"
+          }
+        }
+      },
+      "block_order": [
+        "row_4NAeaL",
+        "row_cdYfGD",
+        "row_AKEcBY",
+        "row_pAdYtq",
+        "row_4kNcMU",
+        "row_7bAmte",
+        "row_FW3r66"
+      ],
+      "disabled": true,
+      "settings": {
+        "image_height": "adapt",
+        "desktop_image_width": "small",
+        "heading_size": "h2",
+        "text_style": "body",
+        "button_style": "primary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "image_layout": "alternate-right",
+        "section_color_scheme": "accent-1",
+        "row_color_scheme": "background-2",
+        "mobile_content_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "Explore Our Optics and Sea Clearly",
+        "heading_size": "h1",
+        "products_to_show": 4,
+        "columns_desktop": 3,
+        "color_scheme": "background-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 20,
+        "padding_bottom": 32
+      }
+    },
+    "1707710894961cb6e2": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_B8ngTe": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_B8ngTe"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "1707711583fd59ddaf": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "featured_collection_4hd3Na": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "title": "Explore Our Optics and Sea Clearly",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-2",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_banner_LE8eaP": {
+      "type": "image-banner",
+      "name": "image-banner-M&D",
+      "settings": {
+        "image": "shopify://shop_images/Mobile_Guide_1_a71aa230-7054-4a0a-8c6c-c3efb15990cf.png",
+        "image_2": "shopify://shop_images/1216_Desktop_Guide_fed545f1-a6c6-412b-aa56-37508c68524a.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_TXKjWz",
+    "image_with_text_mJemBB",
+    "multicolumn_pWnyqr",
+    "multirow_GMwYfU",
+    "related-products",
+    "1707710894961cb6e2",
+    "1707711583fd59ddaf",
+    "featured_collection_4hd3Na",
+    "image_banner_LE8eaP"
+  ]
+}

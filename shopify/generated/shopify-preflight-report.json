@@ -1,0 +1,479 @@
+{
+  "generated_at": "2026-08-25T08:51:51.268Z",
+  "mode": "read_only_preflight",
+  "network_requests_attempted": true,
+  "mutation_guard_enabled": true,
+  "official_sources": [
+    "https://shopify.dev/docs/apps/build/authentication-authorization",
+    "https://shopify.dev/docs/apps/build/authentication-authorization/client-credentials-grant",
+    "https://shopify.dev/docs/apps/build/authentication-authorization/manage-credentials",
+    "https://shopify.dev/docs/api/usage/access-scopes",
+    "https://shopify.dev/docs/apps/build/metaobjects/use-metaobject-capabilities",
+    "https://shopify.dev/docs/apps/build/metaobjects/manage-metaobject-definitions",
+    "https://shopify.dev/docs/apps/build/metafields/list-of-data-types",
+    "https://shopify.dev/docs/apps/build/metafields/list-of-validation-options",
+    "https://shopify.dev/docs/api/admin-graphql/2026-07/queries/metafieldDefinitionTypes",
+    "https://shopify.dev/docs/api/admin-graphql/2026-07/mutations/metaobjectUpsert",
+    "https://shopify.dev/docs/storefronts/themes/architecture/templates/metaobject"
+  ],
+  "authentication": {
+    "method": "client_credentials",
+    "succeeded": true,
+    "client_credentials_preferred": true,
+    "legacy_token_fallback_used": false,
+    "token_stored_in_reports": false,
+    "token_stored_on_disk": false
+  },
+  "connection": {
+    "intended_store_confirmed": true,
+    "api_version_confirmed": true,
+    "requested_api_version": "2026-07",
+    "actual_api_versions": [
+      "2026-07"
+    ],
+    "shop": {
+      "name": "Oceans Optics",
+      "myshopifyDomain": "a44b34.myshopify.com",
+      "primaryDomain": {
+        "host": "oceansoptics.com",
+        "url": "https://oceansoptics.com"
+      },
+      "plan": {
+        "displayName": "Basic",
+        "partnerDevelopment": false,
+        "shopifyPlus": false
+      }
+    }
+  },
+  "existing_definitions": {
+    "status": "ok",
+    "totalRead": 21,
+    "relevant": [],
+    "comparisons": [],
+    "errors": []
+  },
+  "existing_entries": [],
+  "learn_page": {
+    "status": "ok",
+    "errors": [],
+    "pages": []
+  },
+  "theme": {
+    "graphqlStatus": "ok",
+    "graphqlErrors": [],
+    "liveThemeName": "V3.02",
+    "liveThemeId": "gid://shopify/OnlineStoreTheme/176147136845",
+    "developmentOrUnpublishedThemes": [
+      {
+        "id": "gid://shopify/OnlineStoreTheme/172229099853",
+        "name": "V3.01",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/175652733261",
+        "name": "Copy of V3.01",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/175973499213",
+        "name": "Copy of V3.01 26th feb",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/179010666829",
+        "name": "Copy of V3.03.01",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/186528989517",
+        "name": "Updated copy of Copy of V3.03",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/187507605837",
+        "name": "Oceans Optics Copy V3.02 04022026",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/188777333069",
+        "name": "DEV Theme | Skalum",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/189767287117",
+        "name": "Copy of V3.02",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/191402017101",
+        "name": "Copy of V3.02_19_May",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/191615828301",
+        "name": "V3.02 - Tweaking Google Tag",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/191781536077",
+        "name": "V3.02 before the Lato font fix",
+        "role": "UNPUBLISHED"
+      },
+      {
+        "id": "gid://shopify/OnlineStoreTheme/191879643469",
+        "name": "V3.02 before the judgme - lazy loading snippet",
+        "role": "UNPUBLISHED"
+      }
+    ],
+    "hasMetaobjectTemplatesFolder": false,
+    "learningOrGuideAssets": [
+      "sections/fs-cylinder-guide.liquid",
+      "sections/guide-product-page.liquid",
+      "sections/ns-cylinder-guide.liquid",
+      "sections/Snorkel-101-guide.liquid",
+      "templates/page.free-guide.context.eu.json",
+      "templates/page.free-guide.json",
+      "templates/page.learning-zone.json",
+      "templates/page.rx_titan_size_guide.json",
+      "templates/product.e-guide.json"
+    ],
+    "note": null,
+    "assetStatus": "ok"
+  },
+  "reference_resolution": {
+    "products": {
+      "status": "ok",
+      "errors": [],
+      "nodes": []
+    },
+    "files": {
+      "status": "ok",
+      "errors": [],
+      "nodes": [
+        {
+          "id": "gid://shopify/MediaImage/46949032460621",
+          "alt": "",
+          "createdAt": "2024-01-11T04:24:00Z",
+          "fileStatus": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/46965556543821",
+          "alt": "",
+          "createdAt": "2024-01-12T02:34:41Z",
+          "fileStatus": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/46965559886157",
+          "alt": "",
+          "createdAt": "2024-01-12T02:35:05Z",
+          "fileStatus": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/46968481382733",
+          "alt": "",
+          "createdAt": "2024-01-12T06:42:08Z",
+          "fileStatus": "READY"
+        },
+        {
+          "id": "gid://shopify/MediaImage/46968484528461",
+          "alt": "",
+          "createdAt": "2024-01-12T06:42:25Z",
+          "fileStatus": "READY"
+        }
+      ]
+    },
+    "tools": {
+      "status": "not_resolved",
+      "note": "Tools may be normal URLs. No canonical local URL was found or invented in Stage 5B."
+    }
+  },
+  "available_scopes": [
+    "read_files",
+    "read_metaobject_definitions",
+    "read_metaobjects",
+    "read_online_store_pages",
+    "read_products",
+    "read_themes",
+    "write_metaobject_definitions",
+    "write_metaobjects"
+  ],
+  "required_scopes": {
+    "preflightRead": [
+      "read_metaobject_definitions",
+      "read_metaobjects",
+      "read_online_store_pages",
+      "read_themes",
+      "read_products",
+      "read_files"
+    ],
+    "missingPreflightRead": [],
+    "stage5CMinimum": [
+      "write_metaobject_definitions",
+      "write_metaobjects"
+    ],
+    "laterIfRequired": [
+      "write_files"
+    ],
+    "missingStage5CMinimum": [],
+    "missingLaterIfRequired": [
+      "write_files"
+    ],
+    "note": "Stage 5B should use read scopes only. Stage 5C writes later need metaobject write scopes; file writes should be added only if upload automation is required. Theme development should use Shopify CLI or a separately scoped theme workflow rather than automatically broadening this Admin API credential."
+  },
+  "required_stage_5c_scopes": {
+    "minimum": [
+      "write_metaobject_definitions",
+      "write_metaobjects"
+    ],
+    "likelyLater": [
+      "write_files"
+    ],
+    "missingMinimum": [],
+    "missingLikelyLater": [
+      "write_files"
+    ],
+    "note": "Stage 5B should use read scopes only. Stage 5C writes later need metaobject write scopes; file writes should be added only if upload automation is required. Theme development should use Shopify CLI or a separately scoped theme workflow rather than automatically broadening this Admin API credential."
+  },
+  "schema_compatibility": {
+    "checkedAgainstLiveApi": true,
+    "plannedFieldTypes": [
+      {
+        "type": "single_line_text_field",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "min",
+            "type": "number_integer"
+          },
+          {
+            "name": "max",
+            "type": "number_integer"
+          },
+          {
+            "name": "regex",
+            "type": "single_line_text_field"
+          },
+          {
+            "name": "choices",
+            "type": "list.single_line_text_field"
+          }
+        ]
+      },
+      {
+        "type": "multi_line_text_field",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "min",
+            "type": "number_integer"
+          },
+          {
+            "name": "max",
+            "type": "number_integer"
+          },
+          {
+            "name": "regex",
+            "type": "single_line_text_field"
+          }
+        ]
+      },
+      {
+        "type": "rich_text_field",
+        "supported": true,
+        "supportedValidations": []
+      },
+      {
+        "type": "number_integer",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "min",
+            "type": "number_integer"
+          },
+          {
+            "name": "max",
+            "type": "number_integer"
+          }
+        ]
+      },
+      {
+        "type": "date",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "min",
+            "type": "date"
+          },
+          {
+            "name": "max",
+            "type": "date"
+          }
+        ]
+      },
+      {
+        "type": "file_reference",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "file_type_options",
+            "type": "list.single_line_text_field"
+          }
+        ]
+      },
+      {
+        "type": "list.file_reference",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "file_type_options",
+            "type": "list.single_line_text_field"
+          },
+          {
+            "name": "list.min",
+            "type": "number_integer"
+          },
+          {
+            "name": "list.max",
+            "type": "number_integer"
+          }
+        ]
+      },
+      {
+        "type": "metaobject_reference",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "metaobject_definition_id",
+            "type": "single_line_text_field"
+          },
+          {
+            "name": "metaobject_definition_type",
+            "type": "single_line_text_field"
+          }
+        ]
+      },
+      {
+        "type": "list.metaobject_reference",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "metaobject_definition_id",
+            "type": "single_line_text_field"
+          },
+          {
+            "name": "metaobject_definition_type",
+            "type": "single_line_text_field"
+          },
+          {
+            "name": "list.min",
+            "type": "number_integer"
+          },
+          {
+            "name": "list.max",
+            "type": "number_integer"
+          }
+        ]
+      },
+      {
+        "type": "list.product_reference",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "list.min",
+            "type": "number_integer"
+          },
+          {
+            "name": "list.max",
+            "type": "number_integer"
+          }
+        ]
+      },
+      {
+        "type": "link",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "allowed_domains",
+            "type": "list.single_line_text_field"
+          }
+        ]
+      },
+      {
+        "type": "list.link",
+        "supported": true,
+        "supportedValidations": [
+          {
+            "name": "allowed_domains",
+            "type": "list.single_line_text_field"
+          },
+          {
+            "name": "list.min",
+            "type": "number_integer"
+          },
+          {
+            "name": "list.max",
+            "type": "number_integer"
+          }
+        ]
+      }
+    ],
+    "missingFieldTypes": [],
+    "definitionInputFields": [
+      "name",
+      "description",
+      "type",
+      "fieldDefinitions",
+      "access",
+      "displayNameKey",
+      "capabilities"
+    ],
+    "upsertInputFields": [
+      "handle",
+      "fields",
+      "capabilities"
+    ],
+    "queryRootHasMetafieldDefinitionTypes": true,
+    "queryRootHasMetaobjectDefinitions": true
+  },
+  "reference_validation_syntax": {
+    "plannedDefinitionOwnership": "merchant-owned metaobject definitions with simple type names",
+    "recommendation": "In Stage 5C, create/read category and lesson definitions first, then prefer metaobject_definition_id validations using returned definition GIDs. If using type-based validations, use the exact runtime definition type string.",
+    "graphqlById": {
+      "name": "metaobject_definition_id",
+      "lessonToCategoryValue": "gid://shopify/MetaobjectDefinition/{learning_category_definition_id}",
+      "lessonToRelatedLessonsValue": "gid://shopify/MetaobjectDefinition/{learning_lesson_definition_id}",
+      "pathwayToOrderedLessonsValue": "gid://shopify/MetaobjectDefinition/{learning_lesson_definition_id}"
+    },
+    "graphqlByType": {
+      "name": "metaobject_definition_type",
+      "lessonToCategoryValue": "learning_category",
+      "lessonToRelatedLessonsValue": "learning_lesson",
+      "pathwayToOrderedLessonsValue": "learning_lesson"
+    },
+    "docs": "Shopify GraphQL validation options support metaobject_definition_id or metaobject_definition_type for metaobject_reference and list.metaobject_reference."
+  },
+  "documentation_confirmation": {
+    "upsertBehavior": {
+      "confirmedFromDocs": true,
+      "summary": "metaobjectUpsert creates or updates by handle. With the metaobject input, only supplied fields are updated and omitted fields are preserved. The values argument is a full replacement and clears omitted keys."
+    },
+    "draftBehavior": {
+      "confirmedFromDocs": true,
+      "summary": "The publishable capability supports DRAFT and ACTIVE. Stage 5C should create all pilot lessons, categories, and pathways as DRAFT until templates and review gates are ready."
+    },
+    "onlineStoreBehavior": {
+      "confirmedFromDocs": true,
+      "summary": "onlineStore assigns URL handling for metaobject pages using /pages/{urlHandle}/{entry-handle}; learning_lesson uses urlHandle learn."
+    },
+    "linkValueShape": {
+      "confirmedFromDocs": true,
+      "summary": "link and list.link fields store text and URL JSON pairings."
+    }
+  },
+  "blocking_issues": [],
+  "warnings": [
+    "No product with handle `prescription-mask-collection` was found. This may be a collection or unresolved placeholder rather than a product handle."
+  ],
+  "safe_to_proceed_to_stage_5c": true,
+  "safe_to_proceed_explanation": "YES. Read-only preflight did not find blocking issues. Stage 5C writes should still begin with DRAFT entries only."
+}

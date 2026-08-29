@@ -1,0 +1,616 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "1719906485024f7e34": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_ReGTq3": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_ReGTq3"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "image_banner_iAwNQV": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_YPyjhL": {
+          "type": "heading",
+          "settings": {
+            "heading": "Scuba Diving Rx Masks",
+            "heading_size": "h1"
+          }
+        },
+        "text_RxmBbq": {
+          "type": "text",
+          "settings": {
+            "text": "Premium prescription masks for your scuba diving adventures. Get yours today!",
+            "text_style": "body"
+          }
+        },
+        "buttons_ejWfPL": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "",
+            "button_link_1": "",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_YPyjhL",
+        "text_RxmBbq",
+        "buttons_ejWfPL"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/DSC03350.jpg",
+        "image_2": "shopify://shop_images/DSC03350.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "medium",
+        "desktop_content_position": "middle-left",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true,
+        "fetchpriority_high": false
+      }
+    },
+    "breadcrumbs_nGgi9Q": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "settings": {
+        "show_h1_title_collection": true,
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 36,
+        "columns_desktop": 4,
+        "color_scheme": "background-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
+    "rich_text_aANXCi": {
+      "type": "rich-text",
+      "blocks": {
+        "text_cHx98w": {
+          "type": "text",
+          "settings": {
+            "text": "<p>\"I'm thoroughly impressed. The mask feels high quality and is great value for the $80. Bargain to be able to see!!\" David H from Seattle, WA</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_cHx98w"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "collection_list_nb8NTK": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_yRxpQR": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "all-our-masks"
+          }
+        },
+        "featured_collection_e8DDVQ": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "featured_collection_HB3Cb9": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "farsighted-prescription-dive-mask"
+          }
+        },
+        "featured_collection_CiAJ8G": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "flash-sale"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_yRxpQR",
+        "featured_collection_e8DDVQ",
+        "featured_collection_HB3Cb9",
+        "featured_collection_CiAJ8G"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "heading_size": "h2",
+        "image_ratio": "adapt",
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 52,
+        "padding_bottom": 52
+      }
+    },
+    "mask_sizing_tool_shortcut_npriq9": {
+      "type": "mask-sizing-tool-shortcut",
+      "disabled": true,
+      "name": "Mask fit shortcut",
+      "settings": {
+        "heading": "How would you like to find your scuba diving  mask fit?",
+        "subheading": "Choose automatic camera measuring or follow the manual ruler guide below",
+        "auto_badge": "Recommended",
+        "auto_icon": "🎥",
+        "auto_title": "Auto Camera Measuring",
+        "auto_text": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.",
+        "auto_point_1": "✓ Takes about 30 seconds",
+        "auto_point_2": "✓ Works on phone or desktop",
+        "auto_point_3": "✓ Get instant mask recommendations",
+        "auto_url": "",
+        "open_camera_new_tab": true,
+        "auto_button": "Start Camera Measuring →",
+        "manual_badge": "Measure Yourself",
+        "manual_icon": "📐",
+        "manual_title": "Manual Ruler Guide",
+        "manual_text": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide.",
+        "manual_point_1": "✓ No camera needed",
+        "manual_point_2": "✓ Works anywhere",
+        "manual_point_3": "✓ Fine-tune with sliders",
+        "manual_mode": "link",
+        "manual_url": "",
+        "manual_anchor_id": "ruler-guide-start",
+        "manual_reveal_id": "",
+        "manual_button": "Use Ruler Guide ↓"
+      }
+    },
+    "oo_quiz_card_fatVbJ": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "image_with_text_dMzziy": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_pWCmnP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why choose our prescription masks?</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Wcb9rc": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Diving with blurry vision isn’t just inconvenient—it’s unsafe. </p><p>Get peace of mind</p><p>More time exploring not flaffling</p><p>See every detail sharply. <br/></p>",
+            "text_style": "body"
+          }
+        },
+        "button_AfbKTg": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop our Masks",
+            "button_link": "shopify://collections/all-diving-masks",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_pWCmnP",
+        "text_Wcb9rc",
+        "button_AfbKTg"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/Scuba_Bennefits.svg",
+        "height": "medium",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "background-2",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_CNLpN6": {
+      "type": "rich-text",
+      "blocks": {
+        "text_3fkzfV": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>\"Our mission is to provide you with perfect clarity and transform you into a fearless aquatic adventurer.\" </h2>"
+          }
+        }
+      },
+      "block_order": [
+        "text_3fkzfV"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".rich-text__text {color: white; /* Set the color to a solid shade */ opacity: 1; /* Ensure opacity is set to 1 for full color */ background: none; /* Remove any background color or opacity */ font-weight: normal; /* Adjust font weight if needed */}"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_aqgrBt": {
+      "type": "featured-collection",
+      "disabled": true,
+      "settings": {
+        "title": "Now is the time to see it all.",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "prescription-masks",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multirow_6WEEdM": {
+      "type": "multirow",
+      "blocks": {
+        "row_4VipQf": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Before_After_9c3bf849-8b56-490d-b8fe-ed7c96b98e33.png",
+            "caption": "USE OUR EXCLUSIVE",
+            "heading": "<strong>Lens Calculator Tool</strong>",
+            "text": "<p>Did you know that due to water magnifiation we see objects 33% larger underwater. Our tool is specifically designed to help you adjust your vision correctly for perfect  underwater clarity.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "row_4VipQf"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "settings": {
+        "image_height": "adapt",
+        "desktop_image_width": "medium",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "image_layout": "alternate-right",
+        "section_color_scheme": "background-2",
+        "row_color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "mobile_content_alignment": "center",
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "collapsible_content_BDtqAW": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_hqB3B8": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What are the features of your prescription scuba masks?",
+            "icon": "question_mark",
+            "row_content": "<p>Our masks are made from soft, hypoallergenic, food-grade silicone for maximum comfort. The tempered glass lenses are scratch-resistant and provide clear vision underwater. Interchangeable lenses allow you to upgrade as your prescription changes.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_VzDAME": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How do I choose the right prescription for my scuba mask?",
+            "icon": "question_mark",
+            "row_content": "<p>We offer custom prescription lenses for myopia and farsightedness. Use our underwater lens calculator tool to determine the correct sphere strength based on your prescription.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_JMpnxV": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Can I get a mask with different prescriptions for each eye?",
+            "icon": "question_mark",
+            "row_content": "<p>Yes, on selected models our masks allow for different sphere strengths in each eye to ensure optimal vision underwater.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_9rWnhX": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are these masks suitable for all face shapes?",
+            "icon": "question_mark",
+            "row_content": "<p>We have a variety of masks to suit a variety of face shapes. Please check the details on the individualk products page. All our masks are designed with a flexible silicone skirt that adapts to various face shapes, providing a secure and comfortable fit for everyone.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_7AGJfK": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How should I care for and maintain my prescription scuba mask?",
+            "icon": "question_mark",
+            "row_content": "<p>Rinse your mask with fresh water after each use, avoid using abrasive cleaners, and store it in a cool, dry place away from direct sunlight. Regular care will extend the life of your mask.</p><p></p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_x4AQ8Q": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What is the return policy if the mask doesn’t fit or I’m not satisfied?",
+            "icon": "question_mark",
+            "row_content": "<p>We offer a 30-day return policy from date of delivery for unworn and unused items in their original packaging.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_xWBxyj": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How long does shipping take, im in florida?",
+            "icon": "question_mark",
+            "row_content": "<p>Please allow 5-14 days for delivery, we average around 7 days delivery time but this is dependant on time of the year and USPS. We will do our best to get it to you as quickly as possible.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_739Gy8": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What makes buying from Oceans Optics unique?",
+            "icon": "question_mark",
+            "row_content": "<p>Beyond high-quality masks, our Free digital e-guide provides valuable diving tips and is updated regularly. </p><p>We are run by divers who have real industry experience ready to assist you. </p><p>Additionally, our lenses are interchangeable, allowing you to update them as your prescription changes. Just buy 1 mask for life.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_hqB3B8",
+        "collapsible_row_VzDAME",
+        "collapsible_row_JMpnxV",
+        "collapsible_row_9rWnhX",
+        "collapsible_row_7AGJfK",
+        "collapsible_row_x4AQ8Q",
+        "collapsible_row_xWBxyj",
+        "collapsible_row_739Gy8"
+      ],
+      "disabled": true,
+      "settings": {
+        "caption": "",
+        "heading": "Frequently Asked Questions",
+        "not_heading": false,
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "color_scheme": "",
+        "container_color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "1781162251a0fdc7c3": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_testimonials_carousel_n8t9Nb": {
+          "type": "shopify://apps/judge-me-reviews/blocks/testimonials_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "show_sample_reviews": true,
+            "reviews_selection": "product_reviews",
+            "products": [],
+            "filter_pinned": true,
+            "filter_featured": false,
+            "filter_custom_tags": "",
+            "star_rating": "all",
+            "max_reviews": 20,
+            "quote_marks_size": "hidden",
+            "product_name_text_size": "small",
+            "verified_badge_style": "text",
+            "card_height": "medium",
+            "text_size": "small",
+            "stars_size": "medium",
+            "arrows_position": "bottom",
+            "max_width": 1100,
+            "corner_styling": "round",
+            "quote_marks_style": "serif",
+            "card_color": "#F9F9F9",
+            "stars_and_quote_marks_color": "#B95E05",
+            "text_color": "#023059",
+            "arrows_color": "#023059",
+            "show_border": false,
+            "border_color": "#108474",
+            "show_drop_shadow": false,
+            "transition_speed": 5,
+            "header_text": "Customers are saying",
+            "show_average_rating": true,
+            "rating_display": "default"
+          }
+        },
+        "judge_me_reviews_featured_carousel_cBiNWt": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "disabled": true,
+          "settings": {
+            "maxwidth": 1080
+          }
+        },
+        "judge_me_reviews_store_summary_94qx38": {
+          "type": "shopify://apps/judge-me-reviews/blocks/store_summary/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "data_source": "real",
+            "theme": "expanded",
+            "button_theme_color": "#FFFFFF",
+            "button_theme_text_color": "#000000",
+            "show_keywords": true,
+            "keywords_visibility": "shown",
+            "show_button": true,
+            "button_visibility": "shown",
+            "alignment": "left",
+            "title_size": "default",
+            "text_size": "default",
+            "corner_styling": "extra_round",
+            "widget_color": "#F9F9F9",
+            "text_color": "#023059",
+            "lighter_text_color": "#B95E05",
+            "button_color": "#023059",
+            "button_text_color": "#FFFFFF",
+            "show_sentiment_colors": true,
+            "max_width": 1100,
+            "heading_text": "Customers rate this store",
+            "button_text": "See AI reviews summary"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_testimonials_carousel_n8t9Nb",
+        "judge_me_reviews_featured_carousel_cBiNWt",
+        "judge_me_reviews_store_summary_94qx38"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "snorkel_101_guide_KJfhDW": {
+      "type": "Snorkel-101-guide",
+      "name": "Snorkeling 101 promo",
+      "settings": {}
+    },
+    "17152440046bc5a1ee": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_3wwk6x": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join Our Community on Instagram!",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_3wwk6x"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "1719906485024f7e34",
+    "image_banner_iAwNQV",
+    "breadcrumbs_nGgi9Q",
+    "banner",
+    "product-grid",
+    "rich_text_aANXCi",
+    "collection_list_nb8NTK",
+    "mask_sizing_tool_shortcut_npriq9",
+    "oo_quiz_card_fatVbJ",
+    "image_with_text_dMzziy",
+    "rich_text_CNLpN6",
+    "featured_collection_aqgrBt",
+    "multirow_6WEEdM",
+    "collapsible_content_BDtqAW",
+    "1781162251a0fdc7c3",
+    "snorkel_101_guide_KJfhDW",
+    "17152440046bc5a1ee"
+  ]
+}

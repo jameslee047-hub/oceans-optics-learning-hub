@@ -1,0 +1,112 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "cart.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "17643046626d67d62b": {
+      "type": "apps",
+      "disabled": false,
+      "settings": {
+        "include_margins": true
+      },
+      "blocks": {
+        "judge_me_reviews_featured_carousel_b46Xp": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "disabled": false,
+          "settings": {
+            "paragraph-11d4bde6a58c7bfc7a32373f78736a15": null,
+            "maxwidth": 1080,
+            "paragraph-368b548fe5d4b85310b907a06e44c390": null
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_b46Xp"
+      ]
+    },
+    "1783742312d379f343": {
+      "settings": {},
+      "blocks": {
+        "ai_gen_block_9a0ffe8_tPFbBa": {
+          "settings": {
+            "horizontal_alignment": "right"
+          }
+        }
+      }
+    },
+    "cart-footer": {
+      "settings": {
+        "padding_bottom": 0
+      },
+      "blocks": {}
+    },
+    "multicolumn_RAnFbK": {
+      "settings": {
+        "title": "Shop with Confidence",
+        "column_alignment": "center",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc"
+      },
+      "blocks": {
+        "column_6bC4Qe": {
+          "settings": {
+            "title": "Free USPS Tracked Delivery",
+            "text": "<p>Orders over $70 get free shipping </p><p>Every mask is prepared for you with care, packed safely, and shipped promptly.</p><p>Estimated delivery is 5–14 days, usually arrive in 5–10 days.</p>"
+          }
+        },
+        "column_fwmC7k": {
+          "settings": {
+            "text": "<p>Every order comes with our exclusive digital guide: Snorkeling 101: This is Your Ultimate Guide to better aquatic adventures. So get ready for your adventure and access expert tips instantly after checkout and by email. </p>"
+          }
+        },
+        "column_7a9CkR": {
+          "settings": {
+            "text": "<p>Returns can be made up to 30 days from delivery. Just get in touch and we will be happy to assist you with an exchange, store credit or full refund. Used items can not be returned. Eligible items only, see our full <a href=\"/policies/refund-policy\" target=\"_blank\" title=\"Refund Policy\">returns policy</a>.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "column_6bC4Qe",
+        "column_fwmC7k",
+        "column_7a9CkR"
+      ]
+    },
+    "featured_collection_KcwBhG": {
+      "settings": {
+        "products_to_show": 8,
+        "full_width": false
+      },
+      "blocks": {}
+    },
+    "featured_collection_LJXtHc": {
+      "settings": {
+        "description": "<p>Rep the I Can Sea Club - Fish ID Tees, funny Memes and more..</p>",
+        "products_to_show": 4
+      },
+      "blocks": {}
+    }
+  },
+  "order": [
+    "17504848627cade385",
+    "reef_banner_cart_i8WgcP",
+    "1783742312d379f343",
+    "cart-items",
+    "cart-footer",
+    "custom_liquid_7NJKj6",
+    "1766035063e7c57a14",
+    "custom_liquid_XHPTik",
+    "multicolumn_RAnFbK",
+    "17643046626d67d62b",
+    "featured_collection_KcwBhG",
+    "featured_collection_LJXtHc"
+  ]
+}

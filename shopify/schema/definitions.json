@@ -1,0 +1,125 @@
+{
+  "sourceDocumentation": [
+    "https://shopify.dev/docs/apps/build/metaobjects/use-metaobject-capabilities",
+    "https://shopify.dev/docs/apps/build/metaobjects/manage-metaobject-definitions",
+    "https://shopify.dev/docs/apps/build/metafields/list-of-data-types",
+    "https://shopify.dev/docs/api/admin-graphql/latest/mutations/metaobjectUpsert",
+    "https://shopify.dev/docs/storefronts/themes/architecture/templates/metaobject"
+  ],
+  "definitions": [
+    {
+      "type": "learning_lesson",
+      "name": "Learning Lesson",
+      "displayNameField": "title",
+      "access": {
+        "storefront": "PUBLIC_READ"
+      },
+      "capabilities": {
+        "publishable": {
+          "enabled": true
+        },
+        "renderable": {
+          "enabled": true,
+          "data": {
+            "metaTitleKey": "seo_title",
+            "metaDescriptionKey": "meta_description"
+          }
+        },
+        "onlineStore": {
+          "enabled": true,
+          "data": {
+            "urlHandle": "learn"
+          }
+        }
+      },
+      "fields": [
+        { "key": "title", "name": "Title", "type": "single_line_text_field", "required": true },
+        { "key": "short_description", "name": "Short description", "type": "multi_line_text_field", "required": true },
+        { "key": "lesson_type", "name": "Lesson type", "type": "single_line_text_field", "required": true },
+        { "key": "category", "name": "Primary category", "type": "metaobject_reference", "required": true, "referenceTarget": "learning_category" },
+        { "key": "estimated_reading_time", "name": "Estimated reading time", "type": "single_line_text_field", "required": true },
+        { "key": "hero_media", "name": "Hero media", "type": "file_reference", "required": false, "validation": "image/video file when present" },
+        { "key": "lesson_body", "name": "Lesson body", "type": "rich_text_field", "required": true },
+        { "key": "instructor_tips", "name": "Instructor tips", "type": "rich_text_field", "required": false },
+        { "key": "common_mistakes", "name": "Common mistakes", "type": "rich_text_field", "required": false },
+        { "key": "safety_notes", "name": "Safety notes", "type": "rich_text_field", "required": false },
+        { "key": "key_takeaways", "name": "Key takeaways", "type": "list.single_line_text_field", "required": false },
+        { "key": "related_lessons", "name": "Related lessons", "type": "list.metaobject_reference", "required": false, "referenceTarget": "learning_lesson" },
+        { "key": "related_tools", "name": "Related tools", "type": "list.link", "required": false },
+        { "key": "related_products", "name": "Related products", "type": "list.product_reference", "required": false },
+        { "key": "downloadable_resources", "name": "Downloadable resources", "type": "list.file_reference", "required": false },
+        { "key": "primary_cta", "name": "Primary CTA", "type": "link", "required": false },
+        { "key": "lesson_id", "name": "Lesson ID", "type": "single_line_text_field", "required": true },
+        { "key": "author", "name": "Author", "type": "single_line_text_field", "required": false },
+        { "key": "reviewer", "name": "Reviewer", "type": "single_line_text_field", "required": false },
+        { "key": "last_reviewed", "name": "Last reviewed", "type": "date", "required": false },
+        { "key": "seo_title", "name": "SEO title", "type": "single_line_text_field", "required": false },
+        { "key": "meta_description", "name": "Meta description", "type": "multi_line_text_field", "required": false }
+      ]
+    },
+    {
+      "type": "learning_category",
+      "name": "Learning Category",
+      "displayNameField": "title",
+      "access": {
+        "storefront": "PUBLIC_READ"
+      },
+      "capabilities": {
+        "publishable": {
+          "enabled": true
+        },
+        "renderable": {
+          "enabled": true,
+          "data": {
+            "metaTitleKey": "title",
+            "metaDescriptionKey": "short_description"
+          }
+        },
+        "onlineStore": {
+          "enabled": true,
+          "data": {
+            "urlHandle": "learn-category"
+          }
+        }
+      },
+      "fields": [
+        { "key": "title", "name": "Title", "type": "single_line_text_field", "required": true },
+        { "key": "short_description", "name": "Short description", "type": "multi_line_text_field", "required": true },
+        { "key": "image", "name": "Image or icon", "type": "file_reference", "required": false, "validation": "image file when present" },
+        { "key": "sort_order", "name": "Sort order", "type": "number_integer", "required": true }
+      ]
+    },
+    {
+      "type": "learning_pathway",
+      "name": "Learning Pathway",
+      "displayNameField": "title",
+      "access": {
+        "storefront": "PUBLIC_READ"
+      },
+      "capabilities": {
+        "publishable": {
+          "enabled": true
+        },
+        "renderable": {
+          "enabled": true,
+          "data": {
+            "metaTitleKey": "title",
+            "metaDescriptionKey": "short_description"
+          }
+        },
+        "onlineStore": {
+          "enabled": true,
+          "data": {
+            "urlHandle": "learn-pathway"
+          }
+        }
+      },
+      "fields": [
+        { "key": "title", "name": "Title", "type": "single_line_text_field", "required": true },
+        { "key": "short_description", "name": "Short description", "type": "multi_line_text_field", "required": true },
+        { "key": "image", "name": "Image or icon", "type": "file_reference", "required": false, "validation": "image file when present" },
+        { "key": "ordered_lessons", "name": "Ordered lessons", "type": "list.metaobject_reference", "required": true, "referenceTarget": "learning_lesson" }
+      ]
+    }
+  ]
+}

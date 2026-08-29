@@ -1,0 +1,644 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "order": [
+    "responsive_banner_JxwgH3",
+    "image_banner_XPgKVC",
+    "rich_text_GtLcwq",
+    "collection_list_YEfP4N",
+    "image_with_text_Df8YWB",
+    "video_atmrCe",
+    "image_with_text_hDRBUr",
+    "multicolumn_UYNpJ3",
+    "17167935629bcc4972",
+    "image_banner_mFwPDD",
+    "custom_liquid_GpP3tb",
+    "image_banner_djPXpJ",
+    "image_banner_KLxRnM",
+    "featured_product_NqRGBF",
+    "featured_collection_NeJNJt",
+    "responsive_banner_WTbGcd",
+    "1727342335cdbf6cbb",
+    "1715242617138bab0f",
+    "custom_liquid_rhErPG"
+  ],
+  "sections": {
+    "1715242617138bab0f": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_NQVhHE": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join the Community on Instagram",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_NQVhHE"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "17167935629bcc4972": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_bMVdCU": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_bMVdCU"
+      ],
+      "disabled": true,
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "1727342335cdbf6cbb": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_cY7GyH": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_cY7GyH"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "collection_list_YEfP4N": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_6zBeMN": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "action-masks"
+          }
+        },
+        "featured_collection_D7VeLB": {
+          "type": "featured_collection",
+          "disabled": true,
+          "settings": {
+            "collection": "other-goodies-snorkels-accessories"
+          }
+        },
+        "featured_collection_HARD8f": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "farsighted-prescription-dive-mask"
+          }
+        },
+        "featured_collection_gTxMtH": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "all-our-masks"
+          }
+        },
+        "featured_collection_krQAKb": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "featured_collection_tmNADb": {
+          "type": "featured_collection",
+          "disabled": true,
+          "settings": {
+            "collection": "safety-items"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_gTxMtH",
+        "featured_collection_krQAKb",
+        "featured_collection_HARD8f",
+        "featured_collection_tmNADb",
+        "featured_collection_D7VeLB",
+        "featured_collection_6zBeMN"
+      ],
+      "settings": {
+        "title": "",
+        "heading_size": "h2",
+        "image_ratio": "square",
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 44,
+        "padding_bottom": 44
+      }
+    },
+    "custom_liquid_GpP3tb": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "custom_liquid": "<style>\n#calculator-container *,\n.calculator-recommendations * {\n  font-family: \"Lato\", serif;\n}\n\n#calculator-container {\n  max-width: 645px;\n  margin: 20px auto;\n  padding: 5px 30px;\n  border-radius: 10px;\n  background-color: #ffffff;\n  border: 2px solid #023059;\n  font-family: \"Lato\", serif;\n  display: Flex;\n  text-align: center;\n}\n#lens-calculator h2,\n#lens-calculator h3,\n#lens-calculator label {\n  color: #023059;\n  font-family: \"Lato\", serif;\n}\n#lens-calculator p {\n  color: #023059;\n  font-family: \"Lato\", serif;\n  margin-bottom: 32px;\n  font-weight: normal;\n  line-height: normal;\n  font-size: 20px;\n}\n\n#lens-calculator p .tooltip,\n[for=\"leftEyeSphere\"] .tooltip,\n.mask-card .tooltip {\n  display: inline-block;\n  transform: translateY(5px);\n  cursor: pointer;\n  position: relative;\n  z-index: 1;\n}\n\n  \n.mask-card .tooltip svg {\n  width: 20px;\n  height: 20px;\n  margin-left: 2px;\n}\n  \n#lens-calculator p .tooltip {\n  z-index: 2;\n}\n/* Show the tooltip text when you mouse over the tooltip container */\n\n#lens-calculator p .tooltip .tooltiptext,\n[for=\"leftEyeSphere\"] .tooltip .tooltiptext,\n.mask-card .tooltip .tooltiptext {\n  visibility: hidden;\n  opacity: 0;\n  width: 360px;\n  padding: 10px;\n  background-color: #023059;\n  color: #fff;\n  text-align: center;\n  border-radius: 6px;\n  position: absolute;\n  z-index: 1;\n  left: 50%;\n  transform: translateX(-50%);\n  font-size: 12px;\n  font-weight: normal;\n  transition: opacity 0.3s, visiblity 0.3s;\n  top: 30px;\n}\n\n.mask-card .tooltip .tooltiptext {\n  transform: translateX(-40%);\n}\n.mask-card .tooltip .tooltiptext {\n  width: 230px;\n  font-size: 10px;\n}\n\n[for=\"leftEyeSphere\"] .tooltip .tooltiptext {\n  text-align: left;\n}\n\n[for=\"leftEyeSphere\"] .tooltip .tooltiptext ul {\n  padding-inline-start: 12px;\n}\n  \n#lens-calculator p .tooltip .tooltiptext::after,\n[for=\"leftEyeSphere\"] .tooltip .tooltiptext::after,\n.mask-card .tooltip .tooltiptext::after{\n  content: \" \";\n  position: absolute;\n  bottom: 100%; /* At the top of the tooltip */\n  left: 50%;\n  margin-left: -5px;\n  border-width: 5px;\n  border-style: solid;\n  border-color: transparent transparent #023059 transparent;\n}\n\n.mask-card .tooltip .tooltiptext::after{\n  left: 40.5%;\n}\n#lens-calculator p .tooltip:hover .tooltiptext,\n[for=\"leftEyeSphere\"] .tooltip:hover .tooltiptext,\n.mask-card .tooltip:hover .tooltiptext {\n  visibility: visible !important;\n  opacity: 1 !important;\n}\n\n#lens-calculator a {\n  color: #023059;\n  font-family: \"Lato\", serif;\n  margin-bottom: 10px;\n}\n#lens-calculator .input-group {\n  display: flex;\n  flex-wrap: wrap;\n  gap: 0;\n  align-items: center;\n  margin-bottom: 10px;\n  padding: 15px 20px;\n  padding-top: 15px;\n  padding-bottom: 20px;\n  text-align: left;\n  border: 2px solid #023059;\n  border-radius: 38px;\n  justify-content: center;\n}\n#lens-calculator .input-group label {\n  margin-bottom: 22px;\n  font-weight: bold;\n  font-size: 20px;\n  line-height: normal;\n  display: block;\n}\n#lens-calculator .input-group select,\n#lens-calculator .input-group input,\n#lens-calculator .input-group button {\n  padding: 4px;\n  border-radius: 4px;\n  border: 2px solid #cccccc;\n  font-family: \"Lato\", serif;\n  font-size: 14px;\n}\n#lens-calculator .input-group #rightEyeSphereSign,\n#lens-calculator .input-group #leftEyeSphereSign {\n  width: 61px;\n  height: 50px;\n}\n#lens-calculator .input-group #rightEyeSphere::placeholder,\n#lens-calculator .input-group #leftEyeSphere::placeholder {\n  color: #023059 !important;\n}\n#lens-calculator .input-group #rightEyeSphereSign.notactivated, #lens-calculator .input-group #leftEyeSphereSign.notactivated {\n  animation: bounce 3s infinite !important;\n  \n}\n#lens-calculator .input-group button {\n  background-color: white;\n  color: white;\n  cursor: pointer;\n  width: 100%;\n  color: #023059;\n  font-size: 20px;\n  font-weight: bold;\n  border: 2px solid #023059;\n}\n#toggle-button {\n  border: none;\n  background-color: #ffffff;\n  color: #023059;\n  cursor: pointer;\n  font-weight: normal;\n  text-align: center;\n  display: block;\n  margin: 20px auto;\n  margin-bottom: 0;\n  font-family: \"Lato\", serif;\n  font-size: 20px;\n  padding: 15px 15px;\n  border-radius: 30px;\n}\n#final-calculate-button {\n  padding: 10px 20px;\n  border: 2px solid #b95e05;\n  background-color: #b95e05;\n  color: white;\n  border-radius: 30px;\n  cursor: pointer;\n  font-weight: bold;\n  text-align: center;\n  display: block;\n  margin: 25px auto;\n  font-size: 24px;\n  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);\n}\n.lens-calculator-button {\n  font-size: 32px !important;\n}\n@keyframes bounce {\n  0%,\n  20%,\n  50%,\n  80%,\n  100% {\n    transform: translateY(0);\n  }\n  40% {\n    transform: translateY(-10px);\n  }\n  60% {\n    transform: translateY(-5px);\n  }\n}\n.results-container {\n  display: flex;\n  justify-content: space-between;\n  margin-top: 20px;\n  padding: 10px;\n  display: none;\n  background: url('{{ 'Lens background.png' | asset_url }}');\n  background-position: center;\n  min-height: 220px;\n}\n.results-box {\n  flex: 1;\n  padding: 15px;\n  margin: 5px;\n  text-align: center;\n  border-radius: 10px;\n  font-size: 20px;\n  font-weight: bold;\n  color: #023059;\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  flex-direction: column;\n  gap: 15px;\n  position: relative;\n  top: -25px;\n  gap: 9px;\n}\n.results-box:first-child {\n  left: 30px;\n}\n.results-box:last-child {\n  right: 30px;\n}\n.error-message {\n  color: red;\n  font-weight: bold;\n  text-align: center;\n  margin-top: 10px;\n  display: none;\n}\n.input-group__wrapper {\n  display: flex;\n  gap: 5%;\n  justify-content: space-between;\n}\n.input-wrapper {\n  display: flex;\n  border-radius: 4px;\n  border: 2px solid #023059;\n}\n.input-group__inner {\n  display: flex;\n  gap: 10px;\n}\n.input-wrapper__buttons {\n  background: #023059;\n  width: 50px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  gap: 7.68px;\n}\n.input-wrapper__buttons svg {\n  display: block;\n}\n#lens-calculator .input-wrapper button {\n  padding: 0;\n  background: transparent;\n  border: 0;\n  color: #000;\n  display: flex;\n  align-items: flex-end;\n  justify-content: center;\n  height: 100%;\n}\n\n#lens-calculator .input-wrapper button:last-child {\n  align-items: baseline;\n}\n\n#lens-calculator .input-wrapper button[disabled] {\n  opacity: 0.5;\n  cursor: not-allowed;\n}\n\n#lens-calculator .input-wrapper input {\n  border: 0;\n  width: 69px;\n  border-radius: 8px;\n  text-align: center;\n  font-size: 20px;\n  font-weight: bold;\n  color: #023059;\n}\n#lens-calculator .input-wrapper input:focus-visible {\n  outline: 0;\n  border: 0;\n  box-shadow: none;\n}\n\n#lens-calculator .input-group input::-webkit-outer-spin-button,\n#lens-calculator .input-group input::-webkit-inner-spin-button {\n  -webkit-appearance: none;\n  margin: 0;\n}\n#lens-calculator .input-group input[type=\"number\"] {\n  -moz-appearance: textfield;\n}\n\n/* --- Color Palette --- \n       Blue (text):   #023059\n       Orange (buttons): #B95E05\n    */\n\nbody {\n  margin: 0;\n  padding: 0;\n  font-family: Arial, sans-serif;\n  background: #f0f0f0;\n  color: #333;\n  line-height: 1.5;\n}\n\n.container {\n  max-width: 1200px;\n  margin: 40px auto;\n  padding: 0 20px;\n}\n\n/* Page Title */\nh1 {\n  text-align: center;\n  margin-bottom: 1rem;\n  font-size: 1.8rem;\n  color: #023059; /* Blue */\n}\n\n/* Intro Section */\n.intro-box {\n  background: #fff;\n  border: 1px solid #ddd;\n  border-radius: 4px;\n  padding: 1.5rem;\n  margin-bottom: 2rem;\n}\n.intro-box h2 {\n  margin-top: 0;\n  margin-bottom: 1rem;\n  font-size: 1.3rem;\n  color: #023059;\n}\n.intro-box p {\n  margin-bottom: 1rem;\n}\n.intro-box ul,\n.intro-box ol {\n  margin-left: 1.5rem;\n  margin-bottom: 1rem;\n}\n.intro-box li {\n  margin-bottom: 0.5rem;\n}\n.intro-img {\n  max-width: 70%;\n  height: auto;\n  display: block;\n  margin: 1rem auto;\n}\n.mask-grid {\n  display: flex;\n  gap: 20px; /* Space between items */\n  max-width: 1200px; /* Limit the maximum grid width */\n  margin: 0 auto; /* Center the grid */\n  flex-wrap: wrap;\n  justify-content: center;\n}\n\n.mask-grid > h1 {\n  font-size: 30px;\n}\n\n\n/* Mask Card */\n.mask-card {\n  background: #fff;\n  border: 1px solid #ddd;\n  border-radius: 6px;\n  overflow: hidden;\n  display: flex;\n  flex-direction: column;\n  width: calc(28% - 51px);\n}\n\n.recomment-headline {\n  width: 100%;\n}\n\n/* Mask Image */\n.mask-image {\n  width: 95%;\n  height: 300px;\n  object-fit: cover;\n  background: #eee;\n  margin: 0 auto;\n}\n\n@media (max-width: 800px) {\n.mask-card {\n  width: 45%;\n}\n}\n\n@media (max-width: 500px) {\n.mask-card {\n  width: 95%;\n}\n}\n\n@media (max-width: 800px) {\n  .mask-image {\n    width: 95%;\n    height: auto;\n    object-fit: contain;\n  }\n}\n\n/* Card Content */\n.card-content {\n  padding: 1rem;\n  flex: 1;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n}\n\n.mask-title {\n  font-weight: bold;\n  font-size: 1.1rem;\n  margin: 0 0 0.5rem;\n  color: #023059;\n  display: flex;\n  justify-content: space-between;\n}\n\n.size-category {\n  font-size: 0.9rem;\n  color: #666;\n  margin-bottom: 0.75rem;\n  font-style: italic;\n}\n\n/* Table */\n.range-table {\n  width: 100%;\n  border-collapse: collapse;\n  margin: 0.1rem 0;\n}\n.range-table th,\n.range-table td {\n  border: 1px solid #eee;\n  padding: 0.1rem;\n  text-align: center;\n  font-size: 0.9rem;\n}\n.range-table th {\n  background: #f9f9f9;\n  font-weight: bold;\n}\n\n.mask-notes {\n  font-size: 0.9rem;\n  color: #666;\n  margin-top: 0.5rem;\n}\n\n/* Buttons */\n.btn {\n  display: inline-block;\n  margin-top: 0.5rem;\n  padding: 0.5rem 1rem;\n  border-radius: 4px;\n  text-decoration: none;\n  font-size: 0.9rem;\n  text-align: center;\n  cursor: pointer;\n  border: none;\n}\n/* Orange for Switch Units */\n.convert-btn {\n  background: #b95e05; /* Orange */\n  color: #fff;\n  margin-right: 1rem;\n}\n.convert-btn:hover {\n  background: #9a4e04;\n}\n\n/* Blue for \"View Product\" link */\n.product-link {\n  background: #023059; /* Blue */\n  color: #fff;\n  text-decoration: none;\n}\n.product-link:hover {\n  background: #012345;\n}\n\n.calculator-recommendations {\n  margin-bottom: 20px;\n}\n\n.lds-ring,\n.lds-ring div {\n  box-sizing: border-box;\n}\n.lds-ring {\n  display: inline-block;\n  position: relative;\n  width: 80px;\n  height: 80px;\n}\n.lds-ring div {\n  box-sizing: border-box;\n  display: block;\n  position: absolute;\n  width: 64px;\n  height: 64px;\n  margin: 8px;\n  border: 8px solid currentColor;\n  border-radius: 50%;\n  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;\n  border-color: currentColor transparent transparent transparent;\n}\n.lds-ring div:nth-child(1) {\n  animation-delay: -0.45s;\n}\n.lds-ring div:nth-child(2) {\n  animation-delay: -0.3s;\n}\n.lds-ring div:nth-child(3) {\n  animation-delay: -0.15s;\n}\n@keyframes lds-ring {\n  0% {\n    transform: rotate(0deg);\n  }\n  100% {\n    transform: rotate(360deg);\n  }\n}\n\n@media(max-width:768px) {\n  .input-group__wrapper {\n    gap: 5px;\n  }\n  #calculator-container {\n    padding: 5px;\n    margin-left:5px;\n    margin-right:5px;\n  }\n  #lens-calculator .input-group {\n    padding-left: 0;\n    padding-right: 0;\n  }\n}\n\n@media(max-width:500px) {\n  .input-group__wrapper {\n    font-size: 15px;\n  }\n  .input-group__inner {\n    gap: 5px;\n  }\n  #lens-calculator .input-group #rightEyeSphereSign, #lens-calculator .input-group #leftEyeSphereSign {\n    width: 51px;\n    height: 50px;\n  }\n  #lens-calculator .input-group label {\n    margin-bottom: 10px;\n    font-size: 15px;\n  }\n  .input-wrapper__buttons {\n    width: 41px;\n  }\n  #lens-calculator .input-wrapper input {\n    width: 55px;\n  }\n  #lens-calculator .input-group {\n    border-radius: 30px;\n    justify-content: flex-start;\n    padding-left: 7px;\n  }\n  .results-box:first-child,\n  .results-box:last-child {\n    left: auto;\n    right: auto;\n  }\n  .results-container {\n    background-size: 110%;\n  }\n  [for=\"leftEyeSphere\"] .tooltip svg {\n    width: 20px;\n    height: 20px;\n    margin-top: -10px;\n    \n  }\n  [for=\"leftEyeSphere\"] .tooltip .tooltiptext {\n    left: 50px;\n  }\n  [for=\"leftEyeSphere\"] .tooltip:hover .tooltiptext {\n    left: 221%;\n    top: 22px;\n  }\n  #final-calculate-button {\n    padding: 10px;\n  }\n  [for=\"leftEyeSphere\"] .tooltip .tooltiptext::after {\n    left: 41%;\n    top: -10px;\n  }\n  #toggle-button {\n    font-size: 22px !important;\n  }\n}\n@media (min-width:415px) and (max-width:562px) {\n  #lens-calculator p .tooltip .tooltiptext {\n    left: -510%;\n  }\n  #lens-calculator p .tooltip .tooltiptext::after {\n    left: 89%;\n  }\n}\n@media(max-width:385px){\n  #lens-calculator p .tooltip .tooltiptext {\n    left: -84%;\n  }\n  #lens-calculator p .tooltip .tooltiptext::after {\n    left: 60%;\n  }\n}\n\n</style>\n\n<div id=\"initial-button-container\">\n  <button id=\"toggle-button\" class=\"lens-calculator-button\" onclick=\"toggleCalculator()\">\n    Find Your Oceans Optics\n  </button>\n</div>\n\n<div id=\"calculator-container\">\n  <div id=\"lens-calculator\">\n    <p>Step 1: Enter your prescription to determine your recommended underwater vision\n      <span class=\"tooltip\">\n        <svg width=\"25\" height=\"25\" viewBox=\"0 0 25 25\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n          <rect width=\"25\" height=\"25\" fill=\"url(#pattern0_1_45)\"/>\n          <defs>\n          <pattern id=\"pattern0_1_45\" patternContentUnits=\"objectBoundingBox\" width=\"1\" height=\"1\">\n          <use xlink:href=\"#image0_1_45\" transform=\"scale(0.015625)\"/>\n          </pattern>\n          <image id=\"image0_1_45\" width=\"64\" height=\"64\" xlink:href=\"data:image/png;base64,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\"/>\n          </defs>\n        </svg>\n          <span class=\"tooltiptext\">\n           Underwater, light bends differently and can make your usual prescription feel too strong. We lower it slightly to prevent overmagnification and keep your vision clear\n          </span>\n      </span>\n    </p>\n\n    <div class=\"input-group__wrapper\">\n      <div class=\"input-group\">\n          <label for=\"leftEyeSphere\">Left Sphere (OS)\n            <span class=\"tooltip\">\n              <svg width=\"25\" height=\"25\" viewBox=\"0 0 25 25\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n                <rect width=\"25\" height=\"25\" fill=\"url(#pattern0_1_45)\"/>\n                <defs>\n                <pattern id=\"pattern0_1_45\" patternContentUnits=\"objectBoundingBox\" width=\"1\" height=\"1\">\n                <use xlink:href=\"#image0_1_45\" transform=\"scale(0.015625)\"/>\n                </pattern>\n                <image id=\"image0_1_45\" width=\"64\" height=\"64\" xlink:href=\"data:image/png;base64,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\"/>\n                </defs>\n              </svg>\n              <span class=\"tooltiptext\">\n                +/-? Which sign do I choose?\n                <ul>\n                  <li>Negative (−) if you’re nearsighted (myopia).</li>\n                  <li>Positive (+) if you’re farsighted (hyperopia).Check your prescription for a plus or minus sign and match it here.</li>\n                </ul>\n                Sphere (SPH) is the main lens power that ensures light focuses properly on your retina. <br>\n                - Nearsighted (Myopia): Light focuses in front of the retina, making distant objects appear blurry (negative SPH).<br>\n                - Farsighted (Hyperopia): Light focuses behind the retina, making near objects appear blurry (positive SPH).\n              </span>\n            </span>\n          </label>\n        <div class=\"input-group__inner\">\n          <button type=\"button\" id=\"leftEyeSphereSign\" class=\"notactivated\" onclick=\"toggleSign(this)\">+/-</button>\n          <div class=\"input-wrapper\">\n            <input type=\"number\" id=\"leftEyeSphere\" step=\"0.25\" required placeholder=\"0.00\">\n            <div class=\"input-wrapper__buttons\">\n              <button class=\"increment-btn\" name=\"plus\" type=\"button\">\n                <svg width=\"18\" height=\"11\" viewBox=\"0 0 18 11\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                  <path d=\"M17.7417 8.75884L9.60999 1.07889C9.276 0.763459 8.72421 0.763459 8.39008 1.07889L0.258361 8.75884C-0.293433 9.28012 0.0986301 10.1577 0.868239 10.1577L17.1317 10.1577C17.9014 10.1577 18.2935 9.28012 17.7417 8.75884Z\" fill=\"white\" stroke=\"white\"/>\n                </svg>\n\n              </button>\n              <button class=\"decrement-btn\" name=\"minus\" type=\"button\">\n                <svg width=\"18\" height=\"11\" viewBox=\"0 0 18 11\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                  <path d=\"M0.258354 2.24119L8.39008 9.92114C8.72406 10.2366 9.27585 10.2366 9.60998 9.92114L17.7417 2.24119C18.2935 1.71991 17.9014 0.842337 17.1318 0.842337L0.868378 0.842337C0.0986236 0.842337 -0.293441 1.71991 0.258354 2.24119Z\" fill=\"white\" stroke=\"white\"/>\n                </svg>\n              </button>\n            </div>\n          </div>\n        </div>\n      </div>\n\n      <div class=\"input-group\">\n        <label for=\"rightEyeSphere\">Right Sphere (OD)</label>\n        <div class=\"input-group__inner\">\n          <button type=\"button\" id=\"rightEyeSphereSign\" class=\"notactivated\" onclick=\"toggleSign(this)\">+/-</button>\n          <div class=\"input-wrapper\">\n            <input type=\"number\" id=\"rightEyeSphere\"  step=\"0.25\" required placeholder=\"0.00\">\n            <div class=\"input-wrapper__buttons\">\n              <button class=\"increment-btn\" name=\"plus\" type=\"button\">\n               <svg width=\"18\" height=\"11\" viewBox=\"0 0 18 11\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                  <path d=\"M17.7417 8.75884L9.60999 1.07889C9.276 0.763459 8.72421 0.763459 8.39008 1.07889L0.258361 8.75884C-0.293433 9.28012 0.0986301 10.1577 0.868239 10.1577L17.1317 10.1577C17.9014 10.1577 18.2935 9.28012 17.7417 8.75884Z\" fill=\"white\" stroke=\"white\"/>\n                </svg>\n              </button>\n              <button class=\"decrement-btn\" name=\"minus\" type=\"button\">\n                <svg width=\"18\" height=\"11\" viewBox=\"0 0 18 11\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\">\n                  <path d=\"M0.258354 2.24119L8.39008 9.92114C8.72406 10.2366 9.27585 10.2366 9.60998 9.92114L17.7417 2.24119C18.2935 1.71991 17.9014 0.842337 17.1318 0.842337L0.868378 0.842337C0.0986236 0.842337 -0.293441 1.71991 0.258354 2.24119Z\" fill=\"white\" stroke=\"white\"/>\n                </svg>\n              </button>\n            </div>\n          </div>\n        </div>\n      </div>\n    </div>\n\n    <button id=\"final-calculate-button\" onclick=\"calculateLensStrength()\">\n      Find My Lenses\n    </button>\n\n    <div class=\"error-message\" id=\"error-message\"></div>\n\n    <div>Suggested Lens Strength:</div>\n    <div class=\"results-container\">\n      <div class=\"results-box\">\n        <div>Left</div>\n        <span id=\"recommendedLeft\"></span>\n      </div>\n      <div class=\"results-box\">\n        <div>Right</div>\n        <span id=\"recommendedRight\"></span>\n      </div>\n    </div>\n  </div>\n</div>\n<div class=\"calculator-recommendations\">\n  <div class=\"mask-grid\" id=\"maskGrid\"></div>\n</div>\n<script type=\"application/json\" id=\"mask-database\">\n  {% render 'mask_lens_database' %}\n</script>\n<script>\n  const maskData = [\n  {\n    name: \"Rx Rover (black)\",\n    sizeCategory: \"XS\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-mask-nearsighted-prescription-all-black-59351695163725.png?v=1735634819\",\n    link: \"https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 7.5, widthMaxCM: 11.5, widthOptCM: 8.5,\n    heightMinCM: 7, heightMaxCM: 9,   heightOptCM: 7.5,\n    widthMinIN: 2.95, widthMaxIN: 4.53, widthOptIN: 3.34,\n    heightMinIN: 2.76, heightMaxIN: 3.54, heightOptIN: 2.95,\n    notes: \"Lens: Nearsighted\"\n  },\n  {\n    name: \"Rx Rover (White)\",\n    sizeCategory: \"XS\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-rover-nearsighted-prescription-freediving-mask-with-snorkel-case-blue-white-1-5-left-1-5-right-59351692542285.png?v=1726317718\",\n    link: \"https://oceansoptics.com/products/white-rx-rover-nearsighted-prescription-dive-mask\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 7.5, widthMaxCM: 11.5, widthOptCM: 8.5,\n    heightMinCM: 7, heightMaxCM: 9,   heightOptCM: 7.5,\n    widthMinIN: 2.95, widthMaxIN: 4.53, widthOptIN: 3.34,\n    heightMinIN: 2.76, heightMaxIN: 3.54, heightOptIN: 2.95,\n    notes: \"Lens: Nearsighted\"\n  },\n  {\n    name: \"Rx Rover (Action)\",\n    sizeCategory: \"XS\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-snorkelling-mask-rx-rover-nearsighted-prescription-dive-mask-w-cam-mount-prescription-dive-mask-black-small-corrective-lenses-1-50-6-00-go-pro-mount-all-black-60219517075789.png?v=1728049485\",\n    link: \"https://oceansoptics.com/products/the-rx-rover-scuba-diving-mask-with-action-camera-mount-copy\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 7.5, widthMaxCM: 11.5, widthOptCM: 8.5,\n    heightMinCM: 7, heightMaxCM: 9,   heightOptCM: 7.5,\n    widthMinIN: 2.95, widthMaxIN: 4.53, widthOptIN: 3.34,\n    heightMinIN: 2.76, heightMaxIN: 3.54, heightOptIN: 2.95,\n    notes: \"Lens: Nearsighted\"\n  },\n  {\n    name: \"Rx Mako\",\n    sizeCategory: \"Small\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-snorkelling-mask-rx-mako-farsighted-corrective-scuba-diving-mask-midnight-mako-jet-black-diving-mask-with-prescription-2-0-for-both-eyes-black-59911423295821.png?v=1726582123\",\n    link: \"https://oceansoptics.com/products/farsighted-prescription-diving-mask-snorkelling\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 8.9, widthMaxCM: 12, widthOptCM: 9.5,\n    heightMinCM: 7.5, heightMaxCM: 9.5, heightOptCM: 8.5,\n    widthMinIN: 3.50, widthMaxIN: 4.72, widthOptIN: 3.74,\n    heightMinIN: 2.95, heightMaxIN: 3.74, heightOptIN: 3.34,\n    notes: \"Lens: Farsighted only\"\n  },\n  {\n    name: \"Rx Obsidian (black)\",\n    sizeCategory: \"Medium\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-nearsighted-prescription-mask-all-black-59396610392397.png?v=1726323647\",\n    link: \"https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 8.8, widthMaxCM: 12.5, widthOptCM: 10,\n    heightMinCM: 7.5, heightMaxCM: 10, heightOptCM: 8,\n    widthMinIN: 3.46, widthMaxIN: 4.92, widthOptIN: 3.74,\n    heightMinIN: 2.95, heightMaxIN: 3.94, heightOptIN: 3.14,\n    notes: \"Lens: Nearsighted\"\n  },\n  {\n    name: \"Rx Obsidian (Clear)\",\n    sizeCategory: \"Medium\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-the-rx-obsidian-nearsighted-mask-for-scuba-and-snorkeling-clear-57266194284877.png?v=1717585741\",\n    link: \"https://oceansoptics.com/products/prescription-scuba-dive-snorkel-mask-optical\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 8.8, widthMaxCM: 12.5, widthOptCM: 10,\n    heightMinCM: 7.5, heightMaxCM: 10, heightOptCM: 8,\n    widthMinIN: 3.46, widthMaxIN: 4.92, widthOptIN: 3.74,\n    heightMinIN: 2.95, heightMaxIN: 3.94, heightOptIN: 3.14,\n    notes: \"Lens: Nearsighted\"\n  },\n  {\n    name: \"Rx Obsidian (Action)\",\n    sizeCategory: \"Medium\",\n    /* Updated image */\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-medium-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-black-with-go-pro-mount-60865230766413.png?v=1731156278\",\n    link: \"https://oceansoptics.com/products/prescription-scuba-dive-snorkel-mask-optical\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 8.8, widthMaxCM: 12.5, widthOptCM: 10,\n    heightMinCM: 7.5, heightMaxCM: 10, heightOptCM: 8,\n    widthMinIN: 3.46, widthMaxIN: 4.92, widthOptIN: 3.74,\n    heightMinIN: 2.95, heightMaxIN: 3.94, heightOptIN: 3.14,\n    notes: \"Lens: Nearsighted + Cam Mount\"\n  },\n  {\n    name: \"Rx Lumix (Black)\",\n    sizeCategory: \"Medium\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-optical-dive-mask-aluminum-rx-lumix-optical-dive-mask-aluminum-silver-on-black-60644425662797.png?v=1730293366\",\n    link: \"https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 9, widthMaxCM: 12.5, widthOptCM: 10,\n    heightMinCM: 7.75, heightMaxCM: 9.7, heightOptCM: 8.25,\n    widthMinIN: 3.54, widthMaxIN: 4.92, widthOptIN: 3.93,\n    heightMinIN: 3.05, heightMaxIN: 3.82, heightOptIN: 3.24,\n    notes: \"Lens: Nearsighted\"\n  },\n  {\n    name: \"Rx Lumix (White)\",\n    sizeCategory: \"Medium\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-lumix-optical-dive-mask-aluminum-white-series-new-rx-lumix-optical-dive-mask-aluminum-white-series-gold-on-white-60704407617869.png?v=1730379404\",\n    link: \"https://oceansoptics.com/products/rx-lumix-optical-dive-mask-aluminum-white-series\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 9, widthMaxCM: 12.5, widthOptCM: 10,\n    heightMinCM: 7.75, heightMaxCM: 9.7, heightOptCM: 8.25,\n    widthMinIN: 3.54, widthMaxIN: 4.92, widthOptIN: 3.93,\n    heightMinIN: 3.05, heightMaxIN: 3.82, heightOptIN: 3.24,\n    notes: \"Lens: Nearsighted\"\n  },\n  {\n    name: \"Rx Carbon\",\n    sizeCategory: \"Large\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-scuba-mask-rx-carbon-nearsighted-mask-for-scuba-diving-medium-large-prescription-scuba-dive-mask-small-medium-faces-black-carbon-fiber-style-60791405117773.png?v=1730897260\",\n    link: \"https://oceansoptics.com/products/the-rx-carbon-scuba-dive-snorkel-freedive-mask\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 10, widthMaxCM: 13.2, widthOptCM: 10.5,\n    heightMinCM: 8,    heightMaxCM: 9.8, heightOptCM: 8.75,\n    widthMinIN: 3.94,  widthMaxIN: 5.20, widthOptIN: 4.13,\n    heightMinIN: 3.15, heightMaxIN: 3.86, heightOptIN: 3.44,\n    notes: \"Lens: Nearsighted\"\n  },\n  {\n    name: \"Rx Mirage\",\n    sizeCategory: \"Large\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-the-mirage-rx-nearsighted-scuba-mask-mantis-mirage-mask-camo-prescription-scuba-mask-0-for-both-eyes-cammo-56814644003149.webp?v=1716536871\",\n    link: \"https://oceansoptics.com/products/prescription-scuba-dive-mask-camo-snorkeling-spearfishing-freedive\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 10, widthMaxCM: 13.2, widthOptCM: 10.5,\n    heightMinCM: 8,    heightMaxCM: 9.8, heightOptCM: 8.75,\n    widthMinIN: 3.94,  widthMaxIN: 5.20, widthOptIN: 4.13,\n    heightMinIN: 3.15, heightMaxIN: 3.86, heightOptIN: 3.44,\n    notes: \"Lens: Nearsighted\"\n  },\n  {\n    name: \"Rx Action\",\n    sizeCategory: \"Large\",\n    /* Updated image for Rx Action */\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-action-prescription-snorkel-mask-w-cam-mount-large-prescription-snorkel-mask-with-gopro-mount-black-large-face-2-00-farsighted-hyperopia-60876838076749.png?v=1731242688\",\n    link: \"https://oceansoptics.com/products/prescription-scuba-diving-mask-with-camera-mount\",\n    \n    currentUnits: \"in\",\n    widthMinCM: 10, widthMaxCM: 12.5, widthOptCM: 10.5,\n    heightMinCM: 7.9, heightMaxCM: 10,  heightOptCM: 8.75,\n    widthMinIN: 4.13, widthMaxIN: 4.92, widthOptIN: 4.13,\n    heightMinIN: 3.11, heightMaxIN: 3.94, heightOptIN: 3.44,\n    notes: \"Lens: Near & Farsighted\"\n  }\n];\nmaskData.forEach(mask=>{\n  fetch(mask.link+'?sections=template--24599976542541__main').then(r=>r.json()).then(r=>{\n    mask.price = `${new DOMParser().parseFromString(r['template--24599976542541__main'],'text/html').querySelector('.price__container').innerHTML}`;\n  })\n})\n</script>\n<script>\n  let mask_data = JSON.parse(document.querySelector('#mask-database').innerText);\n  let renderd_cards = [];\n  function toggleCalculator() {\n      var calculatorContainer = document.getElementById('calculator-container');\n      var initialButtonContainer = document.getElementById('initial-button-container');\n  \n  \n  \n      if (calculatorContainer.style.display === 'none' || calculatorContainer.style.display === '') {\n          calculatorContainer.style.display = 'block';\n          calculatorContainer.insertBefore(initialButtonContainer, calculatorContainer.firstChild);\n      }\n  }\n  \n  \n  \n  function toggleSign(button) {\n      button.classList.remove('notactivated')\n      if (button.innerText === \"+\") {\n          button.innerText = \"-\";\n      } else if (button.innerText === \"-\") {\n          button.innerText = \"+\";\n      } else {\n          button.innerText = \"+\";\n      }\n  }\n\n  function showRecommendation(leftSphere, rightSphere,show_title = true) {\n      // Find products that match the rounded strength in `mask_data`\n      let custom_available = leftSphere != rightSphere;\n      let recommendedProducts;\n      if(custom_available) {\n        recommendedProducts = mask_data.filter(mask => {\n            const availableDiopters = mask[\"Diopter availability\"].split(\", \");\n            return availableDiopters.includes(leftSphere) && availableDiopters.includes(rightSphere) && mask['Custom Available'] == \"Yes\";\n        });\n      } else {\n        recommendedProducts = mask_data.filter(mask => {\n            const availableDiopters = mask[\"Diopter availability\"].split(\", \");\n            return availableDiopters.includes(leftSphere) && availableDiopters.includes(rightSphere);\n        });\n      }\n      // Find corresponding masks from `maskData` for rendering\n      const matchedProducts = maskData.filter(mask => \n          recommendedProducts.some(product => product[\"Mask name\"] === mask.name)\n      );\n  \n      // Render recommended products inside `.calculator-recommendations`\n      const recommendationsContainer = document.querySelector(\".calculator-recommendations  #maskGrid\");\n      if(show_title) {\n        recommendationsContainer.innerHTML = \"\"; // Clear previous recommendations\n        if (matchedProducts.length === 0) {\n          if(leftSphere.includes('+') && rightSphere.includes('+') && rightSphere != leftSphere) { // checking if it's farsighted and left != right\n            recommendationsContainer.innerHTML = '<h1 class=\"recomment-headline\">Atm, we don’t offer custom farsighted lenses with differing strengths, but you may find a close match in our available options below</h1>';\n            renderCards(maskData.filter(mask=>mask.name == 'Rx Mako' || mask.name == 'Rx Action'),recommendationsContainer,true);\n          } else if(leftSphere.includes('+') && rightSphere.includes('+')){\n            recommendationsContainer.innerHTML = `<h1 class=\"recomment-headline\">Farsighted lenses are only available in +2, +3, +4, +5, you may find a close match in our available options below</h1>`;\n            renderCards(maskData.filter(mask=>mask.name == 'Rx Mako' || mask.name == 'Rx Action'),recommendationsContainer,true);\n          }\n          if(leftSphere.includes('+') && rightSphere.includes('+')) {\n              renderCards(matchedProducts,recommendationsContainer,true);\n          }\n            return;\n        } else {\n          recommendationsContainer.innerHTML = `<h1 class=\"recomment-headline\">We found ${matchedProducts.length} mask${matchedProducts.length == 1?'':'s'} with lenses that match match your prescription!</h1>`\n        }\n      }\n      renderd_cards = [];\n      renderCards(matchedProducts,recommendationsContainer,true);\n  }\n\n  function renderCards(cards,recommendationsContainer,add_to_rendered = true){\n    cards.forEach(mask => {\n          let card = document.createElement(\"div\");\n          add_to_rendered && renderd_cards.push(mask);\n          card.className = \"mask-card\";\n      \n      \n          // Image\n          const imgEl = document.createElement(\"img\");\n          imgEl.src = mask.img;\n          imgEl.alt = mask.name;\n          imgEl.className = \"mask-image\";\n      \n      \n          // Content\n          const contentDiv = document.createElement(\"div\");\n          contentDiv.className = \"card-content\";\n      \n      \n          // Title\n          const titleEl = document.createElement(\"div\");\n          titleEl.className = \"mask-title\";\n          titleEl.textContent = mask.name;\n          titleEl.innerHTML += `<span>${mask.price}</span>`;\n      \n          // Size Category\n          const sizeEl = document.createElement(\"div\");\n          sizeEl.className = \"size-category\";\n          sizeEl.textContent = `Size Category: ${mask.sizeCategory}`;\n          sizeEl.innerHTML+= `<span class=\"tooltip\">\n            <svg width=\"25\" height=\"25\" viewBox=\"0 0 25 25\" fill=\"none\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">\n              <rect width=\"25\" height=\"25\" fill=\"url(#pattern0_1_45)\"/>\n              <defs>\n              <pattern id=\"pattern0_1_45\" patternContentUnits=\"objectBoundingBox\" width=\"1\" height=\"1\">\n              <use xlink:href=\"#image0_1_45\" transform=\"scale(0.015625)\"/>\n              </pattern>\n              <image id=\"image0_1_45\" width=\"64\" height=\"64\" xlink:href=\"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAA7DAAAOwwHHb6hkAAAAGXRFWHRTb2Z0d2FyZQB3d3cuaW5rc2NhcGUub3Jnm+48GgAABY5JREFUeJztm1tsFUUYx3/fnnNWjIgE0KoxKKCgiA8a5WICWi4tNBAjiqY2rYUEhcSQmKgPauJJNBqj8cEAIYjQUhASk2piUgo0nAe0YghPliBykUICGLlEKEm7u2c/H9oq0t1z6+xpgPN76pnLN//5Z3dmdmYKJUqUKHETI8VqqK2aMt+OT1GVSapyv6AjEYYDoHSJyEUV7RT0d8vxOuZu489i6IrMgGQSa/rx+GxBFgPPAo/kGeIQkBLR5vZxXiqZxDcukggMSFUzpidhrxL8pSD3GQp7CmSj7Tqry7dxzlBMwKABqXpGupp4X5UVwG2m4l5DF8g6a5jz0bz1/G0ioBEDWmsTtWLxGUqZiXjZkbMCb1dsdrYMOtJgKrfUMCIWS6wHXh6skIIQ/d51vWULv+FiwSEKrdhSY0+OWfoDwvhCYxjimKWyaF6Tc6iQygUZsKM+8ZT4tAiMKaR+BFwU0UUVjd5P+VbM24AddfEZFrKb6Aa6QrmCMqeyyf0ln0p5GdBSY0+OxXQvMCovacXjvKUyM5/XIWcDUvWMdNKJAwbf+V8RNgCgLAemGIp7LJ12n6jayqVcCsdzjeqk4xtMdt623KnlDXQDpOpZ7/iJ/ZgxYUI8lvgK3JxmJiuXQq21iVpEXhicrqsQNvR3HqC8gW6h72kwgMJLrXX2K7mUzWpASw0jROTTwcv6D/HlzIBEldNG2xD9IlXPyGzlshpgxRIfgN5jRlYvvpC4Nk0tbJNtoJQ5vv1utmIZDUhVM0bgdXOqehF0+oA0HZg2eHRlWx2jM5XIaEBPwl5FNPP9ip119ov9P3bV2ks0AqOB4Wnib2QqEDoNJpNYM47HOw1+0gY1f6ZXg94dXRuc/Hm8Oy5sPyH0CZhxND4n2s5D79gSaecBxk47EZ8Vlhn+CljyfCRyhgDLl8VheZkWQuURaLkaBY72/f0g0e5Pzg7LCHwC2qopAx6OTA50i+j8ys3uxMrN7kS1tAroibC9yTtruSsoI9AA346bWpcHIsKaikZvV//v+Q1eK8raKJtUiT8alBFogKpMilAMIAcGpFiyP9ImQ/oUMgjKA5EJAfDxckoziowLSg0xQEdEKWUoENHbg9KDDdC+E5sbizwMuIkINkDoKrKOYnA5KDFsEMxpO+l6QkL6FDYInohQyxChfwSlBhogooejFVN80lZwnwINsByvg961+o2CqngHgzICDei7nHAjPQUHqzbxV1BGpmlwT0Riio+G9yXUAEW/i0ZN8RG0OSwv1IB94709wKlIFBURgc72Cd7esPxQA5JJfBHZFI2s4qHopkz3izIuhS11voTrelV4xXa9NZkKZDRg7mbOg6wzq6l4CJL1UlXWj6F02vkQ1OixVXGQszLM+SRbqawGVG3lEmK9Y0ZUL2oFHLWJ3muyDZQ3c7lJltPncGWjsxXh28Gr6kNZnqpnWP/P9iXcqrDcWHxhe2WTsz23ojmy+zXu8LsTB4AJBQv7Px39R+J9nQ/ctCyAI+m0+2SuFyTy2ovfVX/LQ+r7P0LwFvNQo3BOLJlZ2eD8lmudvHaEKhp6jlgWzwFX8lYXPV2iLMyn81DAlti8Bnefb1EOwR8XQ8QFfK3M94YYFLgnuKDB3W+pPAMcK6S+YY74vvV05RavvZDKBW+KzmtyDnXH3ccRchpto0DQZttypy7Y0lPwp7uRA8mdr9o1KJ8X4ai7Dz0tYr1V0ehsG2wkYyeyvdOk/R7oSojsXOGyIGu9tPNxrtNcNowfSbfVMbr3WoosA8aaiCnQ6atuxPZWz/+aCyZiXhU7GpJJrGkn4rP6LifMJr+FjgIHUfYI2tw+wdt73fzLTBgtS7kz5sUfU2SiIGMRHfXvEZzQhcoFRU8ietiPeR1he3glSpQoUcIg/wCrLLJgLJ2RdQAAAABJRU5ErkJggg==\"/>\n              </defs>\n            </svg>\n              <span class=\"tooltiptext\">\nHow to Measure Width & Height?\n\nWidth: Hold a firm ruler in a straight line from the outer corner of one eye to the outer corner of the other (don’t wrap it around).\n\nHeight: Measure from the bottom of your nose to just above your eyebrow.               </span>\n          </span>`\n      \n          // Decide cm vs. in\n          let wMin, wMax, wOpt, hMin, hMax, hOpt, label;\n          if (mask.currentUnits === \"cm\") {\n            wMin = mask.widthMinCM;\n            wMax = mask.widthMaxCM;\n            wOpt = mask.widthOptCM;\n            hMin = mask.heightMinCM;\n            hMax = mask.heightMaxCM;\n            hOpt = mask.heightOptCM;\n            label = \"cm\";\n          } else {\n            wMin = mask.widthMinIN;\n            wMax = mask.widthMaxIN;\n            wOpt = mask.widthOptIN;\n            hMin = mask.heightMinIN;\n            hMax = mask.heightMaxIN;\n            hOpt = mask.heightOptIN;\n            label = \"in\";\n          }\n      \n      \n          // Range table\n          const table = document.createElement(\"table\");\n          table.className = \"range-table\";\n          table.innerHTML = `\n            <thead>\n              <tr>\n                <th></th>\n                <th>Min (${label})</th>\n                <th>Max (${label})</th>\n                <th>Optimal (${label})</th>\n              </tr>\n            </thead>\n            <tbody>\n              <tr>\n                <td><strong>Width</strong></td>\n                <td>${wMin}</td>\n                <td>${wMax}</td>\n                <td>${wOpt}</td>\n              </tr>\n              <tr>\n                <td><strong>Height</strong></td>\n                <td>${hMin}</td>\n                <td>${hMax}</td>\n                <td>${hOpt}</td>\n              </tr>\n            </tbody>\n          `;\n      \n      \n          // Notes\n          const notesEl = document.createElement(\"div\");\n          notesEl.className = \"mask-notes\";\n          notesEl.textContent = mask.notes || \"\";\n      \n          // Buttons container\n          const btnContainer = document.createElement(\"div\");\n      \n      \n          // Convert Button\n          const convertBtn = document.createElement(\"button\");\n          convertBtn.className = \"btn convert-btn\";\n          // If current is cm, label is \"Switch to in\"; if in, label is \"Switch to cm\"\n          convertBtn.textContent = mask.currentUnits === \"cm\" \n            ? \"Switch to in\" \n            : \"Switch to cm\";\n      \n      \n          convertBtn.onclick = () => toggleUnits(mask.name);\n      \n      \n          // Product Link\n          const linkEl = document.createElement(\"a\");\n          linkEl.href = mask.link;\n          linkEl.target = \"_blank\";\n          linkEl.className = \"btn product-link\";\n          linkEl.textContent = \"View Product\";\n      \n      \n          // Assemble\n          btnContainer.appendChild(convertBtn);\n          btnContainer.appendChild(linkEl);\n      \n      \n          contentDiv.appendChild(titleEl);\n          contentDiv.appendChild(sizeEl);\n          contentDiv.appendChild(table);\n          contentDiv.appendChild(notesEl);\n          contentDiv.appendChild(btnContainer);\n      \n      \n          card.appendChild(imgEl);\n          card.appendChild(contentDiv);\n      \n          recommendationsContainer.appendChild(card);\n      });\n  }\n  \n  function calculateLensStrength() {\n      const leftSphere = parseFloat(document.getElementById('leftEyeSphere').value) || 0;\n      const rightSphere = parseFloat(document.getElementById('rightEyeSphere').value) || 0;\n  \n  \n  \n      const leftSphereSign = document.getElementById('leftEyeSphereSign').innerText;\n      const rightSphereSign = document.getElementById('rightEyeSphereSign').innerText;\n  \n  \n      if (leftSphereSign === \"+/-\" || rightSphereSign === \"+/-\") {\n          document.getElementById('error-message').textContent = \"To calculate your perfect lens strength, please choose + (farsighted) or - (nearsighted) for both eyes.\";\n          document.getElementById('error-message').style.display = 'block';\n          document.querySelectorAll('#leftEyeSphereSign,#rightEyeSphereSign').forEach(el=>{\n            el.style.animation = null;\n            setTimeout(()=>{\n              el.style.animation = 'bounce 1s';\n            },200);\n          })\n          return;\n      } else {\n          document.getElementById('error-message').style.display = 'none';\n      }\n  \n  \n  \n      const adjustedLeftSphere = calculateAdjustedValue(leftSphere, leftSphereSign);\n      const adjustedRightSphere = calculateAdjustedValue(rightSphere, rightSphereSign);\n    \n      const leftDescription = leftSphereSign === '+' ? \"Farsighted\" : \"Nearsighted\";\n      const rightDescription = rightSphereSign === '+' ? \"Farsighted\" : \"Nearsighted\";\n  \n  \n      displayResults(adjustedLeftSphere, leftDescription, 'recommendedLeft');\n      displayResults(adjustedRightSphere, rightDescription, 'recommendedRight');\n    \n      if(leftSphereSign != rightSphereSign) {\n        document.querySelector('.calculator-recommendations #maskGrid').innerHTML = '<h1 class=\"recomment-headline\">  We dont offer custom lenses in farsighted. Watch this space, coming soon! </h1>';\n      } else {\n        if((leftSphereSign == '-' || rightSphereSign == '-') && (rightSphere > 10 || leftSphere > 10)) {\n          document.querySelector('.calculator-recommendations #maskGrid').innerHTML = '<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>';\n          setTimeout(()=>{\n            document.querySelector('.calculator-recommendations #maskGrid').innerHTML = '<h1 class=\"recomment-headline\"> Our nearsighted lenses go up to -9.00 </h1>';\n            showRecommendation('-9.00','-9.00',false);\n          },1000)\n        } else if((leftSphereSign == '+' || rightSphereSign == '+') && (leftSphere > 6 || rightSphere > 6 )){\n          document.querySelector('.calculator-recommendations #maskGrid').innerHTML = '<h1 class=\"recomment-headline\"> Farsighted only available in +2, +3, +4, +5 </h1>';\n            renderCards(maskData.filter(mask=>mask.name == 'Rx Mako' || mask.name == 'Rx Action'),document.querySelector('.calculator-recommendations #maskGrid'),true);\n        } else {\n          document.querySelector('.calculator-recommendations #maskGrid').innerHTML = '<div class=\"lds-ring\"><div></div><div></div><div></div><div></div></div>';\n          setTimeout(()=>{\n            showRecommendation(adjustedLeftSphere,adjustedRightSphere);\n          },1000)\n        }\n      }\n  \n      document.querySelector('.results-container').style.display = 'flex';\n  }\n  \n  \n  \n  function calculateAdjustedValue(sphere, sphereSign) {\n      let adjustedPower;\n      const isFarsighted = sphereSign === '+';\n      if (isFarsighted) {\n          const mapping = {\n              0.25: 0.00, 0.50: 0.00, 0.75: 0.00, 1.00: 0.00,\n              1.25: 1.00, 1.50: 1.00, 1.75: 1.00, 2.00: 2.00,\n              2.25: 2.00, 2.50: 2.00, 2.75: 2.00, 3.00: 3.00,\n              3.25: 3.00, 3.50: 3.00, 3.75: 3.00, 4.00: 4.00,\n              4.25: 4.00, 4.50: 4.00, 4.75: 4.00, 5.00: 5.00,\n              5.25: 5.00, 5.50: 5.00, 5.75: 5.00, 6.00: 5.00\n          };\n      \n          // Convert object keys to an array of numbers and find the closest\n          const keys = Object.keys(mapping).map(Number);\n          const closest = keys.reduce((prev, curr) => \n              Math.abs(curr - sphere) < Math.abs(prev - sphere) ? curr : prev\n          );\n      \n          adjustedPower = mapping[closest].toFixed(2);\n      } else {\n          const mapping = {\n              0.00: 0.00, 0.25: 0.00, 0.50: 0.00, 0.75: 0.00,\n              1.00: -1.00, 1.25: -1.00, 1.50: -1.00, 1.75: -1.00,\n              2.00: -1.50, 2.25: -1.50, 2.50: -2.00, 2.75: -2.00,\n              3.00: -2.50, 3.25: -2.50, 3.50: -3.00, 3.75: -3.00,\n              4.00: -3.50, 4.25: -3.50, 4.50: -4.00, 4.75: -4.00,\n              5.00: -4.50, 5.25: -4.50, 5.50: -5.00, 5.75: -5.00,\n              6.00: -5.50, 6.25: -5.50, 6.50: -6.00, 6.75: -6.00,\n              7.00: -6.50, 7.25: -6.50, 7.50: -7.00, 7.75: -7.00,\n              8.00: -7.50, 8.25: -7.50, 8.50: -8.00, 8.75: -8.00,\n              9.00: -8.50, 9.25: -8.50, 9.50: -9.00, 9.75: -9.00,\n              10.00: -9.00\n          };\n      \n          // Round to nearest 0.25\n          let roundedSphere = Math.round(sphere * 4) / 4;\n      \n          // If the value is greater than 10, map it to 10.00\n          if (roundedSphere > 10) {\n              roundedSphere = 10.00;\n          }\n      \n          // Lookup the mapped value\n          adjustedPower = mapping[roundedSphere].toFixed(2);\n      }\n      return adjustedPower != 0 ? sphereSign === '+' ? `+${parseFloat(adjustedPower).toFixed(2)}` : `-${Math.abs(adjustedPower).toFixed(2)}`: '0';\n  }\n  \n  \n  \n  function displayResults(adjustedPower, description, elementId) {\n      const resultElement = document.getElementById(elementId);\n  \n  \n  \n      if (adjustedPower === \"Not available\") {\n          resultElement.textContent = \"Not available. Contact us for more help.\";\n          resultElement.style.color = \"red\";\n      } else {\n          resultElement.textContent = `${adjustedPower}`;\n          resultElement.style.color = \"#023059\";\n      }\n  }\n  \n document.addEventListener('click', function(event) {\n    if (event.target.closest('.decrement-btn') || event.target.closest('.increment-btn')) {\n        const parentDiv = event.target.closest('.input-wrapper');\n        const input = parentDiv.querySelector('input');\n        const decrementBtn = parentDiv.querySelector('.decrement-btn');\n        if (input) {\n            const step = parseFloat(input.getAttribute('step')) || 0.25;\n            let currentValue = parseFloat(input.value) || 0;\n\n            if (event.target.closest('.decrement-btn')) {\n                currentValue -= step;\n            } else if (event.target.closest('.increment-btn')) {\n                currentValue += step;\n            }\n\n            input.value = Math.max(0, currentValue); // Ensure value doesn't go negative\n\n            // Disable the decrement button if value is 0\n            if (parseFloat(input.value) === 0) {\n                decrementBtn.setAttribute('disabled', 'disabled');\n            } else {\n                decrementBtn.removeAttribute('disabled');\n            }\n        }\n    }\n});\n\n// Ensure decrement button is properly set on page load\ndocument.addEventListener('DOMContentLoaded', function() {\n    document.querySelectorAll('.input-wrapper').forEach(wrapper => {\n        const input = wrapper.querySelector('input');\n        const decrementBtn = wrapper.querySelector('.decrement-btn');\n\n        if (input && decrementBtn) {\n            if (parseFloat(input.value) === 0) {\n                decrementBtn.setAttribute('disabled', 'disabled');\n            } else {\n                decrementBtn.removeAttribute('disabled');\n            }\n        }\n    });\n});\nfunction toggleUnits(maskName) {\n  const mask = renderd_cards.find(mask=>mask.name == maskName);\n  if(mask)\n  mask.currentUnits = mask.currentUnits === \"cm\" ? \"in\" : \"cm\";\n  const recommendationsContainer = document.querySelector(\".calculator-recommendations  #maskGrid\");\n  recommendationsContainer.querySelectorAll('.mask-card').forEach(card=>card.remove());\n  renderCards(renderd_cards, recommendationsContainer,false);\n}\ndocument.querySelectorAll('#leftEyeSphere,#rightEyeSphere').forEach(el=>{\n  el.addEventListener('focus',e=>{\n    if(!e.target.value) {\n      e.target.placeholder = '';\n    }\n  })\n})\n  document.querySelectorAll('.tooltip').forEach(t=>{\n    t.addEventListener('click',e=>e.preventDefault());\n  })\n</script>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "custom_liquid_rhErPG": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "custom_liquid": "<style>\n  .center-iframe {\n    display: flex;\n    justify-content: center;\n  }\n</style>\n\n<div class=\"center-iframe\">\n  <iframe src=\"https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Fprofile.php%3Fid%3D61557614673895&tabs=timeline&width=350&height=500&small_header=true&adapt_container_width=true&hide_cover=true&show_facepile=true&appId=201016226630379\" width=\"350\" height=\"500\" style=\"border:none;overflow:hidden\" scrolling=\"no\" frameborder=\"0\" allowfullscreen=\"true\" allow=\"autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share\"></iframe>\n</div>",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "featured_collection_NeJNJt": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Your adventure begins here",
+        "heading_size": "h1",
+        "description": "<p>Start it seeing clearly with our exclusive range of Rx Masks</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 68
+      }
+    },
+    "featured_product_NqRGBF": {
+      "type": "featured-product",
+      "blocks": {
+        "buy_buttons_iiBr4L": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "price_gEMfKR": {
+          "type": "price",
+          "settings": {}
+        },
+        "quantity_selector_wPx999": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "share_qk9zbr": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "text_QhCJjC": {
+          "type": "text",
+          "settings": {
+            "text": "{{ section.settings.product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title_zAVMgr": {
+          "type": "title",
+          "settings": {
+            "heading_size": "h1"
+          }
+        },
+        "variant_picker_pWJwDh": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        }
+      },
+      "block_order": [
+        "text_QhCJjC",
+        "title_zAVMgr",
+        "price_gEMfKR",
+        "variant_picker_pWJwDh",
+        "quantity_selector_wPx999",
+        "buy_buttons_iiBr4L",
+        "share_qk9zbr"
+      ],
+      "disabled": true,
+      "settings": {
+        "product": "the-essential-guide-to-snorkeling-by-oceans-optics",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "secondary_background": false,
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_banner_KLxRnM": {
+      "type": "image-banner",
+      "custom_css": [],
+      "settings": {
+        "image": "shopify://shop_images/Mobile_Guide_88951d2f-e86c-4f02-aca9-531937caef1d.svg",
+        "image_2": "shopify://shop_images/Desktop_Guide.svg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": false
+      }
+    },
+    "image_banner_XPgKVC": {
+      "type": "image-banner",
+      "blocks": {
+        "buttons_xKtxm4": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "CHOOSE YOURS",
+            "button_link_1": "shopify://collections/all-our-masks",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        },
+        "heading_LLcmrg": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Unlock a World of Clear Vision and Adventure</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_KLKpTr": {
+          "type": "text",
+          "settings": {
+            "text": "Prescription Masks and Pro Tips to Ensure Every Dive Is Smooth and Unforgettable",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_LLcmrg",
+        "text_KLKpTr",
+        "buttons_xKtxm4"
+      ],
+      "custom_css": [],
+      "settings": {
+        "image": "shopify://shop_images/DSC04589_c049cbb6-4870-4f4f-b3b5-5755e34380ac.jpg",
+        "image_2": "shopify://shop_images/DSC04589_c049cbb6-4870-4f4f-b3b5-5755e34380ac.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "small",
+        "desktop_content_position": "middle-left",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    },
+    "image_banner_djPXpJ": {
+      "type": "image-banner",
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/Scuba_Bennefits_1.png",
+        "image_2": "shopify://shop_images/Scuba_Bennefits_1.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "image_banner_mFwPDD": {
+      "type": "image-banner",
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/Mobile_Reviews_1_1.svg",
+        "image_2": "shopify://shop_images/Desktop_Reviews_1_2.svg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "image_with_text_Df8YWB": {
+      "type": "image-with-text",
+      "blocks": {
+        "button_XkKh9r": {
+          "type": "button",
+          "settings": {
+            "button_label": "Choose Yours",
+            "button_link": "shopify://collections/all-our-masks",
+            "button_style_secondary": false
+          }
+        },
+        "heading_yXU9hL": {
+          "type": "heading",
+          "settings": {
+            "heading": "Clarity and Comfort!",
+            "heading_size": "h1"
+          }
+        },
+        "text_HmTLeY": {
+          "type": "text",
+          "settings": {
+            "text": "<h5>Experience safety, clear vision, and a perfect fit—all in one innovative design.</h5>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_yXU9hL",
+        "text_HmTLeY",
+        "button_XkKh9r"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/Benefit_Mobile.png",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 16
+      }
+    },
+    "image_with_text_hDRBUr": {
+      "type": "image-with-text",
+      "blocks": {
+        "button_WRY7Nx": {
+          "type": "button",
+          "settings": {
+            "button_label": "CHOOSE YOURS",
+            "button_link": "shopify://collections/all-our-masks",
+            "button_style_secondary": false
+          }
+        },
+        "heading_CTWx3D": {
+          "type": "heading",
+          "settings": {
+            "heading": "Clarity and Comfort, Wherever You Go",
+            "heading_size": "h2"
+          }
+        },
+        "text_F6cgNU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Experience safety, clear vision, and a perfect fit—all in one innovative design.</p>",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_CTWx3D",
+        "text_F6cgNU",
+        "button_WRY7Nx"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/Bennefits.png",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "multicolumn_UYNpJ3": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_Yxa8rc": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Grey_3.png",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_bkTgR6": {
+          "type": "column",
+          "disabled": true,
+          "settings": {
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_m3CTaf": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Grey_2.png",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_rc4YW4": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Grey_1.png",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_m3CTaf",
+        "column_rc4YW4",
+        "column_Yxa8rc",
+        "column_bkTgR6"
+      ],
+      "custom_css": [],
+      "settings": {
+        "title": "",
+        "heading_size": "h2",
+        "image_width": "full",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "https://oceansoptics.com/pages/prescription-mask-testimonials-page",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 12,
+        "padding_bottom": 36
+      }
+    },
+    "responsive_banner_JxwgH3": {
+      "type": "Responsive-banner",
+      "settings": {
+        "use_same_image": false,
+        "desktop_image": "shopify://shop_images/Reef_Homepage_Desk_e8926d63-8e0f-455e-ad16-51374d3ba250.svg",
+        "mobile_image": "shopify://shop_images/REEF_Homepage_Mobile.svg",
+        "banner_heading": "",
+        "banner_text": "",
+        "button_text": "",
+        "button_link": "",
+        "banner_max_width": 1800,
+        "desktop_height": 200,
+        "mobile_height": 100,
+        "image_fit": "contain",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "heading_font_size": 2,
+        "text_font_size": 1,
+        "mobile_heading_font_size": 1.5,
+        "mobile_text_font_size": 0.9,
+        "content_position_horizontal": "50%",
+        "content_position_vertical": "50%",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_background_color": "#333333"
+      }
+    },
+    "responsive_banner_WTbGcd": {
+      "type": "Responsive-banner",
+      "custom_css": [],
+      "settings": {
+        "use_same_image": true,
+        "desktop_image": "shopify://shop_images/Desktop_Mask_Sizing.png",
+        "mobile_image": "shopify://shop_images/Mobile_Mask_Sizing.png",
+        "banner_heading": "",
+        "banner_text": "",
+        "button_text": "",
+        "button_link": "shopify://pages/how-to-check-if-a-mask-will-fit-you-online",
+        "banner_max_width": 1800,
+        "desktop_height": 200,
+        "mobile_height": 100,
+        "image_fit": "contain",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "heading_font_size": 2,
+        "text_font_size": 1,
+        "mobile_heading_font_size": 1.5,
+        "mobile_text_font_size": 0.9,
+        "content_position_horizontal": "50%",
+        "content_position_vertical": "50%",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_background_color": "#333333"
+      }
+    },
+    "rich_text_GtLcwq": {
+      "type": "rich-text",
+      "blocks": {
+        "caption_mTQpXq": {
+          "type": "caption",
+          "settings": {
+            "caption": "Spend $120 Get $10 OFF • Spend $150 Get $20 OFF • Spend $200 Get $35 OFF",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        }
+      },
+      "block_order": [
+        "caption_mTQpXq"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-b9831653-2124-4f31-aba5-a8f61888c30d",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "video_atmrCe": {
+      "type": "video",
+      "name": "t:sections.video.presets.name",
+      "settings": {
+        "heading": "See How You’re Helping Build a Living Coral Reef",
+        "heading_size": "h2",
+        "enable_video_looping": false,
+        "video": "shopify://files/videos/Official Reef Sinking.mp4",
+        "video_url": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "description": "",
+        "full_width": true,
+        "color_scheme": "",
+        "padding_top": 24,
+        "padding_bottom": 36
+      }
+    }
+  }
+}

@@ -1,0 +1,124 @@
+const maskData = [
+  {
+    name: "Rx Rover (Black Seal)",
+    sizeCategory: "Small",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-mask-nearsighted-prescription-all-black-59351695163725.png?v=1735634819",
+    link: "https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask",
+    currentUnits: "cm",
+    widthMinCM: 7.5,
+    widthMaxCM: 11.5,
+    heightMinCM: 7,
+    heightMaxCM: 9,
+    widthMinIN: 2.95,
+    widthMaxIN: 4.53,
+    heightMinIN: 2.76,
+    heightMaxIN: 3.54
+  },
+  {
+    name: "Rx Rover (White Seal)",
+    sizeCategory: "Small",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-rover-nearsighted-prescription-freediving-mask-with-snorkel-case-blue-white-1-5-left-1-5-right-59351692542285.png?v=1726317718",
+    link: "https://oceansoptics.com/products/white-rx-rover-nearsighted-prescription-dive-mask",
+    currentUnits: "cm",
+    widthMinCM: 7.5,
+    widthMaxCM: 11.5,
+    heightMinCM: 7,
+    heightMaxCM: 9,
+    widthMinIN: 2.95,
+    widthMaxIN: 4.53,
+    heightMinIN: 2.76,
+    heightMaxIN: 3.54
+  },
+  {
+    name: "Rx Rover Action",
+    sizeCategory: "Small",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-snorkelling-mask-rx-rover-nearsighted-prescription-dive-mask-w-cam-mount-prescription-dive-mask-black-small-corrective-lenses-1-50-6-00-go-pro-mount-all-black-60219517075789.png?v=1728049485",
+    link: "https://oceansoptics.com/products/the-rx-rover-scuba-diving-mask-with-action-camera-mount-copy",
+    currentUnits: "cm",
+    widthMinCM: 7.5,
+    widthMaxCM: 11.5,
+    heightMinCM: 7,
+    heightMaxCM: 9,
+    widthMinIN: 2.95,
+    widthMaxIN: 4.53,
+    heightMinIN: 2.76,
+    heightMaxIN: 3.54
+    
+  },
+  {
+    name: "Rx Obsidian (Black Seal)",
+    sizeCategory: "Medium",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-nearsighted-prescription-mask-all-black-59396610392397.png?v=1726323647",
+    link: "https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling",
+    currentUnits: "cm",
+    widthMinCM: 8.8,
+    widthMaxCM: 12.7,        // updated
+    heightMinCM: 7.5,
+    heightMaxCM: 10,
+    widthMinIN: 3.46,
+    widthMaxIN: 5.00,        // updated
+    heightMinIN: 2.95,
+    heightMaxIN: 3.94
+  },
+  {
+    name: "Rx Obsidian (Clear Seal)",
+    sizeCategory: "Medium",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-the-rx-obsidian-nearsighted-mask-for-scuba-and-snorkeling-clear-57266194284877.png?v=1717585741",
+    link: "https://oceansoptics.com/products/prescription-scuba-dive-snorkel-mask-optical",
+    currentUnits: "cm",
+    widthMinCM: 8.8,
+    widthMaxCM: 12.7,        // updated
+    heightMinCM: 7.5,
+    heightMaxCM: 10,
+    widthMinIN: 3.46,
+    widthMaxIN: 5.00,        // updated
+    heightMinIN: 2.95,
+    heightMaxIN: 3.94
+  },
+  {
+    name: "Obsidian Action",
+    sizeCategory: "Medium",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-medium-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-black-with-go-pro-mount-60865230766413.png?v=1731156278",
+    link: "https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling",
+    currentUnits: "cm",
+    widthMinCM: 8.8,
+    widthMaxCM: 12.7,        // updated
+    heightMinCM: 7.5,
+    heightMaxCM: 10,
+    widthMinIN: 3.46,
+    widthMaxIN: 5.00,        // updated
+    heightMinIN: 2.95,
+    heightMaxIN: 3.94
+  },
+  {
+    name: "Rx Lumix (Black Seal)",
+    sizeCategory: "Medium",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-optical-dive-mask-aluminum-rx-lumix-optical-dive-mask-aluminum-silver-on-black-60644425662797.png?v=1730293366",
+    link: "https://oceansoptics.com/products/rx-lumix-optical-dive-mask",
+    currentUnits: "cm",
+    widthMinCM: 9,
+    widthMaxCM: 12.5,
+    heightMinCM: 7.75,
+    heightMaxCM: 9.7,        // updated
+    widthMinIN: 3.54,
+    widthMaxIN: 4.92,
+    heightMinIN: 3.05,
+    heightMaxIN: 3.82        // updated
+  },
+  {
+    name: "Rx Lumix (White Seal)",
+    sizeCategory: "Medium",
+    img: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-lumix-optical-dive-mask-aluminum-white-series-new-rx-lumix-optical-dive-mask-aluminum-white-series-gold-on-white-60704407617869.png?v=1730379404",
+    link: "https://oceansoptics.com/products/rx-lumix-optical-dive-mask-aluminum-white-series",
+    currentUnits: "cm",
+    widthMinCM: 9,
+    widthMaxCM: 12.5,
+    heightMinCM: 7.75,
+    heightMaxCM: 9.7,        // updated
+    widthMinIN: 3.54,
+    widthMaxIN: 4.92,
+    heightMinIN: 3.05,
+    heightMaxIN: 3.82        // updated
+    
+  }
+];

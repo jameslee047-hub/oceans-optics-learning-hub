@@ -1,0 +1,113 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.header.name",
+  "type": "header",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "announcement_ccRHYY": {
+          "type": "announcement",
+          "settings": {
+            "text": "FREE Shipping - No Min Order",
+            "link": ""
+          }
+        },
+        "announcement_Y9M6Lx": {
+          "type": "announcement",
+          "settings": {
+            "text": "Exclusive Guide to Snorkeling  FREE",
+            "link": "shopify://pages/free-guide"
+          }
+        },
+        "announcement_DMUWnU": {
+          "type": "announcement",
+          "settings": {
+            "text": "FREE 30 Day Returns",
+            "link": "shopify://pages/returns-and-warranty"
+          }
+        },
+        "announcement_8zTiBc": {
+          "type": "announcement",
+          "settings": {
+            "text": "More than JUST a Mask",
+            "link": "shopify://pages/contact"
+          }
+        },
+        "announcement_7JrpV3": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Get 20% OFF, use discount code BYE2025 at checkout",
+            "link": "https://oceansoptics.com/discount/Bye2025"
+          }
+        },
+        "announcement_G8nQXw": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "Get 10% OFF, use discount code OCEAN10 at checkout",
+            "link": "https://oceansoptics.com/discount/OCEAN10"
+          }
+        },
+        "announcement_tJPXKY": {
+          "type": "announcement",
+          "disabled": true,
+          "settings": {
+            "text": "20% OFF EVERYTHING - TODAY ONLY",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "announcement_ccRHYY",
+        "announcement_Y9M6Lx",
+        "announcement_DMUWnU",
+        "announcement_8zTiBc",
+        "announcement_7JrpV3",
+        "announcement_G8nQXw",
+        "announcement_tJPXKY"
+      ],
+      "settings": {
+        "color_scheme": "inverse",
+        "show_line_separator": false,
+        "show_social": true,
+        "auto_rotate": true,
+        "change_slides_speed": 4,
+        "enable_country_selector": false,
+        "enable_language_selector": false
+      }
+    },
+    "header": {
+      "type": "header",
+      "custom_css": [],
+      "settings": {
+        "logo_position": "top-center",
+        "menu": "mega-menu",
+        "menu_type_desktop": "dropdown",
+        "sticky_header_type": "none",
+        "show_line_separator": false,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "menu_color_scheme": "scheme-8cfe49c2-43f9-4bb9-af98-9bd68089d69c",
+        "enable_country_selector": true,
+        "enable_language_selector": false,
+        "mobile_logo_position": "center",
+        "margin_bottom": 0,
+        "padding_top": 16,
+        "padding_bottom": 4
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

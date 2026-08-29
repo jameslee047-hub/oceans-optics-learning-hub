@@ -1,0 +1,255 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_6jDL8Q": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_GDTYbp": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "rating": {
+          "type": "rating",
+          "disabled": true,
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        },
+        "custom_liquid_ED9ThH": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": ""
+          }
+        },
+        "collapsible_tab_j9VJ9V": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Product Description",
+            "icon": "clipboard",
+            "content": "<h5>Engineered for smooth, powerful kicks, the <strong>Fintastic Adjustable Snorkeling Fins</strong> deliver exceptional propulsion and agility in the water. Whether exploring reefs or cruising through open water, these fins make every stroke efficient and comfortable.</h5><h5><strong>Vibrant Colors</strong>: Black, Blue, Green, Yellow, Pink, Grey</h5><h5><strong>Comfortable & Adjustable</strong>: Soft foot pocket with quick-release straps for easy fitting and removal.</h5><h5><strong>Durable Build</strong>: High-quality PP+TPR materials ensure long-lasting performance.</h5><h5>Maximize your underwater adventures with fins designed for performance and comfort!</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_6eJ8ze": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Adjustable Straps",
+            "icon": "star",
+            "content": "<h5>Quick Release buckle making it easy to put on and take off. </h5><h5>Easy to put on and take off, easy to adjust size and comfort</h5><h5>Soft heel straps with large thumb loops</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_HpNyBQ": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Fintastic Size guide",
+            "icon": "ruler",
+            "content": "",
+            "page": "fintastic-fins-size-guideline"
+          }
+        },
+        "collapsible_tab_jeppgc": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More than JUST Free Shipping",
+            "icon": "truck",
+            "content": "<h5>Every order is carefully packed and shipped free of charge—quality guaranteed!</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_rpn3fW": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "30 Days FREE Returns",
+            "icon": "return",
+            "content": "<h5>Take advantage of our 30 days from delivery easy return policy—shop with confidence. For more info see our <a href=\"https://oceansoptics.com/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\">return policy</a>.</h5>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "judge_me_reviews_preview_badge_GDTYbp",
+        "rating",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "share",
+        "description",
+        "custom_liquid_ED9ThH",
+        "collapsible_tab_j9VJ9V",
+        "collapsible_tab_6eJ8ze",
+        "collapsible_tab_HpNyBQ",
+        "collapsible_tab_jeppgc",
+        "collapsible_tab_rpn3fW"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "media_size": "small",
+        "constrain_to_viewport": false,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "1707710894961cb6e2": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_B8ngTe": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_B8ngTe"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "image_banner_BQcLJF": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Mobile_Guide_88951d2f-e86c-4f02-aca9-531937caef1d.svg",
+        "image_2": "shopify://shop_images/Desktop_Guide_ccc9486e-03f2-436d-81b9-7cb7798708bc.svg",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "1707711583fd59ddaf": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "featured_collection_GYmXWx": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured collection",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-2",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_6jDL8Q",
+    "main",
+    "1707710894961cb6e2",
+    "image_banner_BQcLJF",
+    "related-products",
+    "1707711583fd59ddaf",
+    "featured_collection_GYmXWx"
+  ]
+}

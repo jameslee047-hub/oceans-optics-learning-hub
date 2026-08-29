@@ -1,0 +1,136 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "oo_quiz_card_3hyk3x": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "mask_sizing_tool_shortcut_GDie3U": {
+      "type": "mask-sizing-tool-shortcut",
+      "disabled": true,
+      "name": "Mask fit shortcut",
+      "settings": {
+        "heading": "How would you like to find your mask fit?",
+        "subheading": "Choose automatic camera measuring or follow the manual ruler guide below",
+        "auto_badge": "Recommended",
+        "auto_icon": "🎥",
+        "auto_title": "Auto Camera Measuring",
+        "auto_text": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.",
+        "auto_point_1": "✓ Takes about 30 seconds",
+        "auto_point_2": "✓ Works on phone or desktop",
+        "auto_point_3": "✓ Get instant mask recommendations",
+        "auto_url": "",
+        "open_camera_new_tab": true,
+        "auto_button": "Start Camera Measuring →",
+        "manual_badge": "Measure Yourself",
+        "manual_icon": "📐",
+        "manual_title": "Manual Ruler Guide",
+        "manual_text": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide.",
+        "manual_point_1": "✓ No camera needed",
+        "manual_point_2": "✓ Works anywhere",
+        "manual_point_3": "✓ Fine-tune with sliders",
+        "manual_mode": "link",
+        "manual_url": "",
+        "manual_anchor_id": "ruler-guide-start",
+        "manual_reveal_id": "",
+        "manual_button": "Use Ruler Guide ↓"
+      }
+    },
+    "contact_form_z4Nbzc": {
+      "type": "contact-form",
+      "disabled": true,
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "color_scheme": "background-2",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_Hja3BG": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "All our masks",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "lens_calculator_GHRYB7": {
+      "type": "lens-calculator",
+      "name": "Lens Calculator Main",
+      "settings": {}
+    }
+  },
+  "order": [
+    "breadcrumbs",
+    "main",
+    "oo_quiz_card_3hyk3x",
+    "mask_sizing_tool_shortcut_GDie3U",
+    "contact_form_z4Nbzc",
+    "featured_collection_Hja3BG",
+    "lens_calculator_GHRYB7"
+  ]
+}

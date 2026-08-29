@@ -1,0 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.signalforce-smb.json",
+  "context": {
+    "market": "aus"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_NQ99dm": {
+          "settings": {
+            "heading": "Free Shipping Australia-wide",
+            "content": "<h5><strong>Please allow 5-18 Days for us to get the product ready and get it to you. We want it to be perfect.</strong></h5>"
+          }
+        }
+      }
+    }
+  }
+}

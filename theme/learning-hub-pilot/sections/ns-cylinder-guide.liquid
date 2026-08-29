@@ -1,0 +1,350 @@
+<style>
+  .ns-outer {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+
+  .ns-heading {
+    color: #023059;
+    margin-bottom: 10px;
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .ns-subheading {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 16px;
+  }
+
+  .ns-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #023059;
+    color: white;
+    margin-right: 10px;
+    margin-bottom: 15px;
+  }
+
+  .ns-note {
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 14px;
+  }
+
+  .ns-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .ns-table thead tr th {
+    background-color: #023059;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .ns-table thead tr th:first-child {
+    width: 25%;
+  }
+
+  .ns-table thead tr th:last-child {
+    width: 75%;
+  }
+
+  .ns-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+
+  .ns-table tbody tr td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    vertical-align: top;
+  }
+
+  .ns-table tbody tr td:first-child {
+    font-weight: 600;
+    color: #023059;
+  }
+
+  .ns-table tbody tr td ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ns-table tbody tr td ul li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+    padding-left: 0;
+  }
+
+  .ns-table tbody tr td ul li:last-child {
+    margin-bottom: 0;
+  }
+
+  .ns-special {
+    background-color: #B95E05;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 4px;
+    color: white;
+    font-size: 13px;
+  }
+
+  .ns-info {
+    background-color: #e8f0f7;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #023059;
+  }
+
+  .ns-masks {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #ddd;
+  }
+
+  .ns-masks h3 {
+    color: #023059;
+    font-size: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .ns-mask-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+
+  .ns-mask-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .ns-mask-card h4,
+  .ns-mask-card div {
+    color: #023059;
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .ns-mask-card p {
+    color: #666;
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .ns-mask-card a {
+    display: inline-block;
+    background-color: #023059;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    margin-top: auto;
+  }
+
+  .ns-mask-card a:hover {
+    background-color: #B95E05;
+    color: white;
+  }
+
+  .ns-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #ddd;
+  }
+
+  .ns-footer p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .ns-footer a {
+    display: inline-block;
+    background-color: #023059;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .ns-footer a:hover {
+    background-color: #B95E05;
+    color: white;
+  }
+
+  @media (max-width: 900px) {
+    .ns-mask-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 767px) {
+    .ns-outer {
+      padding: 20px 16px;
+      margin: 20px 16px;
+    }
+
+    .ns-heading {
+      font-size: 22px;
+    }
+
+    .ns-table thead tr th:first-child {
+      width: 35%;
+    }
+
+    .ns-table thead tr th:last-child {
+      width: 65%;
+    }
+
+    .ns-mask-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="ns-outer">
+
+  <h2 class="ns-heading">How to account for Cylinder?</h2>
+  <p class="ns-subheading">Find your CYL value below, then check the sign, plus or minus, for your recommendation</p>
+
+  <div>
+    <span class="ns-pill">Nearsighted, Minus &minus;</span>
+
+    <table class="ns-table">
+      <thead>
+        <tr>
+          <th>Your CYL</th>
+          <th>Recommendation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0.00 to 0.75</td>
+          <td>
+            <ul>
+              <li>Go <strong>0.50 weaker</strong> than your SPH, closer to zero<br>
+              <span style="color:#666; font-size:13px;">Example: SPH &minus;3.00, choose &minus;2.50</span></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>1.00 to 1.75</td>
+          <td>
+            <ul>
+              <li>If your CYL shows a <strong>minus sign:</strong> stay close to your SPH. You can go up to 0.50 stronger, further from zero, or up to 0.50 weaker, closer to zero<br>
+              <span style="color:#666; font-size:13px;">Example: SPH &minus;3.00, anywhere from &minus;2.50 to &minus;3.50</span></li>
+              <li>If your CYL shows a <strong>plus sign:</strong> stay close to your SPH. You can go up to 0.50 weaker, closer to zero, or stay at SPH<br>
+              <span style="color:#666; font-size:13px;">Example: SPH &minus;3.00, choose &minus;3.00 or &minus;2.50</span></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>2.00+</td>
+          <td>
+            <ul>
+              <li>If your CYL shows a <strong>minus sign:</strong> stay exactly at your SPH. Only go 0.50 stronger, further from zero, if you specifically want sharper detail and are prepared for more eye strain on longer sessions<br>
+              <span style="color:#666; font-size:13px;">Example: SPH &minus;3.00, choose &minus;3.00, or &minus;3.50 for crispness only</span></li>
+              <li>If your CYL shows a <strong>plus sign:</strong> stay exactly at your SPH. Do not go weaker<br>
+              <span style="color:#666; font-size:13px;">Example: SPH &minus;3.00, choose &minus;3.00</span></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="ns-special">
+      <strong>Special Case:</strong> If your SPH is &minus;0.50 or &minus;0.75 and your CYL is 2.50 or higher, we recommend starting at &minus;1.00. Going weaker than this rarely gives useful correction underwater.
+    </div>
+
+    <div class="ns-info">
+      <strong>Not sure if your CYL is plus or minus?</strong> Check your prescription slip. It will show either a minus or plus sign next to the CYL value. If there is no sign shown, ask your optometrist which form your prescription is written in.
+    </div>
+  </div>
+
+  <div class="ns-masks">
+    <h3>Which mask fits your prescription?</h3>
+    <div class="ns-mask-grid">
+
+      <div class="ns-mask-card">
+        <div>Rx Rover</div>
+        <p>Available from &minus;1.50 to &minus;6.00</p>
+        <p style="color:#B95E05; font-size:12px;">Best for smaller to medium faces</p>
+        <a href="https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask">View Rx Rover</a>
+      </div>
+
+      <div class="ns-mask-card">
+        <div>Rx Lumix</div>
+        <p>Available from &minus;1.50 to &minus;6.00</p>
+        <p style="color:#B95E05; font-size:12px;">Aluminium frame, small to medium faces</p>
+        <a href="https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0">View Rx Lumix</a>
+      </div>
+
+      <div class="ns-mask-card">
+        <div>Rx Titan</div>
+        <p>Available from &minus;1.50 to &minus;7.00</p>
+        <p style="color:#B95E05; font-size:12px;">Roomier fit for medium to large faces</p>
+        <a href="https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask">View Rx Titan</a>
+      </div>
+
+      <div class="ns-mask-card">
+        <div>Rx Obsidian</div>
+        <p>Available from &minus;1.00 to &minus;9.00</p>
+        <p style="color:#B95E05; font-size:12px;">Full range, suits most face shapes</p>
+        <a href="https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling">View Rx Obsidian</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="ns-footer">
+    <p>Want detailed examples and explanations?</p>
+    <a href="https://oceansoptics.com/pages/choosing-prescription-snorkel-mask-lenses-with-astigmatism">Read Our Complete Lens Selection Guide</a>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "NS Cylinder Guide",
+  "settings": [],
+  "presets": [
+    {
+      "name": "NS Cylinder Guide"
+    }
+  ]
+}
+{% endschema %}

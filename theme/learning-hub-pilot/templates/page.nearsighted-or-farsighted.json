@@ -1,0 +1,207 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_rJz3pR": {
+      "type": "image-banner",
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/image_banner_scuba_diver_Mobile.png",
+        "image_2": "shopify://shop_images/The_Perfect_Prescription_Masks_08674b31-e83c-4ac0-9695-4ae8bf54ccde.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "multicolumn_LwX6zz": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_rUbMfw": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/3_68ad6648-1366-45bc-ba34-4488753488c4.png",
+            "title": "<strong>What is Nearsighted vision (Myopia)? -</strong>",
+            "title_h3": false,
+            "text": "<p>Nearsighted vision means you can see nearby objects clearly, but distant objects appear blurry.</p><p><strong>Technical Insight:</strong> This occurs when the eye focuses light in front of the retina.</p><p><strong>Example Prescription:</strong> A typical prescription might be -2.5 or -2.50. Always displayed as a negative number)</p>",
+            "link_label": "Shop Nearsighted Masks",
+            "link": "shopify://collections/nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "column_VPVCqM": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/1_bc489405-7ec0-44e8-b140-169e00e1a546.png",
+            "title": "<strong>What is Farsighted Vision (Hyperopia): +</strong>",
+            "title_h3": false,
+            "text": "<p>Farsighted vision means you can see distant objects clearly, but close-up objects appear blurry.</p><p><strong>Technical Insight:</strong> This happens when the eye focuses light behind the retina.</p><p><strong>Example Prescription:</strong> A common prescription might be +2.0 or +2.00. Always displayed as a positive number.</p>",
+            "link_label": "Shop Farsighted Masks",
+            "link": "shopify://collections/farsighted-prescription-dive-mask"
+          }
+        },
+        "column_X89TXX": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/2_a2edb1f5-6e74-4264-85e2-344e06bbd486.png",
+            "title": "<strong>What is Sharp Vision then?</strong>",
+            "title_h3": false,
+            "text": "<p>In sharp vision, light focuses directly on the retina, providing clear images at all distances. The eye’s lens adjusts to maintain sharpness both near and far, eliminating the need for corrective lenses. The sharp vision lenses are plain tempered glass lenses without any diopter correction for nearsighted or farsighted.</p>",
+            "link_label": "Shop Sharp Vision",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_rUbMfw",
+        "column_VPVCqM",
+        "column_X89TXX"
+      ],
+      "settings": {
+        "title": "Not Sure if you're Nearsighted (-) or Farsighted (+)?",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "rich_text_MLdFT7": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_BfPkGy": {
+          "type": "heading",
+          "settings": {
+            "heading": "Find your perfect fit",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_BfPkGy"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "collection_list_7iyg34": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_UQnC9a": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "featured_collection_Ag3wE3": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "farsighted-prescription-dive-mask"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_UQnC9a",
+        "featured_collection_Ag3wE3"
+      ],
+      "settings": {
+        "title": "Choose your Vision",
+        "heading_size": "h1",
+        "image_ratio": "adapt",
+        "columns_desktop": 2,
+        "color_scheme": "",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "lens_calculator_4bwefC": {
+      "type": "lens-calculator",
+      "name": "Lens Calculator Main",
+      "settings": {}
+    },
+    "1720081685cf1f26f2": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_eBzXtW": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        },
+        "judge_me_reviews_featured_carousel_9xrD9i": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_eBzXtW",
+        "judge_me_reviews_featured_carousel_9xrD9i"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "image_banner_rJz3pR",
+    "multicolumn_LwX6zz",
+    "main",
+    "rich_text_MLdFT7",
+    "collection_list_7iyg34",
+    "lens_calculator_4bwefC",
+    "1720081685cf1f26f2"
+  ]
+}

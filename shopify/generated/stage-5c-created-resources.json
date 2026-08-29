@@ -1,0 +1,290 @@
+{
+  "generated_at": "2026-08-25T09:17:48.881Z",
+  "api_version": "2026-07",
+  "store_confirmation": {
+    "confirmed": true,
+    "shop_name": "Oceans Optics",
+    "myshopify_domain": "a44b34.myshopify.com",
+    "requested_api_version": "2026-07",
+    "returned_api_versions": [
+      "2026-07"
+    ]
+  },
+  "write_scopes_confirmed": true,
+  "definitions_reused": [
+    {
+      "id": "gid://shopify/MetaobjectDefinition/36172398925",
+      "type": "learning_category",
+      "name": "Learning Category",
+      "note": "REUSED FROM PARTIAL RUN"
+    }
+  ],
+  "definitions_created": [
+    {
+      "id": "gid://shopify/MetaobjectDefinition/36173414733",
+      "type": "learning_lesson",
+      "name": "Learning Lesson",
+      "note": "CREATED THIS RUN"
+    },
+    {
+      "id": "gid://shopify/MetaobjectDefinition/36173447501",
+      "type": "learning_pathway",
+      "name": "Learning Pathway",
+      "note": "CREATED THIS RUN"
+    }
+  ],
+  "categories_reused": [
+    {
+      "id": "gid://shopify/Metaobject/370461344077",
+      "handle": "gear-masks-vision",
+      "status": "DRAFT"
+    },
+    {
+      "id": "gid://shopify/Metaobject/370461376845",
+      "handle": "safety-conditions",
+      "status": "DRAFT"
+    },
+    {
+      "id": "gid://shopify/Metaobject/370461409613",
+      "handle": "in-water-skills",
+      "status": "DRAFT"
+    },
+    {
+      "id": "gid://shopify/Metaobject/370461442381",
+      "handle": "underwater-science-your-body",
+      "status": "DRAFT"
+    },
+    {
+      "id": "gid://shopify/Metaobject/370461475149",
+      "handle": "marine-life-conservation",
+      "status": "DRAFT"
+    }
+  ],
+  "categories_created": [],
+  "pilot_lessons_reused": [],
+  "pilot_lessons_created": [
+    {
+      "id": "gid://shopify/Metaobject/370464325965",
+      "lesson_id": "R01",
+      "handle": "choosing-a-mask",
+      "status": "DRAFT",
+      "primary_category_reference": "gid://shopify/Metaobject/370461344077",
+      "expected_url_pattern": "https://oceansoptics.com/pages/learn/choosing-a-mask"
+    },
+    {
+      "id": "gid://shopify/Metaobject/370464358733",
+      "lesson_id": "R08",
+      "handle": "golden-rules-for-safer-snorkeling",
+      "status": "DRAFT",
+      "primary_category_reference": "gid://shopify/Metaobject/370461376845",
+      "expected_url_pattern": "https://oceansoptics.com/pages/learn/golden-rules-for-safer-snorkeling"
+    },
+    {
+      "id": "gid://shopify/Metaobject/370464391501",
+      "lesson_id": "R12",
+      "handle": "currents-and-rip-currents",
+      "status": "DRAFT",
+      "primary_category_reference": "gid://shopify/Metaobject/370461376845",
+      "expected_url_pattern": "https://oceansoptics.com/pages/learn/currents-and-rip-currents"
+    }
+  ],
+  "definition_updates": [
+    {
+      "id": "gid://shopify/MetaobjectDefinition/36173414733",
+      "type": "learning_lesson",
+      "field_key": "related_lessons",
+      "note": "ADDED SELF-REFERENCE FIELD THIS RUN"
+    }
+  ],
+  "pathway_definition_created": {
+    "id": "gid://shopify/MetaobjectDefinition/36173447501",
+    "type": "learning_pathway",
+    "name": "Learning Pathway",
+    "note": "CREATED THIS RUN"
+  },
+  "pathway_definition_reused": null,
+  "pathway_entries": {
+    "expected": 0,
+    "actual": 0
+  },
+  "omitted_deferred_references": [
+    {
+      "lesson_handle": "choosing-a-mask",
+      "field": "related_lessons",
+      "reason": "Related lesson entries do not yet exist in Shopify.",
+      "handles": [
+        "mask-fit-positioning-adjustment",
+        "mask-preparation-defogging-care",
+        "buoyancy-pressure-and-airspaces",
+        "light-vision-and-sound-underwater"
+      ]
+    },
+    {
+      "lesson_handle": "choosing-a-mask",
+      "field": "related_tools",
+      "reason": "Tool URLs are unresolved.",
+      "handles": [
+        "mask-sizing-tool",
+        "underwater-lens-calculator"
+      ]
+    },
+    {
+      "lesson_handle": "choosing-a-mask",
+      "field": "related_products",
+      "reason": "Product GIDs are unresolved and prescription-mask-collection must not be resolved during Stage 5C.",
+      "handles": [
+        "prescription-mask-collection"
+      ]
+    },
+    {
+      "lesson_handle": "choosing-a-mask",
+      "field": "downloadable_resources",
+      "reason": "Shopify File GIDs are unresolved.",
+      "handles": [
+        "mask-choice-comparison"
+      ]
+    },
+    {
+      "lesson_handle": "choosing-a-mask",
+      "field": "primary_cta",
+      "reason": "CTA URL is unresolved.",
+      "handles": [
+        "find-your-mask"
+      ]
+    },
+    {
+      "lesson_handle": "golden-rules-for-safer-snorkeling",
+      "field": "related_lessons",
+      "reason": "Related lesson entries do not yet exist in Shopify.",
+      "handles": [
+        "health-readiness-and-personal-responsibility",
+        "surface-safety-devices",
+        "pre-snorkel-checklist-and-planning",
+        "buddy-communication-and-awareness",
+        "snorkeling-emergencies-and-first-aid-awareness"
+      ]
+    },
+    {
+      "lesson_handle": "golden-rules-for-safer-snorkeling",
+      "field": "downloadable_resources",
+      "reason": "Shopify File GIDs are unresolved.",
+      "handles": [
+        "pre-snorkel-checklist"
+      ]
+    },
+    {
+      "lesson_handle": "currents-and-rip-currents",
+      "field": "related_lessons",
+      "reason": "Related lesson entries do not yet exist in Shopify.",
+      "handles": [
+        "pre-snorkel-checklist-and-planning",
+        "beach-flags-and-surface-warnings",
+        "waves-tides-and-surge",
+        "duck-diving-basics"
+      ]
+    },
+    {
+      "lesson_handle": "currents-and-rip-currents",
+      "field": "related_tools",
+      "reason": "Tool URLs are unresolved.",
+      "handles": [
+        "site-condition-planning-checklist"
+      ]
+    },
+    {
+      "lesson_handle": "currents-and-rip-currents",
+      "field": "downloadable_resources",
+      "reason": "Shopify File GIDs are unresolved.",
+      "handles": [
+        "current-types-quick-reference"
+      ]
+    }
+  ],
+  "shopify_user_errors": [],
+  "draft_status_verification": {
+    "all_created_entries_draft": true,
+    "categories": [
+      {
+        "id": "gid://shopify/Metaobject/370461344077",
+        "handle": "gear-masks-vision",
+        "status": "DRAFT"
+      },
+      {
+        "id": "gid://shopify/Metaobject/370461376845",
+        "handle": "safety-conditions",
+        "status": "DRAFT"
+      },
+      {
+        "id": "gid://shopify/Metaobject/370461409613",
+        "handle": "in-water-skills",
+        "status": "DRAFT"
+      },
+      {
+        "id": "gid://shopify/Metaobject/370461442381",
+        "handle": "underwater-science-your-body",
+        "status": "DRAFT"
+      },
+      {
+        "id": "gid://shopify/Metaobject/370461475149",
+        "handle": "marine-life-conservation",
+        "status": "DRAFT"
+      }
+    ],
+    "lessons": [
+      {
+        "id": "gid://shopify/Metaobject/370464325965",
+        "lesson_id": "R01",
+        "handle": "choosing-a-mask",
+        "status": "DRAFT",
+        "primary_category_reference": "gid://shopify/Metaobject/370461344077",
+        "expected_url_pattern": "https://oceansoptics.com/pages/learn/choosing-a-mask"
+      },
+      {
+        "id": "gid://shopify/Metaobject/370464358733",
+        "lesson_id": "R08",
+        "handle": "golden-rules-for-safer-snorkeling",
+        "status": "DRAFT",
+        "primary_category_reference": "gid://shopify/Metaobject/370461376845",
+        "expected_url_pattern": "https://oceansoptics.com/pages/learn/golden-rules-for-safer-snorkeling"
+      },
+      {
+        "id": "gid://shopify/Metaobject/370464391501",
+        "lesson_id": "R12",
+        "handle": "currents-and-rip-currents",
+        "status": "DRAFT",
+        "primary_category_reference": "gid://shopify/Metaobject/370461376845",
+        "expected_url_pattern": "https://oceansoptics.com/pages/learn/currents-and-rip-currents"
+      }
+    ]
+  },
+  "unexpected_changes": [],
+  "blocking_issues": [],
+  "operation_log": [
+    "Reused learning_category definition (REUSED FROM PARTIAL RUN).",
+    "Reused category gear-masks-vision.",
+    "Reused category safety-conditions.",
+    "Reused category in-water-skills.",
+    "Reused category underwater-science-your-body.",
+    "Reused category marine-life-conservation.",
+    "Category draft entries ready: 0 created, 5 reused.",
+    "Created initial learning_lesson definition without related_lessons.",
+    "Added related_lessons self-reference field to learning_lesson definition.",
+    "Pilot lesson draft entries ready: 3 created, 0 reused.",
+    "Created learning_pathway definition."
+  ],
+  "post_write_verification": {
+    "performed": true,
+    "definitions_present": [
+      "learning_category",
+      "learning_lesson",
+      "learning_pathway"
+    ],
+    "definitions_missing": [],
+    "entry_counts": {
+      "learning_category": 5,
+      "learning_lesson": 3,
+      "learning_pathway": 0
+    }
+  },
+  "safe_to_proceed_to_theme_pilot": true
+}

@@ -1,0 +1,261 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "custom_css": [
+        "{text-align: center;}"
+      ],
+      "settings": {
+        "show_h1_title_collection": false,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "breadcrumbs_YdyUxj": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "image_banner_eXz8BU": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Mobile_I_Can_Sea_Merch_Banner.png",
+        "image_2": "shopify://shop_images/I_Can_Sea_Shirt_Banner_1200_x_350_px.svg",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "rich_text_JWcez4": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_zEjEwi": {
+          "type": "heading",
+          "settings": {
+            "heading": "I Can Sea Tees",
+            "set_h1": true,
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_zEjEwi"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 36,
+        "columns_desktop": 3,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "vertical",
+        "enable_sorting": false,
+        "columns_mobile": "2",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_with_text_yRiyEa": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_8Y8anL": {
+          "type": "heading",
+          "settings": {
+            "heading": "Your T-Shirt Helps Build and Grow a Coral Reef!",
+            "heading_size": "h1"
+          }
+        },
+        "text_YEDU7R": {
+          "type": "text",
+          "settings": {
+            "text": "<p>When you buy from Oceans Optics, you are not just getting an ultra cool Ocean Tee, you are helping us build real living coral reefs.</p><p>A portion of every sale goes towards our artificial reef project in Koh Tao, Thailand. We worked with Global Reef and the Thai Department of Marine & Coastal Resources to sink a custom steel structure shaped like a prescription scuba mask. Onto this frame we attach living coral fragments that grow over time, attracting fish and turning the structure into a living reef and safe haven for marine life.</p><p>So each time you wear your Tee, you can be proud knowing you are also actively helping save the ocean we all love. Thank you!</p>",
+            "text_style": "body"
+          }
+        },
+        "button_UWQ7MP": {
+          "type": "button",
+          "settings": {
+            "button_label": "Learn More",
+            "button_link": "shopify://pages/learn-more-about-our-artificial-reef",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_8Y8anL",
+        "text_YEDU7R",
+        "button_UWQ7MP"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Mask_with_people.png",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "top",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_behavior": "none",
+        "mobile_content_alignment": "left",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "guide_product_page_Va6V9H": {
+      "type": "guide-product-page",
+      "name": "Snorkeling 101 - Product Page",
+      "settings": {}
+    },
+    "featured_collection_cfXA39": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Are You Ready to Sea It All?",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-2",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "17251656810b40b5df": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_yfLeiR": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_yfLeiR"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "1732780819ff99620d": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_MT6Uf3": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_MT6Uf3"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "oo_quiz_card_h8rwWP": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    }
+  },
+  "order": [
+    "banner",
+    "breadcrumbs_YdyUxj",
+    "image_banner_eXz8BU",
+    "rich_text_JWcez4",
+    "product-grid",
+    "oo_quiz_card_h8rwWP",
+    "image_with_text_yRiyEa",
+    "guide_product_page_Va6V9H",
+    "featured_collection_cfXA39",
+    "17251656810b40b5df",
+    "1732780819ff99620d"
+  ]
+}

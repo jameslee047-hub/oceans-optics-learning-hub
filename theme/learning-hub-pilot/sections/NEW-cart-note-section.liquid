@@ -1,0 +1,52 @@
+<!-- cart-prescription-note.liquid -->
+
+<div class="cart-note-section">
+    <label for="cart-prescription-note" id="cart-prescription-note-label"></label>
+    <textarea id="cart-prescription-note" name="attributes[Prescription Note]" rows="4" style="width: 100%;" placeholder="Leave your prescription, and we’ll ensure it’s perfect!">{{ cart.attributes['Prescription Note'] }}</textarea>
+</div>
+
+<!-- Script for Handling the Prescription Note on Cart Page -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const noteField = document.getElementById('cart-prescription-note');
+        const noteLabel = document.getElementById('cart-prescription-note-label');
+        const noteValue = localStorage.getItem('productNote') || noteField.value.trim();
+
+        if (noteValue.length > 0) {
+            noteLabel.innerHTML = `More than JUST a mask!<br>Thank you, <span style="color: #B95e05;">"${noteValue}"</span> has been linked to the order.`;
+            noteField.style.display = 'none';
+            // Clear the localStorage after populating the cart note
+            localStorage.removeItem('productNote');
+        } else {
+            noteLabel.textContent = "More than JUST an order!";
+            noteField.style.display = 'block';
+        }
+
+        // Save the note when it changes
+        noteField.addEventListener('input', function() {
+            fetch('/cart/update.js', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    attributes: {
+                        'Prescription Note': noteField.value
+                    }
+                })
+            }).then(response => {
+                if (!response.ok) {
+                    console.error('Failed to update cart note');
+                }
+            });
+        });
+    });
+</script>
+
+{% schema %}
+{
+  "name": "Prescription Note Section",
+  "settings": []
+}
+{% endschema %}

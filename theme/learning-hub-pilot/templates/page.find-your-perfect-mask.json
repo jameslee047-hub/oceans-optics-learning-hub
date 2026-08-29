@@ -1,0 +1,91 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_KNVA6i": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_6Nxw7N": {
+          "type": "heading",
+          "settings": {
+            "heading": "Your Vision Changes Underwater",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_XWb7nj": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Use our FREE calculator tool to help you account for the magnification effect underwater and give you the vision as clear as day!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_6Nxw7N",
+        "text_XWb7nj"
+      ],
+      "disabled": true,
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "mask_sizing_tool_QNYcpW": {
+      "type": "mask-sizing-tool",
+      "name": "Mask Sizing Tool",
+      "settings": {}
+    },
+    "oo_quiz_card_JdWcJP": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "lens_calc_tool_product_8GgNnL": {
+      "type": "lens-calc-tool-product",
+      "disabled": true,
+      "name": "Lens Calculator",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_KNVA6i",
+    "mask_sizing_tool_QNYcpW",
+    "oo_quiz_card_JdWcJP",
+    "lens_calc_tool_product_8GgNnL"
+  ]
+}

@@ -1,0 +1,42 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "can"
+  },
+  "parent": "product.the-reef-rover.json",
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_RhbpBW": {
+          "name": "Prescription Lens Info",
+          "settings": {
+            "heading_not_h2": true,
+            "content": "<p>This mask features Nearsighted (SPH) lenses in Negative diopters (e.g., -1.50, -2.00 & -6.00).</p><p>Tempered glass lenses for strength, safety, and clear underwater vision.</p><p>Available in -1.50, -2.00, -3.00, -3.50, -4.00, -4.50, -5.00, -5.50, -6.00.</p><p>The close proximity of this low-volume frame prevents us from installing stronger lenses</p>"
+          }
+        },
+        "collapsible_tab_KmcLrp": {
+          "settings": {
+            "heading": "Free Shipping All Orders Over $70",
+            "content": "<p>All orders are carefully packed  — Quality guaranteed! $5.99 for orders below $70, USPS Tracked [5-14 days]</p>"
+          }
+        }
+      }
+    },
+    "featured_collection_rF9FkW": {
+      "settings": {
+        "quick_add": "none",
+        "columns_mobile": "1"
+      },
+      "blocks": {}
+    }
+  }
+}

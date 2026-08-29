@@ -1,0 +1,36 @@
+{% schema %}
+  {
+    "name": "Product Note",
+    "settings": []
+  }
+{% endschema %}
+
+<div class="product-note-section">
+    <label for="product-note">Add a note to your order:</label>
+    <textarea id="product-note" name="note" rows="4" style="width: 100%;" placeholder="Enter any special instructions or notes for your order here..."></textarea>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const noteField = document.getElementById('product-note');
+
+        // If there is a note saved in the sessionStorage, populate it
+        if (sessionStorage.getItem('productNote')) {
+            noteField.value = sessionStorage.getItem('productNote');
+        }
+
+        // Save the note to sessionStorage on input
+        noteField.addEventListener('input', function() {
+            sessionStorage.setItem('productNote', noteField.value);
+        });
+
+        // Add the note to the cart when the "Add to cart" button is clicked
+        document.querySelector('form[action="/cart/add"]').addEventListener('submit', function() {
+            const noteInput = document.createElement('input');
+            noteInput.type = 'hidden';
+            noteInput.name = 'properties[Order Note]';
+            noteInput.value = noteField.value;
+            this.appendChild(noteInput);
+        });
+    });
+</script>

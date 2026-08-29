@@ -1,0 +1,621 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 20,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_jRmicx": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_R9qyrY": {
+          "type": "heading",
+          "settings": {
+            "heading": "Prescription Snorkel Masks with Astigmatism: Complete Lens Selection Guide",
+            "set_h1": true,
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "heading_R9qyrY"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "image_with_text_q3crwG": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_UF6Ade": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>How to choose the right lens strength when sphere-only lenses can't correct your CYL and fully custom ones are $300-$500!</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_cRCUTN": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If you have astigmatism, buying a prescription snorkel mask gets confusing fast. Your glasses prescription shows SPH, CYL, and AXIS, but most off-the-shelf mask lenses are sphere-only, they correct nearsightedness or farsightedness (SPH) but don't directly correct astigmatisms (CYL or AXIS).</p><p>So here's what we're actually trying to do:</p><p>Get your vision clear enough to enjoy the ocean and comfortable enough to explore the water for longer.</p>",
+            "text_style": "body"
+          }
+        },
+        "button_LzWhcY": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Prescription Masks",
+            "button_link": "shopify://collections/all-our-masks",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_UF6Ade",
+        "text_cRCUTN",
+        "button_LzWhcY"
+      ],
+      "custom_css": [],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/How_prescrption_snorkel_mask_work_underwater_e269956b-9417-4511-9f31-a6ffe7e10c4c.png",
+        "height": "adapt",
+        "desktop_image_width": "small",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "",
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 20
+      }
+    },
+    "17693942645b300500": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_ebeb855_aQP6JG": {
+          "type": "ai_gen_block_ebeb855",
+          "settings": {
+            "image": "shopify://shop_images/Why_objects_look_bigger_and_closer_underwater_266cf8e9-174c-4aee-8b79-43bd9f234ddd.png",
+            "image_max_width": 500,
+            "image_border_radius": 0,
+            "heading": "<strong>Why does Everything Look Bigger and Closer Underwater?</strong>",
+            "heading_size": 18,
+            "heading_color": "#023059",
+            "text": "<p>Your mask creates an air pocket in front of your eyes. That air space is why you can see at all, your eyes are built to focus in air, not water.</p><p>But here's what creates the magnification: Light travels from the underwater object, bends when it enters the mask's air space, and then enters your eye. Because the light is coming from farther away (through water, then air) before reaching your eye, your brain interprets the object as larger and closer than it actually is.</p><p><strong>This \"magnification effect\" means:</strong></p><ul><li>Objects look about 25% closer</li><li>Objects look about 33% bigger</li></ul><p>This is why many people feel over-corrected using their exact glasses prescription underwater. The water environment is already magnifying things and changing how your eyes focus.</p><p><strong>There's also a second factor:</strong> Mask lenses sit farther from your eyes than glasses do. This extra distance can make prescriptions feel slightly different, especially stronger ones.</p><p><strong>Bottom line:</strong> Your land prescription might not be your perfect underwater prescription.</p>",
+            "text_size": 18,
+            "text_color": "#023059",
+            "text_gap": 8,
+            "text_vertical_position": "center",
+            "button_text": "",
+            "button_link": "",
+            "button_text_size": 16,
+            "button_bg_color": "#b95e05",
+            "button_hover_bg_color": "#023059",
+            "button_text_color": "#ffffff",
+            "button_border_radius": 20,
+            "layout": "row-reverse",
+            "vertical_alignment": "center",
+            "content_gap": 20,
+            "container_width": 1300,
+            "section_padding": 20,
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_ebeb855_aQP6JG"
+      ],
+      "settings": {}
+    },
+    "rich_text_kmW8ht": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_XyT7Qq": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why does Everything Look Bigger and Closer Underwater?</strong>",
+            "set_h1": false,
+            "heading_size": "h2"
+          }
+        },
+        "text_DHqPPc": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Your mask creates an air pocket in front of your eyes. That air space is why you can see at all, your eyes are built to focus in air, not water.</h2>"
+          }
+        },
+        "text_m6V4RF": {
+          "type": "text",
+          "settings": {
+            "text": "<p>But that air space and mask lens change how light bends, which means:</p><ul><li><strong>Objects look about 25% closer</strong></li><li><strong>Objects look about 33% bigger</strong></li></ul><p>This \"magnification effect\" is why many people feel over-corrected using their exact glasses prescription underwater. The water is already helping you see.</p><p>There's also a second factor: mask lenses sit farther from your eyes than glasses do. This distance can make prescriptions feel slightly different, especially stronger ones.</p><p><strong>Bottom line:</strong> Your land prescription might not be your perfect underwater prescription.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_XyT7Qq",
+        "text_DHqPPc",
+        "text_m6V4RF"
+      ],
+      "disabled": true,
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "rich_text_6qkCQz": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_PdFzYg": {
+          "type": "heading",
+          "settings": {
+            "heading": "Which numbers do I use?",
+            "set_h1": false,
+            "heading_size": "h2"
+          }
+        },
+        "text_tG9deP": {
+          "type": "text",
+          "settings": {
+            "text": "<p><em>Use your SPH for each eye. Ignore AXIS. Keep CYL in mind for your decision, but don't try to convert it.</em></p>"
+          }
+        },
+        "caption_Mynb7b": {
+          "type": "caption",
+          "disabled": true,
+          "settings": {
+            "caption": "Use your SPH for each eye. Ignore AXIS. Keep CYL in mind for your decision, but don't try to convert it.",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "small"
+          }
+        }
+      },
+      "block_order": [
+        "heading_PdFzYg",
+        "text_tG9deP",
+        "caption_Mynb7b"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-8cfe49c2-43f9-4bb9-af98-9bd68089d69c",
+        "full_width": false,
+        "padding_top": 28,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_pFb9DV": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_mm9QyY": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Going Weaker vs Staying at SPHERE: Understanding the Trade-off</strong>",
+            "set_h1": false,
+            "heading_size": "h2"
+          }
+        },
+        "text_rzhQtK": {
+          "type": "text",
+          "settings": {
+            "text": "<p>When we say \"go weaker,\" we mean closer to zero:</p><ul><li><strong>For myopia:</strong> −3.00 → −2.50 (less minus)</li><li><strong>For hyperopia:</strong> +2.00 → +1.50 (less plus)</li></ul><p>This isn't a rule, it's a choice between comfort and sharpness.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_mm9QyY",
+        "text_rzhQtK"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "full_width": true,
+        "padding_top": 20,
+        "padding_bottom": 32
+      }
+    },
+    "multicolumn_FbCAgx": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_9K4DXG": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>If You Go Weaker (0.50 to 0.75):</strong>",
+            "title_h3": false,
+            "text": "<p>✓ More relaxed vision<br/><br/>✓ Less eye strain on 60-90 minute snorkels<br/><br/>✓ Fewer headaches for sensitive people<br/><br/>✗ Some fine detail softness (gauges, small fish)<br/><br/>✗ More blur if CYL is moderate to high</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_CAEgYL": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>If You Stay at Your Exact SPH:</strong>",
+            "title_h3": false,
+            "text": "<p>✓ Familiar, predictable vision<br/><br/>✓ Sharper detail for gauges or photography<br/><br/>✓ Great clarity on the surface<br/><br/>✗ Can feel \"too strong\" underwater<br/><br/>✗ More fatigue on long sessions<br/><br/>✗ Higher headache risk</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_9K4DXG",
+        "column_CAEgYL"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 2,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn_3Nj4gK": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_Vp6J8e": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Myopia_Vision_Nearsighted.png",
+            "title": "<strong>Nearsighted (Myopia)</strong>",
+            "title_h3": false,
+            "text": "<p>Distance vision blurry</p><p>SPH is <strong>negative</strong> (−3.00)</p><p>Higher number = stronger</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_GPrfNg": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Hyperopia_Vision_Farsighted.png",
+            "title": "<strong>Farsighted (Hyperopia/Presbyopia)</strong>",
+            "title_h3": false,
+            "text": "<p>Near vision is blurry</p><p>SPH is <strong>positive</strong> (+2.00)</p><p>Higher number = stronger</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_4jgcRb": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ASTIGMATISM_Vision_coral_reef.png",
+            "title": "<strong>Astigmatism</strong>",
+            "title_h3": false,
+            "text": "<p>Vision is duplicated</p><p>Shown as <strong>CYL and AXIS</strong></p><p></p><p>CYL will cause blur if you go too weak with your Sph.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_Vp6J8e",
+        "column_GPrfNg",
+        "column_4jgcRb"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "PRESCRIPTION BASICS - QUICK REFERENCE",
+        "heading_size": "h2",
+        "image_width": "full",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_maYHCx": {
+      "type": "rich-text",
+      "blocks": {
+        "text_VNyeD3": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p><strong>The key:</strong> As your CYL increases, going weaker backfires because the sphere lens can't fix axis blur. </p><p>With higher CYL, stay closer to SPH.</p>"
+          }
+        },
+        "heading_FB9Wdf": {
+          "type": "heading",
+          "settings": {
+            "heading": "How To Choose Based on Your CYL Level",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "text_VNyeD3",
+        "heading_FB9Wdf"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 0
+      }
+    },
+    "collapsible_content_nxDjeE": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_q9TBwW": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "LOW CYL (0.00 to 0.75)",
+            "icon": "eye",
+            "row_content": "<p><strong>Comfort Start:</strong> Go 0.25 to 0.50 weaker than SPH<br/><strong>Sharper Option:</strong> Stay at your SPH</p><p>Example:<br/><br/><strong>SPH −3.00, CYL −0.50</strong></p><p><br/>→ Try −2.50 for comfort<br/>→ Try −3.00 for sharpness (comfort warning)</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_XFKnc6": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "MODERATE CYL (1.00 to 1.75)",
+            "icon": "eye",
+            "row_content": "<p><strong>Comfort Start:</strong> SPH or only 0.25 weaker max<br/><strong>Don't Go:</strong> More than 0.50 weaker</p><p>Example:<br/><br/><strong>SPH −3.75, CYL −1.50</strong><br/></p><p>→ Try −3.50<br/>→ Avoid 3.00 (too soft)</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_Kfrar8": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "HIGH CYL (2.00 to 3.00)",
+            "icon": "eye",
+            "row_content": "<p><strong>Comfort Start:</strong> Keep SPH  the same<br/><strong>Sharper Option:</strong> Stay at SPH or round up by 0.25 max. (Comfort Warnign when rounding up.</p><p><span style=\"text-decoration:underline\">Example 1:</span><br/></p><p><strong>SPH −2.50, CYL −2.25<br/></strong></p><p>→ Choose −2.50 for comfort<br/>→ Choose  −3.00 for sharpnes</p><p><span style=\"text-decoration:underline\">Example 2:</span></p><p><strong>SPH −2.75, CYL −2.50</strong></p><p>→ Choose −3.00 for sharpness</p><p></p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_ApmUbJ": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "VERY HIGH CYL (3.25+)",
+            "icon": "eye",
+            "row_content": "<p><strong>Comfort Start: </strong>Stay at Sphere<br/><strong>Crisp Option:</strong> Go 0.25-0.50 higher than sphere.</p><p><strong>Example 1:</strong><br/><br/>SPH −2.75, CYL −3.00<br/><br/>→ Best option −3.00</p><p></p><p><strong>Example 2:</strong><br/><br/>SPH −0.50, CYL −3.50<br/><br/>→ Best option −1.00</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_q9TBwW",
+        "collapsible_row_XFKnc6",
+        "collapsible_row_Kfrar8",
+        "collapsible_row_ApmUbJ"
+      ],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "Most stock lenses come in 0.50 increments. Your job isn't perfection, it's picking the best lens for your priorities. For each CYL range, here's what works:",
+        "heading": "",
+        "not_heading": false,
+        "heading_size": "h0",
+        "heading_alignment": "center",
+        "layout": "row",
+        "color_scheme": "inverse",
+        "container_color_scheme": "background-2",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 24,
+        "padding_bottom": 12
+      }
+    },
+    "rich_text_QmbkDf": {
+      "type": "rich-text",
+      "blocks": {
+        "text_3iHNEk": {
+          "type": "text",
+          "settings": {
+            "text": "<p> TIP: Ignore the CYL plus or minus sign, we only care about the number:</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_3iHNEk"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 0,
+        "padding_bottom": 28
+      }
+    },
+    "rich_text_AQbaQd": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_d6kjCb": {
+          "type": "heading",
+          "settings": {
+            "heading": "⚠️ The Comfort Warning",
+            "set_h1": false,
+            "heading_size": "h2"
+          }
+        },
+        "caption_AU4VTe": {
+          "type": "caption",
+          "settings": {
+            "caption": "A stronger lens can look fantastic for 10 minutes, then feel annoying at minute 50.",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "text_AXYYw4": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>You may get:</strong></p><p>✅ Sharper edges and detail</p><p>✅ Less soft blur with high CYL</p><p><strong>But risk increases for:</strong></p><p>❌ Eye strain on long snorkels</p><p>❌ Headaches</p><p>❌ \"Too strong\" sensation underwater</p><p><span style=\"text-decoration:underline\"><strong>My instructor rule: <br/></strong></span></p><p><strong>Short, detail-heavy sessions</strong> (photography, navigation): crisp can be worth it.</p><p><strong>Long snorkels, casual diving</strong>: comfort usually wins.</p><p>Adding +0.25 to your sphere is a very small change and should feel comfortable with minimal discomfort</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_d6kjCb",
+        "caption_AU4VTe",
+        "text_AXYYw4"
+      ],
+      "custom_css": [],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "full_width": false,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "multicolumn_yGkYHa": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_qd7WGA": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>SPH −3.00 & CYL −0.50</strong>",
+            "title_h3": false,
+            "text": "<p><strong>Recommendations</strong>:</p><ul><li>Comfort: −2.50</li><li>Crisp: −3.00</li><li>Avoid: -3.50</li></ul>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_xGnhxj": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>SPH −3.25 & CYL −1.50</strong>",
+            "title_h3": false,
+            "text": "<p><strong>Recommendations</strong>:</p><ul><li>Comfort: −3.00</li><li>Avoid: −2.50 (too soft)</li></ul>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_rGeCaQ": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>SPH −2.50 & CYL −2.75</strong>",
+            "title_h3": false,
+            "text": "<p><strong>Recommendations:</strong></p><ul><li>Comfort: −2.50</li><li>Crisp option: −3.00</li><li>Avoid: Going weaker</li></ul>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_zfMtJH": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>SPH −0.50 & CYL −3.50</strong>",
+            "title_h3": false,
+            "text": "<p><strong>Recommendation:</strong></p><ul><li>Crisp option: −1.00 (rounding up makes sense here)</li><li>Avoid: Going weaker</li></ul>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_qd7WGA",
+        "column_xGnhxj",
+        "column_rGeCaQ",
+        "column_zfMtJH"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Real Life Example Prescriptions",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 4,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "Shop Prescription Masks",
+        "button_link": "shopify://collections/all-our-masks",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "custom_liquid_96fKA8": {
+      "type": "custom-liquid",
+      "name": "Quick pick lens summary",
+      "settings": {
+        "custom_liquid": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <style>\n        body {\n            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;\n            padding: 20px;\n            background-color: #023059;\n        }\n        \n        .container {\n            max-width: 1000px;\n            margin: 0 auto;\n            background-color: #fff;\n            padding: 30px;\n            border-radius: 8px;\n            box-shadow: 0 2px 8px rgba(0,0,0,0.1);\n        }\n        \n        h2 {\n            color: #023059;\n            margin-bottom: 20px;\n            font-size: 24px;\n        }\n        \n        h3 {\n            color: #B95E05;\n            margin-top: 30px;\n            margin-bottom: 15px;\n            font-size: 20px;\n        }\n        \n        table {\n            width: 100%;\n            border-collapse: collapse;\n            margin: 20px 0;\n        }\n        \n        th {\n            background-color: #023059;\n            color: white;\n            padding: 15px;\n            text-align: left;\n            font-weight: 600;\n            font-size: 16px;\n        }\n        \n        td {\n            padding: 15px;\n            border-bottom: 1px solid #023059;\n            font-size: 15px;\n        }\n        \n        tr:hover {\n            background-color: #f8f9fa;\n        }\n        \n        tr:last-child td {\n            border-bottom: none;\n        }\n        \n        .cyl-value {\n            font-weight: 600;\n            color: #023059;\n        }\n        \n        .note {\n            background-color: #B95E05;\n            border-left: 4px solid #B95E05;\n            padding: 15px;\n            margin-top: 20px;\n            border-radius: 4px;\n            color: #ffffff;\n        }\n        \n        .note strong {\n            color: #ffffff;\n        }\n        \n        .section-divider {\n            height: 2px;\n            background-color: #023059;\n            margin: 30px 0;\n            opacity: 0.2;\n        }\n        \n        .lens-type-badge {\n            display: inline-block;\n            padding: 4px 12px;\n            border-radius: 4px;\n            font-size: 14px;\n            font-weight: 600;\n            margin-bottom: 10px;\n        }\n        \n        .minus-badge {\n            background-color: #023059;\n            color: white;\n        }\n        \n        .plus-badge {\n            background-color: #023059;\n            color: white;\n        }\n        \n        @media (max-width: 600px) {\n            th, td {\n                padding: 10px;\n                font-size: 14px;\n            }\n            \n            h2 {\n                font-size: 20px;\n            }\n            \n            h3 {\n                font-size: 18px;\n            }\n        }\n    </style>\n</head>\n<body>\n    <div class=\"container\">\n        <h2>Quick Lens Pick Summary</h2>\n        \n        <!-- NEARSIGHTED SECTION -->\n        <h3><span class=\"lens-type-badge minus-badge\">Nearsighted (Minus −)</span></h3>\n        <p><strong>Start with your SPH value for each eye.</strong></p>\n        <p>Then adjust based on your CYL level:</p>\n        \n        <table>\n            <thead>\n                <tr>\n                    <th>Your CYL</th>\n                    <th>Recommendation</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td class=\"cyl-value\">0.00 – 0.75</td>\n                    <td>Start <strong>0.25 to 0.50 weaker</strong> than <strong>SPH</strong></td>\n                </tr>\n                <tr>\n                    <td class=\"cyl-value\">1.00 – 1.75</td>\n                    <td>Start at <strong>SPH</strong> or <strong>0.25 weaker</strong> max</td>\n                </tr>\n                <tr>\n                    <td class=\"cyl-value\">2.00 – 3.00</td>\n                    <td>Start at <strong>SPH</strong>; consider one <strong>0.25 stronger</strong> for sharpness</td>\n                </tr>\n                <tr>\n                    <td class=\"cyl-value\">3.25+</td>\n                    <td>Start at <strong>SPH</strong>; consider <strong>0.25-0.50 stronger</strong> for sharpness</td>\n                </tr>\n            </tbody>\n        </table>\n        \n        <div class=\"note\">\n            <strong>Remember:</strong> Stronger can be sharper but may increase eye strain. Comfort vs. crisp is your choice.\n        </div>\n        \n        <div class=\"section-divider\"></div>\n        \n        <!-- FARSIGHTED SECTION -->\n        <h3><span class=\"lens-type-badge plus-badge\">Farsighted (Plus +)</span></h3>\n        <p><strong>Start with your SPH value for each eye.</strong></p>\n        <p>Our farsighted lenses come in whole number steps only: <strong>+1.00, +2.00, +3.00, +4.00, +5.00</strong></p>\n        <p>Round based on your CYL level:</p>\n        \n        <table>\n            <thead>\n                <tr>\n                    <th>Your CYL</th>\n                    <th>Recommendation</th>\n                </tr>\n            </thead>\n            <tbody>\n                <tr>\n                    <td class=\"cyl-value\">0.00 – 1.75</td>\n                    <td><strong>Round down</strong> to nearest whole number for comfort</td>\n                </tr>\n                <tr>\n                    <td class=\"cyl-value\">2.00+</td>\n                    <td>Round to <strong>nearest whole number</strong> with comfort tie-break:<br>\n                        • If SPH ends in .25 or .50 → round <strong>down</strong><br>\n                        • If SPH ends in .75 → round <strong>up</strong></td>\n                </tr>\n            </tbody>\n        </table>\n        \n        <div class=\"note\">\n            <strong>Special cases:</strong> If your prescription is +0.50 or +0.75, we recommend starting with +1.00 for optimal underwater vision.\n        </div>\n    </div>\n</body>\n</html>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "custom_liquid_Lr4KVh": {
+      "type": "custom-liquid",
+      "name": "v6.1",
+      "settings": {
+        "custom_liquid": "<!-- Oceans Optics Underwater Lens Calculator (CYL ranges + 0.50 step output) -->\n<style>\n/* ------------- Base / no horizontal scroll ------------- */\nhtml, body { overflow-x: hidden; width: 100%; }\n#calculator-container *,\n.calculator-recommendations * { font-family: \"Lato\", serif; }\n\n/* Clamp to phone width, respect your 405px design - CENTERED */\n#calculator-container {\n  max-width: min(405px, 100vw - 16px);\n  margin: 5px auto;\n  padding: 10px;\n  border-radius: 10px;\n  background: #fff;\n  border: 2px solid #023059;\n  display: block; \n  text-align: center;\n}\n\n#lens-calculator h2,\n#lens-calculator h3,\n#lens-calculator label { color:#023059; }\n#lens-calculator p {\n  color:#023059; margin-bottom:30px; font-weight:400; line-height:normal; font-size:20px;\n}\n\n/* ------------- Tooltips ------------- */\n#lens-calculator p .tooltip,\n[for=\"leftEyeSphere\"] .tooltip,\n.mask-card .tooltip,\n.tooltip {\n  display:inline-block; transform:translateY(0); cursor:pointer; position:relative; z-index:1;\n}\n.mask-card .tooltip svg{width:20px;height:20px;margin-left:2px}\n#lens-calculator p .tooltip{z-index:2}\n\n#lens-calculator p .tooltip .tooltiptext,\n[for=\"leftEyeSphere\"] .tooltip .tooltiptext,\n.mask-card .tooltip .tooltiptext,\n.tooltip .tooltiptext{\n  width:190px; max-width:calc(100vw - 24px);\n  background: #023059;\n  color:#fff; \n  padding:10px; text-align:center;\n  border-radius:6px; font-size:14px; line-height:1.5;\n  position:absolute; left:50%; top:30px;\n  --offset: 70px;\n  transform: translateX(calc(-50% + var(--offset)));\n  visibility:hidden; opacity:0; transition:opacity .2s, visibility .2s;\n  pointer-events:auto; will-change:transform;\n}\n.mask-card .tooltip .tooltiptext{ width:230px; font-size:11px; }\n[for=\"leftEyeSphere\"] .tooltip .tooltiptext{text-align:left}\n[for=\"leftEyeSphere\"] .tooltip .tooltiptext ul{padding-inline-start:12px}\n#lens-calculator p .tooltip .tooltiptext::after,\n[for=\"leftEyeSphere\"] .tooltip .tooltiptext::after,\n.mask-card .tooltip .tooltiptext::after,\n.tooltip .tooltiptext::after{\n  content:\" \"; position:absolute; bottom:100%; left:50%; margin-left:-5px;\n  border-width:5px; border-style:solid; border-color:transparent transparent #023059 transparent;\n}\n.mask-card .tooltip .tooltiptext::after{ left:40.5% }\n\n/* Show on hover (desktop) */\n#lens-calculator p .tooltip:hover .tooltiptext,\n[for=\"leftEyeSphere\"] .tooltip:hover .tooltiptext,\n.mask-card .tooltip:hover .tooltiptext,\n.tooltip:hover .tooltiptext{\n  visibility:visible!important; opacity:1!important;\n}\n/* Also show when toggled by touch/click */\n.tooltip.open .tooltiptext{ visibility:visible!important; opacity:1!important; }\n\n#lens-calculator a{ color:#023059; margin-bottom:10px }\n\n/* ------------- Input groups ------------- */\n#lens-calculator .input-group{\n  position:relative;\n  display:flex; flex-wrap:wrap; gap:0; align-items:center; margin-bottom:10px;\n  padding:20px 0px; text-align:center; border:2px solid #023059; border-radius:30px; justify-content:center;\n}\n#lens-calculator .input-group label{ margin-bottom:16px; font-weight:700; font-size:16px; display:block }\n.input-group__wrapper{ display:flex; gap:01%; justify-content:space-between; }\n.input-group__inner{ display:flex; gap:4px; align-items:center; flex-wrap:wrap; }\n\n/* Help icon inside each input group */\n.input-help{ position:absolute; top:20px; right:23px; width:22px; height:22px; display:inline-flex; align-items:center; justify-content:flex-end; }\n.input-help svg{ width:22px; height:22px; fill:#B95E05; opacity:.99 }\n.input-help .tooltiptext{ right:0; left:auto; top:26px; transform:none; max-width:min(260px, calc(100vw - 24px)); }\n.input-help .tooltiptext::after{ left:auto; right:12px; margin-left:0; }\n\n/* Sign (+/-) */\n#lens-calculator .input-group #rightEyeSphereSign,\n#lens-calculator .input-group #leftEyeSphereSign{\n  width:44px; height:44px; border:1px solid #023059; border-radius:10px; background:#fff; color:#023059;\n  font-size:23px; font-weight:800; cursor:pointer; line-height:1;\n}\n\n/* Picker */\n.picker-wrapper{ display:inline-flex; align-items:center; gap:1px; }\n.picker-dot{ color:#023059; font-weight:800; margin:0 1px; }\n.picker-wrapper select{\n  appearance:none; -webkit-appearance:none; -moz-appearance:none;\n  border:0; border-radius:8px; background:#fff; color:#023059;\n  padding:13px 10px; font-size:16px; font-weight:800; width:43px; min-width:0;\n  text-align:center; text-align-last:center; line-height:1.2; box-sizing:border-box;\n  box-shadow: inset 0 0 0 1px #023059;\n}\n.picker-wrapper select:focus{ outline:2px solid #b95e05; outline-offset:1px; }\n\n/* Cylinder dropdown row */\n#lens-calculator .input-group .cyl-row {\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  width: 100%;\n  margin: 10px 0 0;\n  padding: 0 16px;\n  box-sizing: border-box;\n}\n\n#lens-calculator .input-group .cyl-row label {\n  color: #023059;\n  font-weight: 800;\n  font-size: 12px;\n  margin: 0;\npadding: 0 2px;\n  white-space: nowrap;\n  flex-shrink: 0;\n}\n\n#lens-calculator .input-group .cyl-row select {\n  flex: 1;\n  min-width: 0;\n  appearance: none;\n  -webkit-appearance: none;\n  -moz-appearance: none;\n  border: 1px solid #023059;\n  border-radius: 8px;\n  background: #fff;\n  color: #023059;\n  padding: 4px 4px;\n  font-size: 14px;\n  font-weight: 800;\n  cursor: pointer;\n}\n\n#lens-calculator .input-group .cyl-row select:focus {\n  outline: 2px solid #b95e05;\n  outline-offset: 1px;\n}\n\n#lens-calculator .input-group .cyl-row .help-tip {\n  flex: 0 0 auto;\n}\n\n#lens-calculator .input-group .cyl-row .help-tip svg {\n  width: 16px;\n  height: 16px;\n  fill: #B95E05;\n  opacity: .9;\n}\n\n/* CTA */\n#final-calculate-button{\n  padding:10px 20px; border:2px solid #b95e05; background:#b95e05; color:#fff; border-radius:30px;\n  cursor:pointer; font-weight:700; text-align:center; display:block; margin:25px auto; font-size:24px; box-shadow:0 4px 6px rgba(0,0,0,.1)\n}\n\n/* Results */\n.results-container{\n  display:none; justify-content:space-between; margin-top:15px; padding:10px;\n  background:url('{{ 'Lens background.png' | asset_url }}') center center no-repeat;\n  background-size:contain; min-height:420px;\n}\n/* FINAL results background tuning */\n#calculator-container .results-container{\n  min-height: 200px !important;\n  padding-top: 4px !important;\n  padding-bottom: 6px !important;\n  background-size: 95% auto !important;\n  background-position: center 38% !important;\n}\n.results-box{\n  flex:1; padding:12px; margin:5px; text-align:center; border-radius:10px; font-size:20px; font-weight:700; color:#023059;\n  display:flex; justify-content:center; align-items:center; flex-direction:column; gap:8px;\n  position:static; top:auto; left:auto; right:auto;\n}\n.error-message{ color:red; font-weight:700; text-align:center; margin-top:10px; display:none }\n\n/* Recos grid */\n.mask-grid{ display:flex; gap:20px; max-width:1200px; margin:0 auto; flex-wrap:wrap; justify-content:center }\n.mask-grid>h1{font-size:30px}\n.mask-card{ background:#fff; border:1px solid #ddd; border-radius:10px; overflow:hidden; display:flex; flex-direction:column; width:calc(33.333% - 20px) }\n.recomment-headline{ width:100% }\n.mask-image{ width:80%; height:280px; object-fit:cover; background:#eee; margin:0 auto }\n@media (max-width:800px){ .mask-card{ width:45% } .mask-image{ width:95%; height:auto; object-fit:contain } }\n@media (max-width:500px){ .mask-card{ width:95% } }\n\n.card-content{ padding:1rem; flex:1; display:flex; flex-direction:column; justify-content:space-between }\n.mask-title{ font-weight:800; font-size:1.7rem; margin:0 0 .35rem; color:#023059; display:flex; justify-content:space-between; gap:10px; align-items:flex-start }\n.mask-title .price-slot{ font-size:1rem; font-weight:800; white-space:nowrap; }\n\n/* Product card meta */\n.lens-meta{ margin:.25rem 0 .75rem; color:#023059; font-size:1rem; line-height:1.35; }\n.lens-meta .meta-row{ display:flex; align-items:flex-start; gap:8px; margin:.18rem 0; }\n.lens-meta .meta-row strong{ font-weight:900; }\n.meta-tick{\n  width:18px; height:18px; flex:0 0 18px;\n  border-radius:5px;\n  border:2px solid #023059;\n  display:inline-flex;\n  align-items:center;\n  justify-content:center;\n  margin-top:1px;\n  box-sizing:border-box;\n}\n.meta-tick svg{ width:12px; height:12px; fill:#023059; }\n.meta-muted{ color:rgba(2,48,89,.75); font-weight:700; font-size:.95rem; }\n\n.btn-row{ display:flex; gap:10px; margin-top:.75rem; flex-wrap:wrap }\n.btn{ display:inline-block; padding:.55rem 1rem; border-radius:10px; text-decoration:none; font-size:1rem; text-align:center; cursor:pointer; border:none; font-weight:800 }\n.product-link{ background:#B95E05; color:#fff } .product-link:hover{ background:#012345 }\n.waitlist-btn{ background:#B95E05; color:#fff } .waitlist-btn:hover{ background:#9a4e04 }\n\n/* Fit helper link */\n.fit-helper{\n  margin-top:.45rem;\n  font-weight:800;\n  font-size:.95rem;\n}\n.fit-helper a{\n  color:#023059;\n  text-decoration:underline;\n}\n.fit-note{\n  margin-top:.5rem;\n  color:rgba(2,48,89,.8);\n  font-size:.98rem;\n  font-weight:700;\n  line-height:1.25;\n}\n\n.calculator-recommendations{ margin-bottom:20px }\n\n/* Small-screen refinements */\n@media(max-width:768px){\n  .input-group__wrapper{ gap:4px }\n}\n@media(max-width:500px){\n  .input-group__wrapper{ font-size:15px }\n  .input-group__inner{ gap:2px }\n  #lens-calculator .input-group #rightEyeSphereSign,\n  #lens-calculator .input-group #leftEyeSphereSign{ width:44px; height:44px }\n  #lens-calculator .input-group label{ margin-bottom:10px; font-size:15px }\n  #lens-calculator .input-group{ border-radius:20px; justify-content:flex-start; padding-left:2px }\n  .results-container{ background-size:110% }\n  .input-help .tooltiptext { left:50% !important; right:auto !important; transform:translateX(-50%) !important; width:260px; max-width:calc(100vw - 24px) !important; }\n  .input-help .tooltiptext::after { left:50% !important; right:auto !important; margin-left:-5px !important; }\n  .mask-title{ font-size:1.45rem; }\n  #lens-calculator .input-group .cyl-row { gap: 4px; padding: 0 10px; }\n  #lens-calculator .input-group .cyl-row label { font-size: 11px; }\n  #lens-calculator .input-group .cyl-row select { font-size: 10px; padding: 6px 4px; }\n  #lens-calculator .input-group .cyl-row .help-tip svg { width: 14px; height: 14px; }\n}\n\n/* No-flash measuring */\n.tooltip .tooltiptext.measuring { visibility:hidden !important; opacity:0 !important; }\n#lens-calculator .input-group label { padding-right:25px; }\n\n/* simple bounce for attention */\n@keyframes bounce { 0%,20%,50%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-6px)} 60%{transform:translateY(-3px)} }\n</style>\n\n<h2 style=\"text-align: center; color: #023059; font-family: 'Lato', serif; margin: 20px auto 10px; max-width: 405px;\">Use Our  Exclusive Underwater Lens Calculator Tool</h2>\n\n<div id=\"calculator-container\">\n  <div id=\"lens-calculator\">\n    <p>\n      <span class=\"tooltip\" aria-label=\"Underwater Rx note\">\n        <svg viewBox=\"0 0 24 24\" width=\"28\" height=\"28\" style=\"margin-right:4px; vertical-align:middle;\">\n  <circle cx=\"12\" cy=\"12\" r=\"10\" fill=\"#B95E05\" opacity=\".12\"></circle>\n  <path d=\"M11 10h2v7h-2zm0-3h2v2h-2z\" fill=\"#B95E05\"></path>\n</svg>\n        <span class=\"tooltiptext\">\n          Underwater, light bends differently and can make your usual prescription feel too strong. <br>\n          We lower it slightly to prevent overmagnification and keep your vision clear.\n        </span>\n      </span>\n      Step 1: Enter your prescription to determine your recommended underwater vision\n    </p>\n\n    <div class=\"input-group__wrapper\">\n      <!-- RIGHT -->\n      <div class=\"input-group\">\n        <label for=\"rightEyeSphere\">Right SPH (OD)</label>\n        <span class=\"tooltip input-help\" aria-label=\"Sign help\">\n          <svg viewBox=\"0 0 25 30\"><circle cx=\"12\" cy=\"12\" r=\"12\" opacity=\".12\"></circle><path d=\"M11 10h2v7h-2zm0-3h2v2h-2z\"></path></svg>\n          <span class=\"tooltiptext\">Choose the sign first:<br> Use <strong>[−] minus</strong> for Myopia (nearsighted/shortsighted), <strong>[+] plus</strong> for hyperopia/presbyopia (farsighted/longsighted).</span>\n        </span>\n        <div class=\"input-group__inner\">\n          <button type=\"button\" id=\"rightEyeSphereSign\" class=\"notactivated\" onclick=\"toggleSign(this)\">+/-</button>\n          <div class=\"picker-wrapper\" data-side=\"right\">\n            <select id=\"rightInt\" aria-label=\"Right integer\"></select>\n            <span class=\"picker-dot\">.</span>\n            <select id=\"rightFrac\" aria-label=\"Right quarter\"></select>\n          </div>\n          <input type=\"hidden\" id=\"rightEyeSphere\" value=\"0.00\">\n        </div>\n\n        <div class=\"cyl-row\">\n          <label for=\"cyl-range-right\">CYL:</label>\n          <select id=\"cyl-range-right\">\n            <option value=\"low\">0.00 to 0.75</option>\n            <option value=\"medium\">1.00 to 1.75</option>\n            <option value=\"high\">2.00 to 3.00</option>\n            <option value=\"very-high\">3.25+</option>\n          </select>\n          <span class=\"tooltip help-tip\" aria-label=\"About cylinder\">\n            <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\">\n              <circle cx=\"12\" cy=\"12\" r=\"12\" opacity=\".14\"></circle>\n              <path d=\"M11 10h2v7h-2zm0-3h2v2h-2z\"></path>\n            </svg>\n            <span class=\"tooltiptext\">\n              Our lenses are spherical and do not directly correct cylinder. Your CYL range helps us recommend the best starting lens strength from our available lenses.\n            </span>\n          </span>\n        </div>\n      </div>\n\n      <!-- LEFT -->\n      <div class=\"input-group\">\n        <label for=\"leftEyeSphere\">Left SPH (OS)</label>\n        <div class=\"input-group__inner\">\n          <button type=\"button\" id=\"leftEyeSphereSign\" class=\"notactivated\" onclick=\"toggleSign(this)\">+/-</button>\n          <div class=\"picker-wrapper\" data-side=\"left\">\n            <select id=\"leftInt\" aria-label=\"Left integer\"></select>\n            <span class=\"picker-dot\">.</span>\n            <select id=\"leftFrac\" aria-label=\"Left quarter\"></select>\n          </div>\n          <input type=\"hidden\" id=\"leftEyeSphere\" value=\"0.00\">\n        </div>\n\n        <div class=\"cyl-row\">\n          <label for=\"cyl-range-left\">CYL:</label>\n          <select id=\"cyl-range-left\">\n            <option value=\"low\">0.00 to 0.75</option>\n            <option value=\"medium\">1.00 to 1.75</option>\n            <option value=\"high\">2.00 to 3.00</option>\n            <option value=\"very-high\">3.25+</option>\n          </select>\n          <span class=\"tooltip help-tip\" aria-label=\"About cylinder\">\n            <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\">\n              <circle cx=\"12\" cy=\"12\" r=\"12\" opacity=\".14\"></circle>\n              <path d=\"M11 10h2v7h-2zm0-3h2v2h-2z\"></path>\n            </svg>\n            <span class=\"tooltiptext\">\n              Higher CYL usually needs less underwater reduction. We still output only the available 0.50 lens steps.\n            </span>\n          </span>\n        </div>\n      </div>\n    </div>\n\n    <button id=\"final-calculate-button\" onclick=\"calculateLensStrength()\">Find My Lenses</button>\n\n    <div class=\"error-message\" id=\"error-message\"></div>\n\n    <div>Suggested Lens Strength:</div>\n    <div class=\"results-container\">\n      <div class=\"results-box\"><div>Right</div><span id=\"recommendedRight\"></span></div>\n      <div class=\"results-box\"><div>Left</div><span id=\"recommendedLeft\"></span></div>\n    </div>\n  </div>\n</div>\n\n<div class=\"calculator-recommendations\">\n  <div class=\"mask-grid\" id=\"maskGrid\"></div>\n</div>\n\n<script>\n/* ===== Active catalog mask data only ===== */\nconst MASK_SIZING_HELPER_URL = \"https://oceansoptics.com/pages/mask-sizing-helper\";\n\nconst maskData = [\n  {\n    name: \"Rx Rover (Black Seal)\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-mask-nearsighted-prescription-all-black-59351695163725.png?v=1735634819\",\n    link: \"https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask\",\n    lensType: \"minus\",\n    allowsDifferentEyes: true,\n    diopterMin: -1.50,\n    diopterMax: -6.00,\n    diopterStep: 0.50,\n    temperedLenses: true,\n    uses: { snorkel:true, scuba:true, freedive:true },\n    quickNote: \"Picked for its low volume feel and secure seal, especially popular with freedivers and smaller profiles.\"\n  },\n  {\n    name: \"Rx Rover (White Seal)\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-rover-nearsighted-prescription-freediving-mask-with-snorkel-case-blue-white-1-5-left-1-5-right-59351692542285.png?v=1726317718\",\n    link: \"https://oceansoptics.com/products/white-rx-rover-nearsighted-prescription-dive-mask\",\n    lensType: \"minus\",\n    allowsDifferentEyes: true,\n    diopterMin: -1.50,\n    diopterMax: -6.00,\n    diopterStep: 0.50,\n    temperedLenses: true,\n    uses: { snorkel:true, scuba:true, freedive:true },\n    quickNote: \"Same Rover fit and performance, with a bright look that photographers love.\"\n  },\n  {\n    name: \"Rx Rover Action\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-snorkelling-mask-rx-rover-nearsighted-prescription-dive-mask-w-cam-mount-prescription-dive-mask-black-small-corrective-lenses-1-50-6-00-go-pro-mount-all-black-60219517075789.png?v=1728049485\",\n    link: \"https://oceansoptics.com/products/the-rx-rover-scuba-diving-mask-with-action-camera-mount-copy\",\n    lensType: \"minus\",\n    allowsDifferentEyes: true,\n    diopterMin: -1.50,\n    diopterMax: -6.00,\n    diopterStep: 0.50,\n    temperedLenses: true,\n    uses: { snorkel:true, scuba:true, freedive:true },\n    quickNote: \"Rover fit plus camera mount for easy filming without extra adapters.\"\n  },\n  {\n    name: \"Rx Obsidian (Black Seal)\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-nearsighted-prescription-mask-all-black-59396610392397.png?v=1726323647\",\n    link: \"https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling\",\n    lensType: \"minus\",\n    allowsDifferentEyes: true,\n    diopterMin: -1.00,\n    diopterMax: -9.00,\n    diopterStep: 0.50,\n    temperedLenses: true,\n    uses: { snorkel:true, scuba:true, freedive:true },\n    quickNote: \"Picked as the most balanced all-round mask, fitting a wide range of faces comfortably.\"\n  },\n  {\n    name: \"Rx Obsidian (Clear Seal)\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-the-rx-obsidian-nearsighted-mask-for-scuba-and-snorkeling-clear-57266194284877.png?v=1717585741\",\n    link: \"https://oceansoptics.com/products/prescription-scuba-dive-snorkel-mask-optical\",\n    lensType: \"minus\",\n    allowsDifferentEyes: true,\n    diopterMin: -1.00,\n    diopterMax: -9.00,\n    diopterStep: 0.50,\n    temperedLenses: true,\n    uses: { snorkel:true, scuba:true, freedive:true },\n    quickNote: \"Clear skirt helps brighten your view in overcast water, lakes, and lower visibility conditions.\"\n  },\n  {\n    name: \"Obsidian Action\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-medium-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-black-with-go-pro-mount-60865230766413.png?v=1731156278\",\n    link: \"https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling\",\n    lensType: \"minus\",\n    allowsDifferentEyes: true,\n    diopterMin: -1.00,\n    diopterMax: -9.00,\n    diopterStep: 0.50,\n    temperedLenses: true,\n    uses: { snorkel:true, scuba:true, freedive:true },\n    quickNote: \"Obsidian fit plus camera mount for hands-free filming on dives and snorkel trips.\"\n  },\n  {\n    name: \"Rx Lumix (Black Seal)\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-optical-dive-mask-aluminum-rx-lumix-optical-dive-mask-aluminum-silver-on-black-60644425662797.png?v=1730293366\",\n    link: \"https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0\",\n    lensType: \"minus\",\n    allowsDifferentEyes: true,\n    diopterMin: -1.50,\n    diopterMax: -6.00,\n    diopterStep: 0.50,\n    temperedLenses: true,\n    uses: { snorkel:true, scuba:true, freedive:true },\n    quickNote: \"Picked for comfort and a forgiving seal that adapts well to many face shapes.\"\n  },\n  {\n    name: \"Rx Lumix (White Seal)\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-new-rx-lumix-optical-dive-mask-aluminum-white-series-new-rx-lumix-optical-dive-mask-aluminum-white-series-gold-on-white-60704407617869.png?v=1730379404\",\n    link: \"https://oceansoptics.com/products/rx-lumix-optical-dive-mask-aluminum-white-series\",\n    lensType: \"minus\",\n    allowsDifferentEyes: true,\n    diopterMin: -1.50,\n    diopterMax: -6.00,\n    diopterStep: 0.50,\n    temperedLenses: true,\n    uses: { snorkel:true, scuba:true, freedive:true },\n    quickNote: \"Same Lumix feel and comfort, with a brighter look and premium finish.\"\n  },\n  {\n    name: \"Rx Obsidian (Farsighted)\",\n    img: \"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-nearsighted-prescription-mask-all-black-59396610392397.png?v=1726323647\",\n    link: \"https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask\",\n    lensType: \"plus\",\n    allowsDifferentEyes: true,\n    diopterMin: 1.00,\n    diopterMax: 5.00,\n    diopterStep: 1.00,\n    temperedLenses: true,\n    uses: { snorkel:true, scuba:true, freedive:true },\n    quickNote: \"Bring close-up details back into focus with our dedicated Farsighted (Hyperopia) Rx Mask.\"\n  }\n];\n\nconst WAITLIST_EMAIL = \"info@oceansoptics.com\";\n\n/* ===== Shopify price fetch (safe) ===== */\nconst priceCache = new Map();\nasync function fetchPriceHTML(mask){\n  if(!mask?.link) return \"\";\n  if(priceCache.has(mask.link)) return priceCache.get(mask.link);\n  try{\n    const r=await fetch(mask.link + \".js\");\n    if(r.ok){\n      const data=await r.json();\n      const cents=(data.variants||[]).map(v=>v.price).filter(Number.isFinite);\n      const min=cents.length?Math.min(...cents):(Number.isFinite(data.price)?data.price:null);\n      if(Number.isFinite(min)){\n        const html=`<span class=\"price-chip\">${(min/100).toLocaleString(undefined,{style:\"currency\",currency:\"USD\"})}</span>`;\n        priceCache.set(mask.link,html);\n        return html;\n      }\n    }\n  }catch(e){}\n  const fallback = \"\";\n  priceCache.set(mask.link,fallback);\n  return fallback;\n}\n\n/* ===== UI helpers ===== */\nfunction toggleSign(btn){\n  btn.classList.remove(\"notactivated\");\n  if(btn.innerText===\"+/-\") btn.innerText=\"-\";\n  else if(btn.innerText===\"-\") btn.innerText=\"+\";\n  else btn.innerText=\"+/-\";\n}\n\n/* ===== Picker (int + quarter) ===== */\nconst QUARTERS=[\"00\",\"25\",\"50\",\"75\"];\nconst QUARTER_MAP={ \"00\":\"0.00\",\"25\":\"0.25\",\"50\":\"0.50\",\"75\":\"0.75\" };\n\nfunction buildIntOptions(sel){\n  sel.innerHTML=\"\";\n  for(let i=0;i<=10;i++){\n    const o=document.createElement(\"option\");\n    o.value=String(i);\n    o.textContent=i;\n    sel.appendChild(o);\n  }\n}\nfunction buildFracOptions(sel,allowAll=true){\n  sel.innerHTML=\"\";\n  QUARTERS.forEach(q=>{\n    const o=document.createElement(\"option\");\n    o.value=q;\n    o.textContent=q;\n    sel.appendChild(o);\n  });\n  if(!allowAll){\n    sel.value=\"00\";\n    Array.from(sel.options).forEach(o=>{ if(o.value!==\"00\") o.disabled=true; });\n  }\n}\nfunction updateHidden(side){\n  const intSel=document.getElementById(side+\"Int\");\n  const fracSel=document.getElementById(side+\"Frac\");\n  const hidden=document.getElementById(side+\"EyeSphere\");\n  const intVal=parseInt(intSel.value,10);\n  const frac=parseFloat(QUARTER_MAP[fracSel.value]||\"0.00\");\n  if(intVal===10 && fracSel.value!==\"00\") buildFracOptions(fracSel,false);\n  hidden.value=(intVal+frac).toFixed(2);\n}\nfunction initPicker(side){\n  const intSel=document.getElementById(side+\"Int\");\n  const fracSel=document.getElementById(side+\"Frac\");\n  buildIntOptions(intSel);\n  buildFracOptions(fracSel,true);\n  intSel.value=\"0\";\n  fracSel.value=\"00\";\n  updateHidden(side);\n  intSel.addEventListener(\"change\",()=>{\n    buildFracOptions(fracSel, parseInt(intSel.value,10) < 10 );\n    updateHidden(side);\n  });\n  fracSel.addEventListener(\"change\",()=>updateHidden(side));\n  [intSel,fracSel].forEach(sel=>{\n    sel.addEventListener(\"wheel\",e=>{\n      e.preventDefault();\n      const d=Math.sign(e.deltaY);\n      const idx=sel.selectedIndex;\n      const next=Math.max(0,Math.min(sel.options.length-1,idx+d));\n      sel.selectedIndex=next;\n      sel.dispatchEvent(new Event(\"change\",{bubbles:true}));\n    },{passive:false});\n  });\n}\ndocument.addEventListener(\"DOMContentLoaded\",()=>{\n  initPicker(\"left\");\n  initPicker(\"right\");\n});\n\n/* ===== Product card rendering ===== */\nfunction tickIcon(){\n  return `\n    <span class=\"meta-tick\" aria-hidden=\"true\">\n      <svg viewBox=\"0 0 24 24\">\n        <path d=\"M9.0 16.2 4.8 12l-1.4 1.4L9.0 19 21 7l-1.4-1.4z\"></path>\n      </svg>\n    </span>\n  `;\n}\n\nfunction fmtMinus(min, max, step){\n  const a = Number(min).toFixed(2);\n  const b = Number(max).toFixed(2);\n  const s = Number(step).toFixed(2);\n  return `${a} to ${b} (steps of ${s})`;\n}\n\nfunction fmtPlus(min, max, step){\n  const a = Number(min).toFixed(2);\n  const b = Number(max).toFixed(2);\n  const s = Number(step).toFixed(2);\n  return `+${a} to +${b} (steps of ${s})`;\n}\n\nfunction lensOptionsText(mask){\n  if(mask.lensType === \"minus\") return fmtMinus(mask.diopterMin, mask.diopterMax, mask.diopterStep);\n  if(mask.lensType === \"plus\") return fmtPlus(mask.diopterMin, mask.diopterMax, mask.diopterStep);\n  return \"Coming soon\";\n}\n\nfunction renderCards(cards, container){\n  container.innerHTML = \"\";\n  cards.forEach(async mask=>{\n    const card=document.createElement(\"div\");\n    card.className=\"mask-card\";\n\n    const imgEl=document.createElement(\"img\");\n    imgEl.src=mask.img;\n    imgEl.alt=mask.name;\n    imgEl.className=\"mask-image\";\n\n    const content=document.createElement(\"div\");\n    content.className=\"card-content\";\n\n    const title=document.createElement(\"div\");\n    title.className=\"mask-title\";\n    title.innerHTML = `<span>${mask.name}</span><span class=\"price-slot\"></span>`;\n\n    const priceSlot = title.querySelector(\".price-slot\");\n    if(mask.link){\n      fetchPriceHTML(mask).then(html => { priceSlot.innerHTML = html; });\n    }\n\n    const meta=document.createElement(\"div\");\n    meta.className=\"lens-meta\";\n    meta.innerHTML = `\n      <div class=\"meta-row\"><strong>Lens Options:</strong> <span class=\"meta-muted\">${lensOptionsText(mask)}</span></div>\n      <div class=\"meta-row\">${tickIcon()}<div><strong>Tempered Glass Lenses</strong></div></div>\n      <div class=\"meta-row\">${tickIcon()}<div><strong>Snorkeling</strong></div></div>\n      <div class=\"meta-row\">${tickIcon()}<div><strong>Scuba</strong></div></div>\n      <div class=\"meta-row\">${tickIcon()}<div><strong>Freediving</strong></div></div>\n      <div class=\"meta-row\"><strong>Differing lens per eye:</strong> <span class=\"meta-muted\">Yes</span></div>\n    `;\n\n    const note=document.createElement(\"div\");\n    note.className=\"fit-note\";\n    note.textContent = mask.quickNote || \"\";\n\n    const helper=document.createElement(\"div\");\n    helper.className=\"fit-helper\";\n    helper.innerHTML = `Need help choosing a fit? <a href=\"https://oceansoptics.com/pages/how-to-check-if-a-mask-will-fit-you-online\" target=\"_blank\" rel=\"noopener\">View our Mask Sizing Helper</a>`;\n\n    const btnRow=document.createElement(\"div\");\n    btnRow.className=\"btn-row\";\n\n    if(mask.link){\n      const link=document.createElement(\"a\");\n      link.href=mask.link;\n      link.target=\"_blank\";\n      link.rel=\"noopener\";\n      link.className=\"btn product-link\";\n      link.textContent=\"View Product\";\n      btnRow.appendChild(link);\n    }\n\n    content.appendChild(title);\n    content.appendChild(meta);\n    if(mask.quickNote) content.appendChild(note);\n    content.appendChild(helper);\n    content.appendChild(btnRow);\n\n    card.appendChild(imgEl);\n    card.appendChild(content);\n    container.appendChild(card);\n  });\n}\n\n/* ===== Matching logic based on active maskData only ===== */\nfunction parseSigned(str){\n  const s=String(str||\"\").trim();\n  if(s===\"0\"||s===\"0.00\") return { sign:\"zero\", value:0 };\n  const sign = s.startsWith(\"+\") ? \"plus\" : (s.startsWith(\"-\") ? \"minus\" : \"unknown\");\n  const value = Number(s.replace(/[^\\d.]/g,\"\"));\n  return { sign, value: Number.isFinite(value) ? value : 0 };\n}\n\nfunction supportsDiopter(mask, signedStr){\n  const parsed = parseSigned(signedStr);\n  \n  if(mask.lensType === \"minus\" && parsed.sign !== \"minus\") return false;\n  if(mask.lensType === \"plus\" && parsed.sign !== \"plus\") return false;\n  \n  const abs = parsed.value;\n  const minAbs = Math.abs(mask.diopterMin);\n  const maxAbs = Math.abs(mask.diopterMax);\n  const low = Math.min(minAbs, maxAbs);\n  const high = Math.max(minAbs, maxAbs);\n\n  return abs >= low - 1e-9 && abs <= high + 1e-9;\n}\n\nfunction findMatchingMasks(leftStr, rightStr){\n  const L = parseSigned(leftStr);\n  const R = parseSigned(rightStr);\n\n  if(L.sign !== R.sign) return { type:\"mixed\", matches:[] };\n  if(L.sign !== \"minus\" && L.sign !== \"plus\") return { type:\"invalid\", matches:[] };\n\n  const same = (leftStr === rightStr);\n\n  const matches = maskData.filter(m=>{\n    if(L.sign === \"minus\" && m.lensType !== \"minus\") return false;\n    if(L.sign === \"plus\" && m.lensType !== \"plus\") return false;\n    if(!same && !m.allowsDifferentEyes) return false;\n    return supportsDiopter(m,leftStr) && supportsDiopter(m,rightStr);\n  });\n\n  return { type: L.sign === \"minus\" ? \"minus\" : \"plus\", matches };\n}\n\n/* ===== Results helpers ===== */\nfunction displayResults(power,id){\n  const el=document.getElementById(id);\n  if(power===\"Not available\"){\n    el.textContent=\"Not available. Contact us for more help.\";\n    el.style.color=\"red\";\n  }else{\n    el.textContent=`${power}`;\n    el.style.color=\"#023059\";\n  }\n}\n\n/* ===== Calculator logic ===== */\nfunction calculateLensStrength(){\n  const leftSphere=parseFloat(document.getElementById(\"leftEyeSphere\").value)||0;\n  const rightSphere=parseFloat(document.getElementById(\"rightEyeSphere\").value)||0;\n  const leftSign=document.getElementById(\"leftEyeSphereSign\").innerText;\n  const rightSign=document.getElementById(\"rightEyeSphereSign\").innerText;\n\n  if(leftSign===\"+/-\"||rightSign===\"+/-\"){\n    const msg=document.getElementById(\"error-message\");\n    msg.textContent=\"Error: Choose + or - diopter.\";\n    msg.style.display=\"block\";\n    [\"#leftEyeSphereSign\",\"#rightEyeSphereSign\"].forEach(sel=>{\n      const el=document.querySelector(sel);\n      el.style.animation=\"none\";\n      setTimeout(()=>el.style.animation=\"bounce 1s\",50);\n    });\n    return;\n  }else{\n    document.getElementById(\"error-message\").style.display=\"none\";\n  }\n\n  const adjLeft = calcOne(leftSphere,leftSign,\"left\");\n  const adjRight = calcOne(rightSphere,rightSign,\"right\");\n\n  displayResults(adjRight, \"recommendedRight\");\n  displayResults(adjLeft,  \"recommendedLeft\");\n\n  const grid=document.getElementById(\"maskGrid\");\n  grid.innerHTML = \"\";\n\n  /* Mixed sign prescriptions - no products available */\n  if(leftSign!==rightSign){\n    grid.innerHTML = '<h1 class=\"recomment-headline\">We currently do not have masks that support different lens types (nearsighted + farsighted) for each eye. Please contact us for custom solutions.</h1>';\n    document.querySelector(\".results-container\").style.display=\"flex\";\n    return;\n  }\n\n  /* Farsighted beyond range */\n  if(leftSign === \"+\" && (rightSphere > 5 || leftSphere > 5)){\n    grid.innerHTML = '<h1 class=\"recomment-headline\">Our farsighted lenses go up to +5.00</h1>';\n    const best = findMatchingMasks(\"+5.00\",\"+5.00\");\n    if(best.matches.length) renderCards(best.matches, grid);\n    document.querySelector(\".results-container\").style.display=\"flex\";\n    return;\n  }\n\n  /* Nearsighted warning beyond -9.00 */\n  if(leftSign === \"-\" && (rightSphere>9 || leftSphere>9)){\n    grid.innerHTML = '<h1 class=\"recomment-headline\">Our nearsighted lenses go up to -9.00</h1>';\n    const best = findMatchingMasks(\"-9.00\",\"-9.00\");\n    if(best.matches.length) renderCards(best.matches, grid);\n    document.querySelector(\".results-container\").style.display=\"flex\";\n    return;\n  }\n\n  const match = findMatchingMasks(adjLeft, adjRight);\n\n  if(match.type === \"minus\" || match.type === \"plus\"){\n    if(match.matches.length === 0){\n      grid.innerHTML = '<h1 class=\"recomment-headline\">We could not find an exact match in the active catalog right now.</h1>';\n    }else{\n      grid.innerHTML = `<center><h1 class=\"recomment-headline\">We found ${match.matches.length} mask${match.matches.length===1?\"\":\"s\"} with lenses that match your prescription!</h1></center>`;\n      renderCards(match.matches, grid);\n    }\n  }\n\n  document.querySelector(\".results-container\").style.display=\"flex\";\n}\n\n/* ===== CYL AWARE RULES + FORCE STOCK STEPS =====\n   NEARSIGHTED (MINUS):\n   CYL 0.00-0.75: start 0.25-0.50 weaker (bias weaker)\n   CYL 1.00-1.75: start at SPH or 0.25 weaker max (bias weaker)\n   CYL 2.00-3.00: start at SPH (bias slightly stronger if needed)\n   CYL 3.25+:     start at SPH (bias stronger if needed)\n   \n   FARSIGHTED (PLUS):\n   Available in whole numbers only: +1, +2, +3, +4, +5\n   CYL 0.00-1.75: round down (comfort)\n   CYL 2.00+: round to nearest, with tie-break comfort (.25/.50 down, .75 up)\n*/\n\nfunction snapToHalf(valueAbs, bias){\n  const x = Math.max(0, Number(valueAbs||0));\n  const down = Math.floor(x * 2 + 1e-9) / 2;\n  const up   = Math.ceil(x * 2 - 1e-9) / 2;\n\n  if (Math.abs(x - down) < 1e-9) return down;\n\n  if (bias === \"weaker\") return down;\n  if (bias === \"stronger\") return up;\n\n  const dDown = Math.abs(x - down);\n  const dUp = Math.abs(up - x);\n  return (dDown <= dUp) ? down : up;\n}\n\nfunction snapToWhole(valueAbs, bias, cylMagnitude){\n  const x = Math.max(0, Number(valueAbs||0));\n  const whole = Math.floor(x);\n  const frac = x - whole;\n  \n  // If already whole number, return it\n  if(Math.abs(frac) < 1e-9) return whole;\n  \n  // CYL 0.00-1.75: always round down\n  if(cylMagnitude < 2.00){\n    return whole;\n  }\n  \n  // CYL 2.00+: comfort tie-break\n  // .25 or .50 goes down, .75 goes up\n  if(Math.abs(frac - 0.25) < 1e-6 || Math.abs(frac - 0.50) < 1e-6){\n    return whole; // round down\n  }\n  if(Math.abs(frac - 0.75) < 1e-6){\n    return whole + 1; // round up\n  }\n  \n  // For any other fractional values, round to nearest\n  return Math.round(x);\n}\n\nfunction getCylMagnitude(side){\n  const cylRange = document.getElementById(`cyl-range-${side}`)?.value || \"low\";\n  // Return a representative magnitude for the range\n  if(cylRange === \"low\") return 0.50; // 0.00-0.75\n  if(cylRange === \"medium\") return 1.50; // 1.00-1.75\n  if(cylRange === \"high\") return 2.50; // 2.00-3.00\n  return 3.50; // 3.25+\n}\n\nfunction calcOne(sphere, sign, side){\n  const cylRange = document.getElementById(`cyl-range-${side}`)?.value || \"low\";\n  const cylMagnitude = getCylMagnitude(side);\n  const isFar = sign === \"+\";\n\n  /* FARSIGHTED (+) LOGIC */\n  if(isFar){\n    const val = Math.max(0, Number(sphere||0));\n\n// If input is +0.50 or +0.75, recommend +1.00\nif(Math.abs(val - 0.50) < 1e-6 || Math.abs(val - 0.75) < 1e-6){\n  return \"+1.00\";\n}\n    \n    // If already whole number, keep it\n    const whole = Math.floor(val + 1e-9);\n    const frac = Math.round((val - whole) * 100) / 100;\n    \n    if(Math.abs(frac) < 1e-9){\n      // Already whole - cap to stock range\n      let result = val;\n      if(result > 5.00) result = 5.00;\n      if(result > 0 && result < 1.00) result = 1.00;\n      return result===0 ? \"0\" : `+${result.toFixed(2)}`;\n    }\n    \n    // Not whole - apply CYL-aware rounding\n    let recAbs = snapToWhole(val, \"nearest\", cylMagnitude);\n    \n    // Cap to stock range\n    if(recAbs > 5.00) recAbs = 5.00;\n    if(recAbs > 0 && recAbs < 1.00) recAbs = 1.00;\n    \n    return recAbs===0 ? \"0\" : `+${recAbs.toFixed(2)}`;\n  }\n\n  /* NEARSIGHTED (-) LOGIC */\n  const val = Math.max(0, Number(sphere||0));\n  const whole = Math.floor(val + 1e-9);\n  const frac  = Math.round((val - whole) * 100) / 100;\n\n  let targetAbs = val;\n  let bias = \"nearest\";\n\n  if(cylRange === \"low\"){\n    /* 0.00-0.75: 0.25-0.50 weaker */\n    const reduce = (Math.abs(frac - 0.25) < 1e-6 || Math.abs(frac - 0.75) < 1e-6) ? 0.25 : 0.50;\n    targetAbs = Math.max(0, val - reduce);\n    bias = \"weaker\";\n  }else if(cylRange === \"medium\"){\n    /* 1.00-1.75: at SPH or 0.25 weaker max */\n    targetAbs = val;\n    bias = \"weaker\";\n  }else if(cylRange === \"high\"){\n    /* 2.00-3.00: start at SPH, consider slightly stronger if needed */\n    targetAbs = val;\n    bias = \"stronger\";\n  }else{\n    /* 3.25+: start at SPH, consider stronger */\n    targetAbs = val;\n    bias = \"stronger\";\n  }\n\n  let recAbs = snapToHalf(targetAbs, bias);\n\n  /* stock caps */\n  if(recAbs > 9.00) recAbs = 9.00;\n  if(recAbs > 0 && recAbs < 1.00) recAbs = 1.00;\n\n  return recAbs===0 ? \"0\" : `-${recAbs.toFixed(2)}`;\n}\n\n/* ===== Tooltip clamp: keep bubbles inside viewport ===== */\n(function(){\n  const GUTTER = 12;\n  function clampTooltip(tip){\n    const bubble = tip.querySelector(\".tooltiptext\");\n    if(!bubble) return;\n    bubble.classList.add(\"measuring\");\n    const prev = bubble.style.display;\n    bubble.style.display=\"block\";\n    bubble.style.setProperty(\"--offset\",\"0px\");\n    void bubble.offsetHeight;\n    const rect = bubble.getBoundingClientRect();\n    let offset = 0;\n    if (rect.left < GUTTER) offset = GUTTER - rect.left;\n    else if (rect.right > (window.innerWidth - GUTTER)) offset = (window.innerWidth - GUTTER) - rect.right;\n    bubble.style.setProperty(\"--offset\", offset + \"px\");\n    bubble.style.display = prev || \"\";\n    bubble.classList.remove(\"measuring\");\n  }\n  function openTip(tip){ tip.classList.add(\"open\"); clampTooltip(tip); }\n  function closeAll(ex=null){\n    document.querySelectorAll(\".tooltip.open\").forEach(t=>{\n      if(ex && t===ex) return;\n      t.classList.remove(\"open\");\n      const b=t.querySelector(\".tooltiptext\");\n      if(b) b.style.setProperty(\"--offset\",\"0px\");\n    });\n  }\n  document.addEventListener(\"DOMContentLoaded\",()=>{\n    document.querySelectorAll(\".tooltip\").forEach(tip=>{\n      tip.addEventListener(\"click\", e=>{\n        e.preventDefault();\n        tip.classList.contains(\"open\") ? tip.classList.remove(\"open\") : (closeAll(tip), openTip(tip));\n      });\n      tip.addEventListener(\"mouseenter\", ()=>clampTooltip(tip));\n    });\n    document.addEventListener(\"click\",(e)=>{ if(!e.target.closest(\".tooltip\")) closeAll(); }, true);\n    [\"resize\",\"scroll\",\"orientationchange\"].forEach(evt=>{\n      window.addEventListener(evt, ()=>{ document.querySelectorAll(\".tooltip.open\").forEach(clampTooltip); });\n    });\n  });\n})();\n\n</script>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_jRmicx",
+    "image_with_text_q3crwG",
+    "17693942645b300500",
+    "rich_text_kmW8ht",
+    "rich_text_6qkCQz",
+    "rich_text_pFb9DV",
+    "multicolumn_FbCAgx",
+    "multicolumn_3Nj4gK",
+    "rich_text_maYHCx",
+    "collapsible_content_nxDjeE",
+    "rich_text_QmbkDf",
+    "rich_text_AQbaQd",
+    "multicolumn_yGkYHa",
+    "custom_liquid_96fKA8",
+    "custom_liquid_Lr4KVh"
+  ]
+}

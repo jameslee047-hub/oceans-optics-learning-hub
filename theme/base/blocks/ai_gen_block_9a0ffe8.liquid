@@ -1,0 +1,322 @@
+{% doc %}
+  @prompt
+    can we make a back to shopping button, that will just take the customer back to where they were when they added the item, i need to be able to adjust the section padding avobe and bleow it, and also be able to move it accross the horizontal plane
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-back-to-shopping-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding-top: {{ block.settings.padding_top }}px;
+    padding-bottom: {{ block.settings.padding_bottom }}px;
+    text-align: {{ block.settings.horizontal_alignment }};
+  }
+
+  .ai-back-to-shopping-button-{{ ai_gen_id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: {{ block.settings.button_padding }}px {{ block.settings.button_padding | times: 1.5 }}px;
+    background-color: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    border: {{ block.settings.border_thickness }}px solid {{ block.settings.border_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    font-size: {{ block.settings.font_size }}px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .ai-back-to-shopping-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+    color: {{ block.settings.button_hover_text_color }};
+    border-color: {{ block.settings.border_hover_color }};
+  }
+
+  .ai-back-to-shopping-icon-{{ ai_gen_id }} {
+    width: {{ block.settings.icon_size }}px;
+    height: {{ block.settings.icon_size }}px;
+    flex-shrink: 0;
+  }
+
+  .ai-back-to-shopping-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-back-to-shopping-{{ ai_gen_id }} {
+      width: 100%;
+      padding-top: {{ block.settings.padding_top_mobile }}px;
+      padding-bottom: {{ block.settings.padding_bottom_mobile }}px;
+    }
+  }
+{% endstyle %}
+
+<back-to-shopping-{{ ai_gen_id }}
+  class="ai-back-to-shopping-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <a
+    href="#"
+    class="ai-back-to-shopping-button-{{ ai_gen_id }}"
+    data-back-button
+  >
+    <span class="ai-back-to-shopping-icon-{{ ai_gen_id }}">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+    </span>
+    <span>{{ block.settings.button_text }}</span>
+  </a>
+</back-to-shopping-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class BackToShopping{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.button = this.querySelector('[data-back-button]');
+        if (this.button) {
+          this.setupButton();
+        }
+      }
+
+      setupButton() {
+        const referrer = document.referrer;
+        const currentDomain = window.location.hostname;
+        const fallbackUrl = '{{ block.settings.fallback_url | default: routes.all_products_collection_url }}';
+
+        if (referrer && referrer.includes(currentDomain)) {
+          this.button.href = referrer;
+        } else {
+          this.button.href = fallbackUrl;
+        }
+
+        this.button.addEventListener('click', function(event) {
+          if (window.history.length > 1 && document.referrer.includes(currentDomain)) {
+            event.preventDefault();
+            window.history.back();
+          }
+        });
+      }
+    }
+
+    customElements.define('back-to-shopping-{{ ai_gen_id }}', BackToShopping{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Back to shopping button",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Continue shopping"
+    },
+    {
+      "type": "url",
+      "id": "fallback_url",
+      "label": "Fallback link"
+    },
+    {
+      "type": "paragraph",
+      "content": "The button will take customers back to the previous page. If no previous page exists, it will use the fallback link (defaults to all products)."
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "label": "Font size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon size",
+      "min": 12,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "button_padding",
+      "label": "Padding",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 10,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "horizontal_alignment",
+      "label": "Horizontal alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding (desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding (desktop)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Top padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Bottom padding (mobile)",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Hover background",
+      "default": "#023059"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Text",
+      "default": "#023059"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Hover text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Border"
+    },
+    {
+      "type": "range",
+      "id": "border_thickness",
+      "label": "Thickness",
+      "min": 0,
+      "max": 4,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Color",
+      "default": "#023059"
+    },
+    {
+      "type": "color",
+      "id": "border_hover_color",
+      "label": "Hover color",
+      "default": "#023059"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 28
+    }
+  ],
+  "presets": [
+    {
+      "name": "Back to shopping button"
+    }
+  ]
+}
+{% endschema %}

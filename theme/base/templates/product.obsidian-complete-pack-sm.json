@@ -1,0 +1,588 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {}
+        },
+        "custom_liquid_DtdNRc": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Compact Lens Strength Calculator</title>\n <style>\n  #lens-calculator {\n    font-family: 'Lato', sans-serif;\n    max-width: 400px;\n    margin: 20px auto;\n    padding: 15px;\n    border-radius: 40px;\n    background-color: #ffffff;\n    box-shadow: 0 px 4px rgba(0,0,0,0.2);\n  }\n  #lens-calculator h2 {\n    font-size: 20px;\n    color: #023059;\n    font-family: 'Lato', sans-serif;\n    cursor: pointer;\n    text-align: center;\n    margin-bottom: 5px;\n    border: 2px solid #B95E05;\n    border-radius: 40px;\n    padding: 12px 20px;\n    transition: background-color 0.3s, color 0.3s;\n  }\n  #lens-calculator h2:hover {\n    background-color: #B95E05;\n    color: white;\n  }\n  #lens-calculator p {\n    color: #023059;\n    text-align: center;\n    margin: 10px 0;\n    font-size: 16px;\n  }\n  #lens-calculator .input-group {\n    margin-bottom: 10px;\n  }\n  #lens-calculator select, #lens-calculator input, #lens-calculator button, #lens-calculator .sign-btn {\n    width: calc(50% - 10px);\n    padding: 12px;\n    margin-top: 5px;\n    margin-bottom: 5px;\n    border-radius: 40px;\n    border: 2px solid #c023059;\n    font-size: 14px;\n    cursor: pointer;\n    appearance: none;\n    background-color: #f9f9f9;\n    padding-right: 10px;\n    display: inline-block; /* Make elements inline-block */\n    vertical-align: middle; /* Align elements vertically */\n  }\n  #lens-calculator select {\n    background: url('data:image/svg+xml;utf8,<svg fill=\"%23023059\" height=\"24\" viewBox=\"0 0 24 24\" width=\"24\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M7 10l5 5 5-5z\"/></svg>') no-repeat 95% 50%;\n    background-size: 20px;\n  }\n  #lens-calculator button, #lens-calculator .sign-btn {\n    width: calc(50% - 10px); /* Adjusted width */\n    border-radius: 40px;\n    background-color: transparent;\n    color: #B95E05;\n    border: 2px solid #B95E05;\n    font-weight: bold;\n    text-align: center;\n    transition: background-color 0.3s, color 0.3s;\n  }\n  #lens-calculator button:hover {\n    background-color: #B95E05;\n    color: white;\n  }\n  .results-container {\n    display: flex;\n    justify-content: space-between;\n    margin-top: 20px;\n  }\n  .results-box {\n    flex: 1;\n    padding: 20px;\n    background-color: #f0f0f0;\n    border-radius: 40px;\n    box-shadow: 0 2px 4px rgba(0,0,0,0.2);\n    font-size: 16px;\n    color: #023059;\n    margin: 10px 5px;\n    text-align: center; /* Center text */\n  }\n  .message-box {\n    margin-top: 20px;\n    background-color: #FFD700;\n    padding: 10px;\n    border-radius: 40px;\n    font-size: 14px;\n    text-align: center;\n    color: #023059;\n    display: none; /* Initially hidden */\n  }\n</style>\n</head>\n<body>\n\n<div id=\"lens-calculator\">\n    <h2 onclick=\"toggleAccordion()\">Lens Calculator</h2>\n    <div class=\"content\" style=\"max-height: 0; overflow: hidden; transition: max-height 0.5s ease;\">\n        <p>We see differently underwater. Adjust your RX to account for the magnification.</p>\n        \n        <div class=\"input-group\">\n            <label>LEFT</label>\n            <div class=\"input-group\">\n                <button class=\"sign-btn\" id=\"leftEyeSphereSign\" onclick=\"toggleSign('leftEyeSphereSign')\">+/-</button>\n                <input type=\"number\" id=\"leftEyeSphere\" step=\"0.01\" required placeholder=\"Insert Sphere\">\n            </div>\n            \n            <div class=\"input-group\">\n                <button class=\"sign-btn\" id=\"leftEyeCylinderSign\" onclick=\"toggleSign('leftEyeCylinderSign')\">+/-</button>\n                <input type=\"number\" id=\"leftEyeCylinder\" step=\"0.01\" required placeholder=\"Insert Cylinder\">\n            </div>\n        </div>\n        \n        <div class=\"input-group\">\n            <label>RIGHT</label>\n            <div class=\"input-group\">\n                <button class=\"sign-btn\" id=\"rightEyeSphereSign\" onclick=\"toggleSign('rightEyeSphereSign')\">+/-</button>\n                <input type=\"number\" id=\"rightEyeSphere\" step=\"0.01\" required placeholder=\"Insert Sphere\">\n            </div>\n            \n            <div class=\"input-group\">\n                <button class=\"sign-btn\" id=\"rightEyeCylinderSign\" onclick=\"toggleSign('rightEyeCylinderSign')\">+/-</button>\n                <input type=\"number\" id=\"rightEyeCylinder\" step=\"0.01\" required placeholder=\"Insert Cylinder\">\n            </div>\n        </div>\n        \n        <button onclick=\"calculateLensStrength()\">Calculate</button>\n\n        <div class=\"results-container\">\n            <div class=\"results-box\" id=\"leftResult\">Left: </div>\n            <div class=\"results-box\" id=\"rightResult\">Right: </div>\n        </div>\n        <div class=\"message-box\" id=\"messageBox\"></div>\n    </div>\n</div>\n\n<script>\n    function toggleAccordion() {\n        var content = document.querySelector('.content');\n        content.style.maxHeight = content.style.maxHeight ? null : content.scrollHeight + 'px';\n    }\n\n    function toggleSign(id) {\n        var btn = document.getElementById(id);\n        if (btn.textContent === '+/-') {\n            btn.textContent = '-';\n        } else if (btn.textContent === '-') {\n            btn.textContent = '+';\n        } else {\n            btn.textContent = '+/-';\n        }\n    }\n\n   function calculateLensStrength() {\n    const leftSphere = parseFloat(document.getElementById('leftEyeSphere').value) || 0;\n    const leftCylinder = parseFloat(document.getElementById('leftEyeCylinder').value) || 0;\n    const rightSphere = parseFloat(document.getElementById('rightEyeSphere').value) || 0;\n    const rightCylinder = parseFloat(document.getElementById('rightEyeCylinder').value) || 0;\n\n    const leftSign = document.getElementById('leftEyeSphereSign').textContent === '-' ? -1 : 1;\n    const rightSign = document.getElementById('rightEyeSphereSign').textContent === '-' ? -1 : 1;\n\n    const adjustedLeft = (leftSphere + (leftCylinder / 2) - 0.5) * leftSign;\n    const adjustedRight = (rightSphere + (rightCylinder / 2) - 0.5) * rightSign;\n\n    document.getElementById('leftResult').textContent = 'Left: ' + adjustedLeft.toFixed(2);\n    document.getElementById('rightResult').textContent = 'Right: ' + adjustedRight.toFixed(2);\n\n    const maxStrength = -9.0;\n    const leftMessage = adjustedLeft < maxStrength ? 'Our lenses go up to -9.0 diopters on selected models. Please select from the available options for each eye of the specific model. For higher prescriptions, we recommend consulting alternative opticians or specialists.' : '';\n    const rightMessage = adjustedRight < maxStrength ? 'Our lenses go up to -9.0 diopters on selected models. Please select from the available options for each eye of the specific model. For higher prescriptions, we recommend consulting alternative opticians or specialists.' : '';\n    const message = leftMessage || rightMessage;\n    document.getElementById('messageBox').textContent = message;\n\n    document.querySelector('.results-container').style.display = 'flex'; // Display results\n    document.querySelector('.message-box').style.display = message ? 'block' : 'none'; // Show message if exists\n}\n\n</script>\n\n</body>\n</html>"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown"
+          }
+        },
+        "text_BUV3et": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<a href=\"/pages/prescription-lenses\" target=\"_blank\" title=\"Prescription Lenses\">Lens guide</a>",
+            "text_style": "body"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        },
+        "complementary_wFyY66": {
+          "type": "complementary",
+          "settings": {
+            "block_heading": "You may need one of these..",
+            "make_collapsible_row": false,
+            "icon": "price_tag",
+            "product_list_limit": 10,
+            "products_per_page": 3,
+            "pagination_style": "counter",
+            "image_ratio": "square",
+            "enable_quick_add": true
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "rating",
+        "custom_liquid_DtdNRc",
+        "variant_picker",
+        "text_BUV3et",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "share",
+        "description",
+        "complementary_wFyY66"
+      ],
+      "settings": {
+        "enable_sticky_info": false,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "media_size": "small",
+        "constrain_to_viewport": false,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail",
+        "media_position": "left",
+        "image_zoom": "none",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "rich_text_6Mceya": {
+      "type": "rich-text",
+      "blocks": {
+        "text_TbMcrH": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>Discover the Mantis Obsidian Starter Kit, your essential companion for scuba, snorkeling, and freediving. This kit features the sleek Mantis Obsidian Mask, with its soft silicone skirt for a comfortable fit. Complete with adjustable fins, a safety dry bag float buoy, a snorkel and a protective zip case for the mask. Experience unmatched comfort and convenience on your dive adventures with this comprehensive set.</h2>"
+          }
+        },
+        "button_XBkmGJ": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "text_TbMcrH",
+        "button_XBkmGJ"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": true,
+        "padding_top": 16,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_TXKjWz": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_TYdqPm": {
+          "type": "heading",
+          "settings": {
+            "heading": "30 day money back guarantee",
+            "heading_size": "h2"
+          }
+        },
+        "text_kdfjAT": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If you're not happy then you have 30 days to ship it back for a full refund!</p>"
+          }
+        },
+        "button_7TMbUb": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_TYdqPm",
+        "text_kdfjAT",
+        "button_7TMbUb"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "collapsible_content_kU3VHL": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_nA9aAw": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Frame & buckle features",
+            "icon": "star",
+            "row_content": "<p><strong>Shape:</strong> Square</p><p><strong>Color:</strong> Black</p><p><strong>Material:</strong> PC </p><p><strong>Buckle style:</strong> Button release. Auto lock</p><p><strong>Adjustable: </strong>Yes</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_W7aTLV": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Lenses",
+            "icon": "eye",
+            "row_content": "<p><strong>Lens material: </strong>HD Tempered Glass</p><p><strong>Lens thickness:</strong> 4mm</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_EqjCcE": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Head strap & skirt seal",
+            "icon": "leaf",
+            "row_content": "<p><strong>Skirt:</strong> Hypoallergenic soft silicone</p><p><strong>Strap material: </strong>Hypoallergenic soft silicone</p><p></p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_FBxwYc": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Product dimensions and suitability",
+            "icon": "ruler",
+            "row_content": "<p><strong>Seal skirt width:</strong> 10.5cm</p><p><strong>Seal skirt height</strong>: 12.5cm</p><p><span style=\"text-decoration:underline\"><strong>Suitability</strong></span></p><p><strong>Face type: </strong>Would fit many shapes, possibly not suitable for very narrow or very wide faces.</p><p><strong>Nose:</strong> Medium size pocket.</p><p></p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_F3CzG7": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Whats in the box?",
+            "icon": "box",
+            "row_content": "<p><strong>Packing List:</strong></p><ul><li>1 x Mantis Obsideon diving mask</li><li>1 x Snorkel</li><li>1 x Dry bag float</li><li>1 x Adjustable fins L/XL</li><li>1 x Mask box</li><li>Digital E-guide. Delivered straight after checkout.</li></ul>",
+            "page": ""
+          }
+        },
+        "collapsible_row_jHdrqd": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Snorkel Features",
+            "icon": "price_tag",
+            "row_content": "<p><strong>Top </strong>- Float style safety valve. If you dive under water the valve will close, stopping and chocking hazards.</p><p><strong>Mouth piece: </strong>Hypoallegenic soft Silicone.</p><p><strong>Blast method:</strong> Purge valve allows water to be cleared via the bottom or top with an exhale.</p><p><strong>Clip:</strong> Push on to lock or squeeze sides to open. Can be done with one hand.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_nA9aAw",
+        "collapsible_row_W7aTLV",
+        "collapsible_row_EqjCcE",
+        "collapsible_row_FBxwYc",
+        "collapsible_row_F3CzG7",
+        "collapsible_row_jHdrqd"
+      ],
+      "custom_css": [],
+      "settings": {
+        "caption": "",
+        "heading": "Look at those Specs...",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "color_scheme": "background-1",
+        "container_color_scheme": "background-1",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "collapsible_content_X7caXy": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_EYQzWV": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Foot pocket",
+            "icon": "shoe",
+            "row_content": "<ul><li>Soft foot pocket</li><li>Hydrodynamic vents</li></ul>",
+            "page": ""
+          }
+        },
+        "collapsible_row_t4debm": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Adjustable Strap & Buckle",
+            "icon": "check_mark",
+            "row_content": "<ul><li>Quick Release buckle making it easy to put on and take off. </li><li>Easy to adjust size and comfort</li><li>Soft heel straps with large thumb loops</li></ul>",
+            "page": ""
+          }
+        },
+        "collapsible_row_8V4R9c": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Product Size & Fit.",
+            "icon": "ruler",
+            "row_content": "<p><span style=\"text-decoration:underline\"><strong>Size</strong></span> United states</p><p><strong>S/M = 4-7.5 (US) & 37-41 (EU)</strong></p><p>Adjustable: The adjustable straps on the bottom of the swimming fins can be adjusted according to your foot size. Fitting a wide range of foot shapes and sizes.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_g6F9KC": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Sole",
+            "icon": "lightning_bolt",
+            "row_content": "<p>Hard sole to protect your feet.</p><p>Non slip </p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_EYQzWV",
+        "collapsible_row_t4debm",
+        "collapsible_row_8V4R9c",
+        "collapsible_row_g6F9KC"
+      ],
+      "settings": {
+        "caption": "",
+        "heading": "The Fins",
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "color_scheme": "background-1",
+        "container_color_scheme": "background-1",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "multicolumn_pWnyqr": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_bdkxyt": {
+          "type": "column",
+          "settings": {
+            "title": "Frame description",
+            "text": "<p>Shape: Square</p><p>Color: Cammo</p><p>Material: PC </p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_rghct3": {
+          "type": "column",
+          "settings": {
+            "title": "Lens information",
+            "text": "<p>Lens material - Tempered Glass</p><p>Lens thickness: 4mm</p><p>Anti fog insert: Available</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_gaXYpE": {
+          "type": "column",
+          "settings": {
+            "title": "Strap information",
+            "text": "<p>Strap material: Hypoallergenic soft silicone</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_Wrzw8w": {
+          "type": "column",
+          "settings": {
+            "title": "Buckle information",
+            "text": "<p>Material: PC</p><p>Style: Non slip, Lift</p><p>Adjustable: Yes</p><p></p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_zzf4XN": {
+          "type": "column",
+          "settings": {
+            "title": "Product dimensions",
+            "text": "<p>Seal skrt width:</p><p>Seak skirt height:</p><p>Frame width:</p><p>frame height:</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_4E9ciU": {
+          "type": "column",
+          "settings": {
+            "title": "Fitting style",
+            "text": "<p>Face type: Would fit many shapes, possibly not auitable for very narrow or very wide faces.</p><p>Nose: Medium/large size pocket.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_bdkxyt",
+        "column_rghct3",
+        "column_gaXYpE",
+        "column_Wrzw8w",
+        "column_zzf4XN",
+        "column_4E9ciU"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "Look at those specs..",
+        "heading_size": "h2",
+        "image_width": "third",
+        "image_ratio": "square",
+        "columns_desktop": 2,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multirow_GMwYfU": {
+      "type": "multirow",
+      "blocks": {
+        "row_4NAeaL": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/308_cammo.png",
+            "caption": "Look at those",
+            "heading": "SPECS",
+            "text": "<ul><li>Durable PC frame</li><li>Tempered glass lenses (4.0mm thickness). </li><li>The aluminum alloy military anode-treated frame.</li><li>Hypoallergenic soft silicone skirt </li><li>Non slip secure buckle</li></ul>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_cdYfGD": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/308_cam.png",
+            "caption": "will it fit",
+            "heading": "My Face",
+            "text": "<p>Always better to take some measurements to ensure a nice fit. Read our blog on how to measure your face to fit a mask for tips and guidance.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_AKEcBY": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/308cam.png",
+            "caption": "Maximised safety",
+            "heading": "Tempered glass",
+            "text": "<p>OceansOptics prioritizes safety and clarity with tempered glass for our masks. Five times stronger than regular glass, it withstands pressure changes, transport, and remains scratch-resistant for unparalleled durability underwater.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_pAdYtq": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "caption": "Skin safe",
+            "heading": "Hypoallergenic",
+            "text": "<p>OceansOptics prioritizes comfort with soft food-grade silicone, perfect for sensitive skin. Our masks guarantee maximum comfort, providing a truly optimized in-water experience for your underwater adventures.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_4kNcMU": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/308_cammo_buckle.png",
+            "caption": "Non slip secure",
+            "heading": "Buckle",
+            "text": "<p>Designed for ease of use. Gently pull the straps to the disired snugness and the buckle will lock in place. Simply lift buckle to release and loosen the strap. </p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_7bAmte": {
+          "type": "row",
+          "disabled": true,
+          "settings": {
+            "caption": "Dont miss a",
+            "heading": "Fish",
+            "text": "<p>This 120° viewing angle allows for maximum sightings. The angle also helps ensure maximum light is coming into the lens to keep reefs colourful and your buddys by your side</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_FW3r66": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/see_clearly__1.png",
+            "caption": "Choose the correct",
+            "heading": "Prescription",
+            "text": "<p>Use our Oceans Optics Lens Calculator tool to help you find the perfect Set-up.</p><p>We offer short sighted and farsighted prescriptions ranging from 0 to -8.0 (myopia) and 0 to +5.0.</p><p>*Clear Lenses available too*</p>",
+            "button_label": "Find out more",
+            "button_link": "shopify://pages/prescription-lenses-calculator-tool"
+          }
+        }
+      },
+      "block_order": [
+        "row_4NAeaL",
+        "row_cdYfGD",
+        "row_AKEcBY",
+        "row_pAdYtq",
+        "row_4kNcMU",
+        "row_7bAmte",
+        "row_FW3r66"
+      ],
+      "settings": {
+        "image_height": "adapt",
+        "desktop_image_width": "medium",
+        "heading_size": "h2",
+        "text_style": "body",
+        "button_style": "primary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "image_layout": "alternate-right",
+        "section_color_scheme": "accent-1",
+        "row_color_scheme": "background-2",
+        "mobile_content_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "1707710894961cb6e2": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_B8ngTe": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_B8ngTe"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "1707711583fd59ddaf": {
+      "type": "apps",
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_6Mceya",
+    "rich_text_TXKjWz",
+    "collapsible_content_kU3VHL",
+    "collapsible_content_X7caXy",
+    "multicolumn_pWnyqr",
+    "multirow_GMwYfU",
+    "related-products",
+    "1707710894961cb6e2",
+    "1707711583fd59ddaf"
+  ]
+}

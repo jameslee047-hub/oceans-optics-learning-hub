@@ -1,0 +1,96 @@
+[
+  {
+    "type": "learning_pathway",
+    "handle": "start-here",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "Start Here",
+      "short_description": "A short beginner onboarding path that starts with readiness, safer habits, mask basics, planning, buddy awareness, and entry/exit basics.",
+      "image": null,
+      "ordered_lessons": [
+        { "lesson_id": "R07", "handle": "health-readiness-and-personal-responsibility" },
+        { "lesson_id": "R08", "handle": "golden-rules-for-safer-snorkeling" },
+        { "lesson_id": "R01", "handle": "choosing-a-mask" },
+        { "lesson_id": "R10", "handle": "pre-snorkel-checklist-and-planning" },
+        { "lesson_id": "R14", "handle": "buddy-communication-and-awareness" },
+        { "lesson_id": "R17", "handle": "entry-and-exit-techniques" }
+      ]
+    }
+  },
+  {
+    "type": "learning_pathway",
+    "handle": "safer-snorkeling",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "Safer Snorkeling",
+      "short_description": "A safety-first route covering readiness, rules, planning, warnings, water movement, buddy awareness, breath-hold risk, and emergency awareness.",
+      "image": null,
+      "ordered_lessons": [
+        { "lesson_id": "R07", "handle": "health-readiness-and-personal-responsibility" },
+        { "lesson_id": "R08", "handle": "golden-rules-for-safer-snorkeling" },
+        { "lesson_id": "R10", "handle": "pre-snorkel-checklist-and-planning" },
+        { "lesson_id": "R11", "handle": "beach-flags-and-surface-warnings" },
+        { "lesson_id": "R12", "handle": "currents-and-rip-currents" },
+        { "lesson_id": "R13", "handle": "waves-tides-and-surge" },
+        { "lesson_id": "R14", "handle": "buddy-communication-and-awareness" },
+        { "lesson_id": "R15", "handle": "breath-hold-safety-co2-and-shallow-water-blackout" },
+        { "lesson_id": "R16", "handle": "snorkeling-emergencies-and-first-aid-awareness" }
+      ]
+    }
+  },
+  {
+    "type": "learning_pathway",
+    "handle": "equipment-essentials",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "Equipment Essentials",
+      "short_description": "A practical route through masks, fitting, care, snorkels, fins, exposure protection, and surface safety equipment.",
+      "image": null,
+      "ordered_lessons": [
+        { "lesson_id": "R01", "handle": "choosing-a-mask" },
+        { "lesson_id": "R02", "handle": "mask-fit-positioning-adjustment" },
+        { "lesson_id": "R03", "handle": "mask-preparation-defogging-care" },
+        { "lesson_id": "R04", "handle": "choosing-and-setting-up-a-snorkel" },
+        { "lesson_id": "R05", "handle": "choosing-fins" },
+        { "lesson_id": "R06", "handle": "exposure-protection-staying-warm" },
+        { "lesson_id": "R09", "handle": "surface-safety-devices" }
+      ]
+    }
+  },
+  {
+    "type": "learning_pathway",
+    "handle": "in-water-skills-builder",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "In-Water Skills Builder",
+      "short_description": "A practical progression for entry and exit, clearing, efficient movement, floating, and duck diving basics.",
+      "image": null,
+      "ordered_lessons": [
+        { "lesson_id": "R17", "handle": "entry-and-exit-techniques" },
+        { "lesson_id": "R18", "handle": "clearing-your-snorkel" },
+        { "lesson_id": "R20", "handle": "mask-clearing-techniques" },
+        { "lesson_id": "R21", "handle": "efficient-kicking-techniques" },
+        { "lesson_id": "R22", "handle": "relaxed-breathing-and-efficient-movement" },
+        { "lesson_id": "R23", "handle": "floating-and-treading-water" },
+        { "lesson_id": "R19", "handle": "duck-diving-basics" }
+      ]
+    }
+  },
+  {
+    "type": "learning_pathway",
+    "handle": "ocean-aware-snorkeler",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "Ocean-Aware Snorkeler",
+      "short_description": "A route connecting conditions, snorkeling environments, marine life, coral, and responsible underwater behavior.",
+      "image": null,
+      "ordered_lessons": [
+        { "lesson_id": "R28", "handle": "types-of-snorkeling-experiences" },
+        { "lesson_id": "R12", "handle": "currents-and-rip-currents" },
+        { "lesson_id": "R13", "handle": "waves-tides-and-surge" },
+        { "lesson_id": "R29", "handle": "marine-life-basics" },
+        { "lesson_id": "R30", "handle": "coral-conservation-and-responsible-behavior" }
+      ]
+    }
+  }
+]

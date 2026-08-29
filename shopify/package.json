@@ -1,0 +1,15 @@
+{
+  "name": "oceans-optics-shopify-learning-scaffold",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "learning:generate-pilots": "node scripts/generate-pilot-data.js",
+    "learning:generate-preview-fixture": "node scripts/generate-preview-fixture.js",
+    "learning:validate": "node scripts/validate-learning-data.js",
+    "learning:build-payloads": "node scripts/build-shopify-payloads.js",
+    "learning:dry-run": "node scripts/dry-run-learning-sync.js",
+    "learning:test-stage-5c-guards": "node scripts/test-stage-5c-guards.js",
+    "learning:shopify-preflight": "node scripts/shopify-preflight.js",
+    "learning:shopify-create-drafts": "node scripts/shopify-stage-5c-create-drafts.js"
+  }
+}

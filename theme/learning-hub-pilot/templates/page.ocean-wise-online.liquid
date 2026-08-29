@@ -1,0 +1,44 @@
+{% if customer %}
+  {% if customer.tags contains 'Purchased Customer' %}
+    <!-- Content for customers with the 'Purchased Customer' tag -->
+    <div style="text-align: center; margin: 20px auto;">
+      <h1>OceanWise Online Guide</h1>
+      <p style="font-size: 18px; margin-bottom: 20px;">
+        Welcome to your exclusive guide! Dive into expert tips and resources to make the most of your underwater adventures.
+      </p>
+      <div style="width: 100%; margin: 0 auto;">
+        <div style="position: relative; padding-top: 56.25%; height: 0;"> <!-- 16:9 Aspect Ratio -->
+          <iframe 
+            src="https://view.genially.com/6645c85640a7ff0014fc55c8" 
+            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"
+            title="OceanWise Online Guide" 
+            allowfullscreen="true">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <!-- Message for logged-in customers without the 'Purchased Customer' tag -->
+    <div style="text-align: center; margin: 50px auto;">
+      <p style="font-size: 18px;">
+        This page is only accessible to customers who have made a purchase.
+      </p>
+      <a href="/collections/all" style="font-size: 18px; color: #007acc; text-decoration: underline;">
+        Shop now
+      </a> to gain access!
+    </div>
+  {% endif %}
+{% else %}
+  <!-- Message for non-logged-in visitors -->
+  <div style="text-align: center; margin: 50px auto;">
+    <p style="font-size: 18px; margin-bottom: 20px;">
+      You must be logged in to view this page.
+    </p>
+    <button onclick="window.location.href='/account/login?redirect=/pages/oceanwise-access';" style="font-size: 18px; padding: 10px 20px; background-color: #007acc; color: white; border: none; border-radius: 5px; cursor: pointer;">
+      Log in
+    </button>
+    <p style="margin-top: 20px; font-size: 16px;">
+      Don't have an account? <a href="/account/register?redirect=/pages/oceanwise-access" style="color: #007acc; text-decoration: underline;">Create one here</a>.
+    </p>
+  </div>
+{% endif %}

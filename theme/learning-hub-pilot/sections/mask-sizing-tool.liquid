@@ -1,0 +1,602 @@
+<style>
+  :root{--blue:#023059;--blue-light:#034a8a;--orange:#B95E05;--orange-dark:#9a4e04;--orange-glow:rgba(185,94,5,.08);--border:#e2e5ea;--text:#1e293b;--text-mid:#475569;--text-muted:#94a3b8;--bg:#f1f4f8;--card:#ffffff;--good:#16a34a;--good-bg:rgba(22,163,74,.06);--warn:#d97706;--warn-bg:rgba(217,119,6,.06);--bad:#dc2626;--radius:16px;--radius-sm:10px;--shadow:0 1px 3px rgba(2,48,89,.06),0 4px 14px rgba(2,48,89,.04);--shadow-lg:0 4px 20px rgba(2,48,89,.08)}
+  .oo-tool *{box-sizing:border-box;margin:0;padding:0}
+  .oo-tool{font-family:Lato,sans-serif;background:var(--bg);color:var(--text);line-height:1.6;-webkit-font-smoothing:antialiased;padding:28px 0 60px}
+
+  /* ── METHOD SELECTOR ── */
+  .method-sel-wrap{max-width:1140px;margin:0 auto 24px;padding:0 16px}
+  .method-sel-card{background:#f7fbff;border:1px solid rgba(2,48,89,.12);border-radius:18px;padding:20px;text-align:center}
+  .method-sel-card h2{color:var(--blue);font-size:24px;font-weight:800;margin-bottom:8px;font-family:Lato,sans-serif;line-height:1.15}
+  .method-sel-card>p{color:var(--text-mid);font-size:15px;margin-bottom:18px}
+  .method-options{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+  @media(max-width:639px){.method-options{grid-template-columns:1fr}}
+  .method-opt{background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px;text-align:left;display:flex;flex-direction:column;gap:10px;min-height:100%}
+  .method-opt--primary{border:3px solid var(--orange);box-shadow:0 6px 18px rgba(185,94,5,.08)}
+  .method-badge{display:inline-flex;align-items:center;width:100%;min-height:36px;border-radius:999px;font-size:13px;font-weight:800;padding:0 16px;margin-bottom:2px}
+  .method-badge--recommended{background:#f4ebe2;color:var(--orange);border:1px solid rgba(185,94,5,.22)}
+  .method-badge--manual{background:#eef3f8;color:#6f869f;border:1px solid #d7e1eb}
+  .method-title-row{display:flex;align-items:center;gap:10px}
+  .method-opt-icon{font-size:28px;line-height:1;flex:0 0 auto}
+  .method-opt h3{color:var(--blue);font-size:18px;font-weight:800;font-family:Lato,sans-serif;line-height:1.2}
+  .method-opt>p{color:var(--text-mid);font-size:14px;line-height:1.5}
+  .method-opt ul{list-style:none;display:flex;flex-direction:column;gap:4px}
+  .method-opt ul li{font-size:13px;color:var(--text-mid)}
+  .method-opt-spacer{margin-top:auto;padding-top:8px}
+  .method-btn-orange,.method-btn-outline{display:inline-flex;align-items:center;justify-content:center;width:100%;min-height:54px;border-radius:999px;font-size:18px;font-weight:800;text-align:center;text-decoration:none;cursor:pointer;font-family:Lato,sans-serif;transition:all .15s}
+  .method-btn-orange{background:var(--orange);color:#fff;border:none;box-shadow:0 4px 14px rgba(185,94,5,.28)}
+  .method-btn-orange:hover{background:var(--orange-dark)}
+  .method-btn-outline{background:#fff;color:var(--blue);border:3px solid var(--blue)}
+  .method-btn-outline:hover{background:#f8fbfe;color:var(--blue)}
+  @media(max-width:768px){
+    .method-sel-card{padding:16px}
+    .method-sel-card h2{font-size:22px}
+    .method-options{gap:14px}
+    .method-opt{padding:16px}
+    .method-opt-icon{font-size:26px}
+    .method-btn-orange,.method-btn-outline{min-height:50px;font-size:17px}
+  }
+
+  /* ── MAIN TOOL ── */
+  .container{max-width:1140px;margin:0 auto;padding:0 16px}
+  .section-tabs{display:flex;gap:0;margin:0 0 0;border-bottom:2px solid var(--border)}
+  .section-tab{appearance:none;border:none;background:none;padding:12px 24px;font-family:Lato,sans-serif;font-size:16px;font-weight:700;color:var(--text-muted);cursor:pointer;position:relative;transition:color .2s}
+  .section-tab:hover{color:var(--text-mid)}.section-tab.active{color:var(--blue)}
+  .section-tab.active::after{content:'';position:absolute;bottom:-2px;left:0;right:0;height:3px;background:var(--orange);border-radius:3px 3px 0 0}
+  .section-tab .tab-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;font-size:13px;font-weight:800;margin-right:6px;background:var(--border);color:var(--text-muted);transition:all .2s}
+  .section-tab.active .tab-num{background:var(--orange);color:#fff}
+  .tab-panel{display:none;padding-top:24px;padding-bottom:40px}.tab-panel.active{display:block}
+  .measure-steps{display:flex;flex-direction:column;gap:24px;margin-bottom:24px}
+  .m-step{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);display:grid;grid-template-columns:300px 1fr;overflow:hidden}
+  @media(max-width:760px){.m-step{grid-template-columns:1fr}}
+  .m-step .illus{background:#eef2f7;display:grid;place-items:center;padding:24px;min-height:200px}
+  .m-step .body{padding:20px 24px;display:flex;flex-direction:column;gap:8px}
+  .measure-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:999px;background:var(--orange);color:#fff;font-family:Lato,sans-serif;font-weight:800;font-size:15px;flex-shrink:0}
+  .m-step h3{font-family:Lato,sans-serif;font-size:20px;font-weight:800;color:var(--blue);display:flex;align-items:center;gap:10px}
+  .m-step .desc{font-size:15px;color:var(--text-mid);line-height:1.55}
+  .inline-input{display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap}
+  .inline-input label{font-size:14px;font-weight:700;color:var(--blue);white-space:nowrap}
+  .num-input{width:90px;padding:8px 10px;border:2px solid var(--border);border-radius:8px;font-family:Lato,sans-serif;font-size:16px;font-weight:700;color:var(--blue);text-align:center;transition:border-color .15s;outline:none}
+  .num-input:focus{border-color:var(--orange)}.num-input.filled{border-color:var(--good);background:rgba(22,163,74,.03)}
+  .unit-label{font-size:14px;color:var(--text-muted);font-weight:600}
+  .unit-flip{appearance:none;border:1px solid var(--border);background:#f8f9fb;color:var(--text-mid);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+  .unit-flip:hover{border-color:var(--orange);color:var(--orange)}
+  .input-check{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:999px;background:var(--good);color:#fff;font-size:14px;font-weight:800;opacity:0;transition:opacity .2s}
+  .input-check.show{opacity:1}
+  .go-btn-wrap{text-align:center;margin-top:28px}
+  .go-btn{appearance:none;border:none;background:var(--orange);color:#fff;padding:14px 36px;border-radius:999px;font-family:Lato,sans-serif;font-size:17px;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(185,94,5,.25);transition:all .2s}
+  .go-btn:hover{background:var(--orange-dark);transform:translateY(-1px)}.go-btn:disabled{opacity:.45;cursor:default;transform:none}
+  .go-status{margin-top:10px;font-size:14px;color:var(--text-muted)}
+  .fit-tool{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+  @media(max-width:860px){.fit-tool{grid-template-columns:1fr}}
+  .slider-panel{position:sticky;top:20px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:24px}
+  @media(max-width:860px){.slider-panel{position:static}}
+  .slider-panel h2{font-family:Lato,sans-serif;font-size:20px;font-weight:800;color:var(--blue);margin-bottom:4px}
+  .slider-panel .sub{font-size:14px;color:var(--text-muted);margin-bottom:18px}
+  .input-group{margin-bottom:18px}
+  .input-group label{display:flex;align-items:baseline;flex-wrap:wrap;font-size:14px;font-weight:700;color:var(--blue);margin-bottom:6px;gap:0}
+  .input-group label .step-ltr{color:var(--orange);font-weight:800;margin-right:4px}
+  .input-group label .step-hint{font-weight:400;color:var(--text-muted);font-size:12px;margin-left:4px}
+  .input-group output{font-family:Lato,sans-serif;font-weight:800;font-size:18px;color:var(--orange);min-width:42px;text-align:right;margin-left:auto}
+  .u-val{font-family:Lato,sans-serif;font-weight:400;font-size:12px;color:var(--text-muted);margin-left:2px;align-self:center}
+  .nose-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .nose-row label{margin-bottom:0!important;white-space:nowrap}
+  .input-group .range-bounds{display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);margin-top:2px}
+  input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:8px;border-radius:4px;background:#e2e5ea;outline:none;cursor:pointer}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:24px;border-radius:12px;background:var(--orange);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer;transition:transform .15s}
+  input[type="range"]::-webkit-slider-thumb:hover{transform:scale(1.1)}
+  input[type="range"]::-moz-range-thumb{width:32px;height:24px;border-radius:12px;background:var(--orange);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);cursor:pointer}
+  .slider-actions{display:flex;gap:8px;margin-top:8px;padding-top:16px;border-top:1px solid var(--border)}
+  .btn-primary{appearance:none;border:none;background:var(--orange);color:#fff;padding:8px 18px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;transition:background .15s}
+  .btn-primary:hover{background:var(--orange-dark)}
+  .btn-secondary{appearance:none;border:1px solid var(--border);background:#fff;color:var(--text-mid);padding:8px 18px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;transition:all .15s}
+  .btn-secondary:hover{border-color:var(--blue);color:var(--blue)}
+  .head-note{background:#f8f9fb;border:1px dashed var(--border);border-radius:var(--radius-sm);padding:10px 12px;font-size:13px;color:var(--text-mid);line-height:1.5;margin-top:4px}
+  .head-note strong{color:var(--blue)}
+  .results-area h2{font-family:Lato,sans-serif;font-size:20px;font-weight:800;color:var(--blue);margin-bottom:4px}
+  .results-area .sub{font-size:14px;color:var(--text-muted);margin-bottom:16px}
+  .results-msg{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:16px;font-size:14px;color:var(--text-mid);box-shadow:var(--shadow)}
+  .results-msg strong{color:var(--text)}
+  .results-msg.msg-warn{border-color:rgba(217,119,6,.3);background:var(--warn-bg)}
+  .results-msg.msg-good{border-color:rgba(22,163,74,.3);background:var(--good-bg)}
+  .results-msg.msg-head{border-left:4px solid var(--orange)}
+  .mask-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
+  @media(max-width:640px){.mask-grid{grid-template-columns:1fr}}
+  .mask-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;transition:box-shadow .2s,transform .2s}
+  .mask-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+  .mask-card.best{border-color:rgba(22,163,74,.35)}
+  .mask-card .card-img-wrap{background:#f4f6f9;padding:12px;display:flex;align-items:center;justify-content:center;min-height:220px}
+  .mask-card .card-img-wrap img{max-width:100%;max-height:260px;object-fit:contain;border-radius:8px}
+  .mask-card .card-body{padding:16px;display:flex;flex-direction:column;gap:10px;flex:1}
+  .mask-title{font-family:Lato,sans-serif;font-size:18px;font-weight:800;color:var(--blue)}
+  .mask-cat{font-size:13px;color:var(--text-muted);font-style:italic;margin-top:-6px}
+  .tag{display:inline-block;padding:3px 10px;border-radius:999px;font-size:12px;font-weight:800;letter-spacing:.3px}
+  .tag-best{background:rgba(22,163,74,.1);color:var(--good)}.tag-good{background:rgba(22,163,74,.08);color:var(--good)}
+  .tag-close{background:rgba(217,119,6,.1);color:var(--warn)}.tag-close-match{background:#fef9e7;color:#b45309;border:1px solid rgba(180,83,9,.2)}
+  .tag-head{background:var(--orange-glow);color:var(--orange);border:1px solid rgba(185,94,5,.2)}
+  .tag-stretch{background:#fef3c7;color:#92400e}.tag-nose-warn{background:#fef2f2;color:var(--bad)}
+  .tags-row{display:flex;flex-wrap:wrap;gap:6px}.fit-detail{font-size:13px;color:var(--text-mid);line-height:1.5}
+  .range-mini{width:100%;border-collapse:collapse;font-size:12px}
+  .range-mini th,.range-mini td{padding:5px 6px;border:1px solid #f0f0f4;text-align:center}
+  .range-mini th{background:#f8f9fb;font-weight:700;color:var(--blue);font-size:11px}
+  .range-mini td.in-range{color:var(--good);font-weight:700}.range-mini td.out-range{color:var(--warn);font-weight:700}
+  .mask-specs{display:grid;gap:4px;font-size:13px}.spec-label{color:var(--text-muted);font-weight:600}
+  .spec-badge{display:inline-block;background:#f1f5f9;border:1px solid #e5e7eb;border-radius:999px;padding:1px 7px;font-size:11px;margin-right:4px;cursor:pointer;transition:all .15s;text-decoration:none;color:var(--text-mid)}
+  .spec-badge:hover{background:var(--orange-glow);border-color:var(--orange);color:var(--orange)}
+  .cta-row{margin-top:auto;padding-top:8px}
+  .btn-product{display:inline-block;text-decoration:none;background:var(--orange);color:#fff;padding:8px 20px;border-radius:999px;font-weight:700;font-size:14px;transition:background .15s}
+  .btn-product:hover{background:var(--orange-dark)}
+  .ask-pro-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:20px;padding:14px 16px;background:var(--card);border:1px dashed var(--border);border-radius:var(--radius-sm)}
+  .ask-pro-bar .label{font-size:14px;color:var(--text-mid)}
+  .btn-outline{appearance:none;background:#fff;color:var(--blue);border:1px solid rgba(2,48,89,.3);padding:7px 16px;border-radius:999px;font-weight:700;font-size:14px;cursor:pointer;text-decoration:none;transition:all .15s}
+  .btn-outline:hover{border-color:var(--blue);background:rgba(2,48,89,.04)}
+  .empty-results{text-align:center;padding:40px 20px;color:var(--text-muted);grid-column:1/-1}.empty-results .icon{font-size:36px;margin-bottom:8px}
+  .nose-options{display:flex;gap:8px;flex-wrap:wrap}
+  .nose-opt{appearance:none;border:2px solid var(--border);background:#fff;color:var(--text-mid);padding:7px 18px;border-radius:999px;font-family:Lato,sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .15s}
+  .nose-opt:hover{border-color:var(--orange);color:var(--orange)}
+  .nose-opt.active{border-color:var(--orange);background:var(--orange-glow);color:var(--orange)}
+  .nose-opt-check{display:inline-block;margin-left:4px;opacity:0;transition:opacity .15s}.nose-opt.active .nose-opt-check{opacity:1}
+</style>
+
+<div class="oo-tool">
+
+  <!-- ── SECTION 1: METHOD SELECTOR ── -->
+  <div class="method-sel-wrap">
+    <div class="method-sel-card">
+      <h2>How would you like to find your mask fit?</h2>
+      <p>Choose automatic camera measuring or follow the manual ruler guide below</p>
+      <div class="method-options">
+
+        <!-- Camera option -->
+        <div class="method-opt method-opt--primary">
+          <span class="method-badge method-badge--recommended">Recommended</span>
+          <div class="method-title-row">
+            <div class="method-opt-icon">🎥</div>
+            <h3>Auto Camera Measuring</h3>
+          </div>
+          <p>Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.</p>
+          <ul>
+            <li>✓ Takes about 30 seconds</li>
+            <li>✓ Works on phone or desktop</li>
+            <li>✓ Get instant mask recommendations</li>
+          </ul>
+          <div class="method-opt-spacer">
+            <a id="oo-camera-btn" href="https://facefit.oceansoptics.com/face-fit" class="method-btn-orange">
+              Start Camera Measuring →
+            </a>
+          </div>
+        </div>
+
+        <!-- Manual option -->
+        <div class="method-opt">
+          <span class="method-badge method-badge--manual">Measure Yourself</span>
+          <div class="method-title-row">
+            <div class="method-opt-icon">📐</div>
+            <h3>Manual Ruler Guide</h3>
+          </div>
+          <p>Prefer to measure yourself with a ruler or tape? Follow our step-by-step guide below.</p>
+          <ul>
+            <li>✓ No camera needed</li>
+            <li>✓ Works anywhere</li>
+            <li>✓ Fine-tune with sliders</li>
+          </ul>
+          <div class="method-opt-spacer">
+            <button class="method-btn-outline" onclick="document.getElementById('oo-tool-tabs').scrollIntoView({behavior:'smooth',block:'start'})">
+              Use Ruler Guide ↓
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: TABS ── -->
+  <div class="container" id="oo-tool-tabs">
+    <div class="section-tabs" role="tablist">
+      <button class="section-tab active" data-tab="measure" role="tab"><span class="tab-num">1</span> How to Measure</button>
+      <button class="section-tab" data-tab="fit" role="tab"><span class="tab-num">2</span> Find Your Fit</button>
+    </div>
+
+    <!-- TAB 1: HOW TO MEASURE -->
+    <div class="tab-panel active" id="panel-measure">
+      <div class="measure-steps">
+
+        <!-- Step A -->
+        <div class="m-step">
+          <div class="illus">
+            <img src="https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Width_mask_sizing.png?v=1772082872" alt="Measure eye width" width="280" height="280" style="max-width:280px;width:100%;height:auto;border-radius:10px;" />
+          </div>
+          <div class="body">
+            <h3><span class="measure-num">A</span> Eye Width</h3>
+            <p class="desc">Measure from the <strong>outer corner of one eye</strong> to the <strong>outer corner of the other</strong> in a straight line. Use a ruler, soft tape, or even a phone charger cable (then measure the cable against a ruler). Keep it flat against your face.</p>
+            <div class="inline-input">
+              <label for="inW">My measurement:</label>
+              <input type="number" class="num-input" id="inW" placeholder="—" step="0.05" min="0" />
+              <span class="unit-label" data-unit="w">in</span>
+              <button class="unit-flip" data-target="w">Switch to cm</button>
+              <span class="input-check" id="checkW">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step B -->
+        <div class="m-step">
+          <div class="illus">
+            <img src="https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Height_mask_sizing.png?v=1772082873" alt="Measure mask height" width="280" height="280" style="max-width:280px;width:100%;height:auto;border-radius:10px;" />
+          </div>
+          <div class="body">
+            <h3><span class="measure-num">B</span> Mask Height</h3>
+            <p class="desc">Measure from <strong>just above your eyebrow line</strong> straight down to <strong>just below your nose</strong>. Use a ruler, soft tape, or phone charger cable. This is the vertical space where the mask and silicone skirt will sit.</p>
+            <div class="inline-input">
+              <label for="inH">My measurement:</label>
+              <input type="number" class="num-input" id="inH" placeholder="—" step="0.05" min="0" />
+              <span class="unit-label" data-unit="h">in</span>
+              <button class="unit-flip" data-target="h">Switch to cm</button>
+              <span class="input-check" id="checkH">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step C -->
+        <div class="m-step">
+          <div class="illus">
+            <img src="https://cdn.shopify.com/s/files/1/0798/8055/2781/files/measure_your_head_for_prescription_scuba_mask.webp?v=1760530768" alt="Measure head circumference" width="280" height="280" style="max-width:280px;width:100%;height:auto;border-radius:10px;" />
+          </div>
+          <div class="body">
+            <h3><span class="measure-num">C</span> Head Circumference</h3>
+            <p class="desc">Wrap a soft tape, string, or phone charger cable around your head <strong>above your ears and eyebrows</strong>, like measuring for a hat. Then measure the length against a ruler. This tells us how the strap and silicone skirt will seal around your face.</p>
+            <div class="inline-input">
+              <label for="inHead">My measurement:</label>
+              <input type="number" class="num-input" id="inHead" placeholder="—" step="0.125" min="0" />
+              <span class="unit-label" data-unit="head">in</span>
+              <button class="unit-flip" data-target="head">Switch to cm</button>
+              <span class="input-check" id="checkHead">✓</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step D -->
+        <div class="m-step">
+          <div class="illus">
+            <img src="https://cdn.shopify.com/s/files/1/0798/8055/2781/files/which_nose_size_are_you_for_your_Rx_snorkel_Mask.png?v=1772082873" alt="Nose pocket sizing" width="280" height="280" style="max-width:280px;width:100%;height:auto;border-radius:10px;display:block;margin:0 auto;" />
+          </div>
+          <div class="body">
+            <h3><span class="measure-num">D</span> Nose Size</h3>
+            <p class="desc">Some masks have a narrower nose pocket. Selecting your nose size helps us rule out masks that may dig in or feel uncomfortable. If you're unsure, <strong>Medium</strong> is a safe choice.</p>
+            <div class="nose-options" id="nosePickMeasure" style="margin-top:10px;">
+              <button class="nose-opt" data-nose="small" type="button">Small <span class="nose-opt-check">✓</span></button>
+              <button class="nose-opt" data-nose="medium" type="button">Medium <span class="nose-opt-check">✓</span></button>
+              <button class="nose-opt" data-nose="large" type="button">Large <span class="nose-opt-check">✓</span></button>
+            </div>
+            <span class="input-check" id="checkNose" style="margin-top:8px;">✓</span>
+          </div>
+        </div>
+
+      </div>
+      <div class="go-btn-wrap">
+        <button class="go-btn" id="goToFit">Find My Mask →</button>
+        <div class="go-status" id="goStatus"></div>
+      </div>
+    </div><!-- /panel-measure -->
+
+    <!-- TAB 2: FIND YOUR FIT -->
+    <div class="tab-panel" id="panel-fit">
+      <div class="fit-tool">
+
+        <!-- Slider panel -->
+        <div class="slider-panel">
+          <h2>Your Measurements</h2>
+          <p class="sub">Fine-tune with the sliders, or go back to re-enter.</p>
+          <div class="input-group">
+            <label><span class="step-ltr">A.</span> Eye Width <span class="step-hint">(outer eye corners)</span> <output id="wOut">—</output><span class="u-label u-val">in</span></label>
+            <input type="range" id="wRange" />
+            <div class="range-bounds"><span id="wLo"></span><span id="wHi"></span></div>
+          </div>
+          <div class="input-group">
+            <label><span class="step-ltr">B.</span> Mask Height <span class="step-hint">(brow to below nose)</span> <output id="hOut">—</output><span class="u-label u-val">in</span></label>
+            <input type="range" id="hRange" />
+            <div class="range-bounds"><span id="hLo"></span><span id="hHi"></span></div>
+          </div>
+          <div class="input-group">
+            <label><span class="step-ltr">C.</span> Head Circumference <span class="step-hint">(above ears)</span> <output id="headOut">—</output><span class="u-label u-val">in</span></label>
+            <input type="range" id="headRange" />
+            <div class="range-bounds"><span id="headLo"></span><span id="headHi"></span></div>
+          </div>
+          <div class="input-group">
+            <div class="nose-row">
+              <label><span class="step-ltr">D.</span> Nose Size</label>
+              <div class="nose-options" id="nosePickFit">
+                <button class="nose-opt" data-nose="small" type="button">Small <span class="nose-opt-check">✓</span></button>
+                <button class="nose-opt" data-nose="medium" type="button">Medium <span class="nose-opt-check">✓</span></button>
+                <button class="nose-opt" data-nose="large" type="button">Large <span class="nose-opt-check">✓</span></button>
+              </div>
+            </div>
+          </div>
+          <div class="head-note"><strong>Why head size matters:</strong> If your face says Small but your head is Medium-Large, the smaller mask strap may not seal properly. We will show both options with notes.</div>
+          <div class="slider-actions">
+            <button class="btn-primary" id="unitsToggle">Switch to cm</button>
+            <button class="btn-secondary" id="resetBtn">Reset</button>
+          </div>
+        </div>
+
+        <!-- Results area -->
+        <div class="results-area">
+          <h2 id="resultsHeading">Your Mask Recommendations</h2>
+          <p class="sub" id="resultsSub">Enter your measurements and we will find the best masks for you.</p>
+          <div id="resultsMsg"></div>
+          <div class="mask-grid" id="maskGrid"></div>
+          <div id="askProWrap"></div>
+        </div>
+
+      </div>
+    </div><!-- /panel-fit -->
+
+  </div><!-- /container -->
+</div><!-- /oo-tool -->
+
+<script>
+(function(){
+  'use strict';
+  const IN2CM=2.54,toCM=v=>v*IN2CM,toIN=v=>v/IN2CM,ASK_EMAIL='info@oceansoptics.com';
+  let sliderUnits='in',inputUnits={w:'in',h:'in',head:'in'},wIn=null,hIn=null,headIn=null,noseSize=null,touched=false;
+  const BOUNDS={wMin:2.50,wMax:5.80,hMin:2.00,hMax:4.80,headMin:19.50,headMax:25.00};
+
+  const masks=[
+    {
+      id:'rover',
+      name:'Rx Rover Series',
+      size:'Small',
+      img:'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-rover-low-volume-mask-nearsighted-prescription-all-black-59351695163725.png?v=1735634819',
+      link:'https://oceansoptics.com/products/rx-rover-nearsighted-prescription-freediving-scuba-dive-mask',
+      wMin:2.95, wMax:4.13,
+      hMin:2.35, hMax:3.54,
+      headMin:21.00, headMax:22.85,
+      noseLargeOK:true,
+      skirt:['Black','White'],
+      frame:['Black','Blue','Yellow','Red','Pink'],
+      variant_map:{'Black/Black':'?variant=50139438973261','Blue/Black':'?variant=50139439726925','Pink/Black':'?variant=50139440480589','White/Black':'?variant=50139439333709','Yellow/Black':'?variant=50139440087373','Black/White':'?variant=50144516079949','Pink/White':'?variant=50144516800845','Blue/White':'?variant=50144515359053','White/White':'?variant=50144515719501','Yellow/White':'?variant=50144516440397'},
+      diopters:'Near (\u2212): \u22121.50 to \u22126.00 (0.50 steps, mix & match per eye)',
+      notes:'Action camera mount option available.'
+    },
+    {
+      id:'obsidian-near',
+      name:'Rx Obsidian (Nearsighted)',
+      size:'Medium',
+      sizeGroup:'obsidian',
+      img:'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-mask-and-snorkel-set-rx-obsidian-nearsighted-prescription-mask-all-black-59396610392397.png?v=1726323647',
+      link:'https://oceansoptics.com/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling',
+      wMin:3.85, wMax:4.90,
+      hMin:2.80, hMax:3.85,
+      headMin:21.50, headMax:23.00,
+      noseLargeOK:true,
+      skirt:['Black','Clear'],
+      frame:['Black','Aqua','Blue','Yellow','Red','Pink'],
+      variant_map:{'Aqua/Black':'?variant=50963758547277','Black/Black':'?variant=50148668899661','Yellow/Black':'?variant=50148670734669','Pink/Black':'?variant=50148670112077','Blue/Black':'?variant=51121887641933','Red/Black':'?variant=50148669489485','Aqua/Clear':'?variant=52697208193357','Black/Clear':'?variant=52697208160589','Yellow/Clear':'?variant=52697208324429','Pink/Clear':'?variant=52697208291661','Blue/Clear':'?variant=52697208258893','Red/Clear':'?variant=52697208226125'},
+      diopters:'Near (\u2212): \u22121.00 to \u22129.00 (0.50 steps, mix & match per eye)',
+      notes:'Action camera mount available.'
+    },
+    {
+      id:'obsidian-far',
+      name:'Rx Obsidian (Farsighted)',
+      size:'Medium',
+      sizeGroup:'obsidian',
+      img:'https://oceansoptics.com/cdn/shop/files/prescription-mask-and-snorkel-set-rx-obsidian-prescription-snorkel-dive-mask-prescription-snorkel-mask-black-medium-diopter-1-50-8-00-all-black-60219667284301.png?v=1762141079',
+      link:'https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask',
+      wMin:3.85, wMax:4.90,
+      hMin:2.80, hMax:3.85,
+      headMin:21.50, headMax:23.00,
+      noseLargeOK:true,
+      skirt:['Black','Clear'],
+      frame:['Black','Aqua','Blue','Yellow','Red','Pink'],
+      variant_map:{'Aqua/Black':'?variant=53151486443853','Black/Black':'?variant=53151486476621','Yellow/Black':'?variant=53151486607693','Pink/Black':'?variant=53151486509389','Blue/Black':'?variant=53151486542157','Red/Black':'?variant=53151486574925','Aqua/Clear':'?variant=53151486640461','Black/Clear':'?variant=53151486673229','Yellow/Clear':'?variant=53151486771533','Pink/Clear':'?variant=53151486705997','Blue/Clear':'?variant=53151486738765','Red/Clear':'?variant=53151486804301'},
+      diopters:'Far (+): +1.00 to +5.00 (1.0 steps, mix & match per eye)',
+      notes:'Same fit as Obsidian, with plus-diopter lenses.'
+    },
+    {
+      id:'lumix',
+      name:'Rx Lumix Series',
+      size:'Medium\u2013Large',
+      img:'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/prescription-dive-mask-rx-lumix-optical-dive-mask-aluminum-rx-lumix-optical-dive-mask-aluminum-silver-on-black-60644425662797.png?v=1730293366',
+      link:'https://oceansoptics.com/products/professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0',
+      wMin:3.54, wMax:5.50,
+      hMin:2.50, hMax:3.82,
+      headMin:22.00, headMax:24.00,
+      noseLargeOK:false,
+      skirt:['Black','White'],
+      frame:['Black','Silver','Blue','Rose','Gold'],
+      variant_map:{'Gold/Black':'?variant=50461180264781','Silver/Black':'?variant=50461180232013','Rose Pink/Black':'?variant=50461180297549','Aqua/Black':'?variant=50070250946893','Black/Black':'?variant=50461180199245','Gold/White':'?variant=50461311435085','Rose Pink/White':'?variant=50461311467853','Aqua/White':'?variant=50461311336781','Black/White':'?variant=50461311369549','Silver/White':'?variant=50461311402317'},
+      diopters:'Near (\u2212): \u22121.50 to \u22126.00 (0.50 steps, mix & match per eye)',
+      notes:'Wide sealing skirt, accommodates broader faces.'
+      },
+   {
+  id:'titan',
+  name:'Rx Titan Series',
+  size:'Large',
+  img:'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Rx_Titan_Prescription_Snorkel_Scuba_Diving_Corrective_Mask_Blue_Black.png?v=1783153840',
+  link:'https://oceansoptics.com/products/the-rx-titan-prescription-snorkel-and-scuba-diving-corrective-mask',
+  wMin:4.00, wMax:5.35,
+  hMin:3.00, hMax:4.13,
+  headMin:21.50, headMax:24.50,
+  noseLargeOK:true,
+  skirt:['Black','Clear'],
+  frame:['Black','Blue','Pink','Red','Yellow'],
+  variant_map:{
+    'Black/Black':'?variant=54202866336077',
+    'Black/Clear':'?variant=54202866499917',
+    'Blue/Black':'?variant=54202866401613',
+    'Blue/Clear':'?variant=54202866565453',
+    'Pink/Black':'?variant=54202866434381',
+    'Pink/Clear':'?variant=54202866598221',
+    'Red/Black':'?variant=54202866467149',
+    'Red/Clear':'?variant=54203206041933',
+    'Yellow/Black':'?variant=54202866368845',
+    'Yellow/Clear':'?variant=54202866532685'
+  },
+  diopters:'Near (\u2212): \u22121.50 to \u22126.00 (0.50 steps, mix & match per eye)',
+  notes:'Roomier Medium-large fit with wider nose pocket. Larger than our Rx Obsidian. Camera mount add-on available.'
+    }
+  ];
+
+  const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+  const wRange=$('#wRange'),hRange=$('#hRange'),headRange=$('#headRange');
+  const wOutEl=$('#wOut'),hOutEl=$('#hOut'),headOutEl=$('#headOut');
+  const gridEl=$('#maskGrid'),msgEl=$('#resultsMsg'),askWrap=$('#askProWrap'),subEl=$('#resultsSub');
+  const inW=$('#inW'),inH=$('#inH'),inHead=$('#inHead');
+  const checkW=$('#checkW'),checkH=$('#checkH'),checkHead=$('#checkHead'),checkNose=$('#checkNose');
+
+  function switchTab(name){$$('.section-tab').forEach(b=>b.classList.remove('active'));$$('.tab-panel').forEach(p=>p.classList.remove('active'));$(`[data-tab="${name}"]`).classList.add('active');$(`#panel-${name}`).classList.add('active');}
+  $$('.section-tab').forEach(btn=>{btn.addEventListener('click',()=>switchTab(btn.dataset.tab));});
+  const fmtSlider=(v,u)=>u==='cm'?(v*IN2CM).toFixed(1):v.toFixed(2);
+
+  $$('.unit-flip').forEach(btn=>{btn.addEventListener('click',()=>{
+    const t=btn.dataset.target,cur=inputUnits[t],next=cur==='in'?'cm':'in';inputUnits[t]=next;
+    btn.textContent=next==='cm'?'Switch to in':'Switch to cm';
+    const inp=t==='w'?inW:t==='h'?inH:inHead;
+    const $uLabel=$(`.unit-label[data-unit="${t}"]`);if($uLabel)$uLabel.textContent=next;
+    if(inp.value){const raw=parseFloat(inp.value);if(!isNaN(raw)){inp.value=next==='cm'?(raw*IN2CM).toFixed(1):(raw/IN2CM).toFixed(2);inp.step=next==='cm'?'0.1':'0.05';}}
+  });});
+
+  function readInput(inp,unitKey){const raw=parseFloat(inp.value);if(isNaN(raw)||raw<=0)return null;return inputUnits[unitKey]==='cm'?toIN(raw):raw;}
+  function updateChecks(){
+    const w=readInput(inW,'w'),h=readInput(inH,'h'),head=readInput(inHead,'head');
+    checkW.classList.toggle('show',w!==null);checkH.classList.toggle('show',h!==null);checkHead.classList.toggle('show',head!==null);
+    if(checkNose)checkNose.classList.toggle('show',noseSize!==null);
+    [inW,inH,inHead].forEach((inp,i)=>{inp.classList.toggle('filled',[w,h,head][i]!==null);});
+    const total=[w,h,head].filter(v=>v!==null).length+(noseSize?1:0);const status=$('#goStatus');
+    if(total===4){status.textContent='All four entered. Ready to go!';status.style.color='var(--good)';}
+    else{status.textContent=`${total}/4 entered${!noseSize?' (nose size needed)':''}`;status.style.color='';}
+    $('#goToFit').disabled=false;
+  }
+  inW.addEventListener('input',updateChecks);inH.addEventListener('input',updateChecks);inHead.addEventListener('input',updateChecks);updateChecks();
+
+  function syncNoseButtons(){$$('.nose-opt').forEach(btn=>{btn.classList.toggle('active',btn.dataset.nose===noseSize);});if(checkNose)checkNose.classList.toggle('show',noseSize!==null);}
+  $$('.nose-opt').forEach(btn=>{btn.addEventListener('click',()=>{noseSize=btn.dataset.nose;syncNoseButtons();updateChecks();if(touched)applyFilters();});});
+
+  $('#goToFit').addEventListener('click',()=>{
+    if(!noseSize){const status=$('#goStatus');status.textContent='Please select your nose size (step D) before continuing.';status.style.color='var(--bad)';const ns=document.getElementById('nosePickMeasure');if(ns)ns.scrollIntoView({behavior:'smooth',block:'center'});return;}
+    wIn=readInput(inW,'w');hIn=readInput(inH,'h');headIn=readInput(inHead,'head');
+    touched=wIn!==null||hIn!==null||headIn!==null;syncNoseButtons();configSliders();applyFilters();switchTab('fit');setTimeout(()=>{const rh=document.getElementById('resultsHeading');if(rh)rh.scrollIntoView({behavior:'smooth',block:'start'});},100);
+  });
+
+  function configSliders(){
+    const c=sliderUnits==='cm';
+    function setup(range,min,max,valIn,step){const rMin=c?toCM(min):min,rMax=c?toCM(max):max;range.min=rMin;range.max=rMax;range.step=c?0.1:step;range.value=valIn!=null?(c?toCM(valIn):valIn):rMin;}
+    setup(wRange,BOUNDS.wMin,BOUNDS.wMax,wIn,0.05);setup(hRange,BOUNDS.hMin,BOUNDS.hMax,hIn,0.05);setup(headRange,BOUNDS.headMin,BOUNDS.headMax,headIn,0.125);
+    $$('.u-label').forEach(el=>el.textContent=sliderUnits);
+    wOutEl.textContent=wIn!=null?fmtSlider(wIn,sliderUnits):'\u2014';hOutEl.textContent=hIn!=null?fmtSlider(hIn,sliderUnits):'\u2014';headOutEl.textContent=headIn!=null?fmtSlider(headIn,sliderUnits):'\u2014';
+    const bd=(id,v)=>$(id).textContent=fmtSlider(v,sliderUnits);bd('#wLo',BOUNDS.wMin);bd('#wHi',BOUNDS.wMax);bd('#hLo',BOUNDS.hMin);bd('#hHi',BOUNDS.hMax);bd('#headLo',BOUNDS.headMin);bd('#headHi',BOUNDS.headMax);
+  }
+  function onSlide(range,outEl,setter){return()=>{touched=true;const raw=parseFloat(range.value);const valIn=sliderUnits==='cm'?toIN(raw):raw;setter(valIn);outEl.textContent=fmtSlider(valIn,sliderUnits);applyFilters();};}
+  wRange.addEventListener('input',onSlide(wRange,wOutEl,v=>{wIn=v;}));hRange.addEventListener('input',onSlide(hRange,hOutEl,v=>{hIn=v;}));headRange.addEventListener('input',onSlide(headRange,headOutEl,v=>{headIn=v;}));
+  $('#unitsToggle').addEventListener('click',()=>{sliderUnits=sliderUnits==='in'?'cm':'in';$('#unitsToggle').textContent=sliderUnits==='in'?'Switch to cm':'Switch to inches';configSliders();applyFilters();});
+  $('#resetBtn').addEventListener('click',()=>{wIn=null;hIn=null;headIn=null;noseSize=null;touched=false;syncNoseButtons();configSliders();clearResults();});
+
+  function inRange(v,min,max){return v!=null&&v>=min&&v<=max;}
+  function centerDist(v,min,max){if(v==null)return 0;const mid=(min+max)/2,half=(max-min)/2;if(half===0)return v===min?0:999;return Math.abs(v-mid)/half;}
+  function scoreMask(m){const dw=centerDist(wIn,m.wMin,m.wMax),dh=centerDist(hIn,m.hMin,m.hMax),dHead=centerDist(headIn,m.headMin,m.headMax);const combined=dw*0.35+dh*0.35+dHead*0.30;const faceOK=(wIn==null||inRange(wIn,m.wMin,m.wMax))&&(hIn==null||inRange(hIn,m.hMin,m.hMax));const headOK=headIn==null||inRange(headIn,m.headMin,m.headMax);const noseBlocked=(noseSize==='large'&&m.noseLargeOK===false);return{...m,_dw:dw,_dh:dh,_dHead:dHead,_combined:combined,_faceOK:faceOK,_headOK:headOK,_noseBlocked:noseBlocked};}
+  const GOOD_THRESHOLD=0.70,CLOSE_THRESHOLD=1.05;
+
+  function applyFilters(){
+    if(!touched){clearResults();return;}subEl.textContent='';
+    const scored=masks.map(scoreMask).sort((a,b)=>a._combined-b._combined);
+    const groupBest={};scored.forEach(m=>{if(m.sizeGroup){if(!(m.sizeGroup in groupBest)||m._combined<groupBest[m.sizeGroup])groupBest[m.sizeGroup]=m._combined;}});
+    scored.forEach(m=>{if(m.sizeGroup&&m.sizeGroup in groupBest)m._combined=groupBest[m.sizeGroup];});scored.sort((a,b)=>a._combined-b._combined);
+    let visible=scored.filter(m=>!m._noseBlocked);let showBlockedAsSoftWarn=false;if(visible.length===0){visible=scored;showBlockedAsSoftWarn=true;}
+    const bestScore=visible[0]._combined;const bestIds=new Set();visible.forEach(m=>{if(Math.abs(m._combined-bestScore)<0.005)bestIds.add(m.id);});
+    let headConflictMsg='';const topMask=visible[0];
+    if(headIn!=null&&!topMask._headOK&&topMask._faceOK){const betterHead=visible.find(m=>!bestIds.has(m.id)&&m._headOK&&!m._noseBlocked);if(betterHead){const dir=headIn>topMask.headMax?'larger':'smaller';headConflictMsg=`Your face dimensions suit the <strong>${topMask.name}</strong>, but your head circumference is ${dir} than its ideal range. The <strong>${betterHead.name}</strong> may give a better strap seal.`;}}
+    let msgHtml='';const headingEl=document.getElementById('resultsHeading');
+    if(topMask._faceOK&&topMask._headOK&&!headConflictMsg){headingEl.textContent=`Great news! We found ${visible.length} mask${visible.length===1?'':'s'} for your measurements`;msgHtml+=`<div class="results-msg msg-good"><strong>Excellent fit!</strong> Your top result is well within range. All options ranked below from best to furthest.</div>`;}
+    else if(headConflictMsg){headingEl.textContent=`We found ${visible.length} mask${visible.length===1?'':'s'} for your measurements`;msgHtml+=`<div class="results-msg msg-head"><strong>Heads up on strap fit:</strong> ${headConflictMsg}</div>`;}
+    else if(bestScore<=CLOSE_THRESHOLD){headingEl.textContent=`We found ${visible.length} mask${visible.length===1?'':'s'} close to your measurements`;msgHtml+=`<div class="results-msg msg-warn"><strong>Close fit.</strong> You are near the edge of the closest mask's range. Consider reaching out to confirm.</div>`;}
+    else{headingEl.textContent=`${visible.length} mask${visible.length===1?'':'s'} to consider`;msgHtml+=`<div class="results-msg msg-warn"><strong>No ideal match</strong>, but here are all masks ranked closest to furthest. Our team can help. Tap "Ask a Pro" below.</div>`;}
+    msgEl.innerHTML=msgHtml;renderCards(visible,bestIds,showBlockedAsSoftWarn);renderAskPro(visible[0]);
+  }
+
+  function variantBadge(color,mask,type){const vm=mask.variant_map||{};const matchingKey=Object.keys(vm).find(k=>k.startsWith(color+'/')||k.endsWith('/'+color));const param=matchingKey?vm[matchingKey]:null;if(param){return`<a href="${mask.link}${param}" target="_blank" rel="noopener" class="spec-badge" title="View ${color} version">${color}</a>`;}return`<span class="spec-badge">${color}</span>`;}
+
+  function renderCards(list,bestIds,softNoseWarn){
+    gridEl.innerHTML='';
+    list.forEach((m)=>{
+      const isBest=bestIds.has(m.id);const s=m._combined;let tags=[];const allInRange=m._faceOK&&m._headOK;
+      if(softNoseWarn&&m._noseBlocked){tags.push({text:'\u26A0 Nose pocket may be tight',cls:'tag tag-nose-warn'});}
+      if(isBest&&allInRange){tags.push({text:'\u2713 Best Match',cls:'tag tag-best'});}
+      else if(isBest&&m._faceOK&&!m._headOK){tags.push({text:'\u2713 Best Face Fit',cls:'tag tag-good'});tags.push({text:'Head: edge of range',cls:'tag tag-stretch'});}
+      else if(isBest){tags.push({text:'\u2713 Best Available',cls:'tag tag-good'});}
+      else if(s<=GOOD_THRESHOLD&&allInRange){tags.push({text:'Good Match',cls:'tag tag-good'});}
+else if(s<=CLOSE_THRESHOLD&&allInRange){tags.push({text:'In Range',cls:'tag tag-good'});}
+else if(s<=GOOD_THRESHOLD&&!allInRange){tags.push({text:'Close Match',cls:'tag tag-close-match'});if(!m._headOK&&headIn!=null)tags.push({text:'Head: edge of range',cls:'tag tag-stretch'});if(!m._faceOK)tags.push({text:'Face: edge of range',cls:'tag tag-stretch'});}
+else if(s<=CLOSE_THRESHOLD){tags.push({text:'Close Fit',cls:'tag tag-close'});if(!m._faceOK&&m._headOK&&headIn!=null)tags.push({text:'Better head fit',cls:'tag tag-head'});}
+else{tags.push({text:'Worth Considering',cls:'tag tag-close'});}
+
+      let fitParts=[];
+      function dimNote(label,v,min,max){if(v==null)return;const d=centerDist(v,min,max);if(d<=0.5)fitParts.push(`${label}: well within range`);else if(d<=1.0)fitParts.push(`${label}: in range${d>0.85?', toward the edge':''}`);else{const dist=Math.abs(v-(v<min?min:max));fitParts.push(`${label}: ${dist.toFixed(2)}\u2033 ${v<min?'below min':'above max'}`);}}
+      dimNote('Eye Width',wIn,m.wMin,m.wMax);dimNote('Mask Height',hIn,m.hMin,m.hMax);dimNote('Head Circ.',headIn,m.headMin,m.headMax);
+
+      const u=sliderUnits;const f=v=>v!=null?(u==='cm'?(v*IN2CM).toFixed(1):v.toFixed(2)):'\u2014';const cls=(v,min,max)=>v!=null?(inRange(v,min,max)?'in-range':'out-range'):'';
+      const skirtBadges=m.skirt.map(c=>variantBadge(c,m)).join('');const frameBadges=m.frame.map(c=>variantBadge(c,m)).join('');
+      const card=document.createElement('div');card.className=`mask-card${isBest?' best':''}`;
+      card.innerHTML=`
+        <div class="card-img-wrap"><a href="${m.link}" target="_blank" rel="noopener"><img src="${m.img}" alt="${m.name}" /></a></div>
+        <div class="card-body">
+          <div class="mask-title">${m.name}</div>
+          <div class="mask-cat">Size: ${m.size}</div>
+          <div class="tags-row">${tags.map(t=>`<span class="${t.cls}">${t.text}</span>`).join('')}</div>
+          <div class="fit-detail">${fitParts.join(' \u00B7 ')}</div>
+          <table class="range-mini"><thead><tr><th></th><th>Min</th><th>Max</th><th>You</th></tr></thead><tbody>
+            <tr><td><strong>Eye Width</strong></td><td>${f(m.wMin)}</td><td>${f(m.wMax)}</td><td class="${cls(wIn,m.wMin,m.wMax)}">${f(wIn)}</td></tr>
+            <tr><td><strong>Mask Height</strong></td><td>${f(m.hMin)}</td><td>${f(m.hMax)}</td><td class="${cls(hIn,m.hMin,m.hMax)}">${f(hIn)}</td></tr>
+            <tr><td><strong>Head Circ.</strong></td><td>${f(m.headMin)}</td><td>${f(m.headMax)}</td><td class="${cls(headIn,m.headMin,m.headMax)}">${f(headIn)}</td></tr>
+          </tbody></table>
+          <div class="mask-specs">
+            <span><span class="spec-label">Skirt:</span> ${skirtBadges}</span>
+            <span><span class="spec-label">Frame:</span> ${frameBadges}</span>
+            <span><span class="spec-label">Diopters:</span> ${m.diopters}</span>
+          </div>
+          <div class="cta-row"><a href="${m.link}" target="_blank" rel="noopener" class="btn-product">${isBest?'View Best Fit Mask':(s<=GOOD_THRESHOLD&&allInRange)?'View Good Fit Mask':'View This Mask'}</a></div>
+        </div>`;
+      gridEl.appendChild(card);
+    });
+  }
+
+  function renderAskPro(best){
+    if(!best){askWrap.innerHTML='';return;}
+    askWrap.innerHTML=`<div class="ask-pro-bar"><span class="label">Not sure? Our team can confirm your fit — just send your measurements and an optional face photo.</span><button class="btn-outline" id="askProBtn">Ask a Pro</button></div>`;
+    $('#askProBtn').addEventListener('click',()=>{
+      const fm=v=>v!=null?`${v.toFixed(2)} in / ${(v*IN2CM).toFixed(1)} cm`:'not entered';
+      const noseLabel=noseSize?noseSize.charAt(0).toUpperCase()+noseSize.slice(1):'not selected';
+      const subject=encodeURIComponent('Mask sizing check - can you confirm fit?');
+      const body=encodeURIComponent(`Hi Oceans Optics team,\n\nCould you help confirm which mask will fit me?\n\nMy measurements:\n- Eye width: ${fm(wIn)}\n- Mask height: ${fm(hIn)}\n- Head circumference: ${fm(headIn)}\n- Nose size: ${noseLabel}\n\nThe tool suggested: ${best.name}\n\nI can attach a front-on face photo if that helps.\n\nThanks`);
+      window.open(`mailto:${ASK_EMAIL}?subject=${subject}&body=${body}`,'_blank','noopener,noreferrer');
+    });
+  }
+
+  function clearResults(){
+    msgEl.innerHTML='';askWrap.innerHTML='';
+    const headingEl=document.getElementById('resultsHeading');if(headingEl)headingEl.textContent='Your Mask Recommendations';
+    subEl.textContent='Enter your measurements and we will find the best masks for you.';
+    gridEl.innerHTML=`<div class="empty-results"><div class="icon">\uD83D\uDCD0</div><p>Move the sliders to see all masks ranked for your measurements.</p></div>`;
+  }
+
+  configSliders();clearResults();
+
+  // Camera button: new tab on desktop (≥769px), same tab on mobile
+  const camBtn=document.getElementById('oo-camera-btn');
+  if(camBtn){
+    if(window.innerWidth>=769){camBtn.setAttribute('target','_blank');camBtn.setAttribute('rel','noopener noreferrer');}
+    else{camBtn.removeAttribute('target');camBtn.removeAttribute('rel');}
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Mask Sizing Tool",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Mask Sizing Tool"
+    }
+  ]
+}
+{% endschema %}

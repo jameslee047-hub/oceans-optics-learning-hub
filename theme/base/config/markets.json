@@ -1,0 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "markets": {
+    "can": {
+      "parent": "global-market"
+    },
+    "aus": {
+      "parent": "global-market"
+    },
+    "deliver-duties-unpaid-9ce24ac5-3edd-49d4-88ee-724779bd1be5": {
+      "parent": "can"
+    },
+    "gb": {
+      "parent": "global-market"
+    },
+    "global-market": {
+      "parent": "@default"
+    }
+  }
+}

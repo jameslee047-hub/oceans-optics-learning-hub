@@ -1,0 +1,321 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "1737280676c995a38a": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_YrGP8W": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_YrGP8W"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 0
+      }
+    },
+    "mask_sizing_tool_jf7jXK": {
+      "type": "mask-sizing-tool",
+      "name": "Mask Sizing Tool",
+      "settings": {}
+    },
+    "collapsible_content_jP7riU": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_AHBUEM": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "About the measurements",
+            "icon": "check_mark",
+            "row_content": "<h5>We measured the relaxed inner seal and the gently stretched outer seal to give a realistic Min/Max window. Your goal is to sit comfortably inside that window, especially on width, so the mask seals without over-tightening the strap. </h5><h5>Remember to keep the measuring device straight without bending around the cxontour of your face.</h5><h5>Lens choice comes after fit<br/>Pick your frame size first. Then choose lens power for your diving mask with prescription lenses using the lens calculator (find below):</h5>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_AHBUEM"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "",
+        "heading": "",
+        "not_heading": false,
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "layout": "none",
+        "color_scheme": "",
+        "container_color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "rich_text_KmrrTk": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_aNitY4": {
+          "type": "heading",
+          "settings": {
+            "heading": "Use Our Free Underwater Lens Calculator Tool",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_jaA9tg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Your vision changes underwater, so we created a tool to help you find the best lens strength based on your prescription.</p>"
+          }
+        },
+        "button_JcHBQc": {
+          "type": "button",
+          "settings": {
+            "button_label": "Find My Lenses",
+            "button_link": "shopify://pages/prescription-lenses-calculator-tool",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_aNitY4",
+        "text_jaA9tg",
+        "button_JcHBQc"
+      ],
+      "disabled": true,
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "oo_quiz_card_h787F8": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "multicolumn_h7DNR9": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_9YVJKR": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Rx_Rover_sizing_guideline_chart.svg",
+            "title": "Rx Rover Series",
+            "title_h3": false,
+            "text": "<p>SIZE: Extra Small</p>",
+            "link_label": "See Size Chart",
+            "link": "shopify://pages/rx-rover-mask-sizing-chart"
+          }
+        },
+        "column_zbngtn": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Rx_Obsidian_sizing_guideline_chart_1.svg",
+            "title": "RX Obsidian Series",
+            "title_h3": false,
+            "text": "<p>SIZE: Medium</p>",
+            "link_label": "See Size Chart",
+            "link": "shopify://pages/rx-obsidian-mask-size-chart"
+          }
+        },
+        "column_6aAktr": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Rx_Mako_sizing_guideline_chart.svg",
+            "title": "RX Mako",
+            "title_h3": false,
+            "text": "<p>Size: Medium</p>",
+            "link_label": "See Size Chart",
+            "link": "shopify://pages/rx-mako-prescription-dive-mask-sizing-chart"
+          }
+        },
+        "column_fRCrhJ": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Rx_Carbon_RX_Mirage_sizing_guideline_chart.svg",
+            "title": "RX Carbon & RX Mirage",
+            "title_h3": false,
+            "text": "<p>SIZE: Large</p>",
+            "link_label": "See Size Chart",
+            "link": "shopify://pages/rx-carbon-rx-mirage-mask-sizing-guideline-chart"
+          }
+        },
+        "column_Ex9VgP": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Rx_Action_Cam_sizing_guideline_chart_14d765f3-65d3-4d78-ad64-61ff4e47a66f.svg",
+            "title": "RX Action Cam",
+            "title_h3": false,
+            "text": "<p>SIZE: Large</p>",
+            "link_label": "See Size Chart",
+            "link": "shopify://pages/rx-action-cam-mask-sizing-guideline-chart"
+          }
+        }
+      },
+      "block_order": [
+        "column_9YVJKR",
+        "column_zbngtn",
+        "column_6aAktr",
+        "column_fRCrhJ",
+        "column_Ex9VgP"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "See which mask is your perfect match",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "Choose now",
+        "button_link": "shopify://collections/all-our-masks",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_a7RwhY": {
+      "type": "featured-collection",
+      "disabled": true,
+      "settings": {
+        "title": "Choose your RX Mask!",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": true,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 40,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_KNVA6i": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_6Nxw7N": {
+          "type": "heading",
+          "settings": {
+            "heading": "Your Vision Changes Underwater",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_XWb7nj": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Use our FREE calculator tool to help you account for the magnification effect underwater and give you the vision as clear as day!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_6Nxw7N",
+        "text_XWb7nj"
+      ],
+      "disabled": true,
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "snorkel_101_guide_WqR7ya": {
+      "type": "Snorkel-101-guide",
+      "name": "Snorkeling 101 promo",
+      "settings": {}
+    },
+    "1737280828b7d248c7": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_QFGTCp": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_QFGTCp"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "1737280676c995a38a",
+    "main",
+    "mask_sizing_tool_jf7jXK",
+    "collapsible_content_jP7riU",
+    "rich_text_KmrrTk",
+    "oo_quiz_card_h787F8",
+    "multicolumn_h7DNR9",
+    "featured_collection_a7RwhY",
+    "rich_text_KNVA6i",
+    "snorkel_101_guide_WqR7ya",
+    "1737280828b7d248c7"
+  ]
+}

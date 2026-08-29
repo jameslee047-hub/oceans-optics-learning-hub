@@ -1,0 +1,399 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_9d8M8g": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "judge_me_reviews_preview_badge_icRfVM": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "avada_trust_badge_upsell_app_badge_v2_block_W3YCPr": {
+          "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-badge-v2-block/45454b7f-f6a7-4852-b770-8e0c3992a226",
+          "settings": {
+            "badge_id": "AVD-85040007"
+          }
+        },
+        "collapsible_tab_xa3ifG": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Mask Description",
+            "icon": "clipboard",
+            "content": "<h5>The RX Carbon Dive Mask combines sleek styling with <strong>corrective vision</strong> support.</h5><h5>The fit is perfect for most <strong>Medium to Large</strong> face shapes. While the carbon-look frame adds a modern touch, its PU construction keeps it <strong>lightweight</strong> and <strong>durable</strong>. RX-ready lenses deliver <strong>sharp </strong>underwater <strong>clarity</strong>, and the soft silicone skirt ensures a <strong>comfortable</strong>, <strong>leak-proof fit</strong>. </h5><h5>The adjustable strap system makes securing the perfect seal simple, fitting most medium to large face shapes with ease.</h5><p></p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_e4re8m": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Prescription Lens info",
+            "icon": "eye",
+            "content": "<h5><strong>This mask features both Nearsighted & Farsighted (SPH) lenses in negative diopters (e.g., -1.50, -1.75, -2.00).</strong></h5><h5><strong>Underwater magnification enlarges objects by ~33% – we recommend selecting a lens 0.25 to 0.75 diopters lower for optimal clarity. </strong><em><strong>(e.g a Nearsighted-2.75 can choose -2.50 or -2.00 or a Farsighted +2.75 can choose +2.00).</strong></em></h5><h5><strong>Tempered glass lenses for strength, safety, and clear underwater vision.</strong></h5><h5><strong>Not sure? </strong><a href=\"/pages/prescription-lenses\" target=\"_blank\" title=\"FREE Lens calulator tool page\"><strong>Try our Exclusive Lens Matcher to find your perfect fit.</strong></a></h5><h5><strong>Need help? Chat with us live or email info@oceansoptics.com</strong></h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_jHbD7U": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Mask Size Chart",
+            "icon": "ruler",
+            "content": "",
+            "page": "rx-carbon-rx-mirage-mask-sizing-guideline-chart"
+          }
+        },
+        "collapsible_tab_WhN3qN": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More than JUST Free Shipping",
+            "icon": "truck",
+            "content": "<h5>Orders $70+ ship free. Every order is carefully packed with quality guaranteed. Fast, trackable delivery in 3–10 days.</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_LyWcia": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "30 Day FREE Returns",
+            "icon": "return",
+            "content": "<h5>Take advantage of our 30 days from delivery FREE return policy—shop with confidence. See our full <a href=\"/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\">return policy</a> for more infoa</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_z3GpTK": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More than Just  a Mask",
+            "icon": "heart",
+            "content": "<h5>At <strong>Oceans Optics</strong>, we’re committed to <strong>clear vision and unforgettable underwater experiences</strong>. That’s why every order includes <strong>Snorkeling 101 – Your Ultimate Guide to Better Aquatic Adventures!</strong> </h5><h5>Get expert tips instantly after checkout or via email, and dive in with confidence.</h5>",
+            "page": ""
+          }
+        },
+        "judge_me_reviews_review_snippet_widget_JLmcYt": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_snippet_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_icRfVM",
+        "title",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "avada_trust_badge_upsell_app_badge_v2_block_W3YCPr",
+        "collapsible_tab_xa3ifG",
+        "collapsible_tab_e4re8m",
+        "collapsible_tab_jHbD7U",
+        "collapsible_tab_WhN3qN",
+        "collapsible_tab_LyWcia",
+        "collapsible_tab_z3GpTK",
+        "judge_me_reviews_review_snippet_widget_JLmcYt",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-686e75de-2eca-41aa-b207-9ad82484474e",
+        "media_size": "small",
+        "constrain_to_viewport": false,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "image_banner_eUK6jj": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/prescription-scuba-mask-rx-carbon-nearsighted-mask-for-scuba-diving-prescription-scuba-dive-mask-small-medium-faces-black-60138097574221.png",
+        "image_2": "shopify://shop_images/prescription-scuba-mask-rx-carbon-nearsighted-mask-for-scuba-diving-prescription-scuba-dive-mask-small-medium-faces-black-60138097574221.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "ambient",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "image_banner_bxx7ja": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Carbon_Mobile.png",
+        "image_2": "shopify://shop_images/Carbon_Desktop.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "image_banner_XnRLtL": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Mobile_Guide_88951d2f-e86c-4f02-aca9-531937caef1d.svg",
+        "image_2": "shopify://shop_images/Desktop_Guide_ccc9486e-03f2-436d-81b9-7cb7798708bc.svg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "1759222657622b199b": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_pt6zrh": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1000,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_pt6zrh"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "rich_text_jCNHkJ": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_tWx9cz": {
+          "type": "heading",
+          "settings": {
+            "heading": "The RX Carbon by Oceans Optics",
+            "heading_size": "h1"
+          }
+        },
+        "text_RfjKeK": {
+          "type": "text",
+          "settings": {
+            "text": "<h5>The RX Carbon Dive Mask combines sleek styling with corrective vision support. While the carbon-look frame adds a modern touch, its PU construction keeps it lightweight and durable. RX-ready lenses deliver sharp underwater clarity, and the soft silicone skirt ensures a comfortable, leak-proof fit. The adjustable strap system makes securing the perfect seal simple, fitting most face shapes with ease.</h5>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_tWx9cz",
+        "text_RfjKeK"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 100,
+        "padding_bottom": 52
+      }
+    },
+    "multicolumn_rkrUH4": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_UTq8WU": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>All Our Masks Have:</strong>",
+            "text": "<h5>HD Tempered Glass (Scratch Proof) </h5><h5>Ultra clear lenses</h5><h5>Hypoallergenic liquid    silicone skirt </h5><h5>Double skirt edge comfort seal for leak-proof fit</h5><h5>Interchangeable lenses, to account for Prescription </h5>",
+            "link_label": "Shop all Masks",
+            "link": "shopify://collections/all-our-masks"
+          }
+        },
+        "column_96TKq3": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>Carbon Features:</strong>",
+            "text": "<h5>Ideal for small-medium size faces </h5><h5>Ultra lightweight</h5><h5>Easy access soft nose for easy equalizing</h5><h5>Lift to release buckle system </h5><h5>Mask is compatible with neoprene mask strap</h5><h5>Anti fog spray included </h5>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_UTq8WU",
+        "column_96TKq3"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 2,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "background-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_znzxbL": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Shop Our New I Can Sea Tees!",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "i-can-sea-shirts",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like..",
+        "heading_size": "h2",
+        "products_to_show": 10,
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "1718684932076b90d3": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_fxFFHB": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_fxFFHB"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_9d8M8g",
+    "main",
+    "image_banner_eUK6jj",
+    "image_banner_bxx7ja",
+    "image_banner_XnRLtL",
+    "1759222657622b199b",
+    "rich_text_jCNHkJ",
+    "multicolumn_rkrUH4",
+    "featured_collection_znzxbL",
+    "related-products",
+    "1718684932076b90d3"
+  ]
+}

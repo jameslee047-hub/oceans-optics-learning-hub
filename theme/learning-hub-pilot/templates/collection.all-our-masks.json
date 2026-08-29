@@ -1,0 +1,361 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_z9JE9d": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 8,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "173691756533a29d4c": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_MbnYzq": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_MbnYzq"
+      ],
+      "custom_css": [],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "image_banner_paeN9R": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_NhHVYL": {
+          "type": "heading",
+          "settings": {
+            "heading": "Shop All Our RX Snorkel Mask: Find the Right Prescription Dive Mask",
+            "heading_size": "h1"
+          }
+        },
+        "text_kqNDh4": {
+          "type": "text",
+          "settings": {
+            "text": "See the reef the way it was meant to be seen.",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_NhHVYL",
+        "text_kqNDh4"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/DSC03906.jpg",
+        "image_2": "shopify://shop_images/DSC03906.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "middle-right",
+        "show_text_box": true,
+        "desktop_content_alignment": "left",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": true,
+        "fetchpriority_high": false
+      }
+    },
+    "rich_text_AK9Xcg": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_qzPCef": {
+          "type": "heading",
+          "settings": {
+            "heading": "Prescription Snorkel and Scuba Dive Masks Designed for Comfort and Clarity",
+            "set_h1": true,
+            "heading_size": "h2"
+          }
+        },
+        "text_MEa4RU": {
+          "type": "text",
+          "settings": {
+            "text": "<p>The right mask makes a huge difference underwater. With an RX scuba mask and custom lenses selected for your vision, you’ll see everything clearly, feel more comfortable, and enjoy every dive or snorkel without distractions.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_qzPCef",
+        "text_MEa4RU"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 36,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": false,
+        "columns_mobile": "2",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "custom_liquid_Anppra": {
+      "type": "custom-liquid",
+      "name": "Body Text",
+      "settings": {
+        "custom_liquid": "<style>\n  .rx-benefits {\n    max-width: 1000px;\n    margin: 20px auto;\n    padding: 0 20px;\n    font-family: 'Lato', sans-serif;\n  }\n  .rx-benefits-grid {\n    display: flex;\n    flex-wrap: wrap;\n    justify-content: center;\n    gap: 20px;\n    text-align: center;\n  }\n  .rx-benefits-item {\n    flex: 1;\n    min-width: 220px;\n    max-width: 300px;\n    padding: 20px;\n  }\n  .rx-benefits-emoji {\n    font-size: 32px;\n    margin-bottom: 10px;\n    text-align: center;\n  }\n  .rx-benefits-heading {\n    font-size: 16px;\n    font-weight: 700;\n    color: #023059;\n    margin: 0 0 8px;\n  }\n  .rx-benefits-text {\n    font-size: 15px;\n    color: #444;\n    line-height: 1.6;\n    margin: 0;\n  }\n  @media (max-width: 600px) {\n    .rx-benefits-item {\n      min-width: 100%;\n      padding: 8px 10px;\n      text-align: center;\n    }\n    .rx-benefits-grid {\n      gap: 4px;\n    }\n  }\n</style>\n\n<div class=\"rx-benefits\">\n  <div class=\"rx-benefits-grid\">\n\n    <div class=\"rx-benefits-item\">\n      <div class=\"rx-benefits-emoji\">🤿</div>\n      <h3 class=\"rx-benefits-heading\">Clear Vision Underwater</h3>\n      <p class=\"rx-benefits-text\">Our Rx snorkel masks and custom prescription dive masks are fitted with prescription lenses matched to your sphere diopter strength, giving you crisp, clear vision the moment you submerge.</p>\n    </div>\n\n    <div class=\"rx-benefits-item\">\n      <div class=\"rx-benefits-emoji\">👁️</div>\n      <h3 class=\"rx-benefits-heading\">Your Prescription, Your Way</h3>\n      <p class=\"rx-benefits-text\">Choose your left and right lens strength independently across all our Rx scuba masks and snorkeling masks, so your vision is dialled in on both sides.</p>\n    </div>\n\n    <div class=\"rx-benefits-item\">\n      <div class=\"rx-benefits-emoji\">🐠</div>\n      <h3 class=\"rx-benefits-heading\">See the Reef Properly</h3>\n      <p class=\"rx-benefits-text\">A comfortable watertight fit and a custom made lens matched to your vision means you can focus on the fish, the coral, and everything in between.</p>\n    </div>\n\n  </div>\n</div>",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "multicolumn_HVggDw": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_6dYK8g": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Myopia_Vision_Nearsighted_5979eb54-8ae9-446a-9765-e1a8ac20a2a5.png",
+            "title": "<strong>How Do I Know If I need a Nearsighted (Myopia) Rx mask?</strong>",
+            "title_h3": false,
+            "text": "<p><br/>If things in the distance look blurry, like coral reefs, fish, or boats, you likely need a nearsighted swim mask.. Our <strong>negative (-) prescription snorkel mask lenses</strong> help create a mask for clear underwater vision, bringing far-away details into focus while still keeping close-up vision sharp.</p><p>About 1 in 3 Americans are Nearsighted!</p>",
+            "link_label": "Shop Nearsighted",
+            "link": "shopify://collections/nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "column_drmDdp": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Hyperopia_Vision_Farsighted_f6ad7170-fd2a-497f-a156-687e5aeda32c.png",
+            "title": "<strong>How Do I Know If I need a Farsighted Snorkel Mask (Hyperopia / Presbyopia)</strong>",
+            "title_h3": false,
+            "text": "<p><br/>If you see clearly far away but struggle to focus on things up close, like your gauges, camera, or the fish right in front of you, you’re likely farsighted.</p><p>Our <strong>plus (+) Rx lenses</strong> help bring everything into focus at once, making it easier to see clearly both near and far underwater.</p>",
+            "link_label": "Shop Farsighted",
+            "link": "shopify://collections/farsighted-prescription-dive-mask"
+          }
+        },
+        "column_EVrMXb": {
+          "type": "column",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Normal_Vision_coral_reef.png",
+            "title": "<strong>How Prescription Lenses Work Underwater</strong>",
+            "title_h3": false,
+            "text": "<h4>Whether your lenses are <strong>plus</strong> or <strong>minus</strong>, they simply adjust how light enters your eyes so everything, from nearby coral to the open blue, looks crisp and clear. </h4><h4>Start seeing the reef and get your Prescription Snorkel/Dive Mask</h4>",
+            "link_label": "Shop All Masks",
+            "link": "shopify://collections/all-our-masks"
+          }
+        }
+      },
+      "block_order": [
+        "column_6dYK8g",
+        "column_drmDdp",
+        "column_EVrMXb"
+      ],
+      "custom_css": [
+        "multicolumn .title-wrapper-with-link {justify-content: center; text-align: center;}",
+        ".multicolumn .title {text-align: center;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Nearsighted Vs Farsighted: Which Rx Snorkel Mask to Choose?",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 2,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 40,
+        "padding_bottom": 36
+      }
+    },
+    "oo_quiz_card_9BTTnP": {
+      "type": "oo-quiz-card",
+      "disabled": true,
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "mask_sizing_tool_shortcut_pzWAYG": {
+      "type": "mask-sizing-tool-shortcut",
+      "name": "Mask fit shortcut",
+      "settings": {
+        "heading": "How would you like to find your mask fit?",
+        "subheading": "Choose automatic camera measuring or follow the manual ruler guide below",
+        "auto_badge": "Recommended",
+        "auto_icon": "🎥",
+        "auto_title": "Auto Camera Measuring",
+        "auto_text": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.",
+        "auto_point_1": "✓ Takes about 30 seconds",
+        "auto_point_2": "✓ Works on phone or desktop",
+        "auto_point_3": "✓ Get instant mask recommendations",
+        "auto_url": "",
+        "open_camera_new_tab": true,
+        "auto_button": "Start Camera Measuring →",
+        "manual_badge": "Measure Yourself",
+        "manual_icon": "📐",
+        "manual_title": "Manual Ruler Guide",
+        "manual_text": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide.",
+        "manual_point_1": "✓ No camera needed",
+        "manual_point_2": "✓ Works anywhere",
+        "manual_point_3": "✓ Fine-tune with sliders",
+        "manual_mode": "link",
+        "manual_url": "",
+        "manual_anchor_id": "ruler-guide-start",
+        "manual_reveal_id": "",
+        "manual_button": "Use Ruler Guide ↓"
+      }
+    },
+    "lens_calc_tool_product_XFpKQy": {
+      "type": "lens-calc-tool-product",
+      "name": "Lens Calculator",
+      "settings": {}
+    },
+    "175939664036b636e4": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_KKqVrE": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_KKqVrE"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "video_ycNTfX": {
+      "type": "video",
+      "settings": {
+        "heading": "Check out our very own Oceans Optics Coral Reef! Built using profits from mask sales!",
+        "heading_size": "h2",
+        "enable_video_looping": false,
+        "video_url": "https://youtu.be/pjAXq9AtsiE",
+        "cover_image": "shopify://shop_images/322448fc-1efb-4716-9f82-051fa453f647.jpg",
+        "description": "Prescription dive mask turns into vibrant coral reef conservation",
+        "full_width": false,
+        "color_scheme": "",
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_h1_title_collection": false,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-2"
+      }
+    },
+    "17152440046bc5a1ee": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_3wwk6x": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join Our Community on Instagram!",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_3wwk6x"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "custom_liquid_awMt6f": {
+      "type": "custom-liquid",
+      "name": "FAQ All_Our_Masks",
+      "settings": {
+        "custom_liquid": "<section id=\"collection-faq-section\" class=\"faq-container\" aria-labelledby=\"collection-faq-title\">\n<h2 id=\"collection-faq-title\" class=\"faq-title\">Rx Snorkel Mask FAQ</h2>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What is an Rx snorkel mask?</h3></summary>\n<div class=\"faq-answer\">\n<p>An Rx snorkel prescription mask is a scuba dive snorkeling mask fitted with optical lenses matched to your vision. Instead of struggling to see underwater or trying to wear contacts in the ocean, you get clear, corrected vision built directly into the mask. These Rx masks are available for both nearsighted and farsighted prescriptions and are a key part of modern snorkeling gear for any diver who wants a natural, comfortable view and a broad field of vision.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I use an Rx dive mask for scuba diving as well as snorkeling?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Every snorkel and dive mask in our range uses HD tempered glass lenses and is rated for scuba diving up to 100 ft (30 m). Whether you snorkel on the surface or go deeper on a dive trip, the mask performs the same way and gives you reliable crystal-clear underwater vision with a comfortable fit.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What is the difference between an Rx scuba mask and a regular dive mask?</h3></summary>\n<div class=\"faq-answer\">\n<p>A regular dive mask has plain flat lenses. Rx masks have optically ground lenses matched to your prescription so you can see clearly underwater without contacts or glasses. The frame, face seal, and strap are the same as standard dive masks and snorkel masks often made with soft and supple silicone or a liquid silicone injected skirt for a secure seal. The only difference is the prescriptoin lenses.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Do I need a nearsighted or farsighted Rx mask?</h3></summary>\n<div class=\"faq-answer\">\n<p>Check the SPH column on your glasses or contact lens prescription. If the number has a minus sign (e.g. -3.00), you are nearsighted and need a minus lens Rx mask. If it has a plus sign (e.g. +2.00), you are farsighted and need a plus lens mask. Not sure? Email us at info@oceansoptics.com and we will confirm your specific prescription for you, including cases like astigmatism.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Will my Rx mask lenses match my glasses prescription exactly?</h3></summary>\n<div class=\"faq-answer\">\n<p>Not exactly, and that is intentional. Water creates natural magnification, so wearing your full glasses prescription in an Rx dive mask often feels too strong. We slightly reduce the lens strength so your vision feels more natural underwater. Our <a href=\"https://oceansoptics.com/pages/prescription-lenses-calculator-tool\">lens calculator</a> helps you find the best prescription setup, whether you need single vision nearsighted or farsighted options.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What prescription strengths do your Rx masks cover?</h3></summary>\n<div class=\"faq-answer\">\n<p>Nearsighted Rx masks are available from -1.00 to -9.00 in increments 0.50. Farsighted options are available in whole steps from +1.00 to +5.00. Each product page shows the exact range available. If your prescription falls outside the range shown, contact us and we will help you find the best option or suitable lenses on the market.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I have different lens strengths for each eye in my Rx mask?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. You select the left and right lens strength separately at checkout, so asymmetric prescriptions are fully supported across all our masks with corrective lenses for a balanced and comfortable view.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Which prescription scuba mask is right for me?</h3></summary>\n<div class=\"faq-answer\">\n<p>It depends on your face seal size width, face shape, and prescription range. Some masks are low volume for a closer fit, while others offer a wide field of vision with a stylish and sleek low profile. If you prefer something lightweight, a low profile mask with soft silicone can be a great choice. Our best selling models fit a range of face types and give a secure, comfortable seal. Use our <a href=\"https://oceansoptics.com/pages/face-fit-mask-measuring-tool\">auto measure face-fit</a> scanner or our <a href=\"https://quiz.oceansoptics.com/quiz?quiz_source=direct_link&quiz_page_type=manual&quiz_page_handle=direct&quiz_placement=direct_link\">quiz</a> or contact us to choose the right option from our snorkel masks available.</p>\n</div>\n</details>\n\n</section>\n\n<script type=\"application/ld+json\">\n{\n\"@context\": \"https://schema.org\",\n\"@type\": \"FAQPage\",\n\"mainEntity\": [\n{\n\"@type\": \"Question\",\n\"name\": \"What is an Rx snorkel mask?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"An Rx snorkel prescription mask is a scuba dive snorkeling mask fitted with optical lenses matched to your vision. Instead of struggling to see underwater or trying to wear contacts in the ocean, you get clear, corrected vision built directly into the mask. These Rx masks are available for both nearsighted and farsighted prescriptions and are a key part of modern snorkeling gear for any diver who wants a natural, comfortable view and a broad field of vision.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I use an Rx dive mask for scuba diving as well as snorkeling?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Every snorkel and dive mask in our range uses HD tempered glass lenses and is rated for scuba diving up to 100 ft (30 m). Whether you snorkel on the surface or go deeper on a dive trip, the mask performs the same way and gives you reliable crystal-clear underwater vision with a comfortable fit.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"What is the difference between an Rx scuba mask and a regular dive mask?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"A regular dive mask has plain flat lenses. Rx masks have optically ground lenses matched to your prescription so you can see clearly underwater without contacts or glasses. The frame, face seal, and strap are the same as standard dive masks and snorkel masks often made with soft and supple silicone or a liquid silicone injected skirt for a secure seal. The only difference is the prescriptoin lenses.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Do I need a nearsighted or farsighted Rx mask?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Check the SPH column on your glasses or contact lens prescription. If the number has a minus sign (e.g. -3.00), you are nearsighted and need a minus lens Rx mask. If it has a plus sign (e.g. +2.00), you are farsighted and need a plus lens mask. Not sure? Email us at info@oceansoptics.com and we will confirm your specific prescription for you, including cases like astigmatism.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Will my Rx mask lenses match my glasses prescription exactly?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Not exactly, and that is intentional. Water creates natural magnification, so wearing your full glasses prescription in an Rx dive mask often feels too strong. We slightly reduce the lens strength so your vision feels more natural underwater. Our <a href=\"https://oceansoptics.com/pages/prescription-lenses-calculator-tool\">lens calculator</a> helps you find the best prescription setup, whether you need single vision nearsighted or farsighted options.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"What prescription strengths do your Rx masks cover?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Nearsighted Rx masks are available from -1.00 to -9.00 in increments 0.50. Farsighted options are available in whole steps from +1.00 to +5.00. Each product page shows the exact range available. If your prescription falls outside the range shown, contact us and we will help you find the best option or suitable lenses on the market.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I have different lens strengths for each eye in my Rx mask?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. You select the left and right lens strength separately at checkout, so asymmetric prescriptions are fully supported across all our masks with corrective lenses for a balanced and comfortable view.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Which prescription scuba mask is right for me?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"It depends on your face seal size width, face shape, and prescription range. Some masks are low volume for a closer fit, while others offer a wide field of vision with a stylish and sleek low profile. If you prefer something lightweight, a low profile mask with soft silicone can be a great choice. Our best selling models fit a range of face types and give a secure, comfortable seal. Use our <a href=\"https://oceansoptics.com/pages/face-fit-mask-measuring-tool\">auto measure face-fit</a> scanner or our <a href=\"https://quiz.oceansoptics.com/quiz?quiz_source=direct_link&quiz_page_type=manual&quiz_page_handle=direct&quiz_placement=direct_link\">quiz</a> or contact us to choose the right option from our snorkel masks available.\"\n}\n}\n]\n}\n</script>\n\n<style>\n.faq-container {\nmax-width: 700px;\nmargin: 20px auto;\npadding: 20px;\nborder-top: 1px solid #023059;\nfont-family: 'Lato', sans-serif;\n}\n.faq-title {\nfont-size: 24px;\nfont-weight: bold;\ncolor: #023059;\ntext-align: center;\nmargin-bottom: 15px;\n}\n.faq-item {\nborder-bottom: 1px solid #ddd;\nmargin-bottom: 10px;\n}\n.faq-question {\nfont-size: 16px;\nbackground-color: #ffffff;\ncolor: #023059;\npadding: 10px;\ncursor: pointer;\nborder: 1px solid #023059;\nborder-radius: 5px;\nmargin: 0;\nfont-weight: 700;\ndisplay: flex;\nalign-items: baseline;\n}\n.faq-question h3 {\nfont-size: 16px;\ncolor: #023059;\nfont-weight: 700;\nmargin: 0;\n}\n.faq-answer {\npadding: 10px;\nfont-size: 14px;\nbackground-color: #f9f9f9;\ncolor: #023059;\nfont-weight: 400;\n}\n.faq-answer p { margin: 0 0 8px 0; }\n.faq-answer p:last-child { margin-bottom: 0; }\n.faq-answer a { color: #B95e05; text-decoration: none; }\n.faq-answer a:hover { text-decoration: underline; }\ndetails summary::-webkit-details-marker { display: none; }\ndetails[open] .faq-question::before { content: \"▾ \"; }\ndetails:not([open]) .faq-question::before { content: \"▸ \"; }\n</style>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_z9JE9d",
+    "173691756533a29d4c",
+    "image_banner_paeN9R",
+    "rich_text_AK9Xcg",
+    "product-grid",
+    "custom_liquid_Anppra",
+    "multicolumn_HVggDw",
+    "oo_quiz_card_9BTTnP",
+    "mask_sizing_tool_shortcut_pzWAYG",
+    "lens_calc_tool_product_XFpKQy",
+    "175939664036b636e4",
+    "video_ycNTfX",
+    "banner",
+    "17152440046bc5a1ee",
+    "custom_liquid_awMt6f"
+  ]
+}

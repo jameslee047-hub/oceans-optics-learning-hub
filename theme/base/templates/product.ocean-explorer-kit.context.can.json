@@ -1,0 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.ocean-explorer-kit.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_eBhqKN": {
+          "settings": {
+            "content": "<h5>Free 3-15 day Delivery to anywhere in the US, CAN, UK & AUS</h5>",
+            "heading": "Free Shipping Canada & US"
+          }
+        }
+      }
+    }
+  }
+}

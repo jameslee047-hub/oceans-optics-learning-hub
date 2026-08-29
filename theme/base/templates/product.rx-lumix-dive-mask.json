@@ -1,0 +1,341 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_QUq7fY": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "judge_me_reviews_preview_badge_wp8Ttk": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "custom_liquid_p7RbR6": {
+          "type": "custom_liquid",
+          "name": "Ocean10",
+          "settings": {
+            "custom_liquid": "<style>\n  /* Scoped to THIS Custom Liquid only */\n  #shopify-section-{{ section.id }} .oo-coupon{\n    display:flex;align-items:center;gap:10px;\n    padding:10px 12px;margin:8px 0 12px;\n    border:2px dashed #023059;border-radius:12px;background:#fff;color:#023059;\n    box-shadow:0 4px 14px rgba(2,48,89,.08);\n    font:600 16px/1.4 Lato,system-ui,sans-serif;max-width:520px;position:relative;\n  }\n  @supports ((-webkit-mask:linear-gradient(#000,#000)) or (mask:linear-gradient(#000,#000))){\n    #shopify-section-{{ section.id }} .oo-coupon{\n      -webkit-mask:\n        radial-gradient(12px at left center,transparent 98%,#000 100%) left/24px 100% no-repeat,\n        radial-gradient(12px at right center,transparent 98%,#000 100%) right/24px 100% no-repeat,\n        linear-gradient(#000,#000);\n              mask:\n        radial-gradient(12px at left center,transparent 98%,#000 100%) left/24px 100% no-repeat,\n        radial-gradient(12px at right center,transparent 98%,#000 100%) right/24px 100% no-repeat,\n        linear-gradient(#000,#000);\n    }\n  }\n  #shopify-section-{{ section.id }} .oo-chip{background:#B95E05;color:#fff;padding:2px 8px;border-radius:999px;font-weight:800;font-size:12px}\n  #shopify-section-{{ section.id }} .oo-text{margin:0;flex:1}\n  #shopify-section-{{ section.id }} .oo-code{font-weight:900;letter-spacing:.5px}\n  #shopify-section-{{ section.id }} .oo-btn{\n    border:1px solid #023059;background:#fff;color:#023059;\n    padding:6px 10px;border-radius:8px;font:700 13px/1 Lato,system-ui,sans-serif;cursor:pointer\n  }\n  #shopify-section-{{ section.id }} .oo-btn:hover{background:#023059;color:#fff}\n  #shopify-section-{{ section.id }} .oo-toast{\n    position:absolute;right:10px;top:-8px;transform:translateY(-100%);\n    background:#023059;color:#fff;border-radius:8px;padding:4px 8px;font:700 12px/1 Lato,system-ui,sans-serif;opacity:0;pointer-events:none;transition:.18s ease\n  }\n  #shopify-section-{{ section.id }} .oo-toast.show{opacity:1;transform:translateY(-110%)}\n  @media (max-width:749px){#shopify-section-{{ section.id }} .oo-coupon{font-size:15px}}\n</style>\n\n<div class=\"oo-coupon\" role=\"note\" aria-label=\"Discount code\">\n  <span class=\"oo-chip\">10% OFF</span>\n  <p class=\"oo-text\">Use code <span class=\"oo-code\" data-code=\"OCEAN10\">OCEAN10</span> at checkout.</p>\n  <button type=\"button\" class=\"oo-btn oo-copy\" aria-label=\"Copy discount code\">Copy</button>\n  <span class=\"oo-toast\" aria-hidden=\"true\">Copied</span>\n</div>\n\n<script>\n  (()=>{const root=document.getElementById('shopify-section-{{ section.id }}');\n    const coupon=root?.querySelector('.oo-coupon'); if(!coupon) return;\n    const btn=coupon.querySelector('.oo-copy'); const toast=coupon.querySelector('.oo-toast');\n    const code=(coupon.querySelector('.oo-code')?.textContent||'OCEAN10').trim();\n    btn?.addEventListener('click',async()=>{\n      try{await navigator.clipboard.writeText(code);}catch(e){}\n      toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1200);\n    });\n  })();\n</script>"
+          }
+        },
+        "custom_liquid_igtm9K": {
+          "type": "custom_liquid",
+          "name": "Auto Discount",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "<style>\n#shopify-section-{{ section.id }} .oo-btn{\n  text-decoration: none !important;\n}\n\n#shopify-section-{{ section.id }} .oo-btn *{\n  text-decoration: none !important;\n}\n\n  /* Scoped to THIS Custom Liquid only */\n  #shopify-section-{{ section.id }} .oo-coupon{\n    display:flex;\n    align-items:center;\n    gap:12px;\n    padding:10px 12px;\n    margin:8px auto 12px 0;\n    border:2px dashed #023059;\n    border-radius:12px;\n    background:#fff;\n    color:#023059;\n    box-shadow:0 4px 14px rgba(2,48,89,.08);\n    font:600 16px/1.4 Lato,system-ui,sans-serif;\n    max-width:520px;\n    position:relative;\n  }\n\n  @supports ((-webkit-mask:linear-gradient(#000,#000)) or (mask:linear-gradient(#000,#000))){\n    #shopify-section-{{ section.id }} .oo-coupon{\n      -webkit-mask:\n        radial-gradient(12px at left center,transparent 98%,#000 100%) left/24px 100% no-repeat,\n        radial-gradient(12px at right center,transparent 98%,#000 100%) right/24px 100% no-repeat,\n        linear-gradient(#000,#000);\n              mask:\n        radial-gradient(12px at left center,transparent 98%,#000 100%) left/24px 100% no-repeat,\n        radial-gradient(12px at right center,transparent 98%,#000 100%) right/24px 100% no-repeat,\n        linear-gradient(#000,#000);\n    }\n  }\n\n  #shopify-section-{{ section.id }} .oo-chip{\n    background:#B95E05;\n    color:#fff;\n    padding:4px 8px;\n    border-radius:999px;\n    font-weight:800;\n    font-size:12px;\n    white-space:nowrap;\n  }\n\n  #shopify-section-{{ section.id }} .oo-text{\n    margin:0;\n    flex:1;\n    min-width:0;\n  }\n\n  #shopify-section-{{ section.id }} .oo-code{\n    font-weight:900;\n    letter-spacing:.5px;\n  }\n\n  #shopify-section-{{ section.id }} .oo-min{\n    font-size:12px;\n    font-weight:600;\n    opacity:.75;\n    margin-left:4px;\n    white-space:nowrap;\n  }\n\n  #shopify-section-{{ section.id }} .oo-btn{\n    margin-left:auto;\n    border:1px solid #023059;\n    background:#fff;\n    color:#023059;\n    padding:6px 12px;\n    border-radius:8px;\n    font:800 13px/1.1 Lato,system-ui,sans-serif;\n    cursor:pointer;\n    text-align:center;\n    white-space:nowrap;\n  }\n\n  #shopify-section-{{ section.id }} .oo-btn span{\n    display:inline-block;\n  }\n\n  #shopify-section-{{ section.id }} .oo-btn:hover{\n    background:#023059;\n    color:#fff;\n  }\n\n  /* Mobile refinements */\n  @media (max-width:749px){\n    #shopify-section-{{ section.id }} .oo-coupon{\n      font-size:15px;\n      margin:8px auto 12px;\n      align-items:center;\n    }\n\n    #shopify-section-{{ section.id }} .oo-btn{\n      padding:6px 10px;\n      font-size:12px;\n      line-height:1.1;\n    }\n\n    #shopify-section-{{ section.id }} .oo-btn span{\n      display:block;\n    }\n  }\n</style>\n\n<div class=\"oo-coupon\" role=\"note\" aria-label=\"Discount code\">\n  <span class=\"oo-chip\">20% OFF</span>\n\n  <p class=\"oo-text\">\n    Use code <span class=\"oo-code\">BYE2025</span> at checkout\n    <span class=\"oo-min\">$80 min order</span>\n  </p>\n\n  <a class=\"oo-btn\"\n     href=\"/discount/BYE2025?redirect=/cart\"\n     aria-label=\"Apply 20 percent off\">\n    <span>Apply</span>\n    <span>20% OFF</span>\n  </a>\n</div>"
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "appstle_loyalty_appstle_loyalty_acquire_points_WiKEby": {
+          "type": "shopify://apps/appstle-loyalty/blocks/appstle-loyalty-acquire-points/1886c0f8-77b6-4a85-af11-b43cc17ae1c1",
+          "settings": {}
+        },
+        "custom_liquid_E6m8Yz": {
+          "type": "custom_liquid",
+          "name": "Trust Badges Product Page",
+          "settings": {
+            "custom_liquid": "<style>\n  .oo-trust-badges {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\npadding: 20px 0 0 0;\n    border-top: 1px solid #e8e8e8;\n    margin: 1px 0;\n  }\n\n  .oo-trust-badge {\n    flex: 1;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n  }\n\n  .oo-trust-badge img {\n    width: 100%;\n    max-width: 90px;\n    height: auto;\n    aspect-ratio: 1;\n    display: block;\n  }\n\n  @media (max-width: 480px) {\n    .oo-trust-badge img {\n      max-width: 70px;\n    }\n  }\n</style>\n\n<div class=\"oo-trust-badges\">\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/100_worry_free_guaranteed.svg?v=1780042887\"\n      alt=\"100% Worry-Free Guaranteed\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Icon_expert_support.svg?v=1780042887\"\n      alt=\"Expert Support\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/icon_owned_by_scuba_diving_instructors.svg?v=1780042886\"\n      alt=\"Owned By Scuba Professionals\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/icon_easy_free_returns.svg?v=1780042887\"\n      alt=\"Easy and Free Returns\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n</div>"
+          }
+        },
+        "collapsible_tab_3pcVAN": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Mask Description",
+            "heading_not_h2": false,
+            "icon": "clipboard",
+            "content": "<h5>This low-volume, medium-sized mask accommodates a variety of face shapes, including wide, round, and narrow profiles. Its double silicone seal ensures a dry, leak-free fit, while the hypoallergenic soft silicone skirt provides lasting comfort for extended underwater adventures.</h5><h5><strong>Perfect for Correcting Vision for Divers and Snorkelers</strong></h5><h5>RX Lumix features prescription lenses ranging from -1.5 to -6.0 diopters. </h5><h5>Experience crystal-clear vision without the need for additional eyewear, allowing you to explore vibrant coral reefs and deep blue waters with precision and ease.</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_TJ4w9q": {
+          "type": "collapsible_tab",
+          "disabled": true,
+          "settings": {
+            "heading": "Specifications & Features",
+            "heading_not_h2": false,
+            "icon": "lightning_bolt",
+            "content": "<h5><strong>Benefits:</strong></h5><p><strong>Double Silicone Seal Skirt</strong></p><p><strong>Leak-Free Comfort:</strong> Soft liquid silicone molds to your face, preventing water entry and enhancing comfort during long dives.</p><p><strong>Tempered Glass Prescription Lenses</strong></p><p><strong>Sharp Vision:</strong> Available in -1.5 to -6.0 diopters (0.5 increments) for clear, distortion-free underwater sight.</p><p><strong>Durable Aluminum Alloy Frame</strong></p><p><strong>Lightweight Strength:</strong> Combines durability with a sleek design, ensuring long-lasting performance even in demanding conditions.</p><p><strong>Adjustable Straps</strong></p><p><strong>Easy Fit:</strong> Easily adjust straps for a secure hold, providing stability throughout your dive.</p><p><strong>Wide Peripheral View</strong></p><p><strong>Immersive Experience:</strong> Enjoy an expansive field of vision, allowing you to take in the underwater landscape without eye strain.</p><p><strong>Specifications:</strong></p><p><strong>Frame Material:</strong> Aluminum Alloy</p><p><strong>Lens Material:</strong> Tempered Glass (-1.5 to -6.0 diopters)</p><p><strong>Skirt Material:</strong> Liquid Silicone</p><p><strong>Tube Type:</strong> Wet Style Snorkel</p><p><strong>Weight:</strong> 7 oz (198.5 g)</p><p><strong>Suitable For:</strong> Adults and Youth (Small to Medium Faces)</p><h5></h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_6JiY6j": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Mask Size Chart",
+            "heading_not_h2": false,
+            "icon": "ruler",
+            "content": "",
+            "page": "rx-lumix-mask-size-chart"
+          }
+        },
+        "collapsible_tab_gweLrA": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Prescription Lens Info",
+            "heading_not_h2": false,
+            "icon": "eye",
+            "content": "<h5>This mask features nearsighted (SPH) lenses in negative diopters (e.g., -1.50).</h5><h5>Tempered glass lenses for strength, safety, and clear underwater vision.</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_KmcLrp": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More than JUST Free Shipping",
+            "heading_not_h2": false,
+            "icon": "truck",
+            "content": "<h5>Orders $70+ ship free. Every order is carefully packed with quality guaranteed. Fast, trackable delivery in 3–10 days.</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_GNVzih": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "30 Day FREE Returns",
+            "heading_not_h2": false,
+            "icon": "return",
+            "content": "<h5>Take advantage of our 30 days from delivery FREE returns—shop with confidence. See our full <a href=\"/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\">return policy</a> for more info</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_pxbFmR": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More than JUST a Mask",
+            "heading_not_h2": false,
+            "icon": "heart",
+            "content": "<h5>At <strong>Oceans Optics</strong>, we’re committed to <strong>clear vision and unforgettable underwater experiences</strong>. That’s why every order includes <strong>Snorkeling 101 – Your Ultimate Guide to Better Aquatic Adventures!</strong> Get expert tips instantly after checkout or via email, and dive in with confidence.</h5>",
+            "page": ""
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_wp8Ttk",
+        "title",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "custom_liquid_p7RbR6",
+        "custom_liquid_igtm9K",
+        "buy_buttons",
+        "appstle_loyalty_appstle_loyalty_acquire_points_WiKEby",
+        "custom_liquid_E6m8Yz",
+        "collapsible_tab_3pcVAN",
+        "collapsible_tab_TJ4w9q",
+        "collapsible_tab_6JiY6j",
+        "collapsible_tab_gweLrA",
+        "collapsible_tab_KmcLrp",
+        "collapsible_tab_GNVzih",
+        "collapsible_tab_pxbFmR",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "media_size": "small",
+        "constrain_to_viewport": false,
+        "media_fit": "cover",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "17312057008b2de433": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_pWUtMx": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_pWUtMx"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "image_banner_gbgLiN": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/DSC08762.jpg",
+        "image_2": "shopify://shop_images/DSC08762.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false,
+        "fetchpriority_high": false
+      }
+    },
+    "lens_calc_tool_product_etRfwf": {
+      "type": "lens-calc-tool-product",
+      "name": "Lens Calculator",
+      "settings": {}
+    },
+    "guide_product_page_nKXME7": {
+      "type": "guide-product-page",
+      "name": "Snorkeling 101 - Product Page",
+      "settings": {}
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "featured_collection_rF9FkW": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Shop Our New I Can Sea Tees!",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "i-can-sea-shirts",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "ns_cylinder_guide_WDCLJ4": {
+      "type": "ns-cylinder-guide",
+      "name": "NS Cylinder Guide",
+      "settings": {}
+    },
+    "1718686304ebf135d4": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_7CgTxK": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_7CgTxK"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_QUq7fY",
+    "main",
+    "17312057008b2de433",
+    "image_banner_gbgLiN",
+    "lens_calc_tool_product_etRfwf",
+    "guide_product_page_nKXME7",
+    "related-products",
+    "featured_collection_rF9FkW",
+    "ns_cylinder_guide_WDCLJ4",
+    "1718686304ebf135d4"
+  ]
+}

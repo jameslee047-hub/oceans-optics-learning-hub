@@ -1,0 +1,260 @@
+{% doc %}
+  @prompt
+    Update the existing "Responsive image banner" section to support two separate image pickers — one for desktop and one for mobile — instead of a single image with format switching. Add size/dimension controls (e.g., height or aspect ratio) independently for each image. Use a <picture> element or CSS media queries to show the desktop image on larger screens and the mobile image on smaller screens. Preserve any existing settings already in the section., it is ok but some screen proportions will crop the image, how can i avoid this?
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-responsive-banner-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+    background-color: {{ block.settings.background_color }};
+  }
+
+  .ai-responsive-banner__picture-{{ ai_gen_id }} {
+    display: block;
+    width: 100%;
+    position: relative;
+  }
+
+  .ai-responsive-banner__image-{{ ai_gen_id }} {
+    width: 100%;
+    display: block;
+  }
+
+  .ai-responsive-banner__image-desktop-{{ ai_gen_id }} {
+    {% if block.settings.desktop_image_fit == 'cover' %}
+      height: {{ block.settings.desktop_height }}px;
+      object-fit: cover;
+    {% elsif block.settings.desktop_image_fit == 'contain' %}
+      height: {{ block.settings.desktop_height }}px;
+      object-fit: contain;
+    {% else %}
+      height: auto;
+      object-fit: none;
+    {% endif %}
+  }
+
+  .ai-responsive-banner__image-mobile-{{ ai_gen_id }} {
+    {% if block.settings.mobile_image_fit == 'cover' %}
+      height: {{ block.settings.mobile_height }}px;
+      object-fit: cover;
+    {% elsif block.settings.mobile_image_fit == 'contain' %}
+      height: {{ block.settings.mobile_height }}px;
+      object-fit: contain;
+    {% else %}
+      height: auto;
+      object-fit: none;
+    {% endif %}
+  }
+
+  .ai-responsive-banner__placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ai-responsive-banner__placeholder-desktop-{{ ai_gen_id }} {
+    height: {{ block.settings.desktop_height }}px;
+  }
+
+  .ai-responsive-banner__placeholder-mobile-{{ ai_gen_id }} {
+    height: {{ block.settings.mobile_height }}px;
+  }
+
+  .ai-responsive-banner__placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 500px;
+    max-height: 500px;
+  }
+
+  .ai-responsive-banner__empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 20px;
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    pointer-events: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-responsive-banner__image-desktop-{{ ai_gen_id }},
+    .ai-responsive-banner__placeholder-desktop-{{ ai_gen_id }} {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .ai-responsive-banner__image-mobile-{{ ai_gen_id }},
+    .ai-responsive-banner__placeholder-mobile-{{ ai_gen_id }} {
+      display: none;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-responsive-banner-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <picture class="ai-responsive-banner__picture-{{ ai_gen_id }}">
+    {% if block.settings.desktop_image %}
+      <source
+        media="(min-width: 750px)"
+        srcset="{{ block.settings.desktop_image | image_url: width: 2000 }}"
+      >
+      <img
+        src="{{ block.settings.desktop_image | image_url: width: 2000 }}"
+        alt="{{ block.settings.desktop_image.alt | escape }}"
+        loading="lazy"
+        width="{{ block.settings.desktop_image.width }}"
+        height="{{ block.settings.desktop_image.height }}"
+        class="ai-responsive-banner__image-{{ ai_gen_id }} ai-responsive-banner__image-desktop-{{ ai_gen_id }}"
+      >
+    {% else %}
+      <div class="ai-responsive-banner__placeholder-{{ ai_gen_id }} ai-responsive-banner__placeholder-desktop-{{ ai_gen_id }}">
+        {{ 'hero-apparel-1' | placeholder_svg_tag }}
+        <div class="ai-responsive-banner__empty-state-{{ ai_gen_id }}">
+          Add a desktop image
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.settings.mobile_image %}
+      <img
+        src="{{ block.settings.mobile_image | image_url: width: 1000 }}"
+        alt="{{ block.settings.mobile_image.alt | escape }}"
+        loading="lazy"
+        width="{{ block.settings.mobile_image.width }}"
+        height="{{ block.settings.mobile_image.height }}"
+        class="ai-responsive-banner__image-{{ ai_gen_id }} ai-responsive-banner__image-mobile-{{ ai_gen_id }}"
+      >
+    {% else %}
+      <div class="ai-responsive-banner__placeholder-{{ ai_gen_id }} ai-responsive-banner__placeholder-mobile-{{ ai_gen_id }}">
+        {{ 'hero-apparel-1' | placeholder_svg_tag }}
+        <div class="ai-responsive-banner__empty-state-{{ ai_gen_id }}">
+          Add a mobile image
+        </div>
+      </div>
+    {% endif %}
+  </picture>
+</div>
+
+{% schema %}
+{
+  "name": "Responsive image banner",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "select",
+      "id": "desktop_image_fit",
+      "label": "Desktop image fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Fit (no cropping)"
+        },
+        {
+          "value": "cover",
+          "label": "Fill (may crop)"
+        },
+        {
+          "value": "original",
+          "label": "Original size"
+        }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop height",
+      "min": 200,
+      "max": 1000,
+      "step": 50,
+      "unit": "px",
+      "default": 600
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Mobile image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image"
+    },
+    {
+      "type": "select",
+      "id": "mobile_image_fit",
+      "label": "Mobile image fit",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Fit (no cropping)"
+        },
+        {
+          "value": "cover",
+          "label": "Fill (may crop)"
+        },
+        {
+          "value": "original",
+          "label": "Original size"
+        }
+      ],
+      "default": "contain"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile height",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "unit": "px",
+      "default": 400
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Responsive image banner"
+    }
+  ]
+}
+{% endschema %}

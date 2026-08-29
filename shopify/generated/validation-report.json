@@ -1,0 +1,346 @@
+{
+  "generated_at": "2026-08-27T06:20:28.744Z",
+  "counts": {
+    "ERROR": 0,
+    "WARNING": 53,
+    "INFO": 3
+  },
+  "messages": [
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:choosing-a-mask",
+      "message": "Related lesson R02 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:choosing-a-mask",
+      "message": "Related lesson R03 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:choosing-a-mask",
+      "message": "Related lesson R24 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:choosing-a-mask",
+      "message": "Related lesson R25 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_TOOL_REFERENCE",
+      "target": "learning_lesson:choosing-a-mask",
+      "message": "Tool reference has no public URL yet: mask-sizing-tool."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_TOOL_REFERENCE",
+      "target": "learning_lesson:choosing-a-mask",
+      "message": "Tool reference has no public URL yet: underwater-lens-calculator."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PRODUCT_REFERENCE",
+      "target": "learning_lesson:choosing-a-mask",
+      "message": "Product reference has no Shopify GID yet: prescription-mask-collection."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_FILE_REFERENCE",
+      "target": "learning_lesson:choosing-a-mask",
+      "message": "Download reference has no Shopify File GID yet: mask-choice-comparison."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_CTA_REFERENCE",
+      "target": "learning_lesson:choosing-a-mask",
+      "message": "Primary CTA has no public URL yet: find-your-mask."
+    },
+    {
+      "severity": "WARNING",
+      "code": "MISSING_HUMAN_REVIEWER",
+      "target": "learning_lesson:golden-rules-for-safer-snorkeling",
+      "message": "R08 requires safety/current-guidance review before ACTIVE publication."
+    },
+    {
+      "severity": "WARNING",
+      "code": "MISSING_LAST_REVIEWED",
+      "target": "learning_lesson:golden-rules-for-safer-snorkeling",
+      "message": "R08 requires last_reviewed before ACTIVE publication."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:golden-rules-for-safer-snorkeling",
+      "message": "Related lesson R07 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:golden-rules-for-safer-snorkeling",
+      "message": "Related lesson R09 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:golden-rules-for-safer-snorkeling",
+      "message": "Related lesson R10 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:golden-rules-for-safer-snorkeling",
+      "message": "Related lesson R14 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:golden-rules-for-safer-snorkeling",
+      "message": "Related lesson R16 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_FILE_REFERENCE",
+      "target": "learning_lesson:golden-rules-for-safer-snorkeling",
+      "message": "Download reference has no Shopify File GID yet: pre-snorkel-checklist."
+    },
+    {
+      "severity": "WARNING",
+      "code": "MISSING_HUMAN_REVIEWER",
+      "target": "learning_lesson:currents-and-rip-currents",
+      "message": "R12 requires safety/current-guidance review before ACTIVE publication."
+    },
+    {
+      "severity": "WARNING",
+      "code": "MISSING_LAST_REVIEWED",
+      "target": "learning_lesson:currents-and-rip-currents",
+      "message": "R12 requires last_reviewed before ACTIVE publication."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:currents-and-rip-currents",
+      "message": "Related lesson R10 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:currents-and-rip-currents",
+      "message": "Related lesson R11 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:currents-and-rip-currents",
+      "message": "Related lesson R13 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_RELATED_LESSON_HANDLE",
+      "target": "learning_lesson:currents-and-rip-currents",
+      "message": "Related lesson R19 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_TOOL_REFERENCE",
+      "target": "learning_lesson:currents-and-rip-currents",
+      "message": "Tool reference has no public URL yet: site-condition-planning-checklist."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_FILE_REFERENCE",
+      "target": "learning_lesson:currents-and-rip-currents",
+      "message": "Download reference has no Shopify File GID yet: current-types-quick-reference."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:start-here",
+      "message": "Pathway lesson R07 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:start-here",
+      "message": "Pathway lesson R10 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:start-here",
+      "message": "Pathway lesson R14 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:start-here",
+      "message": "Pathway lesson R17 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:safer-snorkeling",
+      "message": "Pathway lesson R07 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:safer-snorkeling",
+      "message": "Pathway lesson R10 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:safer-snorkeling",
+      "message": "Pathway lesson R11 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:safer-snorkeling",
+      "message": "Pathway lesson R13 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:safer-snorkeling",
+      "message": "Pathway lesson R14 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:safer-snorkeling",
+      "message": "Pathway lesson R15 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:safer-snorkeling",
+      "message": "Pathway lesson R16 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:equipment-essentials",
+      "message": "Pathway lesson R02 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:equipment-essentials",
+      "message": "Pathway lesson R03 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:equipment-essentials",
+      "message": "Pathway lesson R04 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:equipment-essentials",
+      "message": "Pathway lesson R05 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:equipment-essentials",
+      "message": "Pathway lesson R06 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:equipment-essentials",
+      "message": "Pathway lesson R09 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:in-water-skills-builder",
+      "message": "Pathway lesson R17 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:in-water-skills-builder",
+      "message": "Pathway lesson R18 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:in-water-skills-builder",
+      "message": "Pathway lesson R20 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:in-water-skills-builder",
+      "message": "Pathway lesson R21 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:in-water-skills-builder",
+      "message": "Pathway lesson R22 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:in-water-skills-builder",
+      "message": "Pathway lesson R23 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:in-water-skills-builder",
+      "message": "Pathway lesson R19 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:ocean-aware-snorkeler",
+      "message": "Pathway lesson R28 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:ocean-aware-snorkeler",
+      "message": "Pathway lesson R13 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:ocean-aware-snorkeler",
+      "message": "Pathway lesson R29 is approved but not normalized yet."
+    },
+    {
+      "severity": "WARNING",
+      "code": "UNRESOLVED_PATHWAY_LESSON_HANDLE",
+      "target": "learning_pathway:ocean-aware-snorkeler",
+      "message": "Pathway lesson R30 is approved but not normalized yet."
+    },
+    {
+      "severity": "INFO",
+      "code": "PILOT_SCOPE",
+      "target": "learning_lesson",
+      "message": "Normalized pilot lesson entries: 3."
+    },
+    {
+      "severity": "INFO",
+      "code": "CATEGORY_SCOPE",
+      "target": "learning_category",
+      "message": "Normalized category entries: 5."
+    },
+    {
+      "severity": "INFO",
+      "code": "PATHWAY_SCOPE",
+      "target": "learning_pathway",
+      "message": "Normalized current pathway entries: 5."
+    }
+  ]
+}

@@ -1,0 +1,261 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_h1_title_collection": false,
+        "show_collection_description": true,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 8,
+        "columns_desktop": 4,
+        "color_scheme": "background-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
+    "image_banner_J4hEC8": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_qPfRP7": {
+          "type": "heading",
+          "settings": {
+            "heading": "Be Prepared",
+            "heading_size": "h0"
+          }
+        },
+        "text_EhxJYj": {
+          "type": "text",
+          "settings": {
+            "text": "<strong>Swap your contact lenses & glasses for an RX Mask!</strong>",
+            "text_style": "caption-with-letter-spacing"
+          }
+        }
+      },
+      "block_order": [
+        "heading_qPfRP7",
+        "text_EhxJYj"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/DALL_E_2024-04-19_14.54.56_-_Create_a_realistic_split_shot_image_showing_part_underwater_and_part_above_the_surface_on_a_sunny_day._Below_the_waterline_the_scene_should_be_vibran_bea07978-40d6-4b6b-b973-60f361d214bd.webp",
+        "image_2": "shopify://shop_images/10_7b573008-ff9f-4bbe-8e71-ad3cfbe6c9ed.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "inverse",
+        "image_behavior": "ambient",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": true
+      }
+    },
+    "breadcrumbs_XDqDtY": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": ""
+      }
+    },
+    "featured_collection_NMtpzJ": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Choose your Mask",
+        "heading_size": "h1",
+        "description": "<p>All our masks Lenses are HD tempered glass. Safe for Snorkeling / Scuba diving / Freediving</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_Xy3mtC": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ytEVWz": {
+          "type": "heading",
+          "settings": {
+            "heading": "Exclusive tool designed for our customers",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_eEay6G": {
+          "type": "text",
+          "settings": {
+            "text": "<h2><strong>We created an easy to use lens calculator that automatically accounts for the refraction experienced underwater</strong></h2>"
+          }
+        },
+        "button_8B4pB3": {
+          "type": "button",
+          "settings": {
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_ytEVWz",
+        "text_eEay6G",
+        "button_8B4pB3"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-8cfe49c2-43f9-4bb9-af98-9bd68089d69c",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "lens_calculator_KqR6UE": {
+      "type": "lens-calculator",
+      "name": "Lens Calculator Main",
+      "settings": {}
+    },
+    "rich_text_3FkCki": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_NFt9dp": {
+          "type": "heading",
+          "settings": {
+            "heading": "",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_Y9DHJ4": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<h2>Prepare yourself with our comprehensive guide, meticulously curated by industry professionals, designed to equip you with all the necessary skills to build confidence in the water. Maximize every moment of your valuable ocean exploration time with expert advice tailored to enhance your underwater experience.</h2>"
+          }
+        },
+        "button_tAhqFg": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Sneaky peak at the Guide",
+            "button_link": "shopify://pages/free-guide",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_NFt9dp",
+        "text_Y9DHJ4",
+        "button_tAhqFg"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": false,
+        "padding_top": 0,
+        "padding_bottom": 52
+      }
+    },
+    "featured_collection_c69mVH": {
+      "type": "featured-collection",
+      "disabled": true,
+      "settings": {
+        "title": "We have something for you!",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-products",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "snorkel_101_guide_zyUpTK": {
+      "type": "Snorkel-101-guide",
+      "name": "Snorkeling 101 promo",
+      "settings": {}
+    }
+  },
+  "order": [
+    "banner",
+    "product-grid",
+    "image_banner_J4hEC8",
+    "breadcrumbs_XDqDtY",
+    "featured_collection_NMtpzJ",
+    "rich_text_Xy3mtC",
+    "lens_calculator_KqR6UE",
+    "rich_text_3FkCki",
+    "featured_collection_c69mVH",
+    "snorkel_101_guide_zyUpTK"
+  ]
+}

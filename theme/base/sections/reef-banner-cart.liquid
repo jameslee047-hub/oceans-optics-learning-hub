@@ -1,0 +1,104 @@
+<style>
+  .reef-banner {
+    width: 100%;
+    background-color: #023059;
+    overflow: hidden;
+  }
+
+  .reef-banner__inner {
+    display: flex;
+    align-items: stretch;
+    max-height: 220px;
+  }
+
+  .reef-banner__text {
+    flex: 0 0 55%;
+    max-width: 55%;
+    padding: 24px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+
+  .reef-banner__heading {
+    color: #ffffff;
+    font-family: 'Lato', sans-serif;
+    font-size: clamp(16px, 2vw, 26px);
+    font-weight: 900;
+    margin: 0 0 8px;
+    line-height: 1.15;
+  }
+
+  .reef-banner__body {
+    color: rgba(255, 255, 255, 0.85);
+    font-family: 'Lato', sans-serif;
+    font-size: clamp(12px, 1vw, 15px);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .reef-banner__image {
+    flex: 0 0 45%;
+    max-width: 45%;
+    overflow: hidden;
+  }
+
+  .reef-banner__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 40%;
+    display: block;
+  }
+
+  @media (max-width: 600px) {
+    .reef-banner__inner {
+      max-height: 140px;
+    }
+    .reef-banner__text {
+      padding: 12px 16px;
+    }
+    .reef-banner__heading {
+      font-size: 14px;
+      margin: 0 0 4px;
+    }
+    .reef-banner__body {
+      font-size: 11px;
+      line-height: 1.4;
+    }
+  }
+</style>
+
+<div class="reef-banner">
+  <div class="reef-banner__inner">
+
+    <div class="reef-banner__text">
+      <h2 class="reef-banner__heading">You're Supporting the Ocean with this Purchase</h2>
+      <p class="reef-banner__body">Every order helps fund our artificial reef: restoring marine life, cutting our carbon impact, and giving back to the ocean we love.</p>
+    </div>
+
+    <div class="reef-banner__image">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Our-Reef-Oceans-Optics-Gulf-Of-Thailand.png?v=1774944938"
+        alt="Oceans Optics artificial coral reef in the Gulf of Thailand"
+        loading="lazy"
+        width="600"
+        height="400"
+      />
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Reef Banner",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Reef Banner"
+    }
+  ]
+}
+{% endschema %}

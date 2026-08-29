@@ -1,0 +1,553 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "responsive_banner_GfrPL9": {
+      "type": "Responsive-banner",
+      "name": "Responsive Banner",
+      "settings": {
+        "use_same_image": true,
+        "desktop_image": "shopify://shop_images/Prescription_snorkel_mask_helping_sea_clearly_underwater.jpg",
+        "mobile_image": "shopify://shop_images/Prescription_snorkel_mask_helping_sea_clearly_underwater.jpg",
+        "banner_heading": "",
+        "banner_text": "",
+        "button_text": "",
+        "button_link": "",
+        "banner_max_width": 1800,
+        "desktop_height": 180,
+        "mobile_height": 140,
+        "image_fit": "cover",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "heading_font_size": 2,
+        "text_font_size": 1,
+        "mobile_heading_font_size": 1.5,
+        "mobile_text_font_size": 0.9,
+        "content_position_horizontal": "50%",
+        "content_position_vertical": "50%",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_background_color": "#333333"
+      }
+    },
+    "rich_text_3FkCki": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_TFNXky": {
+          "type": "heading",
+          "settings": {
+            "heading": "Farsighted Snorkel Masks With Prescription Lenses for Divers",
+            "set_h1": true,
+            "heading_size": "h1"
+          }
+        },
+        "text_myXFE8": {
+          "type": "text",
+          "settings": {
+            "text": "<p>See clearly underwater with farsighted prescription snorkel masks and dive masks featuring optical corrective lenses for hyperopia or presbyopia. Designed for comfort, a secure fit, and clear underwater vision with tempered glass lenses and soft silicone seals.</p>"
+          }
+        },
+        "button_tAhqFg": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Shop Below",
+            "button_link": "shopify://collections/farsighted-prescription-dive-mask",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_TFNXky",
+        "text_myXFE8",
+        "button_tAhqFg"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": true,
+        "padding_top": 36,
+        "padding_bottom": 16
+      }
+    },
+    "breadcrumbs_HN4jjN": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_h1_title_collection": false,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 8,
+        "columns_desktop": 3,
+        "color_scheme": "background-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": false,
+        "filter_type": "horizontal",
+        "enable_sorting": false,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
+    "multicolumn_LWTmkt": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_E6QXXp": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/prescription-dive-mask-rx-mako-farsighted-prescription-snorkel-diving-mask-prescription-dive-mask-farsighted-small-medium-faces-black-1146123872.jpg",
+            "title": "<strong>Rx Mako Prescription Dive Mask</strong>",
+            "title_h3": false,
+            "text": "<ul><li>Plus diopters: 0, +1, +2, +3, +4, +5</li><li>Available in Black or Red</li><li>Tempered glass for strength & Clarity</li></ul>",
+            "link_label": "Shop Rx Mako",
+            "link": "shopify://products/farsighted-prescription-diving-mask-snorkelling"
+          }
+        },
+        "column_FzPg3q": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/prescription-dive-mask-rx-action-hero-nearsighted-snorkeling-scuba-mask-with-camera-mount-57318722077005.png",
+            "title": "<strong>Rx Action</strong>",
+            "title_h3": false,
+            "text": "<ul><li>Plus diopters: 0, +2, +3, +4, +5</li><li>Left & Right can be different </li><li>Comes with action amera mount</li><li>Tempered glass for strength & clarity</li></ul>",
+            "link_label": "Shop Rx Action",
+            "link": "shopify://products/rx-action-farsighted-prescription-dive-mask-w-cam-mount"
+          }
+        },
+        "column_tWTrCc": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Black_Friday_is_almost_here..._656d7256-20b1-4c55-a756-7b3f9f7d263c.png",
+            "title": "<strong>Quick Tip for Plus Diopter</strong>",
+            "title_h3": false,
+            "text": "<ul><li>Round down if possible due to the magnification affect of water</li><li>Choose the closest 1.0 step to your Sphere</li><li>Use the <a href=\"/pages/prescription-lenses-calculator-tool\" target=\"_blank\" title=\"FREE Lens calulator tool page\">Lens Calculator</a> or <a href=\"/pages/ask-a-pro-get-tailored-aquatic-advice\" target=\"_blank\" title=\"ASK A PRO - Get Tailored Aquatic Advice\">Ask a Pro</a></li></ul>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_E6QXXp",
+        "column_FzPg3q",
+        "column_tWTrCc"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".multicolumn .title-wrapper-with-link {justify-content: center; text-align: center;}",
+        ".multicolumn .title {text-align: center;}"
+      ],
+      "name": "Compare Farsighted",
+      "settings": {
+        "title": "Which Farsighted Dive Mask Should I Choose?",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "circle",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_8CRUwU": {
+      "type": "featured-collection",
+      "disabled": true,
+      "settings": {
+        "title": "Shop Farsighted (+ Magnified)",
+        "heading_size": "h1",
+        "description": "<p><strong>If you can see distant objects clearly, but objects nearby are blurry then these are for you!</strong></p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "farsighted-prescription-dive-mask",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multirow_bh4jWk": {
+      "type": "multirow",
+      "blocks": {
+        "row_4t3Cxm": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Split_Before_after.png",
+            "caption": "Why you need a",
+            "heading": "<strong>Why you need a Farsighted Prescription Dive Mask for Hyperopia and Presbyopia</strong>",
+            "text": "<p>If you are farsighted, a plus-diopter farsighted snorkel mask helps restore clear underwater vision across a wide range of distances. These optical plus lenses are not only useful for reading a gauge or close-up details. By bending incoming light so the focal point lands properly on the retina, they improve underwater focus on everything from nearby equipment to dive buddies and reef scenery in the distance.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        },
+        "row_AFrrLy": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Porcupine-Puffer-fish-Face-Match.png",
+            "caption": "Find your best",
+            "heading": "Farsighted Dive Mask Magnifying Lenses Strength",
+            "text": "<p>In water, objects appear larger and closer, so many divers choose a slightly lower positive diopter strength than they use in everyday glasses. Start with your Sphere value, select the closest available step, and adjust each eye separately if needed. Our tempered glass corrective lenses provide sharp underwater optics and scratch resistance, while soft silicone skirts create a comfortable, leak-resistant fit during snorkeling and scuba diving.</p>",
+            "button_label": "",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "row_4t3Cxm",
+        "row_AFrrLy"
+      ],
+      "name": "t:sections.multirow.presets.name",
+      "settings": {
+        "image_height": "adapt",
+        "desktop_image_width": "small",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "image_layout": "alternate-left",
+        "section_color_scheme": "",
+        "row_color_scheme": "",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_with_text_rmBPdz": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_d9fRph": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Farsighted masks for hyperopia and presbyopia</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_ekyyHi": {
+          "type": "text",
+          "settings": {
+            "text": "<p>If you are farsighted, a plus diopter prescription mask restores clarity across common underwater distances. Despite the name, these lenses are not only for close-up tasks. By bending incoming light so the focal point lands cleanly on the retina, plus diopters sharpen the whole scene in water, from gauges at arm’s length to your buddy a few meters away and distant reef details.</p><p>In water, objects appear larger and closer, so many divers choose a slightly lower plus power than their glasses. Start from your Sphere value, select the closest 1.0 step available, and set each eye separately if needed. Our tempered glass lenses provide sharp optics and resist scratches, while hypoallergenic silicone skirts help maintain a comfortable, leak resistant seal.</p>",
+            "text_style": "body"
+          }
+        },
+        "caption_KJJeTN": {
+          "type": "caption",
+          "settings": {
+            "caption": "Join the I Can sea club today",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "medium"
+          }
+        },
+        "button_xUnyGG": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Farsighted Masks",
+            "button_link": "shopify://collections/farsighted-prescription-dive-mask",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_d9fRph",
+        "text_ekyyHi",
+        "caption_KJJeTN",
+        "button_xUnyGG"
+      ],
+      "disabled": true,
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Whale_shark_visible_with_prescription_mask.png",
+        "height": "small",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "overlap",
+        "section_color_scheme": "",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 20
+      }
+    },
+    "rich_text_cpcqkn": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_4GEpyR": {
+          "type": "heading",
+          "settings": {
+            "heading": "More than <strong>JUST</strong> a mask..",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_hLiMLM": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Free digital e-guide included with every purchase!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_4GEpyR",
+        "text_hLiMLM"
+      ],
+      "disabled": true,
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "image_banner_qVBYRf": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_ggHEUX": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Snorkel Fearlessly, Shop RX</strong>",
+            "heading_size": "h0"
+          }
+        }
+      },
+      "block_order": [
+        "heading_ggHEUX"
+      ],
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/DALL_E_2024-04-19_14.54.56_-_Create_a_realistic_split_shot_image_showing_part_underwater_and_part_above_the_surface_on_a_sunny_day._Below_the_waterline_the_scene_should_be_vibran_bea07978-40d6-4b6b-b973-60f361d214bd.webp",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "inverse",
+        "image_behavior": "ambient",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false,
+        "fetchpriority_high": false
+      }
+    },
+    "rich_text_DDe8WU": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_enbC3i": {
+          "type": "heading",
+          "settings": {
+            "heading": "Clear Underwater Vision for Snorkeling and Scuba Diving",
+            "set_h1": false,
+            "heading_size": "h2"
+          }
+        },
+        "text_LaJiFN": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Our mission is to provide clarity through vision and knowledge. We offer Rx masks with high-quality optical correction along with the essential skills needed to explore the underwater world safely and confidently through snorkeling and scuba adventures.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_enbC3i",
+        "text_LaJiFN"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "oo_quiz_card_6nhLUn": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "image_banner_fNz8HL": {
+      "type": "image-banner",
+      "disabled": true,
+      "settings": {
+        "image": "shopify://shop_images/Mobile_Guide_88951d2f-e86c-4f02-aca9-531937caef1d.svg",
+        "image_2": "shopify://shop_images/Desktop_Guide_ccc9486e-03f2-436d-81b9-7cb7798708bc.svg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://pages/free-guide",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false,
+        "fetchpriority_high": false
+      }
+    },
+    "snorkel_101_guide_Bx4HtW": {
+      "type": "Snorkel-101-guide",
+      "name": "Snorkeling 101 promo",
+      "settings": {}
+    },
+    "custom_liquid_NbFWLD": {
+      "type": "custom-liquid",
+      "name": "FAQ Farsighted Mask",
+      "settings": {
+        "custom_liquid": "<section id=\"collection-faq-section\" class=\"faq-container\" aria-labelledby=\"collection-faq-title\">\n<h2 id=\"collection-faq-title\" class=\"faq-title\">Farsighted Snorkel Mask FAQ</h2>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What is a farsighted snorkel mask?</h3></summary>\n<div class=\"faq-answer\">\n<p>A farsighted prescription dive mask is designed for divers who need plus-power vision correction underwater. Instead of standard flat glass, these masks use optical corrective lenses that help bring nearby objects back into focus. They are especially useful for reading a gauge reader, checking equipment settings, or seeing details more clearly while snorkeling or scuba diving.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">How do plus lenses work underwater?</h3></summary>\n<div class=\"faq-answer\">\n<p>Plus lenses help compensate for hyperopia and presbyopia by adjusting how light enters the eye underwater. A hyperopia dive mask works by correcting how light reaches the eye, since water naturally changes visual perception and can magnify objects slightly. The right lens strength improves overall underwater focus without making vision feel overly strong or unnatural.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I use a farsighted prescription mask for snorkeling and scuba diving?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Farsighted prescription masks are suitable for both snorkeling and prescription scuba diving. Whether you stay near the surface or dive deeper underwater, dive mask magnifying lenses and a secure silicone seal help maintain clear vision and reliable performance in the sea.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Do I need the same diopter strength underwater as I use in glasses?</h3></summary>\n<div class=\"faq-answer\">\n<p>Usually not. Because water can magnify nearby objects, many farsighted divers feel more comfortable with slightly reduced positive diopter strength compared to their everyday glasses prescription. This differs from nearsighted prescriptions, which typically use negative lens correction underwater. This creates a more natural viewing experience underwater, especially when looking at objects both close and farther away.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I choose different lens strengths for each eye?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Most Rx masks allow you to select a separate lens correction for each eye. This is helpful if your prescription differs between eyes or if one eye requires stronger optical correction than the other.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are farsighted Rx masks good for reading dive gauges underwater?</h3></summary>\n<div class=\"faq-answer\">\n<p>Absolutely. One of the biggest advantages of farsighted corrective lenses is improved close to medium-range clarity. Many divers use plus-lens masks specifically to improve their all round vision underwater, helping you see coral reefs and marine life clearer. In some cases they can be helpful to read dive computers, pressure gauges, camera settings, and other equipment more comfortably underwater.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What makes a comfortable farsighted prescription dive mask fit?</h3></summary>\n<div class=\"faq-answer\">\n<p>A comfortable fit depends on your face shape, mask size, and skirt design. Many divers prefer low volume masks with soft silicone and a twin-seal design because they reduce leaks and help divers stay comfortable and relaxed with natural breathing during longer dives or snorkeling sessions.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are bifocal lenses available for farsighted dive masks?</h3></summary>\n<div class=\"faq-answer\">\n<p>Some fully custom prescription dive masks may offer bifocal or reading-focused lens options. However, our farsighted prescription masks do not include bifocal lenses. Our lenses are single-vision, meaning the full lens is made in one strength to help improve overall distance vision underwater.</p>\n</div>\n</details>\n\n</section>\n\n<script type=\"application/ld+json\">\n{\n\"@context\": \"https://schema.org\",\n\"@type\": \"FAQPage\",\n\"mainEntity\": [\n{\n\"@type\": \"Question\",\n\"name\": \"What is a farsighted snorkel mask?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"A farsighted prescription dive mask is designed for divers who need plus-power vision correction underwater. Instead of standard flat glass, these masks use optical corrective lenses that help bring nearby objects back into focus. They are especially useful for reading a gauge reader, checking equipment settings, or seeing details more clearly while snorkeling or scuba diving.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"How do plus lenses work underwater?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Plus lenses help compensate for hyperopia and presbyopia by adjusting how light enters the eye underwater. A hyperopia dive mask works by correcting how light reaches the eye, since water naturally changes visual perception and can magnify objects slightly. The right lens strength improves overall underwater focus without making vision feel overly strong or unnatural.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I use a farsighted prescription mask for snorkeling and scuba diving?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Farsighted prescription masks are suitable for both snorkeling and prescription scuba diving. Whether you stay near the surface or dive deeper underwater, dive mask magnifying lenses and a secure silicone seal help maintain clear vision and reliable performance in the sea.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Do I need the same diopter strength underwater as I use in glasses?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Usually not. Because water can magnify nearby objects, many farsighted divers feel more comfortable with slightly reduced positive diopter strength compared to their everyday glasses prescription. This differs from nearsighted prescriptions, which typically use negative lens correction underwater. This creates a more natural viewing experience underwater, especially when looking at objects both close and farther away.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I choose different lens strengths for each eye?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Most Rx masks allow you to select a separate lens correction for each eye. This is helpful if your prescription differs between eyes or if one eye requires stronger optical correction than the other.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are farsighted Rx masks good for reading dive gauges underwater?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Absolutely. One of the biggest advantages of farsighted corrective lenses is improved close to medium-range clarity. Many divers use plus-lens masks specifically to improve their all round vision underwater, helping you see coral reefs and marine life clearer. In some cases they can be helpful to read dive computers, pressure gauges, camera settings, and other equipment more comfortably underwater.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"What makes a comfortable farsighted prescription dive mask fit?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"A comfortable fit depends on your face shape, mask size, and skirt design. Many divers prefer low volume masks with soft silicone and a twin-seal design because they reduce leaks and help divers stay comfortable and relaxed with natural breathing during longer dives or snorkeling sessions.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are bifocal lenses available for farsighted dive masks?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Some fully custom prescription dive masks may offer bifocal or reading-focused lens options. However, our farsighted prescription masks do not include bifocal lenses. Our lenses are single-vision, meaning the full lens is made in one strength to help improve overall distance vision underwater.\"\n}\n}\n]\n}\n</script>\n\n<style>\n.faq-container {\nmax-width: 700px;\nmargin: 20px auto;\npadding: 20px;\nborder-top: 1px solid #023059;\nfont-family: 'Lato', sans-serif;\n}\n.faq-title {\nfont-size: 24px;\nfont-weight: bold;\ncolor: #023059;\ntext-align: center;\nmargin-bottom: 15px;\n}\n.faq-item {\nborder-bottom: 1px solid #ddd;\nmargin-bottom: 10px;\n}\n.faq-question {\nfont-size: 16px;\nbackground-color: #ffffff;\ncolor: #023059;\npadding: 10px;\ncursor: pointer;\nborder: 1px solid #023059;\nborder-radius: 5px;\nmargin: 0;\nfont-weight: 700;\ndisplay: flex;\nalign-items: baseline;\n}\n.faq-question h3 {\nfont-size: 16px;\ncolor: #023059;\nfont-weight: 700;\nmargin: 0;\n}\n.faq-answer {\npadding: 10px;\nfont-size: 14px;\nbackground-color: #f9f9f9;\ncolor: #023059;\nfont-weight: 500;\n}\n.faq-answer p { margin: 0 0 8px 0; }\n.faq-answer p:last-child { margin-bottom: 0; }\n.faq-answer a { color: #B95e05; text-decoration: none; }\n.faq-answer a:hover { text-decoration: underline; }\ndetails summary::-webkit-details-marker { display: none; }\ndetails[open] .faq-question::before { content: \"▾ \"; }\ndetails:not([open]) .faq-question::before { content: \"▸ \"; }\n</style>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "featured_collection_hLpYF3": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "title": "Get Vacation Ready!",
+        "heading_size": "h1",
+        "description": "<p>Shop our sale items and get prepared for your next adventure</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "flash-sale",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "17152440046bc5a1ee": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_3wwk6x": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join Our Community on Instagram!",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_3wwk6x"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "responsive_banner_GfrPL9",
+    "rich_text_3FkCki",
+    "breadcrumbs_HN4jjN",
+    "banner",
+    "product-grid",
+    "multicolumn_LWTmkt",
+    "featured_collection_8CRUwU",
+    "multirow_bh4jWk",
+    "image_with_text_rmBPdz",
+    "rich_text_cpcqkn",
+    "image_banner_qVBYRf",
+    "rich_text_DDe8WU",
+    "oo_quiz_card_6nhLUn",
+    "image_banner_fNz8HL",
+    "snorkel_101_guide_Bx4HtW",
+    "custom_liquid_NbFWLD",
+    "featured_collection_hLpYF3",
+    "17152440046bc5a1ee"
+  ]
+}

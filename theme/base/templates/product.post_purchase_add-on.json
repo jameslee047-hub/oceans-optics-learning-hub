@@ -1,0 +1,263 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_gRF4rE": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "judge_me_reviews_preview_badge_CXJ4xn": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "vendor": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "body"
+          }
+        },
+        "rating": {
+          "type": "rating",
+          "disabled": true,
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "custom_liquid_DhDjbk": {
+          "type": "custom_liquid",
+          "name": "Trust Badges Product Page",
+          "settings": {
+            "custom_liquid": "<style>\n  .oo-trust-badges {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\npadding: 20px 0 0 0;\n    border-top: 1px solid #e8e8e8;\n    margin: 1px 0;\n  }\n\n  .oo-trust-badge {\n    flex: 1;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n  }\n\n  .oo-trust-badge img {\n    width: 100%;\n    max-width: 90px;\n    height: auto;\n    aspect-ratio: 1;\n    display: block;\n  }\n\n  @media (max-width: 480px) {\n    .oo-trust-badge img {\n      max-width: 70px;\n    }\n  }\n</style>\n\n<div class=\"oo-trust-badges\">\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/100_worry_free_guaranteed.svg?v=1780042887\"\n      alt=\"100% Worry-Free Guaranteed\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Icon_expert_support.svg?v=1780042887\"\n      alt=\"Expert Support\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/icon_owned_by_scuba_diving_instructors.svg?v=1780042886\"\n      alt=\"Owned By Scuba Professionals\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/icon_easy_free_returns.svg?v=1780042887\"\n      alt=\"Easy and Free Returns\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n</div>"
+          }
+        },
+        "appstle_loyalty_appstle_loyalty_acquire_points_QmHhyE": {
+          "type": "shopify://apps/appstle-loyalty/blocks/appstle-loyalty-acquire-points/1886c0f8-77b6-4a85-af11-b43cc17ae1c1",
+          "settings": {}
+        },
+        "description_rAwk8g": {
+          "type": "description",
+          "settings": {}
+        },
+        "collapsible_tab_mM8Vna": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping & Delivery",
+            "heading_not_h2": false,
+            "icon": "truck",
+            "content": "<p>Hand assembled with care, Delivered within 3-14 days. </p>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_Rz9qgd": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "30 Day FREE Returns",
+            "heading_not_h2": false,
+            "icon": "return",
+            "content": "<p>Take advantage of our FREE 30 days from delivery easy return policy. Shop with confidence. Eligible items only. For more info see our <a href=\"/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\">return policy</a>.</p>",
+            "page": ""
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_CXJ4xn",
+        "vendor",
+        "rating",
+        "title",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "custom_liquid_DhDjbk",
+        "appstle_loyalty_appstle_loyalty_acquire_points_QmHhyE",
+        "description_rAwk8g",
+        "collapsible_tab_mM8Vna",
+        "collapsible_tab_Rz9qgd",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "media_size": "medium",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "background-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "guide_product_page_CEkhCC": {
+      "type": "guide-product-page",
+      "name": "Snorkeling 101 - Product Page",
+      "settings": {}
+    },
+    "featured_collection_MxBreg": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Shop Our New I Can Sea Tees!",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "i-can-sea-shirts",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-2",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "172992054720cbf001": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_4fdcmh": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "real_data",
+            "max_width": 1200,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_4fdcmh"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "mask_sizing_tool_shortcut_nJWDNw": {
+      "type": "mask-sizing-tool-shortcut",
+      "name": "Mask fit shortcut",
+      "settings": {
+        "heading": "How would you like to find your mask fit?",
+        "subheading": "Choose automatic camera measuring or follow the manual ruler guide below",
+        "auto_badge": "Recommended",
+        "auto_icon": "🎥",
+        "auto_title": "Auto Camera Measuring",
+        "auto_text": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.",
+        "auto_point_1": "✓ Takes about 30 seconds",
+        "auto_point_2": "✓ Works on phone or desktop",
+        "auto_point_3": "✓ Get instant mask recommendations",
+        "auto_url": "",
+        "open_camera_new_tab": true,
+        "auto_button": "Start Camera Measuring →",
+        "manual_badge": "Measure Yourself",
+        "manual_icon": "📐",
+        "manual_title": "Manual Ruler Guide",
+        "manual_text": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide.",
+        "manual_point_1": "✓ No camera needed",
+        "manual_point_2": "✓ Works anywhere",
+        "manual_point_3": "✓ Fine-tune with sliders",
+        "manual_mode": "link",
+        "manual_url": "",
+        "manual_anchor_id": "ruler-guide-start",
+        "manual_reveal_id": "",
+        "manual_button": "Use Ruler Guide ↓"
+      }
+    },
+    "reef_banner_cart_4Kb9Tw": {
+      "type": "reef-banner-cart",
+      "name": "Reef Banner",
+      "settings": {}
+    }
+  },
+  "order": [
+    "breadcrumbs_gRF4rE",
+    "main",
+    "related-products",
+    "reef_banner_cart_4Kb9Tw",
+    "guide_product_page_CEkhCC",
+    "featured_collection_MxBreg",
+    "172992054720cbf001",
+    "mask_sizing_tool_shortcut_nJWDNw"
+  ]
+}

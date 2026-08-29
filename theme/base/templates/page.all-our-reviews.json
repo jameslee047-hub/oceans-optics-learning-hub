@@ -1,0 +1,145 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "mask_sizing_tool_shortcut_KKbFFx": {
+      "type": "mask-sizing-tool-shortcut",
+      "disabled": true,
+      "name": "Mask fit shortcut",
+      "settings": {
+        "heading": "Find your perfect mask fit?",
+        "subheading": "Choose automatic camera measuring or follow the manual ruler guide below",
+        "auto_badge": "Recommended",
+        "auto_icon": "🎥",
+        "auto_title": "Auto Camera Measuring",
+        "auto_text": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.",
+        "auto_point_1": "✓ Takes about 30 seconds",
+        "auto_point_2": "✓ Works on phone or desktop",
+        "auto_point_3": "✓ Get instant mask recommendations",
+        "auto_url": "",
+        "open_camera_new_tab": true,
+        "auto_button": "Start Camera Measuring →",
+        "manual_badge": "Measure Yourself",
+        "manual_icon": "📐",
+        "manual_title": "Manual Ruler Guide",
+        "manual_text": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide.",
+        "manual_point_1": "✓ No camera needed",
+        "manual_point_2": "✓ Works anywhere",
+        "manual_point_3": "✓ Fine-tune with sliders",
+        "manual_mode": "link",
+        "manual_url": "",
+        "manual_anchor_id": "ruler-guide-start",
+        "manual_reveal_id": "",
+        "manual_button": "Use Ruler Guide ↓"
+      }
+    },
+    "1781237815565ca8f5": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_reviews_grid_widget_kaCTVc": {
+          "type": "shopify://apps/judge-me-reviews/blocks/reviews_grid_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "show_sample_reviews": false,
+            "review_selection": "featured_reviews",
+            "products": [],
+            "show_media_only": false,
+            "display_order": "media_first",
+            "card_grouping": "per_media",
+            "columns_desktop": 4,
+            "rows_desktop": 3,
+            "columns_mobile": "2",
+            "rows_mobile": 6,
+            "show_stars": true,
+            "show_reviewer_name": true,
+            "show_review_title_on_hover_desktop": true,
+            "max_width": 1100,
+            "corner_styling": "soft",
+            "card_spacing": "medium",
+            "header_text_color": "#023059",
+            "star_and_reviewer_name_color": "#b95e05",
+            "drop_shadow_color": "#023059",
+            "overlay_and_background_color": "#023059",
+            "content_color": "#F9F9F9",
+            "header_text": "From our Happy Customers",
+            "show_average_rating": true
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_reviews_grid_widget_kaCTVc"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "oo_quiz_card_h8Bena": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "featured_collection_Hja3BG": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Shop our Rx Snorkel and Dive Masks",
+        "heading_size": "h1",
+        "description": "<p>⭐ Trusted by 3,000+ divers worldwide | ✓ Free shipping on all orders $70+ | 🚀 Ships within 1 business day.</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "prescription-masks",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "mask_sizing_tool_shortcut_KKbFFx",
+    "1781237815565ca8f5",
+    "main",
+    "oo_quiz_card_h8Bena",
+    "featured_collection_Hja3BG"
+  ]
+}

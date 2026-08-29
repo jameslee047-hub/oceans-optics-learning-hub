@@ -1,0 +1,57 @@
+[
+  {
+    "type": "learning_category",
+    "handle": "gear-masks-vision",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "Gear, Masks & Vision",
+      "short_description": "Masks, snorkels, fins, exposure protection, and the underwater vision choices that affect comfort and confidence.",
+      "image": null,
+      "sort_order": 1
+    }
+  },
+  {
+    "type": "learning_category",
+    "handle": "safety-conditions",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "Safety & Conditions",
+      "short_description": "Readiness, planning, water conditions, buddy responsibility, surface safety, and emergency awareness.",
+      "image": null,
+      "sort_order": 2
+    }
+  },
+  {
+    "type": "learning_category",
+    "handle": "in-water-skills",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "In-Water Skills",
+      "short_description": "Practical skills for entering, exiting, clearing, moving, floating, and building confidence in the water.",
+      "image": null,
+      "sort_order": 3
+    }
+  },
+  {
+    "type": "learning_category",
+    "handle": "underwater-science-your-body",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "Underwater Science & Your Body",
+      "short_description": "Learner-friendly explanations of pressure, buoyancy, airspaces, light, sound, equalizing, and body temperature.",
+      "image": null,
+      "sort_order": 4
+    }
+  },
+  {
+    "type": "learning_category",
+    "handle": "marine-life-conservation",
+    "publication_status": "DRAFT",
+    "fields": {
+      "title": "Marine Life & Conservation",
+      "short_description": "Marine life basics, coral, conservation, responsible behavior, and the experiences snorkelers may encounter.",
+      "image": null,
+      "sort_order": 5
+    }
+  }
+]

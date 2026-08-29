@@ -1,0 +1,26 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.im-not-anti-social.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "custom_liquid_PjVh4T": {
+          "disabled": false,
+          "settings": {}
+        }
+      }
+    }
+  }
+}

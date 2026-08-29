@@ -1,0 +1,723 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "17167935629bcc4972": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_bMVdCU": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_bMVdCU"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "image_banner_XPgKVC": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_LLcmrg": {
+          "type": "heading",
+          "settings": {
+            "heading": "Unlock a World of Clear Vision and Adventure",
+            "heading_size": "h1"
+          }
+        },
+        "text_KLKpTr": {
+          "type": "text",
+          "settings": {
+            "text": "Prescription Masks and Pro Tips to Ensure Every Dive Is Smooth and Unforgettable",
+            "text_style": "body"
+          }
+        },
+        "buttons_xKtxm4": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Find My Perfect Mask →",
+            "button_link_1": "shopify://collections/all-our-masks",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_LLcmrg",
+        "text_KLKpTr",
+        "buttons_xKtxm4"
+      ],
+      "custom_css": [],
+      "settings": {
+        "image": "shopify://shop_images/Hero_Mobile_Home.jpg",
+        "image_2": "shopify://shop_images/Hero_Desktop_Home.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "small",
+        "desktop_content_position": "middle-left",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true,
+        "fetchpriority_high": true
+      }
+    },
+    "collection_list_YEfP4N": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_gTxMtH": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "all-our-masks"
+          }
+        },
+        "featured_collection_eMwDKq": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "featured_collection_i6CG3E": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "farsighted-prescription-dive-mask"
+          }
+        },
+        "featured_collection_jP8bad": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "i-can-sea-shirts"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_gTxMtH",
+        "featured_collection_eMwDKq",
+        "featured_collection_i6CG3E",
+        "featured_collection_jP8bad"
+      ],
+      "settings": {
+        "title": "",
+        "heading_size": "h2",
+        "image_ratio": "adapt",
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 16,
+        "padding_bottom": 16
+      }
+    },
+    "rich_text_GtLcwq": {
+      "type": "rich-text",
+      "blocks": {
+        "caption_mTQpXq": {
+          "type": "caption",
+          "settings": {
+            "caption": "🌊 Save 10% on Your Entire Order | Use Code: OCEAN10 at Checkout 🌊",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "large"
+          }
+        },
+        "button_yWakDU": {
+          "type": "button",
+          "settings": {
+            "button_label": "GET 10% 0FF",
+            "button_link": "https://oceansoptics.com/discount/Bye2025",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "caption_mTQpXq",
+        "button_yWakDU"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
+    "multirow_FHWNc4": {
+      "type": "multirow",
+      "blocks": {
+        "row_bGHN3N": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/How_prescrption_snorkel_mask_work_underwater_e269956b-9417-4511-9f31-a6ffe7e10c4c.png",
+            "caption": "why you need a",
+            "heading": "Prescription Dive & Snorkel Mask",
+            "text": "<p>Our lenses are closely matched to your prescription, giving you crisp, clear vision the moment you hit the water. See the reef in full detail, spot the turtle before anyone else does, and actually enjoy the experience you came for.</p><p>Real clarity. Real confidence. Every Snorkel & Dive!</p>",
+            "button_label": "Shop Now",
+            "button_link": "shopify://collections/all-our-masks"
+          }
+        }
+      },
+      "block_order": [
+        "row_bGHN3N"
+      ],
+      "name": "t:sections.multirow.presets.name",
+      "settings": {
+        "image_height": "small",
+        "desktop_image_width": "medium",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "image_layout": "alternate-left",
+        "section_color_scheme": "",
+        "row_color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "mobile_content_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "mask_sizing_tool_shortcut_K7znyT": {
+      "type": "mask-sizing-tool-shortcut",
+      "disabled": true,
+      "name": "Mask fit shortcut",
+      "settings": {
+        "heading": "How would you like to find your mask fit?",
+        "subheading": "Choose automatic camera measuring or follow the manual ruler guide below",
+        "auto_badge": "Recommended",
+        "auto_icon": "🎥",
+        "auto_title": "Auto Camera Measuring",
+        "auto_text": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.",
+        "auto_point_1": "✓ Takes about 30 seconds",
+        "auto_point_2": "✓ Works on phone or desktop",
+        "auto_point_3": "✓ Get instant mask recommendations",
+        "auto_url": "https://facefit.oceansoptics.com/face-fit",
+        "open_camera_new_tab": true,
+        "auto_button": "Start Camera Measuring →",
+        "manual_badge": "Measure Yourself",
+        "manual_icon": "📐",
+        "manual_title": "Manual Ruler Guide",
+        "manual_text": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide.",
+        "manual_point_1": "✓ No camera needed",
+        "manual_point_2": "✓ Works anywhere",
+        "manual_point_3": "✓ Fine-tune with sliders",
+        "manual_mode": "link",
+        "manual_url": "https://oceansoptics.com/pages/how-to-check-if-a-mask-will-fit-you-online",
+        "manual_anchor_id": "ruler-guide-start",
+        "manual_reveal_id": "",
+        "manual_button": "Use Ruler Guide →"
+      }
+    },
+    "collapsible_content_b8ygjT": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_iRd7jr": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Answer 5 questions and we will recommend you the best fit.",
+            "icon": "check_mark",
+            "row_content": "",
+            "page": "find-my-mask-quizz"
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_iRd7jr"
+      ],
+      "disabled": true,
+      "name": "t:sections.collapsible_content.presets.name",
+      "settings": {
+        "caption": "Want to find your perfect Mask?",
+        "heading": "FREE Find My Mask Quiz",
+        "not_heading": false,
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "row",
+        "color_scheme": "inverse",
+        "container_color_scheme": "",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 32,
+        "padding_bottom": 28
+      }
+    },
+    "multicolumn_MLqYaL": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_bNLVja": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Myopia_Vision_Nearsighted_5979eb54-8ae9-446a-9765-e1a8ac20a2a5.png",
+            "title": "<strong>Nearsighted/Shortsighted (Myopia)</strong>",
+            "title_h3": false,
+            "text": "<p>If things in the distance look blurry, like coral reefs, fish, or boats, you’re likely nearsighted. Our minus (-) prescription lenses bring far-away details into focus, so you can see the underwater world clearly while still keeping close-up vision sharp.</p><p>About 1 in 3 Americans are Nearsighted!</p>",
+            "link_label": "Shop Nearsighted Masks",
+            "link": "shopify://collections/nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "column_3TXi83": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Hyperopia_Vision_Farsighted_f6ad7170-fd2a-497f-a156-687e5aeda32c.png",
+            "title": "<strong>Farsighted (Hyperopia / Presbyopia)</strong>",
+            "title_h3": false,
+            "text": "<p>If you see clearly far away but struggle to focus on things up close, like your gauges, camera, or the fish right in front of you, you’re likely farsighted. </p><p>Our plus (+) prescription lenses help bring everything into focus at once, making it easier to see clearly both near and far underwater.</p>",
+            "link_label": "Shop Farsighted Masks",
+            "link": "shopify://collections/farsighted-prescription-dive-mask"
+          }
+        },
+        "column_E4Xn9K": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Normal_Vision_coral_reef.png",
+            "title": "<strong>How Prescription Lenses Work Underwater</strong>",
+            "title_h3": false,
+            "text": "<p>Whether your lenses are plus or minus, they simply adjust how light enters your eyes so everything, from nearby coral to the open blue, looks crisp and clear. </p><p><br/>Start seeing the reef and get your Prescription Snorkel/Dive Mask.</p>",
+            "link_label": "Shop All Masks",
+            "link": "shopify://collections/all-our-masks"
+          }
+        }
+      },
+      "block_order": [
+        "column_bNLVja",
+        "column_3TXi83",
+        "column_E4Xn9K"
+      ],
+      "disabled": true,
+      "custom_css": [
+        ".title-wrapper-with-link.title-wrapper--self-padded-mobile.title-wrapper--no-top-margin {justify-content: center;}",
+        "@media only screen and (max-width: 749px) {.multicolumn .title {text-align: center; }}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Nearsighted Vs Farsighted, Which one am I?",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 40,
+        "padding_bottom": 48
+      }
+    },
+    "featured_collection_NeJNJt": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Our Bestselling Prescription Masks",
+        "heading_size": "h1",
+        "description": "<p>⭐ Trusted by 3,000+ divers worldwide | ✓ Free shipping on all orders $70+ | 🚀 Ships within 1-2 business days</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 6,
+        "columns_desktop": 3,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 68
+      }
+    },
+    "oo_quiz_card_W8DcjP": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "lens_calculator_qTyGrf": {
+      "type": "lens-calculator",
+      "disabled": true,
+      "name": "Lens Calculator Main",
+      "settings": {}
+    },
+    "17658503335e2d1da0": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_cards_carousel_3djXLg": {
+          "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "show_sample_reviews": false,
+            "reviews_selection": "featured_reviews",
+            "products": [
+              "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling",
+              "prescription-scuba-dive-snorkel-mask-optical",
+              "the-rx-rover-scuba-diving-mask-with-action-camera-mount",
+              "white-rx-rover-nearsighted-prescription-dive-mask",
+              "rx-rover-nearsighted-prescription-freediving-scuba-dive-mask",
+              "professional-apollo-like-corrective-scuba-goggles-diving-aluminium-rx-optical-dive-mask-with-diopter-strength-from-1-5-to-6-0",
+              "rx-lumix-optical-dive-mask-aluminum-white-series",
+              "the-rx-carbon-scuba-dive-snorkel-freedive-mask"
+            ],
+            "star_rating": "all",
+            "show_review_media": false,
+            "display_order": "most_recent",
+            "no_image_fallback": "product_image",
+            "max_reviews": 20,
+            "review_length": "large",
+            "text_size": "medium",
+            "image_ratio": "0.75",
+            "reviews_shown": 4,
+            "show_reviewer_name": true,
+            "show_product_name": true,
+            "hide_arrows_mobile": true,
+            "arrows_position": "sides",
+            "max_width": 1600,
+            "corner_styling": "round",
+            "header_text_color": "#023059",
+            "text_color": "#023059",
+            "card_color": "#f9f9f9",
+            "stars_color": "#b95e05",
+            "arrows_color": "#023059",
+            "transition_speed": 10,
+            "header_text": "Happy Customers",
+            "show_average_rating": true
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_cards_carousel_3djXLg"
+      ],
+      "disabled": true,
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "multicolumn_zCkApB": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_zaX3ht": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/social-proof-banner-square_8.png",
+            "title": "",
+            "title_h3": false,
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_d6XCHg": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/social-proof-banner-square_9.png",
+            "title": "",
+            "title_h3": false,
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_6WhHBF": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/social-proof-banner-square_3.png",
+            "title": "",
+            "title_h3": false,
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_zaX3ht",
+        "column_d6XCHg",
+        "column_6WhHBF"
+      ],
+      "custom_css": [
+        ".multicolumn .title-wrapper-with-link {justify-content: center; text-align: center;}",
+        ".multicolumn .title {text-align: center;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Our Happy Customers",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "square",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "1779607357a0ab2b9e": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_store_summary_ikrMEF": {
+          "type": "shopify://apps/judge-me-reviews/blocks/store_summary/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "data_source": "real",
+            "theme": "expanded",
+            "button_theme_color": "#ffffff",
+            "button_theme_text_color": "#000000",
+            "show_keywords": true,
+            "keywords_visibility": "shown",
+            "show_button": true,
+            "button_visibility": "shown",
+            "alignment": "left",
+            "title_size": "extra_large",
+            "text_size": "extra_large",
+            "corner_styling": "round",
+            "widget_color": "#ffffff",
+            "text_color": "#023059",
+            "lighter_text_color": "#b95e05",
+            "button_color": "#b95e05",
+            "button_text_color": "#ffffff",
+            "show_sentiment_colors": true,
+            "max_width": 1200,
+            "heading_text": "Customers rate this store",
+            "button_text": "See AI reviews summary"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_store_summary_ikrMEF"
+      ],
+      "disabled": true,
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "snorkel_101_guide_mqYYmQ": {
+      "type": "Snorkel-101-guide",
+      "disabled": true,
+      "name": "Snorkeling 101 promo",
+      "settings": {}
+    },
+    "image_with_text_7W8iiT": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_pF6Lhz": {
+          "type": "heading",
+          "settings": {
+            "heading": "Buy a mask. Help grow a reef!",
+            "heading_size": "h1"
+          }
+        },
+        "text_GBFQP9": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Coral reefs cover just 1% of the ocean floor, yet support around 25% of all marine life. </p><p>They are one of the most important ecosystems on the planet, and they are under serious pressure. </p><p>That's why we choose to invest in real reef-building, planting and monitoring coral reefs in partnership with marine biologists and Thai coastal authorities. </p><p>One is already growing in the Gulf of Thailand. </p><p>More are coming soon!</p>",
+            "text_style": "body"
+          }
+        },
+        "button_xTRgTY": {
+          "type": "button",
+          "settings": {
+            "button_label": "Learn more about our artificial reef",
+            "button_link": "shopify://pages/learn-more-about-our-artificial-reef",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_pF6Lhz",
+        "text_GBFQP9",
+        "button_xTRgTY"
+      ],
+      "name": "t:sections.image-with-text.presets.name",
+      "settings": {
+        "image": "shopify://shop_images/Our-artificial-coral-reef-prescription-mask_1.jpg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "text_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "overlap",
+        "section_color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "oo_homepage_seo_faq_EAYdBR": {
+      "type": "oo-homepage-seo-faq",
+      "blocks": {
+        "faq_KKAN6k": {
+          "type": "faq",
+          "name": "1",
+          "settings": {
+            "question": "1. What does Oceans Optics sell?",
+            "answer": "<p>Oceans Optics sells prescription snorkel masks, prescription dive masks, swim goggles, and ocean-ready accessories designed to make snorkeling, swimming, and scuba diving clearer, safer, and more enjoyable. Our focus is underwater vision, comfortable fit, and helping you choose the right gear before you get in the water.</p>"
+          }
+        },
+        "faq_MXcitD": {
+          "type": "faq",
+          "name": "2",
+          "settings": {
+            "question": "2. Do you offer prescription snorkel and dive masks?",
+            "answer": "<p>Yes. We offer prescription snorkel and dive masks for nearsighted and farsighted vision. Nearsighted lenses use negative SPH values, such as -2.50, while farsighted lenses use positive SPH values, such as +2.00. Each product page shows the lens strengths available for that specific mask.</p>"
+          }
+        },
+        "faq_4VqTjj": {
+          "type": "faq",
+          "name": "3",
+          "settings": {
+            "question": "3. Can I use your prescription masks for snorkeling and scuba diving?",
+            "answer": "<p>Yes. Our prescription masks use HD tempered glass lenses and are suitable for snorkeling and scuba diving up to 100 ft (30 m). They are designed to help you see clearly underwater without needing to wear glasses or contact lenses in the water.</p>"
+          }
+        },
+        "faq_83M67Q": {
+          "type": "faq",
+          "name": "4",
+          "settings": {
+            "question": "4. How do I choose the right lens strength?",
+            "answer": "<p>Start with the SPH or Sphere value from your glasses prescription. Underwater, vision can feel slightly different because water adds natural magnification and mask lenses sit farther from your eyes than glasses. For many people, choosing around 0.50 diopters weaker, closer to zero, gives a more comfortable underwater view.</p><p>For the easiest recommendation, use our <a href=\"/pages/prescription-lenses-calculator-tool\" target=\"_blank\" title=\"FREE Lens calulator tool page\">Underwater Lens Calculator</a> It helps account for underwater refraction, available lens steps, and possible CYL/astigmatism values.</p>"
+          }
+        },
+        "faq_FL7gib": {
+          "type": "faq",
+          "name": "5",
+          "settings": {
+            "question": "5. Can I get help choosing the right mask?",
+            "answer": "<p>Yes. You can use our<a href=\"/pages/face-fit-mask-measuring-tool\" target=\"_blank\" title=\"Face Fit Mask Measuring Tool\"> Face-Fit Auto Measure tool</a> to help find a mask that better matches your face size and shape. If you are still unsure, contact us with your prescription, face measurements, or trip details, and we will help guide you toward the best option.</p>"
+          }
+        },
+        "faq_xXfRNj": {
+          "type": "faq",
+          "name": "6",
+          "settings": {
+            "question": "6. Do your masks work for nearsighted and farsighted prescriptions?",
+            "answer": "<p>Yes. We offer options for both nearsighted and farsighted prescriptions. Nearsighted masks use minus lenses for distance vision, while farsighted masks use plus lenses to help with close-up and overall underwater clarity. Availability depends on the mask model, so check the product page for the exact lens range.</p>"
+          }
+        },
+        "faq_XYzEPL": {
+          "type": "faq",
+          "name": "7",
+          "settings": {
+            "question": "7. How long does delivery usually take?",
+            "answer": "<p>Most orders arrive within 5 to 10 days, but we recommend allowing up to 14 days to be safe. You will receive tracking by email once your order ships. If you need your mask for a specific trip date, it is best to order as early as possible.<br/></p><h3></h3>"
+          }
+        },
+        "faq_LkdXUh": {
+          "type": "faq",
+          "name": "8",
+          "settings": {
+            "question": "8. What makes Oceans Optics different?",
+            "answer": "<p>Oceans Optics is not just about selling masks. We help people choose, understand, and use their underwater vision gear properly. Our Face-Fit Auto Measure tool helps with mask fit, our Underwater Lens Calculator helps with prescription choice, and our guides are designed to make snorkeling and diving feel less confusing and more exciting.<br/></p><p>We are also building toward a wider ocean mission through reef restoration and artificial reef projects, so clearer underwater vision can become part of something bigger: helping more people enjoy, respect, and protect the ocean.<br/></p><h2></h2>"
+          }
+        }
+      },
+      "block_order": [
+        "faq_KKAN6k",
+        "faq_MXcitD",
+        "faq_4VqTjj",
+        "faq_83M67Q",
+        "faq_FL7gib",
+        "faq_xXfRNj",
+        "faq_XYzEPL",
+        "faq_LkdXUh"
+      ],
+      "name": "OO Homepage SEO + FAQ",
+      "settings": {
+        "heading": "Frequently Asked Questions",
+        "seo_text": "<p>Oceans Optics helps snorkelers and divers find prescription snorkel masks, prescription dive masks, and underwater vision gear designed for comfort, clarity, and confidence.</p>",
+        "enable_faq_schema": true
+      }
+    },
+    "1715242617138bab0f": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_NQVhHE": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join the Community on Instagram",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_NQVhHE"
+      ],
+      "settings": {
+        "include_margins": false
+      }
+    }
+  },
+  "order": [
+    "17167935629bcc4972",
+    "image_banner_XPgKVC",
+    "collection_list_YEfP4N",
+    "rich_text_GtLcwq",
+    "multirow_FHWNc4",
+    "mask_sizing_tool_shortcut_K7znyT",
+    "collapsible_content_b8ygjT",
+    "multicolumn_MLqYaL",
+    "featured_collection_NeJNJt",
+    "oo_quiz_card_W8DcjP",
+    "lens_calculator_qTyGrf",
+    "17658503335e2d1da0",
+    "multicolumn_zCkApB",
+    "1779607357a0ab2b9e",
+    "snorkel_101_guide_mqYYmQ",
+    "image_with_text_7W8iiT",
+    "oo_homepage_seo_faq_EAYdBR",
+    "1715242617138bab0f"
+  ]
+}

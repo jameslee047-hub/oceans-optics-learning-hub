@@ -1,0 +1,483 @@
+{% assign manual_mode = section.settings.manual_mode %}
+{% assign open_camera_new_tab = section.settings.open_camera_new_tab %}
+
+<style>
+  .mf-shortcut-{{ section.id }} {
+    max-width: 1180px;
+    margin: 24px auto;
+    padding: 0 16px;
+    font-family: Lato, sans-serif;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-wrap {
+    background: #f7fbff;
+    border: 1px solid rgba(2, 48, 89, 0.12);
+    border-radius: 22px;
+    padding: 22px;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-head {
+    text-align: center;
+    margin-bottom: 18px;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-head h2 {
+    margin: 0 0 6px;
+    color: #023059;
+    font-size: 34px;
+    line-height: 1.15;
+    font-weight: 800;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-head p {
+    margin: 0;
+    color: #4e6079;
+    font-size: 17px;
+    line-height: 1.5;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: stretch;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-card {
+    background: #ffffff;
+    border: 1px solid #d9e0e7;
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-card.primary {
+    border: 3px solid #B95E05;
+    box-shadow: 0 6px 18px rgba(185, 94, 5, 0.08);
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-pill {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    min-height: 36px;
+    border-radius: 999px;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    box-sizing: border-box;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-pill.primary {
+    background: #f4ebe2;
+    color: #B95E05;
+    border: 1px solid rgba(185, 94, 5, 0.22);
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-pill.secondary {
+    background: #eef3f8;
+    color: #6f869f;
+    border: 1px solid #d7e1eb;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 10px;
+    color: #023059;
+    font-size: 26px;
+    line-height: 1.2;
+    font-weight: 800;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-icon {
+    font-size: 28px;
+    line-height: 1;
+    flex: 0 0 auto;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-copy {
+    margin: 0 0 14px;
+    color: #4e6079;
+    font-size: 16px;
+    line-height: 1.55;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 16px;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-list li {
+    margin-bottom: 8px;
+    color: #4e6079;
+    font-size: 16px;
+    line-height: 1.45;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-footer {
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-btn {
+    width: 100%;
+    min-height: 58px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 800;
+    text-decoration: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    font-family: Lato, sans-serif;
+    transition: all 0.2s ease;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-btn.primary {
+    background: #B95E05;
+    color: #ffffff;
+    border: 2px solid #B95E05;
+    box-shadow: 0 6px 16px rgba(185, 94, 5, 0.16);
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-btn.primary:hover {
+    background: #9f5004;
+    border-color: #9f5004;
+    color: #ffffff;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-btn.secondary {
+    background: #ffffff;
+    color: #023059;
+    border: 3px solid #023059;
+  }
+
+  .mf-shortcut-{{ section.id }} .mf-btn.secondary:hover {
+    background: #f8fbfe;
+    color: #023059;
+  }
+
+  @media screen and (max-width: 900px) {
+    .mf-shortcut-{{ section.id }} .mf-head h2 {
+      font-size: 28px;
+    }
+
+    .mf-shortcut-{{ section.id }} .mf-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .mf-shortcut-{{ section.id }} .mf-title {
+      font-size: 23px;
+    }
+
+    .mf-shortcut-{{ section.id }} .mf-btn {
+      min-height: 54px;
+      font-size: 19px;
+    }
+  }
+
+  @media screen and (max-width: 640px) {
+    .mf-shortcut-{{ section.id }} {
+      padding: 0 10px;
+      margin: 16px auto;
+    }
+
+    .mf-shortcut-{{ section.id }} .mf-wrap {
+      padding: 16px;
+      border-radius: 18px;
+    }
+
+    .mf-shortcut-{{ section.id }} .mf-head h2 {
+      font-size: 23px;
+    }
+
+    .mf-shortcut-{{ section.id }} .mf-head p,
+    .mf-shortcut-{{ section.id }} .mf-copy,
+    .mf-shortcut-{{ section.id }} .mf-list li {
+      font-size: 15px;
+    }
+
+    .mf-shortcut-{{ section.id }} .mf-title {
+      font-size: 21px;
+    }
+
+    .mf-shortcut-{{ section.id }} .mf-icon {
+      font-size: 24px;
+    }
+
+    .mf-shortcut-{{ section.id }} .mf-btn {
+      font-size: 18px;
+    }
+  }
+</style>
+
+<div class="mf-shortcut-{{ section.id }}">
+  <div class="mf-wrap">
+    <div class="mf-head">
+      <h2>{{ section.settings.heading }}</h2>
+      <p>{{ section.settings.subheading }}</p>
+    </div>
+
+    <div class="mf-grid">
+      <div class="mf-card primary">
+        <div class="mf-pill primary">{{ section.settings.auto_badge }}</div>
+
+        <div class="mf-title">
+          <span class="mf-icon">{{ section.settings.auto_icon }}</span>
+          <span>{{ section.settings.auto_title }}</span>
+        </div>
+
+        <p class="mf-copy">{{ section.settings.auto_text }}</p>
+
+        <ul class="mf-list">
+          <li>{{ section.settings.auto_point_1 }}</li>
+          <li>{{ section.settings.auto_point_2 }}</li>
+          <li>{{ section.settings.auto_point_3 }}</li>
+        </ul>
+
+        <div class="mf-footer">
+          <a
+            class="mf-btn primary"
+            href="{{ section.settings.auto_url }}"
+            {% if open_camera_new_tab %}target="_blank" rel="noopener"{% endif %}
+          >
+            {{ section.settings.auto_button }}
+          </a>
+        </div>
+      </div>
+
+      <div class="mf-card">
+        <div class="mf-pill secondary">{{ section.settings.manual_badge }}</div>
+
+        <div class="mf-title">
+          <span class="mf-icon">{{ section.settings.manual_icon }}</span>
+          <span>{{ section.settings.manual_title }}</span>
+        </div>
+
+        <p class="mf-copy">{{ section.settings.manual_text }}</p>
+
+        <ul class="mf-list">
+          <li>{{ section.settings.manual_point_1 }}</li>
+          <li>{{ section.settings.manual_point_2 }}</li>
+          <li>{{ section.settings.manual_point_3 }}</li>
+        </ul>
+
+        <div class="mf-footer">
+          <button
+            type="button"
+            class="mf-btn secondary"
+            id="mf-manual-btn-{{ section.id }}"
+            data-mode="{{ manual_mode }}"
+            data-anchor="{{ section.settings.manual_anchor_id }}"
+            data-url="{{ section.settings.manual_url }}"
+            data-reveal="{{ section.settings.manual_reveal_id }}"
+          >
+            {{ section.settings.manual_button }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function() {
+    var btn = document.getElementById('mf-manual-btn-{{ section.id }}');
+    if (!btn) return;
+
+    btn.addEventListener('click', function() {
+      var mode = btn.getAttribute('data-mode');
+      var anchorId = btn.getAttribute('data-anchor');
+      var manualUrl = btn.getAttribute('data-url');
+      var revealId = btn.getAttribute('data-reveal');
+
+      if (mode === 'scroll') {
+        if (revealId) {
+          var revealEl = document.getElementById(revealId);
+          if (revealEl) {
+            revealEl.hidden = false;
+            revealEl.style.display = '';
+          }
+        }
+
+        if (anchorId) {
+          var anchorEl = document.getElementById(anchorId);
+          if (anchorEl) {
+            anchorEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+          }
+        }
+      }
+
+      if (manualUrl) {
+        window.location.href = manualUrl;
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Mask fit shortcut",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "How would you like to find your mask fit?"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Choose automatic camera measuring or follow the manual ruler guide below"
+    },
+    {
+      "type": "text",
+      "id": "auto_badge",
+      "label": "Auto badge",
+      "default": "Recommended"
+    },
+    {
+      "type": "text",
+      "id": "auto_icon",
+      "label": "Auto icon",
+      "default": "🎥"
+    },
+    {
+      "type": "text",
+      "id": "auto_title",
+      "label": "Auto title",
+      "default": "Auto Camera Measuring"
+    },
+    {
+      "type": "textarea",
+      "id": "auto_text",
+      "label": "Auto text",
+      "default": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed."
+    },
+    {
+      "type": "text",
+      "id": "auto_point_1",
+      "label": "Auto point 1",
+      "default": "✓ Takes about 30 seconds"
+    },
+    {
+      "type": "text",
+      "id": "auto_point_2",
+      "label": "Auto point 2",
+      "default": "✓ Works on phone or desktop"
+    },
+    {
+      "type": "text",
+      "id": "auto_point_3",
+      "label": "Auto point 3",
+      "default": "✓ Get instant mask recommendations"
+    },
+    {
+      "type": "url",
+      "id": "auto_url",
+      "label": "Auto button URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_camera_new_tab",
+      "label": "Open camera in new tab",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "auto_button",
+      "label": "Auto button label",
+      "default": "Start Camera Measuring →"
+    },
+    {
+      "type": "text",
+      "id": "manual_badge",
+      "label": "Manual badge",
+      "default": "Measure Yourself"
+    },
+    {
+      "type": "text",
+      "id": "manual_icon",
+      "label": "Manual icon",
+      "default": "📐"
+    },
+    {
+      "type": "text",
+      "id": "manual_title",
+      "label": "Manual title",
+      "default": "Manual Ruler Guide"
+    },
+    {
+      "type": "textarea",
+      "id": "manual_text",
+      "label": "Manual text",
+      "default": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide."
+    },
+    {
+      "type": "text",
+      "id": "manual_point_1",
+      "label": "Manual point 1",
+      "default": "✓ No camera needed"
+    },
+    {
+      "type": "text",
+      "id": "manual_point_2",
+      "label": "Manual point 2",
+      "default": "✓ Works anywhere"
+    },
+    {
+      "type": "text",
+      "id": "manual_point_3",
+      "label": "Manual point 3",
+      "default": "✓ Fine-tune with sliders"
+    },
+    {
+      "type": "select",
+      "id": "manual_mode",
+      "label": "Manual button action",
+      "default": "link",
+      "options": [
+        { "value": "link", "label": "Go to manual page" },
+        { "value": "scroll", "label": "Scroll to section on this page" }
+      ]
+    },
+    {
+      "type": "url",
+      "id": "manual_url",
+      "label": "Manual page URL"
+    },
+    {
+      "type": "text",
+      "id": "manual_anchor_id",
+      "label": "Manual anchor ID for same-page scroll",
+      "default": "ruler-guide-start"
+    },
+    {
+      "type": "text",
+      "id": "manual_reveal_id",
+      "label": "Hidden section ID to reveal first, optional",
+    },
+    {
+      "type": "text",
+      "id": "manual_button",
+      "label": "Manual button label",
+      "default": "Use Ruler Guide ↓"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Mask fit shortcut"
+    }
+  ]
+}
+{% endschema %}

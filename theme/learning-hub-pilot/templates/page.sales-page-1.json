@@ -1,0 +1,166 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_pWPkB4": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_rngqJG": {
+          "type": "heading",
+          "settings": {
+            "heading": "Prescription Masks, paired with essential education for optimal fun and safety!",
+            "heading_size": "h1"
+          }
+        },
+        "text_tQBH76": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        },
+        "buttons_RH3fg8": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "Find my Optics",
+            "button_link_1": "shopify://collections/prescription-masks",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_rngqJG",
+        "text_tQBH76",
+        "buttons_RH3fg8"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/Whale_shark_visible_with_prescription_mask.png",
+        "image_2": "shopify://shop_images/Whale_shark_visible_with_prescription_mask.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "bottom-right",
+        "show_text_box": false,
+        "desktop_content_alignment": "right",
+        "color_scheme": "accent-1",
+        "image_behavior": "none",
+        "mobile_content_alignment": "right",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "rich_text_hNHP86": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_4LpBFg": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>WAIT dont just jump in the water!</strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_z7nAPx": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Get prepared with our In depth guide curated by proffesionals in the industry, to help you with all the skills needed to build confidence in the water and help you make the very most of your valuable time spent exploring the ocean.</strong></p>"
+          }
+        },
+        "button_cJPEPL": {
+          "type": "button",
+          "settings": {
+            "button_label": "Sneaky peak at the Guide",
+            "button_link": "shopify://pages/free-guide",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_4LpBFg",
+        "text_z7nAPx",
+        "button_cJPEPL"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": true,
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "collection_list_UafwpX": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_RV3FgM": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "prescription-masks"
+          }
+        },
+        "featured_collection_GbRVpq": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "snorkels"
+          }
+        },
+        "featured_collection_W9byYj": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "fins"
+          }
+        },
+        "featured_collection_fxMdDk": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "other-goodies-snorkels-accessories"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_RV3FgM",
+        "featured_collection_GbRVpq",
+        "featured_collection_W9byYj",
+        "featured_collection_fxMdDk"
+      ],
+      "settings": {
+        "title": "Shop our Store",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "show_view_all": true,
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    }
+  },
+  "order": [
+    "image_banner_pWPkB4",
+    "rich_text_hNHP86",
+    "collection_list_UafwpX",
+    "main"
+  ]
+}

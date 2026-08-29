@@ -1,0 +1,93 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.ultimate-travel-pack.json",
+  "context": {
+    "market": "aus"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_AFrCjF": {
+          "settings": {
+            "heading": "Mask Sizing Chart",
+            "content": "",
+            "page": "rx-rover-mask-sizing-chart"
+          }
+        },
+        "collapsible_tab_39Bwgk": {
+          "type": "collapsible_tab",
+          "disabled": false,
+          "settings": {
+            "heading": "Free Shipping",
+            "icon": "truck",
+            "content": "<h5>Free 3-14 day Delivery to anywhere in the US, CAN, UK & AUS</h5>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "vendor",
+        "rating",
+        "description",
+        "custom_liquid_XT3aq3",
+        "popup_rpUGtY",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "share",
+        "collapsible_tab_AFrCjF",
+        "collapsible_tab_39Bwgk",
+        "collapsible_tab_Fi4UYW",
+        "collapsible_tab_LEPMcQ",
+        "popup_L6KjJd",
+        "complementary_nUwdBE"
+      ]
+    },
+    "rich_text_BUHwrK": {
+      "settings": {
+        "content_alignment": "center",
+        "padding_top": 0
+      },
+      "blocks": {}
+    },
+    "image_banner_aAaemM": {
+      "settings": {
+        "image": "shopify://shop_images/Guide_Mobile_9de60337-7347-492b-993c-5fb7e3e91e83.png",
+        "image_2": "shopify://shop_images/Guide_Desk_1.png",
+        "image_height": "medium"
+      },
+      "blocks": {}
+    },
+    "featured_collection_rdVai9": {
+      "settings": {
+        "products_to_show": 25,
+        "show_secondary_image": true,
+        "show_rating": true,
+        "quick_add": "standard"
+      },
+      "blocks": {}
+    }
+  },
+  "order": [
+    "main",
+    "multicolumn_xbyzLQ",
+    "rich_text_BUHwrK",
+    "image_banner_aAaemM",
+    "1714545178ae5672c1",
+    "related-products",
+    "featured_collection_rdVai9",
+    "17186861496a9246fa",
+    "custom_liquid_RkhDKR"
+  ]
+}

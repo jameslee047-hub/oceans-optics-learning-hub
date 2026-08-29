@@ -1,0 +1,318 @@
+{% comment %}
+  Section: Post-Purchase Add-On Deal Banner
+  File: sections/post-purchase-banner.liquid
+  Usage: Add to your post-purchase-add-on-deals collection template.
+  Fonts: Uses Shopify theme font settings. No external font imports.
+{% endcomment %}
+
+<style>
+  .oo-banner {
+    --oo-body-font: var(--font-body-family, Lato, Arial, sans-serif);
+    --oo-heading-font: var(--font-heading-family, var(--oo-body-font));
+
+    position: relative;
+    background: #023059;
+    border-radius: 16px;
+    overflow: hidden;
+    padding: 36px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 40px;
+    min-height: 160px;
+  }
+
+  .oo-banner::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse at 80% 50%, rgba(185,94,5,0.12) 0%, transparent 60%),
+      repeating-linear-gradient(
+        -35deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.015) 40px,
+        rgba(255,255,255,0.015) 41px
+      );
+    pointer-events: none;
+  }
+
+  .oo-banner__ghost {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: var(--oo-heading-font);
+    font-size: 180px;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+    letter-spacing: -8px;
+  }
+
+  .oo-banner__shimmer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #B95E05, #E8870A, #B95E05, transparent);
+    animation: oo-shimmer 3s ease-in-out infinite;
+  }
+
+  @keyframes oo-shimmer {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+
+  .oo-banner__left {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+  }
+
+  .oo-banner__badge-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .oo-banner__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #B95E05;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-family: var(--oo-body-font);
+  }
+
+  .oo-banner__badge-dot {
+    width: 5px;
+    height: 5px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: oo-pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes oo-pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+  }
+
+  .oo-banner__timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.7);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-family: var(--oo-body-font);
+  }
+
+  .oo-banner__headline {
+    font-family: var(--oo-heading-font);
+    font-size: 30px;
+    color: #ffffff;
+    line-height: 1.15;
+    margin-bottom: 8px;
+    margin-top: 0;
+  }
+
+  .oo-banner__headline em {
+    color: #E8870A;
+    font-style: italic;
+  }
+
+  .oo-banner__subtext {
+    color: rgba(255,255,255,0.62);
+    font-size: 13.5px;
+    line-height: 1.55;
+    max-width: 480px;
+    font-family: var(--oo-body-font);
+    margin: 0;
+  }
+
+  .oo-banner__subtext strong {
+    color: rgba(255,255,255,0.9);
+    font-weight: 600;
+  }
+
+  .oo-banner__right {
+    position: relative;
+    z-index: 1;
+    flex-shrink: 0;
+    text-align: center;
+  }
+
+  .oo-banner__pill {
+    background: linear-gradient(135deg, #B95E05 0%, #E8870A 100%);
+    border-radius: 20px;
+    padding: 20px 32px;
+    box-shadow: 0 8px 32px rgba(185,94,5,0.35);
+  }
+
+  .oo-banner__pill-amount {
+    font-family: var(--oo-heading-font);
+    font-size: 52px;
+    color: #ffffff;
+    line-height: 1;
+    letter-spacing: -2px;
+  }
+
+  .oo-banner__pill-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.8);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-top: 4px;
+    font-family: var(--oo-body-font);
+  }
+
+  .oo-banner__autonote {
+    margin-top: 8px;
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.3px;
+    font-family: var(--oo-body-font);
+  }
+
+  @media (max-width: 720px) {
+    .oo-banner {
+      flex-direction: column;
+      padding: 28px 24px;
+      text-align: center;
+      align-items: center;
+      min-height: 220px;
+    }
+
+    .oo-banner__ghost {
+      display: none;
+    }
+
+    .oo-banner__badge-row {
+      justify-content: center;
+    }
+
+    .oo-banner__headline {
+      font-size: 24px;
+    }
+
+    .oo-banner__subtext {
+      font-size: 13px;
+      max-width: 100%;
+    }
+
+    .oo-banner__pill {
+      padding: 16px 28px;
+    }
+
+    .oo-banner__pill-amount {
+      font-size: 42px;
+    }
+  }
+</style>
+
+<div class="oo-banner">
+  <div class="oo-banner__ghost">20%</div>
+  <div class="oo-banner__shimmer"></div>
+
+  <div class="oo-banner__left">
+    <div class="oo-banner__badge-row">
+      <span class="oo-banner__badge">
+        <span class="oo-banner__badge-dot"></span>
+        {{ section.settings.badge_text }}
+      </span>
+      <span class="oo-banner__timer">⏱ {{ section.settings.timer_text }}</span>
+    </div>
+
+    <h2 class="oo-banner__headline">
+      {{ section.settings.headline | replace: '[em]', '<em>' | replace: '[/em]', '</em>' }}
+    </h2>
+
+    <p class="oo-banner__subtext">
+      {{ section.settings.subtext | replace: '[b]', '<strong>' | replace: '[/b]', '</strong>' }}
+    </p>
+  </div>
+
+  <div class="oo-banner__right">
+    <div class="oo-banner__pill">
+      <div class="oo-banner__pill-amount">{{ section.settings.discount_amount }}</div>
+      <div class="oo-banner__pill-label">{{ section.settings.pill_label }}</div>
+    </div>
+    <div class="oo-banner__autonote">{{ section.settings.auto_note }}</div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Post-Purchase Deal Banner",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "I Can Sea Club"
+    },
+    {
+      "type": "text",
+      "id": "timer_text",
+      "label": "Timer label",
+      "default": "12 hours only"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline (wrap italic text in [em][/em])",
+      "default": "Your exclusive [em]20% off[/em] is waiting."
+    },
+    {
+      "type": "textarea",
+      "id": "subtext",
+      "label": "Subtext (wrap bold text in [b][/b])",
+      "default": "As a returning customer, your discount [b]applies automatically at checkout[/b] - no code needed. Browse the collection and add what you need."
+    },
+    {
+      "type": "text",
+      "id": "discount_amount",
+      "label": "Discount amount (pill)",
+      "default": "20%"
+    },
+    {
+      "type": "text",
+      "id": "pill_label",
+      "label": "Pill label",
+      "default": "Off + Free Shipping"
+    },
+    {
+      "type": "text",
+      "id": "auto_note",
+      "label": "Auto-apply note",
+      "default": "Discount auto-applies at checkout"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Post-Purchase Deal Banner"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.i-can-sea-caribbean.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_Lw6grN": {
+          "settings": {
+            "content": "<p>100% cotton, medium weight fabric 5.3 oz/yd² (180 g/m²) for year round comfort and durability.</p><p>Classic unisex fit with a relaxed feel and crew neckline for a neat, timeless look.</p><p>Ribbed knit collar and shoulder to shoulder taping for better shape and stability.</p><p>Tear away label for a scratch free, no irritation experience.</p><p>Made with 100% US cotton that is ethically grown and harvested.</p><p>Gildan is a member of the US Cotton Trust Protocol, supporting ethical and sustainable production.</p><p>Oeko Tex certified for safety and quality assurance.</p><p>Color note: the white tee can appear slightly off white due to the natural properties of the fabric</p>"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,302 @@
+<a href="{{ section.settings.button_link }}" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+  <div class="responsive-banner" style="max-width: {{ section.settings.banner_max_width }}px;">
+    <picture>
+      {% if section.settings.use_same_image or section.settings.mobile_image == blank %}
+        <!-- Use the same image for both desktop and mobile -->
+        <img
+          src="{{ section.settings.desktop_image | img_url: 'master' }}"
+          alt="{{ section.settings.banner_heading | escape }}"
+          class="responsive-banner__image"
+        >
+      {% else %}
+        <!-- Use different images for desktop and mobile -->
+        <source media="(min-width: 750px)" srcset="{{ section.settings.desktop_image | img_url: 'master' }}">
+        <source media="(max-width: 749px)" srcset="{{ section.settings.mobile_image | img_url: 'master' }}">
+        <img
+          src="{{ section.settings.mobile_image | img_url: 'master' }}"
+          alt="{{ section.settings.banner_heading | escape }}"
+          class="responsive-banner__image"
+        >
+      {% endif %}
+    </picture>
+
+    <div class="responsive-banner__content">
+      {% if section.settings.banner_heading != blank %}
+        <h2 class="responsive-banner__heading">{{ section.settings.banner_heading }}</h2>
+      {% endif %}
+      {% if section.settings.banner_text != blank %}
+        <p class="responsive-banner__text">{{ section.settings.banner_text }}</p>
+      {% endif %}
+    </div>
+  </div>
+</a>
+
+
+<style>
+  /* Responsive Banner Styles */
+  .responsive-banner {
+    position: relative;
+    width: 100%;
+    height: {{ section.settings.desktop_height | default: 200 }}px;
+    margin: 0 auto; /* Center the banner */
+    overflow: hidden;
+    background-color: {{ section.settings.background_color }};
+  }
+
+  @media (max-width: 749px) {
+    .responsive-banner {
+      height: {{ section.settings.mobile_height | default: 200 }}px;
+    }
+  }
+
+  .responsive-banner__image {
+    width: 100%;
+    height: 100%;
+    object-fit: {{ section.settings.image_fit }};
+  }
+
+  .responsive-banner__content {
+    position: absolute;
+    top: {{ section.settings.content_position_vertical }};
+    left: {{ section.settings.content_position_horizontal }};
+    transform: translate(-{{ section.settings.content_position_horizontal }}, -{{ section.settings.content_position_vertical }});
+    text-align: center;
+    color: {{ section.settings.text_color }};
+    padding: 0 1rem;
+  }
+
+  .responsive-banner__heading {
+    margin: 0;
+    font-size: {{ section.settings.heading_font_size | default: 2 }}rem;
+  }
+
+  .responsive-banner__text {
+    margin-top: 1rem;
+    font-size: {{ section.settings.text_font_size | default: 1 }}rem;
+  }
+
+  .responsive-banner__button {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background-color: {{ section.settings.button_background_color }};
+    color: {{ section.settings.button_text_color }};
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .responsive-banner__button:hover {
+    background-color: {{ section.settings.button_hover_background_color }};
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 749px) {
+    .responsive-banner__heading {
+      font-size: {{ section.settings.mobile_heading_font_size | default: 1.5 }}rem;
+    }
+    .responsive-banner__text {
+      font-size: {{ section.settings.mobile_text_font_size | default: 0.9 }}rem;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Responsive Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_same_image",
+      "label": "Use the same image for desktop and mobile",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image",
+      "info": "Upload a mobile-specific image if you want a different image on mobile devices."
+    },
+    {
+      "type": "text",
+      "id": "banner_heading",
+      "label": "Banner Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "banner_text",
+      "label": "Banner Text"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "range",
+      "id": "banner_max_width",
+      "label": "Maximum Banner Width (px)",
+      "default": 1200,
+      "min": 600,
+      "max": 1800,
+      "step": 12
+    },
+    {
+      "type": "range",
+      "id": "desktop_height",
+      "label": "Desktop Banner Height (px)",
+      "default": 200,
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "mobile_height",
+      "label": "Mobile Banner Height (px)",
+      "default": 200,
+      "min": 100,
+      "max": 500,
+      "step": 10,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "default": "cover",
+      "options": [
+        {
+          "value": "cover",
+          "label": "Cover"
+        },
+        {
+          "value": "contain",
+          "label": "Contain"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "Heading Font Size (rem)",
+      "default": 2,
+      "min": 0.5,
+      "max": 5,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "text_font_size",
+      "label": "Text Font Size (rem)",
+      "default": 1,
+      "min": 0.5,
+      "max": 3,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "mobile_heading_font_size",
+      "label": "Mobile Heading Font Size (rem)",
+      "default": 1.5,
+      "min": 0.5,
+      "max": 5,
+      "step": 0.1
+    },
+    {
+      "type": "range",
+      "id": "mobile_text_font_size",
+      "label": "Mobile Text Font Size (rem)",
+      "default": 0.9,
+      "min": 0.5,
+      "max": 3,
+      "step": 0.1
+    },
+    {
+      "type": "select",
+      "id": "content_position_horizontal",
+      "label": "Content Position Horizontal",
+      "default": "50%",
+      "options": [
+        {
+          "value": "50%",
+          "label": "Center"
+        },
+        {
+          "value": "10%",
+          "label": "Left"
+        },
+        {
+          "value": "90%",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "content_position_vertical",
+      "label": "Content Position Vertical",
+      "default": "50%",
+      "options": [
+        {
+          "value": "50%",
+          "label": "Center"
+        },
+        {
+          "value": "10%",
+          "label": "Top"
+        },
+        {
+          "value": "90%",
+          "label": "Bottom"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button Background Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background_color",
+      "label": "Button Hover Background Color",
+      "default": "#333333"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Responsive Banner"
+    }
+  ]
+}
+{% endschema %}

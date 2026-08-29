@@ -1,0 +1,436 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "vendor": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        },
+        "rating": {
+          "type": "rating",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        },
+        "custom_liquid_XT3aq3": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Underwater Lens Calculator</title>\n <style>\n    #calculator-container {\n        max-width: 600px;\n        margin: 20px auto;\n        padding: 20px;\n        border-radius: 8px;\n        background-color: #ffffff;\n        box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n        font-family: 'Lato', sans-serif;\n        display: none; /* Hidden by default */\n    }\n    #lens-calculator h2, #lens-calculator h3, #lens-calculator label {\n        color: #023059;\n        font-family: 'Lato', sans-serif;\n    }\n    #lens-calculator p, #lens-calculator a {\n        color: #023059;\n        font-family: 'Lato', sans-serif;\n        margin-bottom: 10px;\n    }\n    #lens-calculator .input-group {\n        display: grid;\n        align-items: center;\n        margin-bottom: 10px;\n    }\n    #lens-calculator .input-group label {\n        min-width: 160px;\n    }\n    #lens-calculator .input-group select, #lens-calculator .input-group input {\n        padding: 6px; /* Adjusted padding */\n        margin-right: 10px;\n        border-radius: 4px;\n        border: 1px solid #cccccc;\n        font-family: 'Lato', sans-serif;\n    }\n    #toggle-button, #final-calculate-button {\n        padding: 15px 40px;\n        border: 2px solid #B95E05; /* Orange border */\n        background-color: #ffffff;\n        color: #B95E05; /* Orange text */\n        border-radius: 30px;\n        cursor: pointer;\n        font-weight: bold;\n        text-align: center;\n        display: block;\n        margin: 20px auto;\n        font-size: 20px;\n        box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Added shadow */\n    }\n    .results-container {\n        display: flex;\n        justify-content: space-between;\n        margin-top: 20px;\n        padding: 10px;\n        display: none; /* Initially hidden */\n    }\n    .results-box {\n        flex: 1;\n        padding: 20px;\n        margin: 5px;\n        background-color: #f0f0f0;\n        text-align: center;\n        border-radius: 10px;\n        box-shadow: 0 1px 3px rgba(0,0,0,0.2);\n        font-size: 24px;\n        font-weight: bold;\n        color: #023059;\n    }\n</style>\n</head>\n<body>\n\n<div id=\"initial-button-container\">\n    <button id=\"toggle-button\" class=\"lens-calculator-button\" onclick=\"toggleCalculator()\">\n        Click to find your<br>perfect Lens Strength \n    </button>\n</div>\n\n<div id=\"calculator-container\">\n    <div id=\"lens-calculator\">\n        <p>Did you know your prescription needs to be adjusted to account for water magnification? Enter your prescription into our lens calculator and we will do the work for you.</p>\n\n        <div class=\"input-group\">\n            <label for=\"leftEyeSphere\">Left Sphere (OS):</label>\n            <select id=\"leftEyeSphereSign\" required>\n                <option value=\"\" disabled selected>Choose + or -</option>\n                <option value=\"+\">+</option>\n                <option value=\"-\">-</option>\n            </select>\n            <input type=\"number\" id=\"leftEyeSphere\" step=\"0.50\" required>\n        </div>\n\n        <div class=\"input-group\">\n            <label for=\"rightEyeSphere\">Right Sphere (OD):</label>\n            <select id=\"rightEyeSphereSign\" required>\n                <option value=\"\" disabled selected>Choose + or -</option>\n                <option value=\"+\">+</option>\n                <option value=\"-\">-</option>\n            </select>\n            <input type=\"number\" id=\"rightEyeSphere\" step=\"0.50\" required>\n        </div>\n\n        <button id=\"final-calculate-button\" onclick=\"calculateLensStrength()\">Calculate</button>\n\n        <div>Suggested Lens Strength:</div>\n        <div class=\"results-container\">\n            <div class=\"results-box\">\n                <div>Left</div>\n                <span id=\"recommendedLeft\"></span>\n            </div>\n            <div class=\"results-box\">\n                <div>Right</div>\n                <span id=\"recommendedRight\"></span>\n            </div>\n        </div>\n    </div>\n</div>\n\n<script>\nfunction toggleCalculator() {\n    var calculatorContainer = document.getElementById('calculator-container');\n    var initialButtonContainer = document.getElementById('initial-button-container');\n\n    // Check if the calculator container is hidden, then show it and move the button inside the container\n    if (calculatorContainer.style.display === 'none' || calculatorContainer.style.display === '') {\n        calculatorContainer.style.display = 'block';\n        calculatorContainer.insertBefore(initialButtonContainer, calculatorContainer.firstChild);\n    }\n}\n\nfunction calculateLensStrength() {\n    const leftSphere = parseFloat(document.getElementById('leftEyeSphere').value) || 0;\n    const rightSphere = parseFloat(document.getElementById('rightEyeSphere').value) || 0;\n\n    const leftSphereSign = document.getElementById('leftEyeSphereSign').value;\n    const rightSphereSign = document.getElementById('rightEyeSphereSign').value;\n\n    if (leftSphereSign === \"\" || rightSphereSign === \"\") {\n        alert(\"Please choose + or -.\");\n        return;\n    }\n\n    const adjustedLeftSphere = calculateAdjustedValue(Math.abs(leftSphere), leftSphereSign);\n    const adjustedRightSphere = calculateAdjustedValue(Math.abs(rightSphere), rightSphereSign);\n\n    document.getElementById('recommendedLeft').textContent = adjustedLeftSphere;\n    document.getElementById('recommendedRight').textContent = adjustedRightSphere;\n    document.querySelector('.results-container').style.display = 'flex';\n}\n\nfunction calculateAdjustedValue(sphere, sphereSign) {\n    let adjustedPower = sphere - 0.50;\n    if (adjustedPower % 1 !== 0) {\n        adjustedPower = Math.round(adjustedPower * 2) / 2;\n    }\n    const roundedPower = sphereSign === '+' ? adjustedPower.toFixed(2) : '-' + Math.abs(adjustedPower).toFixed(2);\n\n    if (roundedPower < -9.0) {\n        alert(\"Our lenses have a maximum strength of -9.0. Please check each product's available lens strengths.\");\n    }\n\n    return roundedPower;\n}\n</script>\n\n</body>\n</html>"
+          }
+        },
+        "popup_rpUGtY": {
+          "type": "popup",
+          "disabled": true,
+          "settings": {
+            "text": "Only available in Nearsighted -1.5 to -6.0",
+            "page": "not-sure-if-you-are-nearsighted-or-farsighted"
+          }
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "collapsible_tab_AFrCjF": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Free Shipping",
+            "icon": "truck",
+            "content": "<h5>Free 3-14 day Delivery to anywhere in the US, CAN, UK & AUS</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_Fi4UYW": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "30 Day Return Policy",
+            "icon": "return",
+            "content": "<h5>Take advantage of our 30 days from delivery free return policy—shop with confidence. See our full return policy for more info</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_LEPMcQ": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Free E-guide with every purchase",
+            "icon": "heart",
+            "content": "<h5>We made this for you! Read up on essential snorkeling skills, knoweldege and tips, before you take the plunge into the Ocean.</h5>",
+            "page": ""
+          }
+        },
+        "popup_L6KjJd": {
+          "type": "popup",
+          "settings": {
+            "text": "Will this mask fit me? Heres how to check!",
+            "page": "how-to-check-if-a-mask-will-fit-you-online"
+          }
+        },
+        "complementary_nUwdBE": {
+          "type": "complementary",
+          "settings": {
+            "block_heading": "You may love these..",
+            "make_collapsible_row": false,
+            "icon": "price_tag",
+            "product_list_limit": 10,
+            "products_per_page": 4,
+            "pagination_style": "counter",
+            "image_ratio": "square",
+            "enable_quick_add": true
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "vendor",
+        "rating",
+        "description",
+        "custom_liquid_XT3aq3",
+        "popup_rpUGtY",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "share",
+        "collapsible_tab_AFrCjF",
+        "collapsible_tab_Fi4UYW",
+        "collapsible_tab_LEPMcQ",
+        "popup_L6KjJd",
+        "complementary_nUwdBE"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "media_size": "small",
+        "constrain_to_viewport": false,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "multicolumn_xbyzLQ": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_WKNaKR": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>RX Rover Features:</strong>",
+            "text": "<h5><strong>Ideal for small-medium sized faces </strong></h5><h5>Easy access soft nose for easy equalizing</h5><h5>Unique push-release strap system</h5>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_PUz7x3": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>All Our Masks Have:</strong>",
+            "text": "<h5><strong>HD Tempered Glass</strong> (Scratch Proof) </h5><h5><strong>Ultra clear lenses</strong></h5><h5><strong>Hypoallergenic liquid    silicone skirt </strong></h5><h5><strong>Double skirt edge comfort seal</strong> - Leak-proof fit</h5><h5><strong>Interchangeable lenses</strong>, to account for Prescription changes over time </h5>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_WmAzRw": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>Snorkel Features:</strong>",
+            "text": "<h5><strong>Flexible & Durable Design:</strong> J-tube style roll-up snorkel.</h5><h5></h5><h5><strong>Compact Storage:</strong> Includes a round storage case.</h5><h5></h5><h5><strong>Essential Dive Gear:</strong> Ideal for snorkeling, freediving, spearfishing & scuba diving.<br/></h5><h5><strong>Easy Attachment:</strong> Simple snorkel keeper ensures secure mask attachment.</h5>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_EbTjzq": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>Microfiber Towel</strong>",
+            "text": "<h5><strong>Ultra-Soft Microfiber</strong>: Gentle on skin yet durable.</h5><h5><strong>Quick-Drying Technology</strong>: Ensures rapid moisture absorption & fast drying.</h5><h5><strong>Lightweight & Compact</strong>: Perfect for travel, gym, yoga, and beach outings.</h5><h5><strong>Durable & Machine Washable</strong></h5>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_jckxAF": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>Mask Case Box</strong>",
+            "text": "<h5><strong>Protective Case</strong>: Safeguard your mask with a zip-up case box, perfect for active adventurers.<br/></h5><h5><strong>Prevent Damage</strong>: Keep your  prescription mask safe from scratches and avoidable damages.</h5>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_w999Te": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/6x7_Ben.png",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_WKNaKR",
+        "column_PUz7x3",
+        "column_WmAzRw",
+        "column_EbTjzq",
+        "column_jckxAF",
+        "column_w999Te"
+      ],
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "portrait",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_BUHwrK": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_qFDpWz": {
+          "type": "heading",
+          "settings": {
+            "heading": "More than <strong>JUST</strong> a mask..",
+            "heading_size": "h1"
+          }
+        },
+        "text_tjdDhn": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<p>Free digital e-guide included with every purchase!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_qFDpWz",
+        "text_tjdDhn"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "left",
+        "color_scheme": "background-2",
+        "full_width": true,
+        "padding_top": 48,
+        "padding_bottom": 0
+      }
+    },
+    "image_banner_aAaemM": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Scuba_Guide.png",
+        "image_2": "shopify://shop_images/Snorkel_Guide.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://pages/free-guide",
+        "image_height": "adapt",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": false
+      }
+    },
+    "multicolumn_UyfUaW": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_bLdbcf": {
+          "type": "column",
+          "disabled": true,
+          "settings": {
+            "title": "<em>\"Your Ultimate 30+ Page Snorkeling Handbook!\"</em>",
+            "text": "<p>• Professional Skill Demos </p><p>• Ease Ocean Anxiety</p><p>• Feel Prepared & Confident</p><p>• Discover Hidden Hazards</p><p>• Kick butt! Not Coral...</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_bLdbcf"
+      ],
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "Learn more",
+        "button_link": "shopify://pages/free-guide",
+        "color_scheme": "background-2",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "1714545178ae5672c1": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_eeCVBt": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_eeCVBt"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "featured_collection_rdVai9": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "You may love these..",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": true,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "17186861496a9246fa": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_JHMaUE": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "alignment": "center",
+            "background_color": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_JHMaUE"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "custom_liquid_RkhDKR": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "settings": {
+        "custom_liquid": "<!-- Help Icon for Scrolling to FAQ Section -->\n<div class=\"help-icon-container\">\n  <a href=\"#faq-section\" class=\"help-icon\">Have a question?</a>\n</div>\n\n<!-- FAQ Section for Product Page -->\n<div id=\"faq-section\" class=\"faq-container\">\n  <h4 class=\"faq-title\">Frequently Asked Questions</h4>\n  \n  <!-- FAQ Items -->\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">What is the difference between nearsighted and farsighted lenses?</div>\n    <div class=\"faq-answer\">\n      <p><strong>Nearsighted (Myopia) Lenses:</strong> These lenses have a negative sphere (SPH) value and correct distance vision. <strong>Farsighted (Hyperopia) Lenses:</strong> These lenses have a positive SPH value and correct close-up vision.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">How do I find the sphere (SPH) value on my prescription?</div>\n    <div class=\"faq-answer\">\n      <p>The SPH value is usually in the first column of your prescription, marked as \"SPH\" or \"Sphere.\" A negative number indicates nearsightedness, while a positive number indicates farsightedness.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">How Should I Adjust My Prescription for Clear Vision Underwater?</div>\n    <div class=\"faq-answer\">\n      <p><strong>Prescription Adjustment for Underwater Clarity:</strong> To achieve clear and accurate vision underwater, we recommend selecting a lens strength that is 0.50 to 0.75 diopters weaker than your regular prescription. This adjustment helps to compensate for the magnification effect that occurs underwater, reducing the risk of distortion.</p>\n      <p><strong>Example:</strong> Your Regular Prescription: Right Eye (OD): Sphere = -2.75; Left Eye (OS): Sphere = -3.50. Recommended Lens Strength: Right Eye (OD): Sphere = -2.00; Left Eye (OS): Sphere = -3.00.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">Can I choose a lens strength that isn’t listed in the dropdown?</div>\n    <div class=\"faq-answer\">\n      <p>The lenses listed are the only ones available for the specific mask in the listing. If your exact strength isn’t available, select a lens that stays within the recommended adjustment range of 0.50 to 0.75 diopters weaker than your regular prescription. This ensures you maintain clear and accurate vision underwater within a safe and effective range.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">Can I choose different lens strengths for each eye?</div>\n    <div class=\"faq-answer\">\n      <p>Yes, you can select different lens strengths for each eye based on your individual prescription. We offer a range of lens strengths, and you can mix and match any combination available in our dropdown menus to match your prescription needs. However, please note that we only offer the specific variations listed for each mask. If your exact prescription isn’t listed, select the closest available option.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">How do I upload my prescription during checkout?</div>\n    <div class=\"faq-answer\">\n      <p>You don’t need to upload your prescription. If you require specific lens strengths or have questions about your order, please send us a message through the online chat or email us at <a href=\"mailto:info@oceansoptics.com\">info@oceansoptics.com</a>. We’re happy to help ensure you get the correct lenses for your needs.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">What happens if I accidentally choose the wrong lens strength?</div>\n    <div class=\"faq-answer\">\n      <p>Contact customer support immediately if you choose the wrong strength. We may be able to correct the order, depending on the processing stage.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">Are your lenses safe for both snorkeling and scuba diving?</div>\n    <div class=\"faq-answer\">\n      <p>Yes, all our lenses are made from HD Tempered glass, safe for both snorkeling and scuba diving.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">How long does it take to receive lenses, and can I track my order?</div>\n    <div class=\"faq-answer\">\n      <p>Orders typically take 7-14 days to process. You will receive a tracking number via email once shipped.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">What is your return or exchange policy for prescription lenses?</div>\n    <div class=\"faq-answer\">\n      <p>Since prescription lenses are selected based on your input, they are generally non-returnable and non-exchangeable. For more details, refer to our full policy on <a href=\"https://oceansoptics.com\" target=\"_blank\">Oceans Optics</a>.</p>\n    </div>\n  </div>\n</div>\n\n<style>\n  /* Smooth scrolling */\n  html { scroll-behavior: smooth; }\n\n  /* Help Icon Styling */\n  .help-icon-container {\n    position: fixed;\n    bottom: 20px;\n    right: 20px;\n    z-index: 1000;\n    animation: bounce 2s infinite;\n  }\n  .help-icon {\n    font-size: 16px;\n    color: #023059;\n    background-color: white;\n    border: 2px solid #023059;\n    border-radius: 30px;\n    padding: 10px 20px;\n    text-align: center;\n    text-decoration: none;\n    cursor: pointer;\n    transition: background-color 0.3s, color 0.3s, transform 0.1s;\n  }\n  .help-icon:hover {\n    background-color: #B95e05;\n    color: white;\n  }\n  .help-icon:active {\n    transform: scale(0.95);\n  }\n\n  /* FAQ Section Styling */\n  .faq-container {\n    max-width: 700px;\n    margin: 20px auto;\n    padding: 20px;\n    border-top: 2px solid #023059;\n  }\n  .faq-title {\n    font-size: 24px;\n    color: #023059;\n    text-align: center;\n    margin-bottom: 15px;\n  }\n  .faq-item {\n    margin-bottom: 10px;\n    border-bottom: 1px solid #ddd;\n  }\n  .faq-question {\n    background-color: #ffffff;\n    color: #023059;\n    border: 2px solid #023059;\n    border-radius: 5px;\n    font-size: 16px;\n    padding: 10px;\n    width: 100%;\n    text-align: left;\n    cursor: pointer;\n    transition: background-color 0.3s ease, color 0.3s ease;\n  }\n  .faq-question:hover {\n    background-color: #023059;\n    color: white;\n  }\n  .faq-answer {\n    display: none;\n    padding: 10px;\n    font-size: 14px;\n    background-color: #f9f9f9;\n    color: #333;\n  }\n  .faq-answer p {\n    margin: 0;\n  }\n  .faq-answer a {\n    color: #B95e05;\n    text-decoration: none;\n  }\n  .faq-answer a:hover {\n    text-decoration: underline;\n  }\n</style>\n\n<script>\n  document.querySelectorAll('.faq-question').forEach(button => {\n    button.addEventListener('click', () => {\n      const answer = button.nextElementSibling;\n      const isVisible = answer.style.display === 'block';\n\n      // Hide all other answers\n      document.querySelectorAll('.faq-answer').forEach(answer => {\n        answer.style.display = 'none';\n      });\n\n      // Toggle current answer\n      answer.style.display = isVisible ? 'none' : 'block';\n    });\n  });\n</script>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "main",
+    "multicolumn_xbyzLQ",
+    "rich_text_BUHwrK",
+    "image_banner_aAaemM",
+    "multicolumn_UyfUaW",
+    "1714545178ae5672c1",
+    "related-products",
+    "featured_collection_rdVai9",
+    "17186861496a9246fa",
+    "custom_liquid_RkhDKR"
+  ]
+}

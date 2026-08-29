@@ -1,0 +1,187 @@
+<style>
+  .s101-outer {
+    background: #ffffff;
+    width: 100%;
+  }
+  .s101-wrap {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 40px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    font-family: Lato, sans-serif;
+    box-sizing: border-box;
+    background: #ffffff;
+  }
+
+  .s101-img-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+  }
+  .s101-img-wrap img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 0;
+    box-shadow: none;
+    display: block;
+  }
+
+  .s101-copy {
+    position: relative;
+    padding-top: 16px;
+  }
+
+  .s101-pill {
+    display: inline-block;
+    background: #023059;
+    color: #fff;
+    border-radius: 999px;
+    padding: 6px 16px;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .s101-badge {
+    position: absolute;
+    top: 20px;
+    right: 0;
+    width: 104px;
+    height: 104px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #fff;
+    font-weight: 800;
+    font-size: 10.5px;
+    line-height: 1.3;
+    padding: 20px;
+    font-family: Lato, sans-serif;
+  }
+  .s101-badge svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+  .s101-badge-text {
+    position: relative;
+    z-index: 1;
+  }
+
+  .s101-heading {
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 900;
+    color: #023059;
+    letter-spacing: -1px;
+    margin: 0 0 4px;
+    line-height: 1.05;
+    text-transform: uppercase;
+  }
+
+  .s101-subheading {
+    font-size: clamp(18px, 2.5vw, 28px);
+    font-weight: 400;
+    color: #023059;
+    margin: 0 0 24px;
+    line-height: 1.3;
+  }
+  .s101-subheading strong { font-weight: 700; }
+
+  .s101-features {
+    list-style: none;
+    margin: 0 0 8px;
+    padding: 0;
+  }
+  .s101-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 16px;
+  }
+  .s101-features li:last-child { margin-bottom: 0; }
+  .s101-feat-icon { font-size: 28px; line-height: 1; flex-shrink: 0; }
+  .s101-feat-text {
+    font-size: 16px;
+    color: #023059;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media (max-width: 767px) {
+    .s101-wrap {
+      grid-template-columns: 1fr;
+      gap: 24px;
+      padding: 28px 16px;
+    }
+    .s101-img-wrap { order: 1; }
+    .s101-copy { order: 2; padding-top: 16px; }
+  }
+</style>
+
+<div class="s101-outer">
+  <div class="s101-wrap">
+
+    <div class="s101-img-wrap">
+      <img
+        src="https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Snorkel_101_guide_to_snorkeling_with_prescription_dive_mask.png?v=1774421635"
+        alt="Snorkeling 101 — The Ultimate Beginners Guide to snorkeling with a prescription dive mask"
+        width="800"
+        height="800"
+      />
+    </div>
+
+    <div class="s101-copy">
+
+      <div class="s101-badge" aria-label="The Ultimate Beginners Guide">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="50,2 56,18 72,10 68,27 85,25 78,40 95,45 85,57 97,67 83,70 88,87 73,83 70,100 57,90 50,98 43,90 30,100 27,83 12,87 17,70 3,67 15,57 5,45 22,40 15,25 32,27 28,10 44,18" fill="#B95E05"/>
+          <circle cx="50" cy="50" r="32" fill="#9a4e04"/>
+          <circle cx="50" cy="50" r="30" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+        </svg>
+        <span class="s101-badge-text">The Ultimate Beginners Guide</span>
+      </div>
+
+      <span class="s101-pill">Included with Every Purchase</span>
+
+      <div class="s101-heading">Snorkeling 101:</div>
+      <p class="s101-subheading">more than <strong>JUST a guide</strong></p>
+
+      <ul class="s101-features">
+        <li>
+          <span class="s101-feat-icon" aria-hidden="true">🤿</span>
+          <p class="s101-feat-text">Learn how to set up and use your snorkeling equipment <strong>like a pro.</strong></p>
+        </li>
+        <li>
+          <span class="s101-feat-icon" aria-hidden="true">🐠</span>
+          <p class="s101-feat-text">Learn about <strong>fascinating marine species</strong> and where to find them.</p>
+        </li>
+        <li>
+          <span class="s101-feat-icon" aria-hidden="true">🥽</span>
+          <p class="s101-feat-text">Master the best techniques for <strong>keeping your mask clear</strong> from water and fog.</p>
+        </li>
+        <li>
+          <span class="s101-feat-icon" aria-hidden="true">⚠️</span>
+          <p class="s101-feat-text">Get tips on <strong>potential hazards</strong> and how to avoid them while enjoying your adventures.</p>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "guide-product-page",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Snorkeling 101 - Product Page"
+    }
+  ]
+}
+{% endschema %}

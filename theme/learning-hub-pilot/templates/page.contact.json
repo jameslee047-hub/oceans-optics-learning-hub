@@ -1,0 +1,236 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_TWq9TF": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_MNwkmJ": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Get in Touch </strong>",
+            "heading_size": "h1"
+          }
+        },
+        "text_nr9Wxm": {
+          "type": "text",
+          "settings": {
+            "text": "Drop us a message or schedule a call! We'd love to help you on your next Aquatic Adventure!",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_MNwkmJ",
+        "text_nr9Wxm"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/Our_Story.jpg",
+        "image_2": "shopify://shop_images/Our_Story.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://pages/contact-us",
+        "image_height": "medium",
+        "desktop_content_position": "middle-left",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": true,
+        "fetchpriority_high": false
+      }
+    },
+    "17556600679c5ba5c1": {
+      "type": "apps",
+      "blocks": {
+        "powerful_form_builder_app_block_g8GaEL": {
+          "type": "shopify://apps/powerful-form-builder/blocks/app-block/e4bcb1eb-35b2-42e6-bc37-bfe0e1542c9d",
+          "settings": {
+            "shortcode": "<div class=\"globo-formbuilder\" data-id=\"NTYxMDM=\"></div>"
+          }
+        }
+      },
+      "block_order": [
+        "powerful_form_builder_app_block_g8GaEL"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "rich_text_p6Ne4f": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_dKetj9": {
+          "type": "heading",
+          "settings": {
+            "heading": "Want to talk to us directly?",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_D8fBej": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Alternatively, feel free to reach out to us at <a>info@oceansoptics.com</a> with any inquiries.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_dKetj9",
+        "text_D8fBej"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 0
+      }
+    },
+    "oo_quiz_card_YzUdh8": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "mask_sizing_tool_shortcut_XWaRxx": {
+      "type": "mask-sizing-tool-shortcut",
+      "disabled": true,
+      "name": "Mask fit shortcut",
+      "settings": {
+        "heading": "Need Help to Find Your Perfect Mask fit?",
+        "subheading": "Choose automatic camera measuring or follow the manual ruler guide below",
+        "auto_badge": "Recommended",
+        "auto_icon": "🎥",
+        "auto_title": "Auto Camera Measuring",
+        "auto_text": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.",
+        "auto_point_1": "✓ Takes about 30 seconds",
+        "auto_point_2": "✓ Works on phone or desktop",
+        "auto_point_3": "✓ Get instant mask recommendations",
+        "auto_url": "",
+        "open_camera_new_tab": true,
+        "auto_button": "Start Camera Measuring →",
+        "manual_badge": "Measure Yourself",
+        "manual_icon": "📐",
+        "manual_title": "Manual Ruler Guide",
+        "manual_text": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide.",
+        "manual_point_1": "✓ No camera needed",
+        "manual_point_2": "✓ Works anywhere",
+        "manual_point_3": "✓ Fine-tune with sliders",
+        "manual_mode": "link",
+        "manual_url": "",
+        "manual_anchor_id": "ruler-guide-start",
+        "manual_reveal_id": "",
+        "manual_button": "Use Ruler Guide ↓"
+      }
+    },
+    "featured_collection_tjrc9N": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Explore our popular prescription mask options",
+        "heading_size": "h1",
+        "description": "<p>⭐ Trusted by 3,000+ divers worldwide | ✓ Free shipping on all orders $70+ | 🚀 Ships within 1-2 business days</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-2",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "custom_liquid_zbnHBU": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<!-- Help Icon for Scrolling to FAQ Section -->\n<div class=\"help-icon-container\">\n  <a href=\"#faq-section\" class=\"help-icon\">Have a question?</a>\n</div>\n\n<!-- FAQ Section for Product Page -->\n<div id=\"faq-section\" class=\"faq-container\">\n  <h4 class=\"faq-title\">Frequently Asked Questions</h4>\n  \n  <!-- FAQ Items -->\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">What is the difference between nearsighted and farsighted lenses?</div>\n    <div class=\"faq-answer\">\n      <p><strong>Nearsighted (Myopia) Lenses:</strong> These lenses have a negative sphere (SPH) value and correct distance vision. <strong>Farsighted (Hyperopia) Lenses:</strong> These lenses have a positive SPH value and correct close-up vision.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">How do I find the sphere (SPH) value on my prescription?</div>\n    <div class=\"faq-answer\">\n      <p>The SPH value is usually in the first column of your prescription, marked as \"SPH\" or \"Sphere.\" A negative number indicates nearsightedness, while a positive number indicates farsightedness.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">How Should I Adjust My Prescription for Clear Vision Underwater?</div>\n    <div class=\"faq-answer\">\n      <p><strong>Prescription Adjustment for Underwater Clarity:</strong> To achieve clear and accurate vision underwater, we recommend selecting a lens strength that is 0.50 to 0.75 diopters weaker than your regular prescription. This adjustment helps to compensate for the magnification effect that occurs underwater, reducing the risk of distortion.</p>\n      <p><strong>Example:</strong> Your Regular Prescription: Right Eye (OD): Sphere = -2.75; Left Eye (OS): Sphere = -3.50. Recommended Lens Strength: Right Eye (OD): Sphere = -2.00; Left Eye (OS): Sphere = -3.00.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">Can I choose a lens strength that isn’t listed in the dropdown?</div>\n    <div class=\"faq-answer\">\n      <p>The lenses listed are the only ones available for the specific mask in the listing. If your exact strength isn’t available, select a lens that stays within the recommended adjustment range of 0.50 to 0.75 diopters weaker than your regular prescription. This ensures you maintain clear and accurate vision underwater within a safe and effective range.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">Can I choose different lens strengths for each eye?</div>\n    <div class=\"faq-answer\">\n      <p>Yes, you can select different lens strengths for each eye based on your individual prescription. We offer a range of lens strengths, and you can mix and match any combination available in our dropdown menus to match your prescription needs. However, please note that we only offer the specific variations listed for each mask. If your exact prescription isn’t listed, select the closest available option.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">How do I upload my prescription during checkout?</div>\n    <div class=\"faq-answer\">\n      <p>You don’t need to upload your prescription. If you require specific lens strengths or have questions about your order, please send us a message through the online chat or email us at <a href=\"mailto:info@oceansoptics.com\">info@oceansoptics.com</a>. We’re happy to help ensure you get the correct lenses for your needs.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">What happens if I accidentally choose the wrong lens strength?</div>\n    <div class=\"faq-answer\">\n      <p>Contact customer support immediately if you choose the wrong strength. We may be able to correct the order, depending on the processing stage.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">Are your lenses safe for both snorkeling and scuba diving?</div>\n    <div class=\"faq-answer\">\n      <p>Yes, all our lenses are made from HD Tempered glass, safe for both snorkeling and scuba diving.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">How long does it take to receive lenses, and can I track my order?</div>\n    <div class=\"faq-answer\">\n      <p>Orders typically take 7-14 days to process. You will receive a tracking number via email once shipped.</p>\n    </div>\n  </div>\n\n  <div class=\"faq-item\">\n    <div class=\"faq-question\">What is your return or exchange policy for prescription lenses?</div>\n    <div class=\"faq-answer\">\n      <p>Since prescription lenses are selected based on your input, they are generally non-returnable and non-exchangeable. For more details, refer to our full policy on <a href=\"https://oceansoptics.com\" target=\"_blank\">Oceans Optics</a>.</p>\n    </div>\n  </div>\n</div>\n\n<style>\n  /* Smooth scrolling */\n  html { scroll-behavior: smooth; }\n\n  /* Help Icon Styling */\n  .help-icon-container {\n    position: fixed;\n    bottom: 20px;\n    right: 20px;\n    z-index: 1000;\n    animation: bounce 2s infinite;\n  }\n  .help-icon {\n    font-size: 16px;\n    color: #023059;\n    background-color: white;\n    border: 2px solid #023059;\n    border-radius: 30px;\n    padding: 10px 20px;\n    text-align: center;\n    text-decoration: none;\n    cursor: pointer;\n    transition: background-color 0.3s, color 0.3s, transform 0.1s;\n  }\n  .help-icon:hover {\n    background-color: #B95e05;\n    color: white;\n  }\n  .help-icon:active {\n    transform: scale(0.95);\n  }\n\n  /* FAQ Section Styling */\n  .faq-container {\n    max-width: 700px;\n    margin: 20px auto;\n    padding: 20px;\n    border-top: 2px solid #023059;\n  }\n  .faq-title {\n    font-size: 24px;\n    color: #023059;\n    text-align: center;\n    margin-bottom: 15px;\n  }\n  .faq-item {\n    margin-bottom: 10px;\n    border-bottom: 1px solid #ddd;\n  }\n  .faq-question {\n    background-color: #ffffff;\n    color: #023059;\n    border: 2px solid #023059;\n    border-radius: 5px;\n    font-size: 16px;\n    padding: 10px;\n    width: 100%;\n    text-align: left;\n    cursor: pointer;\n    transition: background-color 0.3s ease, color 0.3s ease;\n  }\n  .faq-question:hover {\n    background-color: #023059;\n    color: white;\n  }\n  .faq-answer {\n    display: none;\n    padding: 10px;\n    font-size: 14px;\n    background-color: #f9f9f9;\n    color: #333;\n  }\n  .faq-answer p {\n    margin: 0;\n  }\n  .faq-answer a {\n    color: #B95e05;\n    text-decoration: none;\n  }\n  .faq-answer a:hover {\n    text-decoration: underline;\n  }\n</style>\n\n<script>\n  document.querySelectorAll('.faq-question').forEach(button => {\n    button.addEventListener('click', () => {\n      const answer = button.nextElementSibling;\n      const isVisible = answer.style.display === 'block';\n\n      // Hide all other answers\n      document.querySelectorAll('.faq-answer').forEach(answer => {\n        answer.style.display = 'none';\n      });\n\n      // Toggle current answer\n      answer.style.display = isVisible ? 'none' : 'block';\n    });\n  });\n</script>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "172007959391cdaabb": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_fmrQAT": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_fmrQAT"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "image_banner_TWq9TF",
+    "17556600679c5ba5c1",
+    "rich_text_p6Ne4f",
+    "main",
+    "oo_quiz_card_YzUdh8",
+    "mask_sizing_tool_shortcut_XWaRxx",
+    "featured_collection_tjrc9N",
+    "custom_liquid_zbnHBU",
+    "172007959391cdaabb"
+  ]
+}

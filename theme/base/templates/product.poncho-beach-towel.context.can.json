@@ -1,0 +1,44 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.poncho-beach-towel.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_NQ99dm": {
+          "settings": {
+            "heading": "Free Shipping Canada & US",
+            "content": "<h5><strong>Please allow 5-15 Days for us to get the product ready and delivered to you. We want it to be perfect.</strong></h5>"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_MgBR6Y",
+        "title",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "avada_trust_badge_upsell_app_badge_v2_block_yDEFLj",
+        "collapsible_tab_WE8egq",
+        "collapsible_tab_YFRtGK",
+        "collapsible_tab_NQ99dm",
+        "collapsible_tab_9tDHed",
+        "collapsible_tab_xT4JNb",
+        "share",
+        "complementary_K4grpC"
+      ]
+    }
+  }
+}

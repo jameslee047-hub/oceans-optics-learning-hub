@@ -1,0 +1,342 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "rich_text_RtQgtm": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_hNnnB8": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Ready, Set, Swim with RX Goggles!</strong>",
+            "set_h1": false,
+            "heading_size": "h2"
+          }
+        },
+        "text_Xx9Pz8": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": ""
+          }
+        },
+        "button_yM3cT8": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_hNnnB8",
+        "text_Xx9Pz8",
+        "button_yM3cT8"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-8cfe49c2-43f9-4bb9-af98-9bd68089d69c",
+        "full_width": true,
+        "padding_top": 8,
+        "padding_bottom": 8
+      }
+    },
+    "breadcrumbs_r3kWTg": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "",
+            "text_style": "body"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "judge_me_reviews_preview_badge_rmiPUT": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "disabled": true,
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "dropdown",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          }
+        },
+        "custom_liquid_yAhRXd": {
+          "type": "custom_liquid",
+          "name": "Trust Badges Product Page",
+          "settings": {
+            "custom_liquid": "<style>\n  .oo-trust-badges {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\npadding: 20px 0 0 0;\n    border-top: 1px solid #e8e8e8;\n    margin: 1px 0;\n  }\n\n  .oo-trust-badge {\n    flex: 1;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n  }\n\n  .oo-trust-badge img {\n    width: 100%;\n    max-width: 90px;\n    height: auto;\n    aspect-ratio: 1;\n    display: block;\n  }\n\n  @media (max-width: 480px) {\n    .oo-trust-badge img {\n      max-width: 70px;\n    }\n  }\n</style>\n\n<div class=\"oo-trust-badges\">\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/100_worry_free_guaranteed.svg?v=1780042887\"\n      alt=\"100% Worry-Free Guaranteed\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Icon_expert_support.svg?v=1780042887\"\n      alt=\"Expert Support\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/icon_owned_by_scuba_diving_instructors.svg?v=1780042886\"\n      alt=\"Owned By Scuba Professionals\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/icon_easy_free_returns.svg?v=1780042887\"\n      alt=\"Easy and Free Returns\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n</div>"
+          }
+        },
+        "collapsible_tab_jHxHfr": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Product Description",
+            "heading_not_h2": false,
+            "icon": "clipboard",
+            "content": "<h5>Take your swim game to the next level with the RX Elite Nearsighted Swim Goggles. Designed for men and women who demand clarity and performance, these professional-grade goggles combine innovative features with a sleek, durable design to keep you focused on every stroke.</h5><h5>Equipped with tinted, anti-fog polycarbonate lenses, the RX Elite ensures crystal-clear underwater vision while reducing glare in bright conditions. The ergonomic acetate frame and soft silicone seals provide a snug, leak-proof fit, while the adjustable strap allows for a personalized feel that stays secure, no matter how intense your swim.</h5><h5>Perfect for pool training, open water swims, or leisurely laps, the RX Elite delivers unparalleled comfort, style, and functionality.</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_3VjppQ": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Key Benefits",
+            "heading_not_h2": false,
+            "icon": "star",
+            "content": "<ul><li><h5>Corrective Lenses: Tailored for nearsighted swimmers to ensure sharp underwater vision.</h5></li><li><h5><strong>Tinted Anti-Fog Lenses: </strong>Minimize glare and maintain clear vision throughout your swim.</h5></li><li><h5><strong>Durable Polycarbonate Lenses: </strong>Lightweight, impact-resistant, and built for long-term performance.</h5></li><li><h5><strong>Ergonomic Acetate Frame: </strong>Designed for a secure and comfortable fit.</h5></li><li><h5><strong>Leak-Proof Silicone Seals: </strong>Prevents water from entering, offering all-day comfort.</h5></li><li><h5><strong>Adjustable Strap:</strong> Provides a custom fit for men and women.</h5></li></ul><h5>Elevate your swim experience with the RX Elite Swim Goggles, the perfect companion for professionals and recreational swimmers alike!</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_T8mA6q": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "More than JUST Free Shipping",
+            "heading_not_h2": false,
+            "icon": "truck",
+            "content": "<h5>Orders $70+ ship free. Every order is carefully packed with quality guaranteed. Fast, trackable delivery in 3–10 days.</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_3Jw6G6": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "30 Day FREE Returns",
+            "heading_not_h2": false,
+            "icon": "return",
+            "content": "<h5>Take advantage of our 30 days from delivery FREE return policy—shop with confidence. See our full return policy for more info.</h5>",
+            "page": ""
+          }
+        },
+        "collapsible_tab_AqehLm": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Free e-guide with every purchase",
+            "heading_not_h2": false,
+            "icon": "heart",
+            "content": "<h5><strong>Snorkelling 101: Your Ultimate Guide to Better Aquatic Adventures</strong><br/><br/>Now <strong>free</strong> with every order! Access your eGuide instantly after checkout or via email, and dive in at your own leisure. (also includes swimming kicks and techniques)</h5>",
+            "page": ""
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "complementary_wFyY66": {
+          "type": "complementary",
+          "settings": {
+            "block_heading": "You may need one of these..",
+            "make_collapsible_row": false,
+            "icon": "price_tag",
+            "product_list_limit": 4,
+            "products_per_page": 4,
+            "pagination_style": "counter",
+            "image_ratio": "portrait",
+            "enable_quick_add": true
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "judge_me_reviews_preview_badge_rmiPUT",
+        "description",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "custom_liquid_yAhRXd",
+        "collapsible_tab_jHxHfr",
+        "collapsible_tab_3VjppQ",
+        "collapsible_tab_T8mA6q",
+        "collapsible_tab_3Jw6G6",
+        "collapsible_tab_AqehLm",
+        "share",
+        "complementary_wFyY66"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "media_size": "small",
+        "constrain_to_viewport": false,
+        "media_fit": "contain",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "mobile_thumbnails": "show",
+        "hide_variants": false,
+        "enable_video_looping": false,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "reef_banner_cart_YpAx6B": {
+      "type": "reef-banner-cart",
+      "name": "Reef Banner",
+      "settings": {}
+    },
+    "featured_collection_NXcy4L": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "title": "Featured collection",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "guide_product_page_7Pcyxt": {
+      "type": "guide-product-page",
+      "name": "Snorkeling 101 - Product Page",
+      "settings": {}
+    },
+    "1707710894961cb6e2": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_B8ngTe": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_B8ngTe"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "color_scheme": "background-2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "1737444524690e1261": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_XEqm4g": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_XEqm4g"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "rich_text_RtQgtm",
+    "breadcrumbs_r3kWTg",
+    "main",
+    "reef_banner_cart_YpAx6B",
+    "featured_collection_NXcy4L",
+    "guide_product_page_7Pcyxt",
+    "1707710894961cb6e2",
+    "related-products",
+    "1737444524690e1261"
+  ]
+}

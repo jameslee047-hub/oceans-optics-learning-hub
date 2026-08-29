@@ -1,0 +1,44 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.new-obisdian-with-snorkel.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_wEGU7X": {
+          "settings": {
+            "content": "<h4>The Obsidian Corrective Mask for Nearsighted Adventurers is made for those who want sharp, clear vision underwater without relying on contact lenses. </h4><h4>With precision-crafted tempered glass lenses matched to your prescription, you'll see the ocean as it's meant to be seen. </h4><h4>The soft black silicone skirt fits comfortably on medium-sized faces, forming a secure, watertight seal. </h4><h4>Whether you're snorkeling in shallow reefs or diving deeper, this mask offers dependable comfort, easy equalizing, and excellent visibility. </h4><h4>Designed with performance and style in mind, the Obsidian is your go-to for underwater clarity and confidence.</h4>"
+          }
+        },
+        "collapsible_tab_c6hiee": {
+          "settings": {
+            "content": "<h5><strong>Corrective lenses</strong> built for nearsighted vision (available up to -9.0)</h5><h5><strong>Leak-proof comfort</strong> with hypoallergenic soft silicone</h5><h5><strong>Double-seal skirt</strong> fits securely on medium face shapes</h5><h5><strong>Wide viewing field</strong> to stay aware of your surroundings</h5><h5><strong>Durable materials</strong> for both snorkeling and diving</h5><h5><strong>Simple, low-profile buckle system</strong> for easy adjustments</h5><h5><strong>Soft nose pocket</strong> for quick equalizing</h5>"
+          }
+        },
+        "collapsible_tab_eBhqKN": {
+          "settings": {
+            "heading": "Hand-Assembled. Free Shipping Over $70",
+            "content": "<h5>Every Obsidian is made to order. Enjoy FREE USPS tracked delivery when you spend $70 or $5.99 for orders under $70. Shipping takes 5-14 days. (5-10 on average) </h5>"
+          }
+        },
+        "collapsible_tab_X8M3CP": {
+          "settings": {
+            "heading": "More than JUST a Guide!",
+            "content": "<h5><strong>Snorkelling 101 is Your Ultimate Guide to Better Aquatic Adventures.</strong><br/><br/>Now <strong>free</strong> with every order! Access your eGuide instantly after checkout or via email, and dive in at your own leisure.</h5>"
+          }
+        }
+      }
+    }
+  }
+}

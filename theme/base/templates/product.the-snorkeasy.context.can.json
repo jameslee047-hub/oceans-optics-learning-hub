@@ -1,0 +1,30 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.the-snorkeasy.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "collapsible_content_kU3VHL": {
+      "settings": {
+        "heading": "",
+        "padding_top": 16
+      },
+      "blocks": {}
+    }
+  },
+  "order": [
+    "main",
+    "collapsible_content_kU3VHL",
+    "related-products",
+    "1707710894961cb6e2"
+  ]
+}

@@ -1,0 +1,266 @@
+{% comment %}
+  Breadcrumbs Section
+  Works for Collection, Product, Page, Blog, and Article pages
+{% endcomment %}
+
+<style>
+  .breadcrumbs-section {
+    padding-top: var(--pt-desktop);
+    padding-bottom: var(--pb-desktop);
+  }
+
+  .breadcrumbs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap:nowrap;
+    white-space:nowrap;
+    max-width: 100%;
+    gap: 6px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .breadcrumbs a {
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+
+  .breadcrumbs a,
+  .breadcrumbs-current,
+  .breadcrumbs-divider {
+    color: rgba(var(--color-foreground), .75);
+    font-size: 1.2rem;
+    line-height: calc(1 + .5 / var(--font-body-scale));
+    letter-spacing: .04rem;
+  }
+
+  .breadcrumbs-current,
+  .breadcrumbs-divider{
+    cursor: default;
+  }
+
+  .breadcrumbs a:hover {
+    opacity: 1;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .breadcrumbs-divider {
+    opacity: 0.5;
+  }
+
+  .breadcrumbs-current {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 768px) {
+    .breadcrumbs-section {
+      padding-top: var(--pt-mobile);
+      padding-bottom: var(--pb-mobile);
+    }
+    .breadcrumbs{
+        overflow:hidden;
+    }
+    .breadcrumbs-current{
+        overflow:hidden;
+        text-overflow:ellipsis;
+        white-space:nowrap;
+    }
+    .breadcrumbs a,
+    .breadcrumbs-current,
+    .breadcrumbs-divider {
+        font-size: 1.1rem;
+    }
+  }
+</style>
+
+<section
+  class="breadcrumbs-section"
+  style="
+    --pt-desktop: {{ section.settings.padding_top_desktop }}px;
+    --pb-desktop: {{ section.settings.padding_bottom_desktop }}px;
+    --pt-mobile: {{ section.settings.padding_top_mobile }}px;
+    --pb-mobile: {{ section.settings.padding_bottom_mobile }}px;
+  "
+>
+  <div class="page-width">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}"> {{ 'breadcrumbs.home' | t }} </a>
+
+      {% if template contains 'collection' %}
+        <span class="breadcrumbs-divider">›</span>
+        <span class="breadcrumbs-current">
+          {{ collection.title }}
+        </span>
+
+      {% elsif template contains 'product' %}
+        {% assign breadcrumb_collection = product.metafields.custom.breadcrumb_collection.value %}
+        {% assign product_collections = product.collections %}
+        {% assign product_mask_coll = false %}
+        {% for coll in product_collections %}
+          {% if coll.handle == 'all-our-masks' %}
+            {% assign product_mask_coll = true %}
+          {% endif %}
+        {% endfor %}
+        {% if breadcrumb_collection == blank and product_mask_coll == true %}
+          {% assign breadcrumb_collection = collections['all-our-masks'] %}
+        {% else %}
+          {% if breadcrumb_collection == blank %}
+              {% assign breadcrumb_collection = section.settings.breadcrumb_collection %}
+          {% endif %}
+        {% endif %}
+
+        {% if breadcrumb_collection != blank %}
+          <span class="breadcrumbs-divider">›</span>
+
+          <a href="{{ breadcrumb_collection.url }}">
+            {{ breadcrumb_collection.title }}
+          </a>
+
+        {% else %}
+          <span class="breadcrumbs-divider">›</span>
+          {% if breadcrumb_collection == blank %}
+            <a href="{{ collections['all-products'].url }}"> {{ 'breadcrumbs.collection_all' | t }} </a>
+          {% else %}
+            <a href="{{ breadcrumb_collection.url }}"> {{ breadcrumb_collection.title }} </a>
+          {% endif %}
+        {% endif %}
+
+        <span class="breadcrumbs-divider">›</span>
+
+        <span class="breadcrumbs-current">
+          {{ product.title }}
+        </span>
+
+      {% elsif template contains 'page' %}
+        {% assign breadcrumb_link = page.metafields.custom.breadcrumb_link.value %}
+        {% assign breadcrumb_link_url = breadcrumb_link.url | default: section.settings.breadcrumb_link_url %}
+        {% assign breadcrumb_link_text = breadcrumb_link.text | default: section.settings.breadcrumb_link_label %}
+        {% if breadcrumb_link_text == blank %}
+          {% assign breadcrumb_link_text = breadcrumb_link_url %}
+        {% endif %}
+
+        {% if breadcrumb_link_url != blank %}
+          <span class="breadcrumbs-divider">›</span>
+          <a href="{{ breadcrumb_link_url }}">
+            {{ breadcrumb_link_text }}
+          </a>
+        {% endif %}
+
+        <span class="breadcrumbs-divider">›</span>
+        <span class="breadcrumbs-current">
+          {{ page.title }}
+        </span>
+
+      {% elsif template contains 'blog' %}
+        {% assign breadcrumb_link = blog.metafields.custom.breadcrumb_link.value %}
+        {% assign breadcrumb_link_url = breadcrumb_link.url | default: section.settings.breadcrumb_link_url %}
+        {% assign breadcrumb_link_text = breadcrumb_link.text | default: section.settings.breadcrumb_link_label %}
+        {% if breadcrumb_link_text == blank %}
+          {% assign breadcrumb_link_text = breadcrumb_link_url %}
+        {% endif %}
+
+        {% if breadcrumb_link_url != blank %}
+          <span class="breadcrumbs-divider">›</span>
+          <a href="{{ breadcrumb_link_url }}">
+            {{ breadcrumb_link_text }}
+          </a>
+        {% endif %}
+
+        <span class="breadcrumbs-divider">›</span>
+        <span class="breadcrumbs-current">
+          {{ blog.title }}
+        </span>
+
+      {% elsif template contains 'article' %}
+        {% assign breadcrumb_link = article.metafields.custom.breadcrumb_link.value %}
+        {% assign breadcrumb_link_url = breadcrumb_link.url | default: section.settings.breadcrumb_link_url %}
+        {% assign breadcrumb_link_text = breadcrumb_link.text | default: section.settings.breadcrumb_link_label %}
+        {% if breadcrumb_link_text == blank %}
+          {% assign breadcrumb_link_text = breadcrumb_link_url %}
+        {% endif %}
+
+        {% if breadcrumb_link_url != blank %}
+          <span class="breadcrumbs-divider">›</span>
+          <a href="{{ breadcrumb_link_url }}">
+            {{ breadcrumb_link_text }}
+          </a>
+        {% endif %}
+
+        <span class="breadcrumbs-divider">›</span>
+        <span class="breadcrumbs-current">
+          {{ article.title }}
+        </span>
+      {% endif %}
+    </nav>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Breadcrumbs",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "range",
+      "id": "padding_top_desktop",
+      "label": "Padding top desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 20
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom_desktop",
+      "label": "Padding bottom desktop",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 20
+    },
+
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "label": "Padding top mobile",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 12
+    },
+
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "label": "Padding bottom mobile",
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "default": 12
+    },
+    {
+      "type": "collection",
+      "id": "breadcrumb_collection",
+      "label": "Breadcrumb Collection All"
+    },
+    {
+      "type": "url",
+      "id": "breadcrumb_link_url",
+      "label": "Breadcrumb parent link"
+    },
+    {
+      "type": "text",
+      "id": "breadcrumb_link_label",
+      "label": "Breadcrumb parent link label"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Breadcrumbs"
+    }
+  ]
+}
+{% endschema %}

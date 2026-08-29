@@ -1,0 +1,320 @@
+<style>
+  .fs-outer {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  }
+
+  .fs-heading {
+    color: #023059;
+    margin-bottom: 10px;
+    font-size: 28px;
+    text-align: center;
+  }
+
+  .fs-subheading {
+    text-align: center;
+    color: #666;
+    margin-bottom: 30px;
+    font-size: 16px;
+  }
+
+  .fs-pill {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+    background-color: #023059;
+    color: white;
+    margin-right: 10px;
+    margin-bottom: 15px;
+  }
+
+  .fs-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  .fs-table thead tr th {
+    background-color: #023059;
+    color: white;
+    padding: 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .fs-table thead tr th:first-child {
+    width: 25%;
+  }
+
+  .fs-table thead tr th:last-child {
+    width: 75%;
+  }
+
+  .fs-table tbody tr:nth-child(odd) {
+    background-color: #f9f9f9;
+  }
+
+  .fs-table tbody tr td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    vertical-align: top;
+  }
+
+  .fs-table tbody tr td:first-child {
+    font-weight: 600;
+    color: #023059;
+  }
+
+  .fs-table tbody tr td ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .fs-table tbody tr td ul li {
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #333;
+  }
+
+  .fs-table tbody tr td ul li:last-child {
+    margin-bottom: 0;
+  }
+
+  .fs-special {
+    background-color: #B95E05;
+    padding: 12px;
+    margin-top: 15px;
+    border-radius: 4px;
+    color: white;
+    font-size: 13px;
+  }
+
+  .fs-info {
+    background-color: #e8f0f7;
+    padding: 12px;
+    margin-top: 10px;
+    border-radius: 4px;
+    font-size: 13px;
+    color: #023059;
+  }
+
+  .fs-masks {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #ddd;
+  }
+
+  .fs-masks h3 {
+    color: #023059;
+    font-size: 20px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  .fs-mask-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 16px;
+  }
+
+  .fs-mask-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .fs-mask-card h4 {
+    color: #023059;
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .fs-mask-card p {
+    color: #666;
+    font-size: 13px;
+    margin: 0;
+  }
+
+  .fs-mask-card a {
+    display: inline-block;
+    background-color: #023059;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    margin-top: auto;
+  }
+
+  .fs-mask-card a:hover {
+    background-color: #B95E05;
+    color: white;
+  }
+
+  .fs-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #ddd;
+  }
+
+  .fs-footer p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+
+  .fs-footer a {
+    display: inline-block;
+    background-color: #023059;
+    color: white;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .fs-footer a:hover {
+    background-color: #B95E05;
+    color: white;
+  }
+
+  @media (max-width: 767px) {
+    .fs-outer {
+      padding: 20px 16px;
+      margin: 20px 16px;
+    }
+    .fs-heading {
+      font-size: 22px;
+    }
+    .fs-table thead tr th:first-child {
+      width: 35%;
+    }
+    .fs-table thead tr th:last-child {
+      width: 65%;
+    }
+  }
+</style>
+
+<div class="fs-outer">
+
+  <h2 class="fs-heading">How to account for Cylinder?</h2>
+  <p class="fs-subheading">Find your CYL value below, then check the sign (+ or −) for your recommendation</p>
+
+  <div>
+    <span class="fs-pill">Farsighted (Plus +)</span>
+    <p style="color:#666; margin-bottom:15px; font-size:14px;"><strong>Our farsighted lenses come in whole numbers only:</strong> +1.00, +2.00, +3.00, +4.00, +5.00</p>
+
+    <table class="fs-table">
+      <thead>
+        <tr>
+          <th>Your CYL</th>
+          <th>Recommendation</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0.00 – 0.75</td>
+          <td>
+            <ul>
+              <li>Round to the nearest whole number toward zero (less plus)<br>
+              <span style="color:#666; font-size:13px;">Example: SPH +2.50 → choose +2.00 | SPH +2.75 → choose +3.00</span></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>1.00 – 1.75</td>
+          <td>
+            <ul>
+              <li>If your CYL shows a <strong>− minus sign:</strong> round to nearest whole number, or one step stronger if you want sharper detail (further from zero)<br>
+              <span style="color:#666; font-size:13px;">Example: SPH +2.50 → choose +2.00 or +3.00 for crispness</span></li>
+              <li>If your CYL shows a <strong>+ plus sign:</strong> round down to nearest whole number (closer to zero)<br>
+              <span style="color:#666; font-size:13px;">Example: SPH +2.50 → choose +2.00</span></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>2.00 – 3.00</td>
+          <td>
+            <ul>
+              <li>If your CYL shows a <strong>− minus sign:</strong> stay at your SPH rounded to the nearest whole number<br>
+              <span style="color:#666; font-size:13px;">Example: SPH +2.50 → choose +3.00 | SPH +2.25 → choose +2.00</span></li>
+              <li>If your CYL shows a <strong>+ plus sign:</strong> stay at your SPH rounded to the nearest whole number<br>
+              <span style="color:#666; font-size:13px;">Example: SPH +2.50 → choose +3.00 | SPH +2.25 → choose +2.00</span></li>
+            </ul>
+          </td>
+        </tr>
+        <tr>
+          <td>3.25+</td>
+          <td>
+            <ul>
+              <li>If your CYL shows a <strong>− minus sign:</strong> move toward stronger correction, round to nearest whole number<br>
+              <span style="color:#666; font-size:13px;">Example: SPH +2.00, CYL −3.50 → choose +3.00</span></li>
+              <li>If your CYL shows a <strong>+ plus sign:</strong> move toward weaker correction, round to nearest whole number<br>
+              <span style="color:#666; font-size:13px;">Example: SPH +2.00, CYL +3.50 → choose +1.00</span></li>
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="fs-special">
+      <strong>Special Case:</strong> If your SPH is +0.50 or +0.75 with any CYL value, we recommend starting at +1.00. This is the minimum correction that gives useful vision improvement underwater.
+    </div>
+
+    <div class="fs-info">
+      <strong>Not sure if your CYL is plus or minus?</strong> Check your prescription slip. It will show either a − or + sign next to the CYL value. If there is no sign shown, ask your optometrist which form your prescription is written in.
+    </div>
+  </div>
+
+  <div class="fs-masks">
+    <h3>Which mask fits your prescription?</h3>
+    <div class="fs-mask-grid">
+
+      <div class="fs-mask-card">
+        <h4>Rx Obsidian Farsighted</h4>
+        <p>Available from +1.00 to +5.00</p>
+        <p style="color:#B95E05; font-size:12px;">The only farsighted mask in our range</p>
+        <a href="https://oceansoptics.com/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask">View Rx Obsidian Farsighted</a>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="fs-footer">
+    <p>Want detailed examples and explanations?</p>
+    <a href="https://oceansoptics.com/pages/choosing-prescription-snorkel-mask-lenses-with-astigmatism">Read Our Complete Lens Selection Guide</a>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "FS Cylinder Guide",
+  "settings": [],
+  "presets": [
+    {
+      "name": "FS Cylinder Guide"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,40 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.mesh-bag.json",
+  "context": {
+    "market": "aus"
+  },
+  "sections": {
+    "related-products": {
+      "settings": {
+        "heading": "You may also love..",
+        "products_to_show": 10
+      },
+      "blocks": {}
+    },
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_iaXprD": {
+          "settings": {
+            "heading": "Free Shipping Australia-wide",
+            "content": "<h5><strong>Please allow 5-18 Days for us to get the product ready and get it to you. We want it to be perfect.</strong></h5>"
+          }
+        }
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "1707710894961cb6e2"
+  ]
+}

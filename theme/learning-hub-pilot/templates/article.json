@@ -1,0 +1,189 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "oo_quiz_card_wigmEP": {
+      "type": "oo-quiz-card",
+      "disabled": true,
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,221 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "main": {
+      "type": "main-article",
+      "blocks": {
+        "featured_image": {
+          "type": "featured_image",
+          "settings": {
+            "image_height": "medium"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "blog_show_date": true,
+            "blog_show_author": false
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        },
+        "content": {
+          "type": "content",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "featured_image",
+        "title",
+        "share",
+        "content"
+      ],
+      "custom_css": [],
+      "settings": {}
+    },
+    "custom_liquid_bJitaF": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<div class=\"oo-blog-quiz-cta\" role=\"complementary\" aria-label=\"Prescription mask finder\">\n  <div class=\"oo-blog-quiz-cta__inner\">\n    <div class=\"oo-blog-quiz-cta__text\">\n      <p class=\"oo-blog-quiz-cta__eyebrow\">Free Rx Mask Finder</p>\n\n  <p class=\"oo-blog-quiz-cta__title\">\n    Not sure which prescription mask is right for you?\n  </p>\n\n  <p class=\"oo-blog-quiz-cta__body\">\n    Get a personalized mask recommendation based on your vision needs and face fit.\n    It takes under 60 seconds, and you can still use it if you don’t have your prescription handy.\n  </p>\n\n  <div class=\"oo-blog-quiz-cta__points\">\n    <span>Lens type guidance</span>\n    <span>Face fit estimate</span>\n    <span>Mask recommendations</span>\n  </div>\n</div>\n\n<div class=\"oo-blog-quiz-cta__action\">\n  <a\n  class=\"oo-blog-quiz-cta__button\"\n  href=\"https://quiz.oceansoptics.com/quiz?start=1&utm_source=blog&utm_medium=cta&utm_campaign=rx_mask_finder\"\n>\n  Find My Rx Mask\n</a>\n\n  <p class=\"oo-blog-quiz-cta__privacy\">\n    Face scan privacy: used only to estimate fit. <br> We do not store face images.\n  </p>\n</div>\n\n\n  </div>\n</div>\n\n<style>\n  .oo-blog-quiz-cta {\nwidth: calc(100% - 32px);\nmax-width: 980px;\nmargin: 34px auto;\npadding: 2px;\nborder-radius: 22px;\nbackground: linear-gradient(135deg, #023059 0%, #023059 58%, #B95E05 100%);\nfont-family: Lato, Arial, sans-serif;\n}\n\n  .oo-blog-quiz-cta,\n  .oo-blog-quiz-cta * {\n    box-sizing: border-box;\n  }\n\n  .oo-blog-quiz-cta__inner {\n    display: grid;\n    grid-template-columns: 1fr auto;\n    gap: 24px;\n    align-items: center;\n    padding: 26px;\n    border-radius: 20px;\n    background:\n      radial-gradient(circle at top right, rgba(185, 94, 5, 0.08), transparent 34%),\n      #ffffff;\n    box-shadow: 0 10px 28px rgba(2, 48, 89, 0.10);\n  }\n\n  .oo-blog-quiz-cta__eyebrow {\n    margin: 0 0 8px;\n    color: #B95E05;\n    font-size: 13px;\n    line-height: 1.2;\n    font-weight: 900;\n    letter-spacing: 0.05em;\n    text-transform: uppercase;\n  }\n\n  .oo-blog-quiz-cta__title {\n    margin: 0 0 10px;\n    color: #023059;\n    font-size: clamp(24px, 3vw, 34px);\n    line-height: 1.12;\n    font-weight: 900;\n  }\n\n  .oo-blog-quiz-cta__body {\n    max-width: 720px;\n    margin: 0;\n    color: #24435f;\n    font-size: 16px;\n    line-height: 1.55;\n  }\n\n  .oo-blog-quiz-cta__points {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 8px;\n    margin-top: 16px;\n  }\n\n  .oo-blog-quiz-cta__points span {\n    display: inline-flex;\n    align-items: center;\n    padding: 7px 10px;\n    border: 1px solid rgba(2, 48, 89, 0.14);\n    border-radius: 999px;\n    background: #f6fafc;\n    color: #023059;\n    font-size: 13px;\n    font-weight: 800;\n    line-height: 1;\n  }\n\n  .oo-blog-quiz-cta__action {\n    width: 230px;\n    text-align: center;\n  }\n\n  .oo-blog-quiz-cta__button {\n    display: inline-flex;\n    width: 100%;\n    justify-content: center;\n    align-items: center;\n    min-height: 48px;\n    padding: 13px 20px;\n    border-radius: 999px;\n    background: #B95E05;\n    color: #ffffff !important;\n    font-size: 16px;\n    font-weight: 900;\n    line-height: 1.2;\n    text-decoration: none !important;\n    box-shadow: 0 6px 14px rgba(185, 94, 5, 0.24);\n    transition: transform 0.16s ease, background 0.16s ease, box-shadow 0.16s ease;\n  }\n\n  .oo-blog-quiz-cta__button:hover {\n    background: #9a4e04;\n    transform: translateY(-1px);\n    box-shadow: 0 8px 18px rgba(185, 94, 5, 0.30);\n  }\n\n  .oo-blog-quiz-cta__privacy {\n    margin: 10px 0 0;\n    color: #64748b;\n    font-size: 12px;\n    line-height: 1.35;\n  }\n\n  @media (max-width: 760px) {\n    .oo-blog-quiz-cta {\n      margin: 28px 0;\n      border-radius: 18px;\n    }\n\n    .oo-blog-quiz-cta__inner {\n      grid-template-columns: 1fr;\n      gap: 18px;\n      padding: 22px 18px;\n      border-radius: 16px;\n    }\n\n    .oo-blog-quiz-cta__title {\n      font-size: 25px;\n    }\n\n    .oo-blog-quiz-cta__action {\n      width: 100%;\n    }\n\n    .oo-blog-quiz-cta__button {\n      width: 100%;\n    }\n  }\n</style>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "mask_sizing_tool_HeRhzM": {
+      "type": "mask-sizing-tool",
+      "disabled": true,
+      "name": "Mask Sizing Tool",
+      "settings": {}
+    },
+    "lens_calculator_AtajVh": {
+      "type": "lens-calculator",
+      "disabled": true,
+      "name": "Lens Calculator Main",
+      "settings": {}
+    },
+    "featured_collection_Rj76X7": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Get ready to join the I Can Sea Club!",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "prescription-masks",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 32,
+        "padding_bottom": 32
+      }
+    },
+    "1759400192b543e0fa": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_zjfPXg": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_zjfPXg"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "1759400364c821921e": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_Yd9hcT": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_Yd9hcT"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs",
+    "oo_quiz_card_wigmEP",
+    "main",
+    "custom_liquid_bJitaF",
+    "mask_sizing_tool_HeRhzM",
+    "lens_calculator_AtajVh",
+    "featured_collection_Rj76X7",
+    "1759400192b543e0fa",
+    "1759400364c821921e"
+  ]
+}

@@ -1,0 +1,54 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "can"
+  },
+  "parent": "product.rx_titan_scuba_dive_mask.json",
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_eBhqKN": {
+          "settings": {
+            "content": "<p>Orders over $70 ship FREE. <br/>Hand assembled with care, Delivered within 3-14 days. <br/>Orders under $70 sent via USPS Tracked for $5.99.</p>"
+          }
+        }
+      }
+    },
+    "ns_cylinder_guide_fzVh7H": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    },
+    "featured_collection_zjrA7L": {
+      "settings": {
+        "show_vendor": false,
+        "columns_mobile": "1"
+      },
+      "blocks": {}
+    }
+  },
+  "order": [
+    "breadcrumbs_RqzaRt",
+    "main",
+    "178313317889f2a353",
+    "lens_calc_tool_product_hhrhLD",
+    "multicolumn_39KnCE",
+    "guide_product_page_DwfNLk",
+    "image_with_text_E9XLBR",
+    "oo_quiz_card_VGXPCk",
+    "172768701653766417",
+    "related-products",
+    "ns_cylinder_guide_fzVh7H",
+    "featured_collection_zjrA7L",
+    "176215487189708239"
+  ]
+}

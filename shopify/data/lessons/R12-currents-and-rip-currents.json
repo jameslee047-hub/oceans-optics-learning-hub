@@ -1,0 +1,72 @@
+{
+  "type": "learning_lesson",
+  "handle": "currents-and-rip-currents",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Currents & Rip Currents",
+    "short_description": "Learn what currents, longshore currents, tidal currents, and rip currents are, and why moving water matters before you enter.",
+    "lesson_type": "Conditions explainer",
+    "category": "safety-conditions",
+    "estimated_reading_time": "4-6 minutes",
+    "hero_media": null,
+    "lesson_body": "## Currents & Rip Currents\n\nWater is always moving. Some movement is gentle and easy to manage. Some movement can affect where you enter, where you exit, and how easy it feels to navigate.\n\nThis lesson focuses on current-related concepts: currents, longshore currents, tidal currents, and rip currents.\n\n## Why This Matters\n\nCurrents can move you across the shore, away from where you planned to exit, or away from land. Recognizing moving water helps you make better decisions before entering.\n\nThis is a conditions-awareness lesson, not emergency-response training.\n\n## What Is a Current?\n\nA current is a stream of water moving in a consistent direction. Currents are influenced by environmental factors and can affect both safety and navigation.\n\nIn plain terms: a current is water with direction. If you ignore it, your planned route may not be the route you actually travel.\n\n## Three Current Types to Know\n\n### 1. Longshore Currents\n\nLongshore currents flow parallel to the shore. They are generated when waves hit the coastline at an angle.\n\nFor snorkelers, the main point is lateral movement. A longshore current may move you along the beach or coastline and affect your entry and exit points.\n\n### 2. Tidal Currents\n\nTidal currents are linked to the gravitational interaction between the Earth, moon, and sun, and to the rise and fall of tides. They can be predictable and can significantly affect nearshore water movement.\n\nThis lesson treats tidal currents as a current-related concept. The separate `Waves, Tides & Surge` lesson should explain tides as a broader sea-level and conditions topic.\n\n### 3. Rip Currents\n\nRip currents are strong, narrow currents moving directly away from the shore. They commonly form at breaks in sandbars or near structures such as piers and jetties.\n\nFor snorkelers and other water users, the key risk is direction: a rip current moves away from shore.\n\n## Recognizing the Risk Before You Enter\n\nBefore entering, ask:\n\n1. Is water movement part of today's conditions?\n2. Could a current affect your navigation?\n3. Could a longshore current affect where you exit?\n4. Are there piers, jetties, or sandbar breaks nearby where rip currents may form?\n5. Are tidal currents likely to affect nearshore movement?\n\n## What to Understand Before Entering\n\nYou do not need to become an oceanographer to snorkel. You do need to notice that water movement can change the plan.\n\nBefore entering, understand:\n\n- currents have direction\n- longshore currents can move you along the shore\n- tidal currents can affect nearshore movement\n- rip currents move directly away from shore\n- structures and sandbar breaks may be associated with rip currents\n- entry and exit planning should account for moving water\n\n## Knowledge Check\n\n**Q1. What is a current?**\n\n- A. A stream of water moving in a consistent direction\n- B. A wave breaking on shore\n- C. A type of coral reef\n\n**Correct:** A\n\n**Explanation:** A current is moving water with direction.\n\n**Q2. Which current flows parallel to shore?**\n\n- A. Rip current\n- B. Longshore current\n- C. Surface warning\n\n**Correct:** B\n\n**Explanation:** Longshore currents move along the coastline.\n\n**Q3. Which current moves directly away from shore?**\n\n- A. Rip current\n- B. Tidal current only\n- C. Longshore current\n\n**Correct:** A\n\n**Explanation:** Rip currents are narrow currents that move away from shore.\n\n**Q4. Why can a longshore current matter to a snorkeler?**\n\n- A. It can move the snorkeler along the shore and affect entry or exit points\n- B. It changes mask skirt color\n- C. It only matters in deep ocean crossings\n\n**Correct:** A\n\n**Explanation:** Lateral water movement can change where a snorkeler ends up relative to the planned entry and exit.",
+    "instructor_tips": "- Plan the exit as carefully as the entry.\n- When current behavior is part of the conditions, think about where the water may move you, not just where you intend to swim.",
+    "common_mistakes": "- Only thinking about where you want to swim, instead of asking where the water may move you.\n- Treating tides as only a water-level topic and forgetting that tidal movement can also affect nearshore currents.",
+    "safety_notes": "- This lesson focuses on awareness before entry. It does not provide rip-current emergency-response instructions.",
+    "key_takeaways": [
+      "Currents are streams of water moving in a consistent direction.",
+      "Longshore currents move parallel to shore and can affect entry and exit points.",
+      "Tidal currents are linked to rising and falling tides and can affect nearshore movement.",
+      "Rip currents are strong, narrow currents that move directly away from shore.",
+      "This lesson helps with current awareness before entry; it is not emergency-response training."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R10",
+        "title": "Pre-Snorkel Checklist and Planning",
+        "handle": "pre-snorkel-checklist-and-planning"
+      },
+      {
+        "lesson_id": "R11",
+        "title": "Beach Flags and Surface Warnings",
+        "handle": "beach-flags-and-surface-warnings"
+      },
+      {
+        "lesson_id": "R13",
+        "title": "Waves, Tides & Surge",
+        "handle": "waves-tides-and-surge"
+      },
+      {
+        "lesson_id": "R19",
+        "title": "Duck Diving Basics",
+        "handle": "duck-diving-basics"
+      }
+    ],
+    "related_tools": [
+      {
+        "handle": "site-condition-planning-checklist",
+        "label": "Site condition planning checklist",
+        "url": null,
+        "gid": null,
+        "file_gid": null
+      }
+    ],
+    "related_products": [],
+    "downloadable_resources": [
+      {
+        "handle": "current-types-quick-reference",
+        "label": "Current types quick reference",
+        "url": null,
+        "gid": null,
+        "file_gid": null
+      }
+    ],
+    "primary_cta": null,
+    "lesson_id": "R12",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Currents and Rip Currents for Snorkelers | Oceans Optics Learning Hub",
+    "meta_description": "Learn the difference between currents, longshore currents, tidal currents, and rip currents before planning a snorkel."
+  }
+}

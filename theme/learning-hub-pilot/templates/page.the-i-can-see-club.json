@@ -1,0 +1,249 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_ryKxdL": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_39fKt7": {
+          "type": "heading",
+          "settings": {
+            "heading": "Join The I Can Sea Club",
+            "heading_size": "h1"
+          }
+        },
+        "text_KbwF6d": {
+          "type": "text",
+          "settings": {
+            "text": "Are you ready to unlock huge discounts, rewards and exclusive Aquatic Tips!",
+            "text_style": "body"
+          }
+        }
+      },
+      "block_order": [
+        "heading_39fKt7",
+        "text_KbwF6d"
+      ],
+      "name": "image-banner-M&D",
+      "settings": {
+        "image": "shopify://shop_images/The_I_Can_Sea_Club_by_oceans_optics_prescription_snorkel_mask.png",
+        "image_2": "shopify://shop_images/The_I_Can_Sea_Club_by_oceans_optics_prescription_snorkel_mask.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "medium",
+        "desktop_content_position": "middle-left",
+        "show_text_box": true,
+        "desktop_content_alignment": "left",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": true
+      }
+    },
+    "rich_text_93Jfwk": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_yHJUQP": {
+          "type": "heading",
+          "settings": {
+            "heading": "Now you can brag that you're in the club!",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_mp39tc": {
+          "type": "text",
+          "settings": {
+            "text": "<h3>The I CAN SEA CLUB is your gateway to clearer vision, smarter adventures, and real savings. Earn points, unlock discounts, and get access to exclusive content designed to help you explore with confidence. Join a club that values all round clarity!</h3>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_yHJUQP",
+        "text_mp39tc"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "multicolumn_KfxWBW": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_kgMrDy": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Oceans_optics_prescription_snorkel_mask_1_clarity_coin_7805b0a6-111f-4c1e-bf9d-e001d1ff1977.png",
+            "title": "Place an order",
+            "title_h3": false,
+            "text": "<p>We will give you 1 Clarity Coin Cash back for every $1 you spend!</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_PcfydQ": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/1_dc2d539c-3c32-4242-9658-9fed8d6ad4d5.png",
+            "title": "Join the I Can Sea Club:",
+            "title_h3": false,
+            "text": "<p>250 Clarity Coins</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_pggrax": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/1_480c1d68-0b06-4790-a9c5-290a29bc75b2.png",
+            "title": "Birthday Gift",
+            "title_h3": false,
+            "text": "<p>500 Clarity Coins</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_wixhXd": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Follow_oceans_optics_prescripton_masks_on_instagram_7e855acf-4327-44cb-927f-bf77cca32720.png",
+            "title": "Follow us on instagram",
+            "title_h3": false,
+            "text": "<p>250 clarity coins</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_tyTbMe": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Like_oceans_optics_prescription_snorkel_masks_on_facebook_617e6d32-7bae-4815-8084-b592a901b869.png",
+            "title": "Like us on Facebook",
+            "title_h3": false,
+            "text": "<p>250 Clarity Coins</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_pH4gxb": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Share_oceans_optics_prescription_snorkel_masks_on_facebook_bf1e3a2d-e79b-4e04-ba54-346baa029eb0.png",
+            "title": "Share us on Facebook",
+            "title_h3": false,
+            "text": "<p>250 Clarity Coins</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_kgMrDy",
+        "column_PcfydQ",
+        "column_pggrax",
+        "column_wixhXd",
+        "column_tyTbMe",
+        "column_pH4gxb"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Ways To Earn Rewards Clarity Coins",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "Join the Club",
+        "button_link": "https://oceansoptics.com/apps/loyalty",
+        "color_scheme": "background-2",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn_rCpPLb": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_hKGyhL": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/100_clarity_coins_earns_1_off_prescrption_snorkel_mask_b01a7ce6-6a88-40ff-8f30-ea139e4998d4.png",
+            "title": "Order Discount",
+            "title_h3": false,
+            "text": "<p>For every 100 Clarity Coins you redeem, we'll give you $1. Use as many as you can!</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_fzFPTn": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/500_clarity_coins_earns_5_off_prescrption_snorkel_mask_41ba4494-bb86-42ca-890d-16bc0896d5ee.png",
+            "title": "$5 OFF your order",
+            "title_h3": false,
+            "text": "<p>Convert your 500 Clarity Coins into $5 discount off your order. USe as many as you can per order!</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_nbrJW6": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/595_clarity_coins_earns_free_shipping_for_prescrption_snorkel_mask.png",
+            "title": "Free Shipping Coupon",
+            "title_h3": false,
+            "text": "<p>Use 595 Clarity Coins to claim Free Shipping. Normaly $5.95 on orders under $70.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_hKGyhL",
+        "column_fzFPTn",
+        "column_nbrJW6"
+      ],
+      "custom_css": [
+        ".title {text-align: center;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Ways to redeem your Clarity Coins",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "center",
+        "background_style": "primary",
+        "button_label": "Join the Club",
+        "button_link": "https://oceansoptics.com/apps/loyalty",
+        "color_scheme": "background-2",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "image_banner_ryKxdL",
+    "rich_text_93Jfwk",
+    "multicolumn_KfxWBW",
+    "multicolumn_rCpPLb"
+  ]
+}

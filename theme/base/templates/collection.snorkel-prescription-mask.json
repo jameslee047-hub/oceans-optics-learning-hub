@@ -1,0 +1,669 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumbs_WgMLgU": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "1719906485024f7e34": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_ReGTq3": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_ReGTq3"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "image_banner_UTJKeB": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_YFieWa": {
+          "type": "heading",
+          "settings": {
+            "heading": "Prescription Dive Mask for Clear Underwater Vision",
+            "heading_size": "h0"
+          }
+        },
+        "text_QWH9NQ": {
+          "type": "text",
+          "settings": {
+            "text": "We prepare you for a smooth and epic Aquatic Adventure.",
+            "text_style": "body"
+          }
+        },
+        "buttons_dXxMen": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "CHOOSE YOURS",
+            "button_link_1": "shopify://collections/all-our-masks",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_YFieWa",
+        "text_QWH9NQ",
+        "buttons_dXxMen"
+      ],
+      "custom_css": [],
+      "settings": {
+        "image": "shopify://shop_images/DSC03350_dbef32d4-6186-42a9-8f0a-7cd426f1a1b1.jpg",
+        "image_2": "shopify://shop_images/DSC03350_62d9a443-0bef-4720-9b7a-36a57192ff2f.jpg",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "medium",
+        "desktop_content_position": "middle-left",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": true
+      }
+    },
+    "collection_list_nb8NTK": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_yRxpQR": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "all-our-masks"
+          }
+        },
+        "featured_collection_e8DDVQ": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "featured_collection_HB3Cb9": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "farsighted-prescription-dive-mask"
+          }
+        },
+        "featured_collection_JGeRgV": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "i-can-sea-shirts"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_yRxpQR",
+        "featured_collection_e8DDVQ",
+        "featured_collection_HB3Cb9",
+        "featured_collection_JGeRgV"
+      ],
+      "settings": {
+        "title": "Choose your Adventure.",
+        "heading_size": "h2",
+        "image_ratio": "adapt",
+        "columns_desktop": 4,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "show_view_all": false,
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 24,
+        "padding_bottom": 52
+      }
+    },
+    "rich_text_8fypwr": {
+      "type": "rich-text",
+      "blocks": {
+        "text_JVjJHg": {
+          "type": "text",
+          "settings": {
+            "text": "<p>See clearly underwater with a prescription swim mask designed for scuba diving, snorkeling, and recreational swim sessions. Featuring optical prescription lenses, tempered glass, and reliable vision correction, these masks help every diver enjoy a more comfortable and confident underwater experience.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "text_JVjJHg"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 36
+      }
+    },
+    "oo_quiz_card_HDyzpp": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "mask_sizing_tool_shortcut_hNwwQd": {
+      "type": "mask-sizing-tool-shortcut",
+      "disabled": true,
+      "name": "Mask fit shortcut",
+      "settings": {
+        "heading": "How would you like to find your mask fit?",
+        "subheading": "Choose automatic camera measuring or follow the manual ruler guide below",
+        "auto_badge": "Recommended",
+        "auto_icon": "🎥",
+        "auto_title": "Auto Camera Measuring",
+        "auto_text": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.",
+        "auto_point_1": "✓ Takes about 30 seconds",
+        "auto_point_2": "✓ Works on phone or desktop",
+        "auto_point_3": "✓ Get instant mask recommendations",
+        "auto_url": "",
+        "open_camera_new_tab": true,
+        "auto_button": "Start Camera Measuring →",
+        "manual_badge": "Measure Yourself",
+        "manual_icon": "📐",
+        "manual_title": "Manual Ruler Guide",
+        "manual_text": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide.",
+        "manual_point_1": "✓ No camera needed",
+        "manual_point_2": "✓ Works anywhere",
+        "manual_point_3": "✓ Fine-tune with sliders",
+        "manual_mode": "link",
+        "manual_url": "",
+        "manual_anchor_id": "ruler-guide-start",
+        "manual_reveal_id": "",
+        "manual_button": "Use Ruler Guide ↓"
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_h1_title_collection": true,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "image_with_text_dMzziy": {
+      "type": "image-with-text",
+      "blocks": {
+        "heading_pWCmnP": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Why Choose Our Prescription Swim Mask?</strong>",
+            "heading_size": "h2"
+          }
+        },
+        "text_Wcb9rc": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Diving with blurry vision isn’t just inconvenient—it’s unsafe. </p><p>• Get peace of mind</p><p>• More time exploring not flaffling</p><p>• See every detail sharply. <br/></p>",
+            "text_style": "subtitle"
+          }
+        },
+        "button_AfbKTg": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop our Masks",
+            "button_link": "shopify://collections/all-diving-masks",
+            "button_style_secondary": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_pWCmnP",
+        "text_Wcb9rc",
+        "button_AfbKTg"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/Scuba_Bennefits.svg",
+        "height": "adapt",
+        "desktop_image_width": "medium",
+        "layout": "image_first",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "content_layout": "no-overlap",
+        "section_color_scheme": "background-2",
+        "color_scheme": "background-2",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_3Y6zYY": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_GdMYJe": {
+          "type": "heading",
+          "settings": {
+            "heading": "<strong>Find Your Best Prescription Scuba Mask</strong>",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_wHAUN9": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Choosing the right new prescription swim mask starts with understanding your current prescription and underwater vision needs. Most divers use their Sphere values as a starting point, while some may also require Cylinder correction for astigmatism. Depending on the mask model, you can choose from premade RX lenses, drop-in corrective lenses, or custom prescription dive masks based on a combined refractive equivalent. This uses your Sphere and your Cylinder reading to give the best vision under water.<br/><br/></p><p>For snorkeling, scuba diving, and recreational swim use, a well-fitted prescription mask improves clarity, comfort, and overall field of vision underwater. Tempered glass lenses, adjustable straps, and soft silicone skirts help create an extremely comfortable fit, while quality optics provide clear vision for both casual snorkelers and experienced divers.<br/><br/></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_GdMYJe",
+        "text_wHAUN9"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "featured_collection_aqgrBt": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Explore our RX Masks",
+        "heading_size": "h1",
+        "description": "<p>Your adventure begins now!</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "scuba-diving-all-masks",
+        "products_to_show": 25,
+        "columns_desktop": 4,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "171998012350bbd973": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_rJkYQ7": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_rJkYQ7"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "disabled": true,
+      "settings": {
+        "products_per_page": 8,
+        "columns_desktop": 4,
+        "color_scheme": "background-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": true,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
+    "collapsible_content_BDtqAW": {
+      "type": "collapsible-content",
+      "blocks": {
+        "collapsible_row_hqB3B8": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What are the features of your prescription snorkel masks?",
+            "icon": "question_mark",
+            "row_content": "<p>Our masks are made from soft, hypoallergenic, food-grade silicone for maximum comfort. The tempered glass lenses are scratch-resistant and provide clear vision underwater. Interchangeable lenses allow you to upgrade as your prescription changes.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_VzDAME": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How do I choose the right prescription for my snorkel mask?",
+            "icon": "question_mark",
+            "row_content": "<p>Use our underwater lens calculator tool to determine the correct sphere strength based on your prescription.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_JMpnxV": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Can I get a mask with different prescriptions for each eye?",
+            "icon": "question_mark",
+            "row_content": "<p>Yes, on selected models our masks allow for different sphere strengths in each eye to ensure optimal vision underwater.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_9rWnhX": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "Are these masks suitable for all face shapes?",
+            "icon": "question_mark",
+            "row_content": "<p>We have a variety of masks to suit a variety of face shapes. Please check the details on the individualk products page. All our masks are designed with a flexible silicone skirt that adapts to various face shapes, providing a secure and comfortable fit for everyone.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_7AGJfK": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How should I care for and maintain my prescription snorkel mask?",
+            "icon": "question_mark",
+            "row_content": "<p>Rinse your mask with fresh water after each use, avoid using abrasive cleaners, and store it in a cool, dry place away from direct sunlight. Regular care will extend the life of your mask.</p><p></p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_x4AQ8Q": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What is the return policy if the mask doesn’t fit or I’m not satisfied?",
+            "icon": "question_mark",
+            "row_content": "<p>We offer a 30-day return policy from date of delivery for unworn and unused items in their original packaging.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_xWBxyj": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How long does shipping take, im in California?",
+            "icon": "question_mark",
+            "row_content": "<p>Please allow 5-14 days for delivery, we average around 7 days delivery time but this is dependant on time of the year and USPS. We will do our best to get it to you as quickly as possible.</p>",
+            "page": ""
+          }
+        },
+        "collapsible_row_739Gy8": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "What makes buying from Oceans Optics unique?",
+            "icon": "question_mark",
+            "row_content": "<p>Beyond high-quality masks, our Free digital e-guide provides valuable diving tips and is updated regularly. </p><p>We are run by divers who have real industry experience ready to assist you. </p><p>Additionally, our lenses are interchangeable, allowing you to update them as your prescription changes. Just buy 1 mask for life.</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "collapsible_row_hqB3B8",
+        "collapsible_row_VzDAME",
+        "collapsible_row_JMpnxV",
+        "collapsible_row_9rWnhX",
+        "collapsible_row_7AGJfK",
+        "collapsible_row_x4AQ8Q",
+        "collapsible_row_xWBxyj",
+        "collapsible_row_739Gy8"
+      ],
+      "disabled": true,
+      "settings": {
+        "caption": "",
+        "heading": "Frequently Asked Questions",
+        "not_heading": false,
+        "heading_size": "h1",
+        "heading_alignment": "center",
+        "layout": "none",
+        "color_scheme": "background-2",
+        "container_color_scheme": "background-2",
+        "open_first_collapsible_row": false,
+        "image_ratio": "adapt",
+        "desktop_layout": "image_second",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multirow_6WEEdM": {
+      "type": "multirow",
+      "blocks": {
+        "row_4VipQf": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/Before_After_9c3bf849-8b56-490d-b8fe-ed7c96b98e33.png",
+            "caption": "USE OUR EXCLUSIVE",
+            "heading": "<strong>Lens Calculator Tool</strong>",
+            "text": "<p>Did you know that due to water magnifiation we see objects 33% larger underwater. Our tool is specifically designed to help you adjust your vision correctly for perfect  underwater clarity.</p>",
+            "button_label": "Calculate Lens Diopter",
+            "button_link": "shopify://pages/prescription-lenses-calculator-tool"
+          }
+        }
+      },
+      "block_order": [
+        "row_4VipQf"
+      ],
+      "settings": {
+        "image_height": "adapt",
+        "desktop_image_width": "medium",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "left",
+        "image_layout": "alternate-right",
+        "section_color_scheme": "background-2",
+        "row_color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "mobile_content_alignment": "center",
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "multicolumn_tmyFyf": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_igRhn7": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Step_1.png",
+            "title": "<span style=\"text-decoration:underline\"><strong>Step 1:</strong></span>",
+            "title_h3": false,
+            "text": "<p><strong>Choose your vision</strong></p><p>Whether you're nearsighted or farsighted, we have an option for you!</p><p></p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_qjbXan": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Step_2.png",
+            "title": "<span style=\"text-decoration:underline\"><strong>Step 2:</strong></span>",
+            "title_h3": false,
+            "text": "<p><strong>Option 1:</strong> Choose your desired lens strength from the dropdown list.</p><p><strong>Option 2:</strong> Choose Bespoke/Different if you would like the left and right eye to have different lenses.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_3TpdFn": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Step_3.png",
+            "title": "<span style=\"text-decoration:underline\"><strong>Step 3:</strong></span>",
+            "title_h3": false,
+            "text": "<p>Go to your cart and check your order.<br/>If you chose Bespoke/Different, this is where you can enter your left and right sphere values. Example: Left -2.0 & Right -3.0.</p>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_igRhn7",
+        "column_qjbXan",
+        "column_3TpdFn"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "How to order your prescription Mask",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "Choose your Vision",
+        "button_link": "shopify://collections/prescription-masks",
+        "color_scheme": "background-2",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "17152440046bc5a1ee": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_3wwk6x": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join Our Community on Instagram!",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_3wwk6x"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "rich_text_3FkCki": {
+      "type": "rich-text",
+      "blocks": {
+        "button_tAhqFg": {
+          "type": "button",
+          "settings": {
+            "button_label": "Follow Us",
+            "button_link": "https://www.instagram.com/oceansoptics_/",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "button_tAhqFg"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": false,
+        "padding_top": 44,
+        "padding_bottom": 44
+      }
+    },
+    "17179983140e8785c0": {
+      "type": "apps",
+      "blocks": {
+        "avada_trust_badges_upsell_app_badge_v2_block_fxcDzP": {
+          "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-badge-v2-block/45454b7f-f6a7-4852-b770-8e0c3992a226",
+          "settings": {
+            "badge_id": "AVD-39947447"
+          }
+        }
+      },
+      "block_order": [
+        "avada_trust_badges_upsell_app_badge_v2_block_fxcDzP"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "custom_liquid_7zRMeh": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<section id=\"collection-faq-section\" class=\"faq-container\" aria-labelledby=\"collection-faq-title\">\n<h2 id=\"collection-faq-title\" class=\"faq-title\">Prescription Dive Masks FAQ</h2>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What is a prescription dive mask?</h3></summary>\n<div class=\"faq-answer\">\n<p>This mask uses corrective lenses to improve underwater eyesight for people with nearsightedness, farsightedness, or other common refractive errors. Unlike regular masks, a mask with prescription lenses helps divers and snorkelers enjoy clearer, more comfortable vision during scuba diving and snorkeling activities.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I use a prescription scuba dive mask for both snorkeling and diving?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Most prescription scuba mask models are designed for both snorkeling and scuba diving. Whether you stay near the surface or dive deeper underwater, quality lenses and a reliable silicone seal help maintain comfort and clear vision throughout the dive.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are prescription lenses available for different vision strengths?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Prescription lenses are available in a wide range of lens strengths, and many models allow different corrections for each eye. Some divers choose nearsighted vision lenses, while others prefer farsighted options for improved close-up visibility underwater.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Do prescription dive masks work for astigmatism?</h3></summary>\n<div class=\"faq-answer\">\n<p>Some prescription dive mask models support astigmatism corrections through custom lenses. Though our lenses are made for the Sphere part of your Rx, we can indirectly offset the refractive balance using an equation called Spherical Equivalent. Our lens calculator already factors this in, but if your prescription includes a high cylinder then get in touch. We can help you find the right balance.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I replace my glasses with prescription snorkeling masks underwater?</h3></summary>\n<div class=\"faq-answer\">\n<p>For most people, yes. Prescription snorkeling and scuba masks are designed to provide clear underwater vision without needing to wear a pair of glasses before entering the water. They offer a more comfortable and practical solution for diving and snorkeling activities. Some swimmers also prefer swim goggles with prescription or reading lenses for surface swimming and close-up visibility, depending on their underwater activities and vision needs.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What makes a comfortable prescription swim mask fit?</h3></summary>\n<div class=\"faq-answer\">\n<p>A good Rx dive mask should create a secure seal without excessive pressure on the face. Soft silicone skirts, adjustable straps, and lightweight frame designs help improve long-term comfort, especially during longer dives or snorkeling sessions.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are anti-fog prescription masks available?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many modern prescription scuba mask models include anti-fog features or lens treatments that help reduce condensation underwater. Proper mask preparation and fit also help maintain crystal-clear visibility during dives. You can find some useful tips on our Snorkell 101 guide FREE with every purchase.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What is the difference between premade and custom prescription lenses?</h3></summary>\n<div class=\"faq-answer\">\n<p>Premade prescription lenses are manufactured in standard correction steps and work well for many divers. Custom lenses are made more precisely to your scuba mask prescription and may be recommended for stronger corrections or more complex eyesight needs. Typically fully custom prescription masks cost $300-$500. While ours start at $70 with lenses.</p>\n</div>\n</details>\n\n</section>\n\n<script type=\"application/ld+json\">\n{\n\"@context\": \"https://schema.org\",\n\"@type\": \"FAQPage\",\n\"mainEntity\": [\n{\n\"@type\": \"Question\",\n\"name\": \"What is a prescription dive mask?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"This mask uses corrective lenses to improve underwater eyesight for people with nearsightedness, farsightedness, or other common refractive errors. Unlike regular masks, a mask with prescription lenses helps divers and snorkelers enjoy clearer, more comfortable vision during scuba diving and snorkeling activities.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I use a prescription scuba dive mask for both snorkeling and diving?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Most prescription scuba mask models are designed for both snorkeling and scuba diving. Whether you stay near the surface or dive deeper underwater, quality lenses and a reliable silicone seal help maintain comfort and clear vision throughout the dive.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are prescription lenses available for different vision strengths?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Prescription lenses are available in a wide range of lens strengths, and many models allow different corrections for each eye. Some divers choose nearsighted vision lenses, while others prefer farsighted options for improved close-up visibility underwater.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Do prescription dive masks work for astigmatism?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Some prescription dive mask models support astigmatism corrections through custom lenses. Though our lenses are made for the Sphere part of your Rx, we can indirectly offset the refractive balance using an equation called Spherical Equivalent. Our lens calculator already factors this in, but if your prescription includes a high cylinder then get in touch. We can help you find the right balance.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I replace my glasses with prescription snorkeling masks underwater?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"For most people, yes. Prescription snorkeling and scuba masks are designed to provide clear underwater vision without needing to wear a pair of glasses before entering the water. They offer a more comfortable and practical solution for diving and snorkeling activities. Some swimmers also prefer swim goggles with prescription or reading lenses for surface swimming and close-up visibility, depending on their underwater activities and vision needs.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"What makes a comfortable prescription swim mask fit?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"A good Rx dive mask should create a secure seal without excessive pressure on the face. Soft silicone skirts, adjustable straps, and lightweight frame designs help improve long-term comfort, especially during longer dives or snorkeling sessions.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are anti-fog prescription masks available?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many modern prescription scuba mask models include anti-fog features or lens treatments that help reduce condensation underwater. Proper mask preparation and fit also help maintain crystal-clear visibility during dives. You can find some useful tips on our Snorkell 101 guide FREE with every purchase.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"What is the difference between premade and custom prescription lenses?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Premade prescription lenses are manufactured in standard correction steps and work well for many divers. Custom lenses are made more precisely to your scuba mask prescription and may be recommended for stronger corrections or more complex eyesight needs. Typically fully custom prescription masks cost $300-$500. While ours start at $70 with lenses.\"\n}\n}\n]\n}\n</script>\n\n<style>\n.faq-container {\nmax-width: 700px;\nmargin: 20px auto;\npadding: 20px;\nborder-top: 1px solid #023059;\nfont-family: 'Lato', sans-serif;\n}\n.faq-title {\nfont-size: 24px;\nfont-weight: bold;\ncolor: #023059;\ntext-align: center;\nmargin-bottom: 15px;\n}\n.faq-item {\nborder-bottom: 1px solid #ddd;\nmargin-bottom: 10px;\n}\n.faq-question {\nfont-size: 16px;\nbackground-color: #ffffff;\ncolor: #023059;\npadding: 10px;\ncursor: pointer;\nborder: 1px solid #023059;\nborder-radius: 5px;\nmargin: 0;\nfont-weight: 700;\ndisplay: flex;\nalign-items: baseline;\n}\n.faq-question h3 {\nfont-size: 16px;\ncolor: #023059;\nfont-weight: 700;\nmargin: 0;\n}\n.faq-answer {\npadding: 10px;\nfont-size: 14px;\nbackground-color: #f9f9f9;\ncolor: #333;\nfont-weight: 400;\n}\n.faq-answer p { margin: 0 0 8px 0; }\n.faq-answer p:last-child { margin-bottom: 0; }\n.faq-answer a { color: #B95e05; text-decoration: none; }\n.faq-answer a:hover { text-decoration: underline; }\ndetails summary::-webkit-details-marker { display: none; }\ndetails[open] .faq-question::before { content: \"▾ \"; }\ndetails:not([open]) .faq-question::before { content: \"▸ \"; }\n</style>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    }
+  },
+  "order": [
+    "breadcrumbs_WgMLgU",
+    "1719906485024f7e34",
+    "image_banner_UTJKeB",
+    "collection_list_nb8NTK",
+    "rich_text_8fypwr",
+    "oo_quiz_card_HDyzpp",
+    "mask_sizing_tool_shortcut_hNwwQd",
+    "banner",
+    "image_with_text_dMzziy",
+    "rich_text_3Y6zYY",
+    "featured_collection_aqgrBt",
+    "171998012350bbd973",
+    "product-grid",
+    "collapsible_content_BDtqAW",
+    "multirow_6WEEdM",
+    "multicolumn_tmyFyf",
+    "17152440046bc5a1ee",
+    "rich_text_3FkCki",
+    "17179983140e8785c0",
+    "custom_liquid_7zRMeh"
+  ]
+}

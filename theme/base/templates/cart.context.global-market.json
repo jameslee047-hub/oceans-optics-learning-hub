@@ -1,0 +1,30 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "global-market"
+  },
+  "parent": "cart.json",
+  "sections": {},
+  "order": [
+    "17504848627cade385",
+    "reef_banner_cart_i8WgcP",
+    "1783742312d379f343",
+    "cart-items",
+    "cart-footer",
+    "custom_liquid_XHPTik",
+    "custom_liquid_7NJKj6",
+    "1766035063e7c57a14",
+    "multicolumn_RAnFbK",
+    "17591218979d006fa3",
+    "featured_collection_KcwBhG",
+    "featured_collection_LJXtHc"
+  ]
+}

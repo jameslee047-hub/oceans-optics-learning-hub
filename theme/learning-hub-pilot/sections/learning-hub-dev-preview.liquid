@@ -1,0 +1,36 @@
+{{ 'learning-hub.css' | asset_url | stylesheet_tag }}
+
+<section class="learning-hub learning-preview-shell color-{{ section.settings.color_scheme }} gradient">
+  <div class="learning-preview-note page-width" role="note">
+    <p class="learning-hub__eyebrow">Development Preview</p>
+    <p>This fixture-backed preview is for Stage 6 visual QA only and must be removed before production launch.</p>
+  </div>
+
+  <div id="LearningHubPreviewRoot" aria-live="polite">
+    <div class="page-width learning-panel">
+      <p class="learning-empty">Loading Learning Hub preview fixtures.</p>
+    </div>
+  </div>
+</section>
+
+<script src="{{ 'learning-hub-preview-data.js' | asset_url }}" defer></script>
+<script src="{{ 'learning-hub-preview.js' | asset_url }}" defer></script>
+
+{% schema %}
+{
+  "name": "Learning Hub dev preview",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Learning Hub dev preview"
+    }
+  ]
+}
+{% endschema %}

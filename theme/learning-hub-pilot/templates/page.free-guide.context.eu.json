@@ -1,0 +1,63 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "page.free-guide.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "image_banner_dPbaB": {
+      "type": "image-banner",
+      "disabled": false,
+      "settings": {
+        "image": "shopify://shop_images/Mobile_Guide_ce05c262-6a5a-4e76-baad-24d4939e6502.png",
+        "image_2": "shopify://shop_images/1216_Desktop_Guide.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": true,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "header-573b5af9b4e695543f71eba34ac1edb2": null,
+        "image_behavior": "none",
+        "header-02b5de6de6c69cdfbdcb0aee5112f5f3": null,
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      },
+      "blocks": {},
+      "block_order": []
+    },
+    "rich_text_D9zG4n": {
+      "settings": {
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "color_scheme": "inverse",
+        "full_width": true
+      },
+      "blocks": {}
+    }
+  },
+  "order": [
+    "1719547095adc33aa2",
+    "image_with_text_AWnbDd",
+    "rich_text_B3FAmw",
+    "image_banner_PEir8k",
+    "multicolumn_j9FhFC",
+    "rich_text_D9zG4n",
+    "main",
+    "collection_list_HT7XK7",
+    "image_banner_dPbaB",
+    "multicolumn_mRYnCG",
+    "featured_collection_a7RwhY",
+    "custom_liquid_3byjtV"
+  ]
+}

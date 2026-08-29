@@ -1,0 +1,80 @@
+<script>
+    (function() {
+
+        const thirdPartyPatterns = [
+            'googletagmanager',
+            'google-analytics',
+            'gtag/js',
+            'connect.facebook.net',
+            'smartlook',
+            'avada',
+            'automizely',
+            'revenuehunt',
+            'hextom',
+            'zigpoll',
+            'gelato',
+            'anglerfox',
+            'globosoftware'
+        ];
+
+        function isShopifyScript(src) {
+            return src.includes('cdn.shopify.com') ||
+                src.includes('shopifycloud') ||
+                src.includes('/cdn/shop/');
+        }
+
+        function isThirdParty(src) {
+            return thirdPartyPatterns.some(p => src.includes(p));
+        }
+
+        function delayScripts() {
+            document.querySelectorAll('script[src]').forEach(script => {
+                const src = script.src;
+
+                if (!src) return;
+
+                /* ❗ НЕ чіпаємо Shopify */
+                if (isShopifyScript(src)) return;
+
+                /* тільки сторонні */
+                if (isThirdParty(src)) {
+                    script.type = 'javascript/blocked';
+
+                    window.__delayedScripts = window.__delayedScripts || [];
+                    window.__delayedScripts.push(src);
+
+                    script.remove();
+                }
+            });
+        }
+
+        function runDelayedScripts() {
+            if (!window.__delayedScripts) return;
+
+            window.__delayedScripts.forEach(src => {
+                const s = document.createElement('script');
+                s.src = src;
+                s.async = true;
+                document.body.appendChild(s);
+            });
+
+            window.__delayedScripts = [];
+        }
+
+        function onInteraction() {
+            runDelayedScripts();
+
+            window.removeEventListener('scroll', onInteraction);
+            window.removeEventListener('click', onInteraction);
+            window.removeEventListener('mousemove', onInteraction);
+            window.removeEventListener('touchstart', onInteraction);
+        }
+
+        delayScripts();
+
+        ['scroll','click','mousemove','touchstart'].forEach(e => {
+            window.addEventListener(e, onInteraction, { once: true });
+        });
+
+    })();
+</script>

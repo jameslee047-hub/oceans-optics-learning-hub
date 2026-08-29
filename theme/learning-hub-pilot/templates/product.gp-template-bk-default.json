@@ -1,0 +1,243 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "order": [
+    "main",
+    "related-products",
+    "image_banner_tgBVDw",
+    "17299206879aba61a6",
+    "featured_collection_MxBreg",
+    "172992054720cbf001",
+    "17345963080821517c"
+  ],
+  "sections": {
+    "172992054720cbf001": {
+      "block_order": [
+        "judge_me_reviews_featured_carousel_ceCNq7"
+      ],
+      "blocks": {
+        "judge_me_reviews_featured_carousel_ceCNq7": {
+          "settings": {
+            "maxwidth": 1080
+          },
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8"
+        }
+      },
+      "settings": {
+        "include_margins": true
+      },
+      "type": "apps"
+    },
+    "17299206879aba61a6": {
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_7bhrAN"
+      ],
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_7bhrAN": {
+          "settings": {},
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8"
+        }
+      },
+      "disabled": true,
+      "settings": {
+        "include_margins": true
+      },
+      "type": "apps"
+    },
+    "17345963080821517c": {
+      "settings": {
+        "include_margins": true
+      },
+      "type": "apps"
+    },
+    "featured_collection_MxBreg": {
+      "settings": {
+        "collection": "all-our-masks",
+        "color_scheme": "background-2",
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "description": "",
+        "description_style": "body",
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "heading_size": "h2",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "padding_bottom": 36,
+        "padding_top": 36,
+        "products_to_show": 4,
+        "quick_add": "none",
+        "show_description": false,
+        "show_rating": false,
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_view_all": true,
+        "swipe_on_mobile": true,
+        "title": "Shop our RX Scuba Diving & Snorkeling  Masks",
+        "view_all_style": "solid"
+      },
+      "type": "featured-collection"
+    },
+    "image_banner_tgBVDw": {
+      "settings": {
+        "banner_link": "shopify://collections/all-our-masks",
+        "color_scheme": "",
+        "desktop_content_alignment": "center",
+        "desktop_content_position": "middle-center",
+        "image": "shopify://shop_images/Mobile_Guide_88951d2f-e86c-4f02-aca9-531937caef1d.svg",
+        "image_2": "shopify://shop_images/Desktop_Guide_ccc9486e-03f2-436d-81b9-7cb7798708bc.svg",
+        "image_behavior": "none",
+        "image_height": "medium",
+        "image_overlay_opacity": 0,
+        "mobile_content_alignment": "center",
+        "show_text_below": false,
+        "show_text_box": false,
+        "stack_images_on_mobile": false
+      },
+      "type": "image-banner"
+    },
+    "main": {
+      "block_order": [
+        "vendor",
+        "rating",
+        "title",
+        "description_rAwk8g",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "avada_trust_badges_upsell_app_badge_v2_block_ebh6xm",
+        "collapsible_tab_yVfcNR",
+        "collapsible_tab_rzYKEr",
+        "collapsible_tab_3VLDP8",
+        "share"
+      ],
+      "blocks": {
+        "avada_trust_badges_upsell_app_badge_v2_block_ebh6xm": {
+          "settings": {
+            "badge_id": "AVD-85040007"
+          },
+          "type": "shopify://apps/avada-boost-sales-trust-badge/blocks/app-badge-v2-block/45454b7f-f6a7-4852-b770-8e0c3992a226"
+        },
+        "buy_buttons": {
+          "settings": {
+            "show_dynamic_checkout": false,
+            "show_gift_card_recipient": true
+          },
+          "type": "buy_buttons"
+        },
+        "collapsible_tab_3VLDP8": {
+          "settings": {
+            "content": "<p>Buy with confidence: You ghet 30 days from delivery!</p>",
+            "heading": "30 Day Free Returns",
+            "icon": "return",
+            "page": ""
+          },
+          "type": "collapsible_tab"
+        },
+        "collapsible_tab_rzYKEr": {
+          "settings": {
+            "content": "<p>Take advantage of our no minimum order Free Delivery. </p>",
+            "heading": "Free Delivery",
+            "icon": "truck",
+            "page": ""
+          },
+          "type": "collapsible_tab"
+        },
+        "collapsible_tab_yVfcNR": {
+          "settings": {
+            "content": "<p>Keep your snorkel mask safe with this durable EVA case. Designed to prevent dust, moisture, and damage, it features a secure zipper closure and a spacious interior to avoid squeezing or deformation. The built-in hook allows for easy hanging and quick drying, while the rugged, wear-resistant construction protects against impacts and scratches. Perfect for storing and transporting your new mask on any adventure.</p>",
+            "heading": "Case Description",
+            "icon": "clipboard",
+            "page": ""
+          },
+          "type": "collapsible_tab"
+        },
+        "description_rAwk8g": {
+          "disabled": true,
+          "settings": {},
+          "type": "description"
+        },
+        "price": {
+          "settings": {},
+          "type": "price"
+        },
+        "quantity_selector": {
+          "settings": {},
+          "type": "quantity_selector"
+        },
+        "rating": {
+          "settings": {},
+          "type": "rating"
+        },
+        "share": {
+          "settings": {
+            "share_label": "Share"
+          },
+          "type": "share"
+        },
+        "title": {
+          "settings": {},
+          "type": "title"
+        },
+        "variant_picker": {
+          "settings": {
+            "picker_type": "dropdown",
+            "swatch_shape": "circle"
+          },
+          "type": "variant_picker"
+        },
+        "vendor": {
+          "disabled": true,
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "body"
+          },
+          "type": "text"
+        }
+      },
+      "settings": {
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "constrain_to_viewport": true,
+        "enable_sticky_info": true,
+        "enable_video_looping": false,
+        "gallery_layout": "thumbnail_slider",
+        "hide_variants": false,
+        "image_zoom": "hover",
+        "media_fit": "contain",
+        "media_position": "left",
+        "media_size": "medium",
+        "mobile_thumbnails": "show",
+        "padding_bottom": 0,
+        "padding_top": 0
+      },
+      "type": "main-product"
+    },
+    "related-products": {
+      "disabled": true,
+      "settings": {
+        "color_scheme": "background-1",
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "padding_bottom": 60,
+        "padding_top": 0,
+        "products_to_show": 4,
+        "show_rating": false,
+        "show_secondary_image": true,
+        "show_vendor": false
+      },
+      "type": "related-products"
+    }
+  }
+}

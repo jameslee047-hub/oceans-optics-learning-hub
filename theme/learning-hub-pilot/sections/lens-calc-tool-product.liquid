@@ -1,0 +1,703 @@
+<style>
+html, body { overflow-x: hidden; width: 100%; }
+#calculator-container * { font-family: "Lato", sans-serif; }
+
+#calculator-container {
+  min-height: 400px;
+  max-width: min(500px, 100vw - 16px);
+  margin: 5px auto;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff;
+  border: 2px solid #023059;
+  display: block;
+  text-align: center;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+#lens-calculator h2,
+#lens-calculator h3,
+#lens-calculator label { color: #023059; }
+
+#lens-calculator p {
+  color: #023059;
+  margin-bottom: 20px;
+  font-weight: 400;
+  line-height: normal;
+  font-size: 16px;
+}
+
+/* ===== TOOLTIPS ===== */
+.tooltip {
+  display: inline-block;
+  cursor: pointer;
+  position: relative;
+  z-index: 10;
+}
+.tooltip .tooltiptext {
+  width: 160px;
+  background: #023059;
+  color: #fff;
+  padding: 10px;
+  text-align: center;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity .2s, visibility .2s;
+  z-index: 9999;
+  pointer-events: auto;
+}
+.tooltip .tooltiptext::after {
+  content: " ";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent #023059 transparent;
+}
+.tooltip:hover .tooltiptext,
+.tooltip.open .tooltiptext {
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Main info icon in paragraph - pin to left */
+#lens-calculator p .tooltip .tooltiptext {
+  left: 0;
+  transform: none;
+}
+#lens-calculator p .tooltip .tooltiptext::after {
+  left: 12px;
+  margin-left: 0;
+}
+
+/* Help icons top right of each card - pin to right */
+.input-help {
+  position: absolute;
+  top: 20px;
+  right: 23px;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  z-index: 20;
+}
+.input-help svg { width: 22px; height: 22px; fill: #B95E05; }
+.input-help .tooltiptext {
+  left: auto;
+  right: 0;
+  transform: none;
+  width: 180px;
+  top: 26px;
+}
+.input-help .tooltiptext::after {
+  left: auto;
+  right: 12px;
+  margin-left: 0;
+}
+
+/* CYL help icons - pin to right */
+.cyl-help .tooltiptext {
+  left: auto;
+  right: 0;
+  transform: none;
+  width: 180px;
+}
+.cyl-help .tooltiptext::after {
+  left: auto;
+  right: 12px;
+  margin-left: 0;
+}
+
+/* ===== INPUT GROUPS ===== */
+#lens-calculator .input-group {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 20px 0px;
+  text-align: center;
+  border: 2px solid #023059;
+  border-radius: 30px;
+  justify-content: center;
+  overflow: visible;
+}
+#lens-calculator .input-group label {
+  margin-bottom: 16px;
+  font-weight: 700;
+  font-size: 16px;
+  display: block;
+  padding-right: 25px;
+}
+.input-group__wrapper {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+  width: 100%;
+  box-sizing: border-box;
+}
+.input-group__inner {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ===== SIGN BUTTONS ===== */
+#lens-calculator .input-group .sign-btn {
+  width: 44px;
+  height: 44px;
+  border: 1px solid #023059;
+  border-radius: 10px;
+  background: #fff;
+  color: #023059;
+  font-size: 23px;
+  font-weight: 800;
+  cursor: pointer;
+  line-height: 1;
+}
+
+/* ===== PICKER ===== */
+.picker-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 1px;
+}
+.picker-dot { color: #023059; font-weight: 800; margin: 0 1px; }
+.picker-wrapper select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  color: #023059;
+  padding: 13px 10px;
+  font-size: 16px;
+  font-weight: 800;
+  width: 43px;
+  min-width: 0;
+  text-align: center;
+  text-align-last: center;
+  line-height: 1.2;
+  box-sizing: border-box;
+  box-shadow: inset 0 0 0 1px #023059;
+}
+.picker-wrapper select:focus { outline: 2px solid #B95E05; outline-offset: 1px; }
+
+/* ===== CYL ROW ===== */
+#lens-calculator .input-group .cyl-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 0 16px;
+  box-sizing: border-box;
+  justify-content: center;
+  position: relative;
+}
+#lens-calculator .input-group .cyl-row label {
+  color: #023059;
+  font-weight: 800;
+  font-size: 12px;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+#lens-calculator .input-group .cyl-row .cyl-sign-btn {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #023059;
+  border-radius: 6px;
+  background: #fff;
+  color: #023059;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+  padding: 0;
+}
+#lens-calculator .input-group .cyl-row select {
+  flex: 1;
+  min-width: 0;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid #023059;
+  border-radius: 8px;
+  background: #fff;
+  color: #023059;
+  padding: 6px 4px;
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+  text-align: center;
+}
+#lens-calculator .input-group .cyl-row select:focus { outline: 2px solid #B95E05; outline-offset: 1px; }
+#lens-calculator .input-group .cyl-row .cyl-help svg {
+  width: 16px;
+  height: 16px;
+  fill: #B95E05;
+}
+
+/* ===== CTA ===== */
+#final-calculate-button {
+  padding: 10px 20px;
+  border: 2px solid #B95E05;
+  background: #B95E05;
+  color: #fff;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: 700;
+  text-align: center;
+  display: block;
+  margin: 25px auto;
+  font-size: 24px;
+  box-shadow: 0 4px 6px rgba(0,0,0,.1);
+}
+
+/* ===== ERROR ===== */
+.error-message { color: red; font-weight: 700; text-align: center; margin-top: 10px; display: none; }
+
+/* ===== RESULT SUMMARY ===== */
+.result-summary {
+  background: #f0f6ff;
+  border: 2px solid #023059;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 15px;
+  text-align: center;
+}
+.result-summary .result-label {
+  font-size: 12px;
+  font-weight: 800;
+  color: #023059;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+.result-summary .result-values {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+}
+.result-summary .result-eye {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.result-summary .result-eye-label {
+  font-size: 12px;
+  font-weight: 700;
+  color: #023059;
+}
+.result-summary .result-eye-value {
+  font-size: 28px;
+  font-weight: 900;
+  color: #023059;
+}
+.result-summary .result-divider {
+  font-size: 28px;
+  color: #023059;
+  opacity: 0.3;
+  padding-top: 18px;
+}
+.result-note {
+  font-size: 12px;
+  color: #666;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 500px) {
+  .input-group__wrapper { font-size: 15px; }
+  .input-group__inner { gap: 2px; }
+  #lens-calculator .input-group {
+    border-radius: 20px;
+    padding: 12px 4px;
+    min-width: 0;
+    flex: 1;
+    overflow: visible;
+  }
+  #lens-calculator .input-group label { margin-bottom: 10px; font-size: 13px; }
+  .picker-wrapper select { width: 34px; padding: 10px 4px; font-size: 14px; }
+  #lens-calculator .input-group #rightEyeSphereSign,
+  #lens-calculator .input-group #leftEyeSphereSign { width: 36px; height: 36px; font-size: 18px; }
+  .input-help { right: 8px; top: 8px; }
+  #lens-calculator .input-group .cyl-row { gap: 3px; padding: 0 6px; }
+  #lens-calculator .input-group .cyl-row label { font-size: 10px; }
+  #lens-calculator .input-group .cyl-row select { font-size: 9px; padding: 4px 2px; }
+  #lens-calculator .input-group .cyl-row .cyl-sign-btn { width: 22px; height: 22px; font-size: 11px; }
+  #lens-calculator .input-group .cyl-row .cyl-help svg { width: 18px; height: 18px; }
+}
+</style>
+
+<h2 style="text-align: center; color: #023059; font-family: 'Lato', sans-serif; margin: 20px auto 10px; max-width: 500px;">Underwater Lens Calculator</h2>
+
+<div id="calculator-container">
+  <div id="lens-calculator">
+
+    <p>
+      <span class="tooltip" aria-label="Underwater Rx note">
+        <svg viewBox="0 0 24 24" width="22" height="22" style="margin-right:4px; vertical-align:middle;">
+          <circle cx="12" cy="12" r="10" fill="#B95E05" opacity=".12"></circle>
+          <path d="M11 10h2v7h-2zm0-3h2v2h-2z" fill="#B95E05"></path>
+        </svg>
+        <span class="tooltiptext">
+          Underwater, light bends differently and can make your usual prescription feel too strong. We adjust it slightly for comfortable vision underwater.
+        </span>
+      </span>
+      Enter your prescription to find your recommended underwater lens strength
+    </p>
+
+    <div class="input-group__wrapper">
+
+      <!-- RIGHT EYE -->
+      <div class="input-group">
+        <label for="rightEyeSphere">Sphere Right (OD)</label>
+        <span class="tooltip input-help" aria-label="Sign help">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg>
+          <span class="tooltiptext">Choose − for nearsighted (myopia) or + for farsighted (hyperopia)</span>
+        </span>
+        <div class="input-group__inner">
+          <button type="button" id="rightEyeSphereSign" class="sign-btn notactivated" onclick="toggleSign(this)">+/-</button>
+          <div class="picker-wrapper" data-side="right">
+            <select id="rightInt" aria-label="Right integer"></select>
+            <span class="picker-dot">.</span>
+            <select id="rightFrac" aria-label="Right decimal"></select>
+          </div>
+          <input type="hidden" id="rightEyeSphere" value="0.00">
+        </div>
+        <div class="cyl-row">
+          <label for="cyl-sign-right">CYL:</label>
+          <button type="button" id="cyl-sign-right" class="cyl-sign-btn" onclick="toggleCylSign(this)">+/-</button>
+          <select id="cyl-range-right">
+  <option value="none">0.00</option>
+  <option value="low">0.25 – 0.75</option>
+  <option value="medium">1.00 – 1.75</option>
+  <option value="high">2.00 – 3.00</option>
+  <option value="very-high">3.25+</option>
+</select>
+          <span class="tooltip cyl-help" aria-label="CYL help">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" opacity=".14"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg>
+            <span class="tooltiptext">Check your prescription for the CYL value and its + or − sign. If you have no CYL, select 0.00 – 0.75.</span>
+          </span>
+        </div>
+      </div>
+
+      <!-- LEFT EYE -->
+      <div class="input-group">
+        <label for="leftEyeSphere">Sphere Left (OS)</label>
+        <span class="tooltip input-help" aria-label="Sign help">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg>
+          <span class="tooltiptext">Choose − for nearsighted (myopia) or + for farsighted (hyperopia)</span>
+        </span>
+        <div class="input-group__inner">
+          <button type="button" id="leftEyeSphereSign" class="sign-btn notactivated" onclick="toggleSign(this)">+/-</button>
+          <div class="picker-wrapper" data-side="left">
+            <select id="leftInt" aria-label="Left integer"></select>
+            <span class="picker-dot">.</span>
+            <select id="leftFrac" aria-label="Left decimal"></select>
+          </div>
+          <input type="hidden" id="leftEyeSphere" value="0.00">
+        </div>
+        <div class="cyl-row">
+          <label for="cyl-sign-left">CYL:</label>
+          <button type="button" id="cyl-sign-left" class="cyl-sign-btn" onclick="toggleCylSign(this)">+/-</button>
+          <select id="cyl-range-left">
+  <option value="none">0.00</option>
+  <option value="low">0.25 – 0.75</option>
+  <option value="medium">1.00 – 1.75</option>
+  <option value="high">2.00 – 3.00</option>
+  <option value="very-high">3.25+</option>
+</select>
+          <span class="tooltip cyl-help" aria-label="CYL help">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="12" opacity=".14"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg>
+            <span class="tooltiptext">Check your prescription for the CYL value and its + or − sign. If you have no CYL, select 0.00 – 0.75.</span>
+          </span>
+        </div>
+      </div>
+
+    </div>
+
+    <button id="final-calculate-button" onclick="calculateLensStrength()">Find My Lens Strength</button>
+
+    <div class="error-message" id="error-message"></div>
+
+    <div class="result-summary" id="result-summary" style="display:none;">
+      <div class="result-label">Your Recommended Underwater Lens Strength</div>
+      <div class="result-values">
+        <div class="result-eye">
+          <div class="result-eye-label">Right (OD)</div>
+          <div class="result-eye-value" id="resultRight">--</div>
+        </div>
+        <div class="result-divider">|</div>
+        <div class="result-eye">
+          <div class="result-eye-label">Left (OS)</div>
+          <div class="result-eye-value" id="resultLeft">--</div>
+        </div>
+      </div>
+      <div class="result-note">This is your recommended starting strength. If unsure, <a href="mailto:info@oceansoptics.com" style="color:#B95E05;">email us your prescription</a> and we will confirm.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function toggleSign(btn) {
+  btn.classList.remove("notactivated");
+  if (btn.innerText === "+/-") btn.innerText = "-";
+  else if (btn.innerText === "-") btn.innerText = "+";
+  else btn.innerText = "-";
+}
+
+function toggleCylSign(btn) {
+  if (btn.innerText === "+/-") btn.innerText = "-";
+  else if (btn.innerText === "-") btn.innerText = "+";
+  else btn.innerText = "-";
+}
+
+const QUARTERS = ["00", "25", "50", "75"];
+const QUARTER_MAP = { "00": "0.00", "25": "0.25", "50": "0.50", "75": "0.75" };
+
+function buildIntOptions(sel) {
+  sel.innerHTML = "";
+  for (let i = 0; i <= 10; i++) {
+    const o = document.createElement("option");
+    o.value = String(i);
+    o.textContent = i;
+    sel.appendChild(o);
+  }
+}
+function buildFracOptions(sel, allowAll = true) {
+  sel.innerHTML = "";
+  QUARTERS.forEach(q => {
+    const o = document.createElement("option");
+    o.value = q;
+    o.textContent = q;
+    if (!allowAll && q !== "00") o.disabled = true;
+    sel.appendChild(o);
+  });
+  if (!allowAll) sel.value = "00";
+}
+function updateHidden(side) {
+  const intSel = document.getElementById(side + "Int");
+  const fracSel = document.getElementById(side + "Frac");
+  const hidden = document.getElementById(side + "EyeSphere");
+  const intVal = parseInt(intSel.value, 10);
+  const frac = parseFloat(QUARTER_MAP[fracSel.value] || "0.00");
+  if (intVal === 10 && fracSel.value !== "00") buildFracOptions(fracSel, false);
+  hidden.value = (intVal + frac).toFixed(2);
+}
+function initPicker(side) {
+  const intSel = document.getElementById(side + "Int");
+  const fracSel = document.getElementById(side + "Frac");
+  buildIntOptions(intSel);
+  buildFracOptions(fracSel, true);
+  intSel.value = "0";
+  fracSel.value = "00";
+  updateHidden(side);
+  intSel.addEventListener("change", () => {
+    buildFracOptions(fracSel, parseInt(intSel.value, 10) < 10);
+    updateHidden(side);
+  });
+  fracSel.addEventListener("change", () => updateHidden(side));
+  [intSel, fracSel].forEach(sel => {
+    sel.addEventListener("wheel", e => {
+      e.preventDefault();
+      const d = Math.sign(e.deltaY);
+      const idx = sel.selectedIndex;
+      const next = Math.max(0, Math.min(sel.options.length - 1, idx + d));
+      sel.selectedIndex = next;
+      sel.dispatchEvent(new Event("change", { bubbles: true }));
+    }, { passive: false });
+  });
+}
+document.addEventListener("DOMContentLoaded", () => {
+  initPicker("left");
+  initPicker("right");
+});
+
+function snapToHalf(valueAbs, bias) {
+  const x = Math.max(0, Number(valueAbs || 0));
+  const down = Math.floor(x * 2 + 1e-9) / 2;
+  const up = Math.ceil(x * 2 - 1e-9) / 2;
+  if (Math.abs(x - down) < 1e-9) return down;
+  if (bias === "weaker") return down;
+  if (bias === "stronger") return up;
+  const dDown = Math.abs(x - down);
+  const dUp = Math.abs(up - x);
+  return dDown <= dUp ? down : up;
+}
+
+function calcOne(sphere, sphereSign, cylRange, cylSign) {
+  const val = Math.max(0, Number(sphere || 0));
+  const isFar = sphereSign === "+";
+  const isCylMinus = cylSign === "-";
+
+  if (isFar) {
+    if (Math.abs(val - 0.50) < 1e-6 || Math.abs(val - 0.75) < 1e-6) {
+      if (!isCylMinus && cylRange !== "none") {
+        return "+1.00";
+      }
+      return "0.00";
+    }
+
+    let result;
+
+    if (cylRange === "none" || cylRange === "low") {
+      result = Math.floor(val + 1e-9);
+      if (result === 0) result = 1;
+    } else if (cylRange === "medium") {
+      if (isCylMinus) {
+        result = Math.floor(val + 1e-9);
+      } else {
+        result = Math.ceil(val - 1e-9);
+      }                                   // FIX 1: was missing this closing brace
+    } else if (cylRange === "high") {
+      result = Math.round(val);
+    } else if (cylRange === "very-high") {
+      if (isCylMinus) {
+        result = Math.round(Math.max(0, val - 0.75));
+      } else {
+        result = Math.round(val + 0.75);
+      }
+    }
+
+    if (result > 5.00) result = 5.00;
+    if (result > 0 && result < 1.00) result = 1.00;
+    if (result === 0) return "0.00";
+
+    return `+${result.toFixed(2)}`;
+  }
+
+  let targetAbs = val;
+  let bias = "nearest";
+
+  if (cylRange === "none" || cylRange === "low") {
+    const whole = Math.floor(val + 1e-9);
+    const frac = Math.round((val - whole) * 100) / 100;
+    const reduce = (Math.abs(frac - 0.25) < 1e-6 || Math.abs(frac - 0.75) < 1e-6) ? 0.25 : 0.50;
+    targetAbs = Math.max(0, val - reduce);
+    bias = "weaker";
+  } else if (cylRange === "medium") {   // FIX 2: removed the stray `}` that was here
+    if (isCylMinus) {
+      targetAbs = val;
+      bias = "nearest";
+    } else {
+      targetAbs = Math.max(0, val - 0.50);
+      bias = "weaker";
+    }
+  } else if (cylRange === "high") {
+    targetAbs = val;
+    bias = "nearest";
+  } else if (cylRange === "very-high") {
+    if (isCylMinus) {
+      targetAbs = val + 0.75;
+      bias = "nearest";
+    } else {
+      targetAbs = Math.max(0, val - 0.75);
+      bias = "nearest";
+    }
+  }
+
+  if ((cylRange === "high" || cylRange === "very-high") && val <= 0.75 && val > 0) {
+    return "-1.00";
+  }
+
+  let recAbs = snapToHalf(targetAbs, bias);
+  if (recAbs > 9.00) recAbs = 9.00;
+  if (recAbs > 0 && recAbs < 1.00) recAbs = 1.00;
+
+  return recAbs === 0 ? "0" : `-${recAbs.toFixed(2)}`;
+}
+function calculateLensStrength() {
+  const leftSphere = parseFloat(document.getElementById("leftEyeSphere").value) || 0;
+  const rightSphere = parseFloat(document.getElementById("rightEyeSphere").value) || 0;
+  const leftSign = document.getElementById("leftEyeSphereSign").innerText;
+  const rightSign = document.getElementById("rightEyeSphereSign").innerText;
+  const leftCylRange = document.getElementById("cyl-range-left").value;
+  const rightCylRange = document.getElementById("cyl-range-right").value;
+  const leftCylSign = document.getElementById("cyl-sign-left").innerText;
+  const rightCylSign = document.getElementById("cyl-sign-right").innerText;
+
+  const msg = document.getElementById("error-message");
+
+  if (leftSign === "+/-" || rightSign === "+/-") {
+    msg.textContent = "Please select + or − for both eyes before calculating.";
+    msg.style.display = "block";
+    return;
+  }
+
+if ((leftCylSign === "+/-" && leftCylRange !== "none") || (rightCylSign === "+/-" && rightCylRange !== "none")) {
+    msg.textContent = "Please select + or − for your CYL values, or select 0.00 if you have no cylinder.";
+    msg.style.display = "block";
+    return;
+  }
+
+  msg.style.display = "none";
+
+  const adjRight = calcOne(rightSphere, rightSign, rightCylRange, rightCylSign);
+  const adjLeft = calcOne(leftSphere, leftSign, leftCylRange, leftCylSign);
+
+  document.getElementById("resultRight").textContent = adjRight;
+  document.getElementById("resultLeft").textContent = adjLeft;
+  document.getElementById("result-summary").style.display = "block";
+}
+
+/* Tooltip open/close only - no clamping */
+(function () {
+  function closeAll(ex) {
+    document.querySelectorAll(".tooltip.open").forEach(t => {
+      if (ex && t === ex) return;
+      t.classList.remove("open");
+    });
+  }
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".tooltip").forEach(tip => {
+      tip.addEventListener("click", e => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (tip.classList.contains("open")) {
+          tip.classList.remove("open");
+        } else {
+          closeAll(tip);
+          tip.classList.add("open");
+        }
+      });
+    });
+    document.addEventListener("click", e => {
+      if (!e.target.closest(".tooltip")) closeAll();
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Lens-Calc-tool-product",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Lens Calculator"
+    }
+  ]
+}
+{% endschema %}

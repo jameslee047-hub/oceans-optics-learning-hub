@@ -1,0 +1,123 @@
+{% if template contains 'collection' %}
+
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": {{ collection.title | json }},
+    "url": {{ shop.url | append: collection.url | json }},
+    "mainEntity": {
+      "@type": "ItemList",
+      "itemListElement": [
+        {% for product in collection.products %}
+          {
+            "@type": "ListItem",
+            "position": {{ forloop.index }},
+            "item": {
+              "@type": "Product",
+              "name": {{ product.title | json }},
+              "url": {{ shop.url | append: product.url | json }},
+              "image": {{ product.featured_image | image_url: width: 800 | prepend: "https:" | json }},
+
+              {% assign variant = product.selected_or_first_available_variant %}
+
+            {% if variant.sku != blank %}
+              "sku": {{ variant.sku | json }},
+              {% endif %}
+
+            {% if product.vendor != blank %}
+              "brand": {
+                "@type": "Brand",
+                "name": {{ product.vendor | json }}
+              },
+              {% endif %}
+
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": {{ shop.currency | json }},
+                "price": {{ variant.price | money_without_currency | replace: ',', '.' | json }},
+                "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+                "url": {{ shop.url | append: product.url | json }},
+
+                "shippingDetails": {
+                  "@type": "OfferShippingDetails",
+                  "shippingDestination": {
+                    "@type": "DefinedRegion",
+                    "addressCountry": "US"
+                  }
+                },
+
+                "hasMerchantReturnPolicy": {
+                  "@type": "MerchantReturnPolicy",
+                  "applicableCountry": "US",
+                  "merchantReturnDays": 30,
+                  "returnFees": "https://schema.org/FreeReturn"
+                }
+              }
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+        ]
+      }
+    }
+    </script>
+
+{% endif %}
+
+
+
+{% if template contains 'product' %}
+
+    {% assign variant = product.selected_or_first_available_variant %}
+
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Product",
+
+            "name": {{ product.title | json }},
+            "url": {{ shop.url | append: product.url | json }},
+
+            {% if product.featured_image %}
+            "image": [
+              {{ product.featured_image | image_url: width: 1200 | prepend: "https:" | json }}
+            ],
+            {% endif %}
+
+            {% if variant.sku != blank %}
+            "sku": {{ variant.sku | json }},
+            {% endif %}
+
+            {% if product.vendor != blank %}
+            "brand": {
+              "@type": "Brand",
+              "name": {{ product.vendor | json }}
+            },
+            {% endif %}
+
+                "offers": {
+                  "@type": "Offer",
+                  "url": {{ shop.url | append: product.url | json }},
+              "priceCurrency": {{ shop.currency | json }},
+              "price": {{ variant.price | money_without_currency | replace: ',', '.' | json }},
+              "availability": "{% if variant.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+
+              "shippingDetails": {
+                "@type": "OfferShippingDetails",
+                "shippingDestination": {
+                  "@type": "DefinedRegion",
+                  "addressCountry": "US"
+                }
+              },
+
+              "hasMerchantReturnPolicy": {
+                "@type": "MerchantReturnPolicy",
+                "applicableCountry": "US",
+                "merchantReturnDays": 30,
+                "returnFees": "https://schema.org/FreeReturn"
+              }
+            }
+          }
+    </script>
+
+{% endif %}

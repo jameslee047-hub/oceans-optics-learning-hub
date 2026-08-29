@@ -1,0 +1,360 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_banner_qVBYRf": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/image_banner_scuba_diver_Mobile_1.png",
+        "image_2": "shopify://shop_images/image_banner_scuba_diver_Mobile_1.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "",
+        "image_height": "small",
+        "desktop_content_position": "bottom-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "inverse",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false,
+        "fetchpriority_high": false
+      }
+    },
+    "breadcrumbs_CA3cnB": {
+      "type": "breadcrumbs",
+      "name": "Breadcrumbs",
+      "settings": {
+        "padding_top_desktop": 20,
+        "padding_bottom_desktop": 20,
+        "padding_top_mobile": 12,
+        "padding_bottom_mobile": 12,
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
+      }
+    },
+    "rich_text_aFbbVL": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_pdRYY8": {
+          "type": "heading",
+          "settings": {
+            "heading": "Nearsighted Snorkel Mask With Prescription Lenses for Divers",
+            "set_h1": true,
+            "heading_size": "h0"
+          }
+        },
+        "text_qmTJTF": {
+          "type": "text",
+          "settings": {
+            "text": "<p>See clearly underwater with nearsighted prescription snorkel dive masks designed for people with myopia and everyday vision correction needs. Our snorkel mask for nearsighted divers features optical-grade tempered glass, comfortable silicone skirts, and minus degree lenses in 0.50 increments for a more precise fit. Whether you need a reliable nearsighted swim mask for travel, swim adventures, or scuba diving, these masks offer great comfort, clarity, and long-lasting performance underwater.</p>"
+          }
+        },
+        "button_zVwnqG": {
+          "type": "button",
+          "settings": {
+            "button_label": "Shop Below",
+            "button_link": "shopify://collections/nearsighted-prescription-snorkel-masks",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_pdRYY8",
+        "text_qmTJTF",
+        "button_zVwnqG"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "full_width": true,
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    },
+    "banner": {
+      "type": "main-collection-banner",
+      "disabled": true,
+      "settings": {
+        "show_h1_title_collection": false,
+        "show_collection_description": false,
+        "show_collection_image": false,
+        "color_scheme": "background-1"
+      }
+    },
+    "product-grid": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "products_per_page": 12,
+        "columns_desktop": 4,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "enable_filtering": true,
+        "filter_type": "horizontal",
+        "enable_sorting": false,
+        "columns_mobile": "2",
+        "padding_top": 0,
+        "padding_bottom": 16
+      }
+    },
+    "multicolumn_CYYGkg": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_F6JjRe": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>How Rx Lenses Work</strong>",
+            "title_h3": true,
+            "text": "<h4>Nearsighted diopter lenses move the focal point so distant objects snap into focus underwater. These optical corrective lenses are designed to improve clarity for divers with myopia and other distance vision challenges when using a nearsighted snorkel mask underwater.</h4><h4>Despite the name “Nearsighted,” they improve overall scene clarity across common dive distances by bending light toward the retina.</h4><h4>Because water makes objects appear larger and closer, many swimmers choose a slightly lower lens strength than their everyday glasses or reading prescription. Most prescription snorkel and scuba masks also use a flat lens design to maintain better underwater visibility.</h4>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_qBEXym": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>How To Choose Your Minus Lenses</strong>",
+            "title_h3": true,
+            "text": "<h4>1) Use the Sphere value from your latest prescription.</h4><h4>2) Select the closest minus power in 0.50 steps. Remember to round down toward 0!</h4><h4>3) Most divers go 0.25 to 0.50 weaker than their glasses due to water magnification. This helps many people find a more comfortable myopia lens strength underwater.</h4><h4>4) Choose each eye separately if your prescription type or Sphere values differ.</h4><h4>5) For more help, read our guide on how to choose the perfect lenses.</h4>",
+            "link_label": "Read our blog for help finding your Rx lenses",
+            "link": "shopify://blogs/home/round-up-or-down-choosing-the-right-lens-strength-for-your-underwater-adventure"
+          }
+        }
+      },
+      "block_order": [
+        "column_F6JjRe",
+        "column_qBEXym"
+      ],
+      "custom_css": [
+        ".multicolumn .title-wrapper-with-link {justify-content: center;}",
+        ".multicolumn .title {text-align: center;}",
+        ".multicolumn .rte p,.multicolumn .rte li {line-height: 1.6; margin: 6px 0;}",
+        ".multicolumn .rte ul {margin-left: 1.25em; list-style: disc outside;}"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "Why You Need a Nearsighted Swim Mask with Prescription Lenses",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 2,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "background-1",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 20
+      }
+    },
+    "oo_quiz_card_XLdh7f": {
+      "type": "oo-quiz-card",
+      "disabled": true,
+      "name": "OO Quiz Card",
+      "settings": {
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
+      }
+    },
+    "rich_text_XLCEdx": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_zLX6DU": {
+          "type": "heading",
+          "settings": {
+            "heading": "Find the Best Prescription Snorkeling Mask Fit",
+            "set_h1": false,
+            "heading_size": "h1"
+          }
+        },
+        "text_D4BeV3": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>Quality you can feel! </strong>Tempered glass lenses for sharp, durable optics, plus hypoallergenic silicone skirts for a comfortable, leak resistant seal.</p><p>Try the<a href=\"/pages/prescription-lenses-calculator-tool\" target=\"_blank\" title=\"FREE Lens calulator tool page\"> <strong>Underwater Lens Calculator</strong></a> and see our <a href=\"/pages/how-to-check-if-a-mask-will-fit-you-online\" target=\"_blank\" title=\"Mask Size Guide Help Page\"><strong>Mask Size Guide</strong></a> for tips on how to measure and choose the perfect mask for you!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_zLX6DU",
+        "text_D4BeV3"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 72
+      }
+    },
+    "mask_sizing_tool_shortcut_AkqzbD": {
+      "type": "mask-sizing-tool-shortcut",
+      "name": "Mask fit shortcut",
+      "settings": {
+        "heading": "How would you like to find your mask fit?",
+        "subheading": "Choose automatic camera measuring or follow the manual ruler guide below",
+        "auto_badge": "Recommended",
+        "auto_icon": "🎥",
+        "auto_title": "Auto Camera Measuring",
+        "auto_text": "Point your front camera at your face. Our tool measures you automatically in seconds, with no ruler needed.",
+        "auto_point_1": "✓ Takes about 30 seconds",
+        "auto_point_2": "✓ Works on phone or desktop",
+        "auto_point_3": "✓ Get instant mask recommendations",
+        "auto_url": "",
+        "open_camera_new_tab": true,
+        "auto_button": "Start Camera Measuring →",
+        "manual_badge": "Measure Yourself",
+        "manual_icon": "📐",
+        "manual_title": "Manual Ruler Guide",
+        "manual_text": "Prefer to measure yourself with a ruler or tape? Follow our step by step guide.",
+        "manual_point_1": "✓ No camera needed",
+        "manual_point_2": "✓ Works anywhere",
+        "manual_point_3": "✓ Fine-tune with sliders",
+        "manual_mode": "link",
+        "manual_url": "",
+        "manual_anchor_id": "ruler-guide-start",
+        "manual_reveal_id": "",
+        "manual_button": "Use Ruler Guide ↓"
+      }
+    },
+    "snorkel_101_guide_nrkTqQ": {
+      "type": "Snorkel-101-guide",
+      "name": "Snorkeling 101 promo",
+      "settings": {}
+    },
+    "featured_blog_gjx3qP": {
+      "type": "featured-blog",
+      "disabled": true,
+      "name": "t:sections.featured-blog.presets.name",
+      "settings": {
+        "heading": "Not sure which prescription or size?",
+        "heading_size": "h1",
+        "blog": "how-to-choose-prescription-snorkel-mask",
+        "post_limit": 2,
+        "columns_desktop": 2,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "show_image": true,
+        "show_date": false,
+        "show_author": false,
+        "show_view_all": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "responsive_banner_7NwJR3": {
+      "type": "Responsive-banner",
+      "disabled": true,
+      "settings": {
+        "use_same_image": true,
+        "desktop_image": "shopify://shop_images/Desktop_Mask_Sizing.png",
+        "mobile_image": "shopify://shop_images/Mobile_Mask_Sizing.png",
+        "banner_heading": "",
+        "banner_text": "",
+        "button_text": "",
+        "button_link": "shopify://pages/how-to-check-if-a-mask-will-fit-you-online",
+        "banner_max_width": 1800,
+        "desktop_height": 200,
+        "mobile_height": 100,
+        "image_fit": "contain",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "heading_font_size": 2,
+        "text_font_size": 1,
+        "mobile_heading_font_size": 1.5,
+        "mobile_text_font_size": 0.9,
+        "content_position_horizontal": "50%",
+        "content_position_vertical": "50%",
+        "button_background_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_background_color": "#333333"
+      }
+    },
+    "custom_liquid_kgwc6a": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom-liquid.presets.name",
+      "settings": {
+        "custom_liquid": "<section id=\"collection-faq-section\" class=\"faq-container\" aria-labelledby=\"collection-faq-title\">\n<h2 id=\"collection-faq-title\" class=\"faq-title\">Nearsighted Snorkel Mask FAQ</h2>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What is a nearsighted snorkel mask?</h3></summary>\n<div class=\"faq-answer\">\n<p>A nearsighted prescription snorkel dive mask is designed for people who need minus-power vision correction underwater. Instead of standard flat glass, these masks use prescription lenses that help distant objects appear clearer while snorkeling or scuba diving. They are a popular choice for divers with myopia who want a more natural underwater viewing experience, especially when searching for a reliable snorkel mask for nearsighted swimmers.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I use a nearsighted swim mask for both snorkeling and scuba diving?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Most prescription snorkeling and scuba masks are designed to perform well in both environments. Tempered glass lenses, reliable seals, and durable silicone skirts help maintain clear vision and comfort whether you stay near the surface or go deeper on a dive.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">How do I choose the correct minus lens strength underwater?</h3></summary>\n<div class=\"faq-answer\">\n<p>Most divers start with the Sphere value from their latest glasses prescription and select the closest available minus power. Because water naturally magnifies objects slightly, many people choose lenses that are 0.25 to 0.50 weaker than their everyday glasses for a more comfortable underwater experience.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I choose different prescription strengths for each eye in a snorkel mask?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. All of our nearsighted prescription snorkel masks allow different lens strengths for each eye. This is especially helpful for swimmers with uneven myopia who need more precise underwater vision correction.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What makes a comfortable Rx nearsighted mask fit?</h3></summary>\n<div class=\"faq-answer\">\n<p>A comfortable shortsighted mask depends on your face shape, skirt softness, and overall mask design. Many snorkelers prefer low-volume masks with soft silicone skirts because they create a secure seal and reduce pressure during longer snorkeling or scuba sessions. A good diving mask for nearsighted users should also keep the prescription lenses stable and clear underwater.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are nearsighted prescription snorkel masks suitable for long dives?</h3></summary>\n<div class=\"faq-answer\">\n<p>Absolutely. A properly fitted nearsighted prescription snorkel mask can stay comfortable during long dives and extended snorkeling sessions. Soft silicone materials, secure lens positioning, and a leak-resistant seal all help improve comfort and visibility underwater. Many divers look for comfort, clarity, and fit when choosing the best snorkel mask for nearsighted vision.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are nearsighted swim masks available in unisex styles?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many prescription masks for nearsighted come in unisex styles designed to fit a wide range of face shapes comfortably. Different frame designs, skirt sizes, and adjustable straps make it easier to find the right comfortable fit for both comfort and underwater visibility.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What should I do if I order the wrong lenses for my myopia diving mask?</h3></summary>\n<div class=\"faq-answer\">\n<p>If you are unsure about your nearsighted prescription before ordering, it’s best to contact us for guidance first. Our team at Oceans Optics can help verify the correct lens strength for your dive mask and explain our return or exchange policy before you purchase.</p>\n</div>\n</details>\n\n</section>\n\n<script type=\"application/ld+json\">\n{\n\"@context\": \"https://schema.org\",\n\"@type\": \"FAQPage\",\n\"mainEntity\": [\n{\n\"@type\": \"Question\",\n\"name\": \"What is a nearsighted snorkel mask?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"A nearsighted prescription snorkel dive mask is designed for people who need minus-power vision correction underwater. Instead of standard flat glass, these masks use prescription lenses that help distant objects appear clearer while snorkeling or scuba diving. They are a popular choice for divers with myopia who want a more natural underwater viewing experience, especially when searching for a reliable snorkel mask for nearsighted swimmers.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I use a nearsighted swim mask for both snorkeling and scuba diving?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Most prescription snorkeling and scuba masks are designed to perform well in both environments. Tempered glass lenses, reliable seals, and durable silicone skirts help maintain clear vision and comfort whether you stay near the surface or go deeper on a dive.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"How do I choose the right minus lens strength underwater?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Most divers start with the Sphere value from their latest glasses prescription and select the closest available minus power. Because water naturally magnifies objects slightly, many people choose lenses that are 0.25 to 0.50 weaker than their everyday glasses for a more comfortable underwater experience.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I choose different prescription strengths for each eye in a snorkel mask?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. All of our nearsighted prescription snorkel masks allow different lens strengths for each eye. This is especially helpful for swimmers with uneven myopia who need more precise underwater vision correction.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"What makes a comfortable Rx nearsighted mask fit?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"A comfortable shortsighted mask depends on your face shape, skirt softness, and overall mask design. Many snorkelers prefer low-volume masks with soft silicone skirts because they create a secure seal and reduce pressure during longer snorkeling or scuba sessions. A good diving mask for nearsighted users should also keep the prescription lenses stable and clear underwater.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are nearsighted prescription snorkel masks suitable for long dives?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Absolutely. A properly fitted nearsighted prescription snorkel mask can stay comfortable during long dives and extended snorkeling sessions. Soft silicone materials, secure lens positioning, and a leak-resistant seal all help improve comfort and visibility underwater. Many divers look for comfort, clarity, and fit when choosing the best snorkel mask for nearsighted vision.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are nearsighted swim masks available in unisex styles?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many prescription masks for nearsighted come in unisex styles designed to fit a wide range of face shapes comfortably. Different frame designs, skirt sizes, and adjustable straps make it easier to find the right comfortable fit for both comfort and underwater visibility.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"What should I do if I order the wrong lenses for my myopia diving mask?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"If you are unsure about your nearsighted prescription before ordering, it’s best to contact us for guidance first. Our team at Oceans Optics can help verify the correct lens strength for your dive mask and explain our return or exchange policy before you purchase.\"\n}\n}\n]\n}\n</script>\n\n<style>\n.faq-container {\nmax-width: 700px;\nmargin: 20px auto;\npadding: 20px;\nborder-top: 1px solid #023059;\nfont-family: 'Lato', sans-serif;\n}\n.faq-title {\nfont-size: 24px;\nfont-weight: bold;\ncolor: #023059;\ntext-align: center;\nmargin-bottom: 15px;\n}\n.faq-item {\nborder-bottom: 1px solid #ddd;\nmargin-bottom: 10px;\n}\n.faq-question {\nfont-size: 16px;\nbackground-color: #ffffff;\ncolor: #023059;\npadding: 10px;\ncursor: pointer;\nborder: 1px solid #023059;\nborder-radius: 5px;\nmargin: 0;\nfont-weight: 700;\ndisplay: flex;\nalign-items: baseline;\n}\n.faq-question h3 {\nfont-size: 16px;\ncolor: #023059;\nfont-weight: 700;\nmargin: 0;\n}\n.faq-answer {\npadding: 10px;\nfont-size: 14px;\nbackground-color: #f9f9f9;\ncolor: #333;\nfont-weight: 400;\n}\n.faq-answer p { margin: 0 0 8px 0; }\n.faq-answer p:last-child { margin-bottom: 0; }\n.faq-answer a { color: #B95e05; text-decoration: none; }\n.faq-answer a:hover { text-decoration: underline; }\ndetails summary::-webkit-details-marker { display: none; }\ndetails[open] .faq-question::before { content: \"▾ \"; }\ndetails:not([open]) .faq-question::before { content: \"▸ \"; }\n</style>",
+        "color_scheme": "",
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "17152440046bc5a1ee": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_3wwk6x": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "Join Our Community on Instagram!",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_3wwk6x"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "image_banner_qVBYRf",
+    "breadcrumbs_CA3cnB",
+    "rich_text_aFbbVL",
+    "banner",
+    "product-grid",
+    "multicolumn_CYYGkg",
+    "oo_quiz_card_XLdh7f",
+    "rich_text_XLCEdx",
+    "mask_sizing_tool_shortcut_AkqzbD",
+    "snorkel_101_guide_nrkTqQ",
+    "featured_blog_gjx3qP",
+    "responsive_banner_7NwJR3",
+    "custom_liquid_kgwc6a",
+    "17152440046bc5a1ee"
+  ]
+}

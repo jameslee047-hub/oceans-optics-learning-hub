@@ -1,0 +1,70 @@
+import { createShopifyTokenManager } from "./shopify-admin-client.js";
+
+const ALLOWED_STAGE_5C_MUTATIONS = new Set([
+  "metaobjectDefinitionCreate",
+  "metaobjectDefinitionUpdate",
+  "metaobjectCreate"
+]);
+
+function stripGraphqlComments(document) {
+  return String(document)
+    .split(/\r?\n/)
+    .map((line) => line.replace(/#.*/, ""))
+    .join("\n");
+}
+
+function mutationNames(document) {
+  const stripped = stripGraphqlComments(document);
+  if (!/\bmutation\b/i.test(stripped)) return [];
+  const names = new Set();
+  for (const match of stripped.matchAll(/\b(metaobjectDefinitionCreate|metaobjectCreate|metaobjectUpdate|metaobjectDelete|metaobjectDefinitionUpdate|metaobjectDefinitionDelete|fileCreate|pageCreate|pageUpdate|themeCreate|themeUpdate)\b/g)) {
+    names.add(match[1]);
+  }
+  return [...names];
+}
+
+export function assertStage5CMutationAllowed(document) {
+  const names = mutationNames(document);
+  if (names.length === 0) return;
+  for (const name of names) {
+    if (!ALLOWED_STAGE_5C_MUTATIONS.has(name)) {
+      throw new Error(`Stage 5C write client rejected mutation ${name}.`);
+    }
+  }
+}
+
+export function createShopifyStage5CClient(config) {
+  const endpoint = `https://${config.storeDomain}/admin/api/${config.apiVersion}/graphql.json`;
+  const tokenManager = createShopifyTokenManager(config);
+
+  async function graphql(query, variables = {}, operationName = undefined) {
+    assertStage5CMutationAllowed(query);
+    const accessToken = await tokenManager.getAccessToken();
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": accessToken
+      },
+      body: JSON.stringify({ query, variables, operationName })
+    });
+    const text = await response.text();
+    let body;
+    try {
+      body = text ? JSON.parse(text) : {};
+    } catch {
+      body = { parseError: "Response was not valid JSON." };
+    }
+    return {
+      ok: response.ok && !body.errors,
+      status: response.status,
+      actualApiVersion: response.headers.get("x-shopify-api-version"),
+      body
+    };
+  }
+
+  return {
+    graphql,
+    getAuthStatus: () => tokenManager.getAuthStatus()
+  };
+}

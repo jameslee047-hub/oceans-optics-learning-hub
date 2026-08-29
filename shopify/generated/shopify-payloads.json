@@ -1,0 +1,981 @@
+{
+  "generated_at": "2026-08-27T06:20:34.552Z",
+  "network": "disabled",
+  "note": "Local payloads only. These are not sent to Shopify in Stage 5A.",
+  "upsertSemantics": "The payload builder uses metaobjectUpsert with the metaobject input form. Shopify updates only provided fields and preserves omitted fields. Do not switch to the values argument unless every managed field is intentionally supplied, because values is a full replacement and clears omitted keys.",
+  "definitions": [
+    {
+      "operation": "metaobjectDefinitionCreate",
+      "variables": {
+        "definition": {
+          "type": "learning_lesson",
+          "name": "Learning Lesson",
+          "capabilities": {
+            "publishable": {
+              "enabled": true
+            },
+            "renderable": {
+              "enabled": true,
+              "data": {
+                "metaTitleKey": "seo_title",
+                "metaDescriptionKey": "meta_description"
+              }
+            },
+            "onlineStore": {
+              "enabled": true,
+              "data": {
+                "urlHandle": "learn"
+              }
+            }
+          },
+          "fieldDefinitions": [
+            {
+              "key": "title",
+              "name": "Title",
+              "type": "single_line_text_field",
+              "required": true
+            },
+            {
+              "key": "short_description",
+              "name": "Short description",
+              "type": "multi_line_text_field",
+              "required": true
+            },
+            {
+              "key": "lesson_type",
+              "name": "Lesson type",
+              "type": "single_line_text_field",
+              "required": true
+            },
+            {
+              "key": "category",
+              "name": "Primary category",
+              "type": "metaobject_reference",
+              "required": true,
+              "validations": [
+                {
+                  "name": "metaobject_definition_type",
+                  "value": "learning_category"
+                }
+              ]
+            },
+            {
+              "key": "estimated_reading_time",
+              "name": "Estimated reading time",
+              "type": "single_line_text_field",
+              "required": true
+            },
+            {
+              "key": "hero_media",
+              "name": "Hero media",
+              "type": "file_reference",
+              "required": false
+            },
+            {
+              "key": "lesson_body",
+              "name": "Lesson body",
+              "type": "rich_text_field",
+              "required": true
+            },
+            {
+              "key": "instructor_tips",
+              "name": "Instructor tips",
+              "type": "rich_text_field",
+              "required": false
+            },
+            {
+              "key": "common_mistakes",
+              "name": "Common mistakes",
+              "type": "rich_text_field",
+              "required": false
+            },
+            {
+              "key": "safety_notes",
+              "name": "Safety notes",
+              "type": "rich_text_field",
+              "required": false
+            },
+            {
+              "key": "key_takeaways",
+              "name": "Key takeaways",
+              "type": "list.single_line_text_field",
+              "required": false
+            },
+            {
+              "key": "related_lessons",
+              "name": "Related lessons",
+              "type": "list.metaobject_reference",
+              "required": false,
+              "validations": [
+                {
+                  "name": "metaobject_definition_type",
+                  "value": "learning_lesson"
+                }
+              ]
+            },
+            {
+              "key": "related_tools",
+              "name": "Related tools",
+              "type": "list.link",
+              "required": false
+            },
+            {
+              "key": "related_products",
+              "name": "Related products",
+              "type": "list.product_reference",
+              "required": false
+            },
+            {
+              "key": "downloadable_resources",
+              "name": "Downloadable resources",
+              "type": "list.file_reference",
+              "required": false
+            },
+            {
+              "key": "primary_cta",
+              "name": "Primary CTA",
+              "type": "link",
+              "required": false
+            },
+            {
+              "key": "lesson_id",
+              "name": "Lesson ID",
+              "type": "single_line_text_field",
+              "required": true
+            },
+            {
+              "key": "author",
+              "name": "Author",
+              "type": "single_line_text_field",
+              "required": false
+            },
+            {
+              "key": "reviewer",
+              "name": "Reviewer",
+              "type": "single_line_text_field",
+              "required": false
+            },
+            {
+              "key": "last_reviewed",
+              "name": "Last reviewed",
+              "type": "date",
+              "required": false
+            },
+            {
+              "key": "seo_title",
+              "name": "SEO title",
+              "type": "single_line_text_field",
+              "required": false
+            },
+            {
+              "key": "meta_description",
+              "name": "Meta description",
+              "type": "multi_line_text_field",
+              "required": false
+            }
+          ],
+          "access": {
+            "storefront": "PUBLIC_READ"
+          }
+        }
+      },
+      "note": "Local payload skeleton only. Definition mutations are not executed in Stage 5A."
+    },
+    {
+      "operation": "metaobjectDefinitionCreate",
+      "variables": {
+        "definition": {
+          "type": "learning_category",
+          "name": "Learning Category",
+          "capabilities": {
+            "publishable": {
+              "enabled": true
+            },
+            "renderable": {
+              "enabled": true,
+              "data": {
+                "metaTitleKey": "title",
+                "metaDescriptionKey": "short_description"
+              }
+            },
+            "onlineStore": {
+              "enabled": true,
+              "data": {
+                "urlHandle": "learn-category"
+              }
+            }
+          },
+          "fieldDefinitions": [
+            {
+              "key": "title",
+              "name": "Title",
+              "type": "single_line_text_field",
+              "required": true
+            },
+            {
+              "key": "short_description",
+              "name": "Short description",
+              "type": "multi_line_text_field",
+              "required": true
+            },
+            {
+              "key": "image",
+              "name": "Image or icon",
+              "type": "file_reference",
+              "required": false
+            },
+            {
+              "key": "sort_order",
+              "name": "Sort order",
+              "type": "number_integer",
+              "required": true
+            }
+          ],
+          "access": {
+            "storefront": "PUBLIC_READ"
+          }
+        }
+      },
+      "note": "Local payload skeleton only. Definition mutations are not executed in Stage 5A."
+    },
+    {
+      "operation": "metaobjectDefinitionCreate",
+      "variables": {
+        "definition": {
+          "type": "learning_pathway",
+          "name": "Learning Pathway",
+          "capabilities": {
+            "publishable": {
+              "enabled": true
+            },
+            "renderable": {
+              "enabled": true,
+              "data": {
+                "metaTitleKey": "title",
+                "metaDescriptionKey": "short_description"
+              }
+            },
+            "onlineStore": {
+              "enabled": true,
+              "data": {
+                "urlHandle": "learn-pathway"
+              }
+            }
+          },
+          "fieldDefinitions": [
+            {
+              "key": "title",
+              "name": "Title",
+              "type": "single_line_text_field",
+              "required": true
+            },
+            {
+              "key": "short_description",
+              "name": "Short description",
+              "type": "multi_line_text_field",
+              "required": true
+            },
+            {
+              "key": "image",
+              "name": "Image or icon",
+              "type": "file_reference",
+              "required": false
+            },
+            {
+              "key": "ordered_lessons",
+              "name": "Ordered lessons",
+              "type": "list.metaobject_reference",
+              "required": true,
+              "validations": [
+                {
+                  "name": "metaobject_definition_type",
+                  "value": "learning_lesson"
+                }
+              ]
+            }
+          ],
+          "access": {
+            "storefront": "PUBLIC_READ"
+          }
+        }
+      },
+      "note": "Local payload skeleton only. Definition mutations are not executed in Stage 5A."
+    }
+  ],
+  "entries": {
+    "categories": [
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_category",
+            "handle": "gear-masks-vision"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Gear, Masks & Vision"
+              },
+              {
+                "key": "short_description",
+                "value": "Masks, snorkels, fins, exposure protection, and the underwater vision choices that affect comfort and confidence."
+              },
+              {
+                "key": "sort_order",
+                "value": "1"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "sort_order"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_category",
+            "handle": "safety-conditions"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Safety & Conditions"
+              },
+              {
+                "key": "short_description",
+                "value": "Readiness, planning, water conditions, buddy responsibility, surface safety, and emergency awareness."
+              },
+              {
+                "key": "sort_order",
+                "value": "2"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "sort_order"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_category",
+            "handle": "in-water-skills"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "In-Water Skills"
+              },
+              {
+                "key": "short_description",
+                "value": "Practical skills for entering, exiting, clearing, moving, floating, and building confidence in the water."
+              },
+              {
+                "key": "sort_order",
+                "value": "3"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "sort_order"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_category",
+            "handle": "underwater-science-your-body"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Underwater Science & Your Body"
+              },
+              {
+                "key": "short_description",
+                "value": "Learner-friendly explanations of pressure, buoyancy, airspaces, light, sound, equalizing, and body temperature."
+              },
+              {
+                "key": "sort_order",
+                "value": "4"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "sort_order"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_category",
+            "handle": "marine-life-conservation"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Marine Life & Conservation"
+              },
+              {
+                "key": "short_description",
+                "value": "Marine life basics, coral, conservation, responsible behavior, and the experiences snorkelers may encounter."
+              },
+              {
+                "key": "sort_order",
+                "value": "5"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "sort_order"
+        ]
+      }
+    ],
+    "pathways": [
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_pathway",
+            "handle": "start-here"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Start Here"
+              },
+              {
+                "key": "short_description",
+                "value": "A short beginner onboarding path that starts with readiness, safer habits, mask basics, planning, buddy awareness, and entry/exit basics."
+              },
+              {
+                "key": "ordered_lessons",
+                "value": "[\"__RESOLVE_METAOBJECT__:learning_lesson:health-readiness-and-personal-responsibility\",\"__RESOLVE_METAOBJECT__:learning_lesson:golden-rules-for-safer-snorkeling\",\"__RESOLVE_METAOBJECT__:learning_lesson:choosing-a-mask\",\"__RESOLVE_METAOBJECT__:learning_lesson:pre-snorkel-checklist-and-planning\",\"__RESOLVE_METAOBJECT__:learning_lesson:buddy-communication-and-awareness\",\"__RESOLVE_METAOBJECT__:learning_lesson:entry-and-exit-techniques\"]"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "ordered_lessons"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_pathway",
+            "handle": "safer-snorkeling"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Safer Snorkeling"
+              },
+              {
+                "key": "short_description",
+                "value": "A safety-first route covering readiness, rules, planning, warnings, water movement, buddy awareness, breath-hold risk, and emergency awareness."
+              },
+              {
+                "key": "ordered_lessons",
+                "value": "[\"__RESOLVE_METAOBJECT__:learning_lesson:health-readiness-and-personal-responsibility\",\"__RESOLVE_METAOBJECT__:learning_lesson:golden-rules-for-safer-snorkeling\",\"__RESOLVE_METAOBJECT__:learning_lesson:pre-snorkel-checklist-and-planning\",\"__RESOLVE_METAOBJECT__:learning_lesson:beach-flags-and-surface-warnings\",\"__RESOLVE_METAOBJECT__:learning_lesson:currents-and-rip-currents\",\"__RESOLVE_METAOBJECT__:learning_lesson:waves-tides-and-surge\",\"__RESOLVE_METAOBJECT__:learning_lesson:buddy-communication-and-awareness\",\"__RESOLVE_METAOBJECT__:learning_lesson:breath-hold-safety-co2-and-shallow-water-blackout\",\"__RESOLVE_METAOBJECT__:learning_lesson:snorkeling-emergencies-and-first-aid-awareness\"]"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "ordered_lessons"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_pathway",
+            "handle": "equipment-essentials"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Equipment Essentials"
+              },
+              {
+                "key": "short_description",
+                "value": "A practical route through masks, fitting, care, snorkels, fins, exposure protection, and surface safety equipment."
+              },
+              {
+                "key": "ordered_lessons",
+                "value": "[\"__RESOLVE_METAOBJECT__:learning_lesson:choosing-a-mask\",\"__RESOLVE_METAOBJECT__:learning_lesson:mask-fit-positioning-adjustment\",\"__RESOLVE_METAOBJECT__:learning_lesson:mask-preparation-defogging-care\",\"__RESOLVE_METAOBJECT__:learning_lesson:choosing-and-setting-up-a-snorkel\",\"__RESOLVE_METAOBJECT__:learning_lesson:choosing-fins\",\"__RESOLVE_METAOBJECT__:learning_lesson:exposure-protection-staying-warm\",\"__RESOLVE_METAOBJECT__:learning_lesson:surface-safety-devices\"]"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "ordered_lessons"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_pathway",
+            "handle": "in-water-skills-builder"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "In-Water Skills Builder"
+              },
+              {
+                "key": "short_description",
+                "value": "A practical progression for entry and exit, clearing, efficient movement, floating, and duck diving basics."
+              },
+              {
+                "key": "ordered_lessons",
+                "value": "[\"__RESOLVE_METAOBJECT__:learning_lesson:entry-and-exit-techniques\",\"__RESOLVE_METAOBJECT__:learning_lesson:clearing-your-snorkel\",\"__RESOLVE_METAOBJECT__:learning_lesson:mask-clearing-techniques\",\"__RESOLVE_METAOBJECT__:learning_lesson:efficient-kicking-techniques\",\"__RESOLVE_METAOBJECT__:learning_lesson:relaxed-breathing-and-efficient-movement\",\"__RESOLVE_METAOBJECT__:learning_lesson:floating-and-treading-water\",\"__RESOLVE_METAOBJECT__:learning_lesson:duck-diving-basics\"]"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "ordered_lessons"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_pathway",
+            "handle": "ocean-aware-snorkeler"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Ocean-Aware Snorkeler"
+              },
+              {
+                "key": "short_description",
+                "value": "A route connecting conditions, snorkeling environments, marine life, coral, and responsible underwater behavior."
+              },
+              {
+                "key": "ordered_lessons",
+                "value": "[\"__RESOLVE_METAOBJECT__:learning_lesson:types-of-snorkeling-experiences\",\"__RESOLVE_METAOBJECT__:learning_lesson:currents-and-rip-currents\",\"__RESOLVE_METAOBJECT__:learning_lesson:waves-tides-and-surge\",\"__RESOLVE_METAOBJECT__:learning_lesson:marine-life-basics\",\"__RESOLVE_METAOBJECT__:learning_lesson:coral-conservation-and-responsible-behavior\"]"
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "image",
+          "ordered_lessons"
+        ]
+      }
+    ],
+    "lessons": [
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_lesson",
+            "handle": "choosing-a-mask"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Choosing a Mask"
+              },
+              {
+                "key": "short_description",
+                "value": "Learn how lens format, skirt color, and vision needs affect mask choice before moving into fit, preparation, and care."
+              },
+              {
+                "key": "lesson_type",
+                "value": "Equipment guide"
+              },
+              {
+                "key": "category",
+                "value": "__RESOLVE_METAOBJECT__:learning_category:gear-masks-vision"
+              },
+              {
+                "key": "estimated_reading_time",
+                "value": "3-5 minutes"
+              },
+              {
+                "key": "lesson_body",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Choosing a Mask\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"A good snorkeling mask should help you see clearly, feel comfortable, and stay focused in the water. The first choice is not just which mask looks best. It is whether the mask suits your vision needs, the conditions you snorkel in, and the way you plan to use it.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Fit and seal still matter most, but this lesson focuses on the selection choices you can compare before the fitting lesson: lens format, skirt color, and prescription needs.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Start With the Big Questions\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Before comparing styles, ask:\"}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Do you need vision correction underwater?\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Will you usually snorkel in bright tropical water, darker water, or murkier conditions?\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Is simplicity more important, or do you need a mask that can support more specialized vision requirements?\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Have you checked fit, seal, comfort, and adjustment in the related fitting lesson?\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Those questions keep the decision practical. A mask can have the right features on paper and still be the wrong mask if it does not fit comfortably.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Single-Lens vs Dual-Lens Masks\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Lens format matters because it can affect prescription options and how the mask is built.\"}]},{\"type\":\"heading\",\"level\":3,\"children\":[{\"type\":\"text\",\"value\":\"Dual-Lens Masks\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"A dual-lens mask has two separate lenses. If underwater vision correction may matter for you, dual-lens masks should be on your shortlist because this format is connected to prescription-mask support.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Do not choose a dual-lens mask on lens count alone. The final decision still needs to account for fit, comfort, product compatibility, and the prescription options available.\"}]},{\"type\":\"heading\",\"level\":3,\"children\":[{\"type\":\"text\",\"value\":\"Single-Lens Masks\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"A single-lens mask has one continuous lens. This style is useful to consider when you want a simple mask and do not need prescription customization.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"If prescription lenses may be needed now or later, do not assume a simple single-lens mask will be the easiest path. Check prescription compatibility before choosing.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Clear Skirt vs Blackout/Dark Skirt\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"The skirt is the soft seal around the mask. Skirt color affects how much side light reaches your eyes.\"}]},{\"type\":\"heading\",\"level\":3,\"children\":[{\"type\":\"text\",\"value\":\"Clear Skirt\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"A clear skirt lets more light into the mask. It can be useful in darker or murkier water where extra light helps.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"In bright conditions, clear skirts may also create reflections that can distract from visibility.\"}]},{\"type\":\"heading\",\"level\":3,\"children\":[{\"type\":\"text\",\"value\":\"Blackout or Dark Skirt\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"A blackout or dark skirt blocks more side light. It can be useful in bright conditions where glare is distracting.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"If you often snorkel in lower-light or murkier conditions, compare this choice carefully against a clear skirt before deciding.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"A Practical Mask Shortlist\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Use this order:\"}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Rule in any prescription or underwater vision needs.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Shortlist masks that support those vision needs.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Compare single-lens and dual-lens styles.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Compare clear and blackout/dark skirts for your usual conditions.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Check fit, seal, comfort, and adjustment before treating the choice as final.\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"The strongest mask choice is the one that brings these pieces together: vision, comfort, conditions, and intended use.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Knowledge Check\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q1. If a snorkeler may need vision correction underwater, what should they consider early?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. Skirt color only\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. Prescription compatibility and lens format\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. Whether the mask is easiest to share\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: B\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: Prescription needs should shape the shortlist before the final mask choice.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q2. Which skirt style can help bring more light into the mask?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. Clear skirt\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. Blackout skirt\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. Dark skirt\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: A\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: A clear skirt lets more light into the mask, which can help in darker or murkier water.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q3. Which decision should still be checked before treating a mask choice as final?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. Fit, seal, comfort, and adjustment\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. Only the color of the frame\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. Only whether the mask has one lens or two\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: A\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: A mask choice is not complete until the snorkeler has checked whether it fits and seals comfortably.\"}]}]}"
+              },
+              {
+                "key": "instructor_tips",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Treat lens format and skirt color as practical visibility decisions, not just style preferences.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"If you may need prescription lenses, make that part of the decision early.\"}]}]}]}"
+              },
+              {
+                "key": "common_mistakes",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Choosing a mask because it looks simple, then realizing it does not support your underwater vision needs.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Comparing lens style and skirt color before checking whether the mask can fit and seal comfortably.\"}]}]}]}"
+              },
+              {
+                "key": "key_takeaways",
+                "value": "[\"Fit and comfort matter, but this lesson focuses on mask-selection features before the fitting lesson.\",\"Dual-lens masks should be considered when prescription-mask support matters.\",\"Single-lens masks can suit snorkelers who want simplicity and do not need prescription customization.\",\"Clear skirts can help bring in more light in darker or murkier water.\",\"Blackout or dark skirts can reduce side light and glare in bright conditions.\",\"Fit, field of view, mask volume, and detailed prescription selection belong in more detailed Oceans Optics buying guidance.\"]"
+              },
+              {
+                "key": "related_lessons",
+                "value": "[\"__RESOLVE_METAOBJECT__:learning_lesson:mask-fit-positioning-adjustment\",\"__RESOLVE_METAOBJECT__:learning_lesson:mask-preparation-defogging-care\",\"__RESOLVE_METAOBJECT__:learning_lesson:buoyancy-pressure-and-airspaces\",\"__RESOLVE_METAOBJECT__:learning_lesson:light-vision-and-sound-underwater\"]"
+              },
+              {
+                "key": "lesson_id",
+                "value": "R01"
+              },
+              {
+                "key": "seo_title",
+                "value": "Choosing a Snorkeling Mask | Oceans Optics Learning Hub"
+              },
+              {
+                "key": "meta_description",
+                "value": "Learn how to compare snorkeling mask lens format, skirt color, and vision needs before choosing the right mask."
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "lesson_type",
+          "category",
+          "estimated_reading_time",
+          "hero_media",
+          "lesson_body",
+          "instructor_tips",
+          "common_mistakes",
+          "safety_notes",
+          "key_takeaways",
+          "related_lessons",
+          "related_tools",
+          "related_products",
+          "downloadable_resources",
+          "primary_cta",
+          "lesson_id",
+          "author",
+          "reviewer",
+          "last_reviewed",
+          "seo_title",
+          "meta_description"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_lesson",
+            "handle": "golden-rules-for-safer-snorkeling"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Golden Rules for Safer Snorkeling"
+              },
+              {
+                "key": "short_description",
+                "value": "A short pre-water briefing covering the core habits every snorkeler should remember before entering the water."
+              },
+              {
+                "key": "lesson_type",
+                "value": "Safety briefing"
+              },
+              {
+                "key": "category",
+                "value": "__RESOLVE_METAOBJECT__:learning_category:safety-conditions"
+              },
+              {
+                "key": "estimated_reading_time",
+                "value": "1-3 minutes"
+              },
+              {
+                "key": "lesson_body",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Golden Rules for Safer Snorkeling\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Before you think about gear, location, or technique, get the basic habits right. These are the rules that keep a simple snorkel from becoming stressful.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Read them like a quick pre-water briefing from an instructor.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"The Rules\"}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Snorkel with a buddy. Keep visual contact and agree on a simple check-in system before you enter the water.\"}]}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Carry a way to signal. A whistle, float, or other visible support item can help you get attention when you need it.\"}]}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Slow down. Rushing leads to mistakes. Take your time and keep the pace calm.\"}]}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Know your limits. Do not let peer pressure push you into a situation that causes stress or overexertion.\"}]}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Check the conditions before you go in. Pay attention to tides, currents, rip currents, and changing environmental conditions.\"}]}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Respect marine life. Do not harass, touch, or disturb marine life. Treat coral and dead coral with care.\"}]}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Stay hydrated and do not go too far. Keep the session manageable and avoid drifting beyond a comfortable distance.\"}]}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Avoid alcohol and drugs. Do not snorkel under the influence. Clear judgment matters in the water.\"}]}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Pay attention to breathing, discomfort, and panic. Keep your breathing slow and steady, take breaks, and do not ignore discomfort or panic.\"}]}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Follow equipment guidance. Use your mask and snorkel equipment according to the manufacturer's guidance.\"}]}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Knowledge Check\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q1. What comes first in this briefing?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. Duck diving\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. Snorkeling with a buddy\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. Choosing fins\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: B\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: The buddy system is the first rule in this safety briefing.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q2. Which condition should you pay attention to before entering?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. Rip current\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. Mask skirt color\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. Fin strap style\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: A\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: Rip currents are part of the environmental conditions snorkelers should notice before entering.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q3. What should you do if peer pressure is pushing you beyond your comfort level?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. Keep going so you do not slow the group down\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. Stay within your limits\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. Swim farther away from shore\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: B\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: The lesson emphasizes knowing your limits and avoiding stressful or overexerting situations.\"}]}]}"
+              },
+              {
+                "key": "instructor_tips",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"If you feel rushed, pressured, uncomfortable, or unsure about the conditions, slow down and reset before entering.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Buddy, signal, limits, and conditions come before everything else.\"}]}]}]}"
+              },
+              {
+                "key": "common_mistakes",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Getting excited about entering the water and skipping the simple checks.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Assuming calm breathing will happen automatically instead of keeping the pace steady from the start.\"}]}]}]}"
+              },
+              {
+                "key": "safety_notes",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"This is a pre-water briefing, not a complete safety course.\"}]}]}]}"
+              },
+              {
+                "key": "key_takeaways",
+                "value": "[\"Do not snorkel alone.\",\"Keep the pace calm.\",\"Know your limits and avoid pressure.\",\"Check environmental conditions before entering.\",\"Respect marine life and coral.\",\"Do not ignore discomfort, panic, or impaired judgment.\"]"
+              },
+              {
+                "key": "related_lessons",
+                "value": "[\"__RESOLVE_METAOBJECT__:learning_lesson:health-readiness-and-personal-responsibility\",\"__RESOLVE_METAOBJECT__:learning_lesson:surface-safety-devices\",\"__RESOLVE_METAOBJECT__:learning_lesson:pre-snorkel-checklist-and-planning\",\"__RESOLVE_METAOBJECT__:learning_lesson:buddy-communication-and-awareness\",\"__RESOLVE_METAOBJECT__:learning_lesson:snorkeling-emergencies-and-first-aid-awareness\"]"
+              },
+              {
+                "key": "lesson_id",
+                "value": "R08"
+              },
+              {
+                "key": "seo_title",
+                "value": "Golden Rules for Safer Snorkeling | Oceans Optics Learning Hub"
+              },
+              {
+                "key": "meta_description",
+                "value": "A short instructor-style briefing on buddy checks, conditions, limits, marine life, and safer snorkeling habits."
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "lesson_type",
+          "category",
+          "estimated_reading_time",
+          "hero_media",
+          "lesson_body",
+          "instructor_tips",
+          "common_mistakes",
+          "safety_notes",
+          "key_takeaways",
+          "related_lessons",
+          "related_tools",
+          "related_products",
+          "downloadable_resources",
+          "primary_cta",
+          "lesson_id",
+          "author",
+          "reviewer",
+          "last_reviewed",
+          "seo_title",
+          "meta_description"
+        ]
+      },
+      {
+        "operation": "metaobjectUpsert",
+        "variables": {
+          "handle": {
+            "type": "learning_lesson",
+            "handle": "currents-and-rip-currents"
+          },
+          "metaobject": {
+            "capabilities": {
+              "publishable": {
+                "status": "DRAFT"
+              }
+            },
+            "fields": [
+              {
+                "key": "title",
+                "value": "Currents & Rip Currents"
+              },
+              {
+                "key": "short_description",
+                "value": "Learn what currents, longshore currents, tidal currents, and rip currents are, and why moving water matters before you enter."
+              },
+              {
+                "key": "lesson_type",
+                "value": "Conditions explainer"
+              },
+              {
+                "key": "category",
+                "value": "__RESOLVE_METAOBJECT__:learning_category:safety-conditions"
+              },
+              {
+                "key": "estimated_reading_time",
+                "value": "4-6 minutes"
+              },
+              {
+                "key": "lesson_body",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Currents & Rip Currents\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Water is always moving. Some movement is gentle and easy to manage. Some movement can affect where you enter, where you exit, and how easy it feels to navigate.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"This lesson focuses on current-related concepts: currents, longshore currents, tidal currents, and rip currents.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Why This Matters\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Currents can move you across the shore, away from where you planned to exit, or away from land. Recognizing moving water helps you make better decisions before entering.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"This is a conditions-awareness lesson, not emergency-response training.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"What Is a Current?\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"A current is a stream of water moving in a consistent direction. Currents are influenced by environmental factors and can affect both safety and navigation.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"In plain terms: a current is water with direction. If you ignore it, your planned route may not be the route you actually travel.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Three Current Types to Know\"}]},{\"type\":\"heading\",\"level\":3,\"children\":[{\"type\":\"text\",\"value\":\"1. Longshore Currents\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Longshore currents flow parallel to the shore. They are generated when waves hit the coastline at an angle.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"For snorkelers, the main point is lateral movement. A longshore current may move you along the beach or coastline and affect your entry and exit points.\"}]},{\"type\":\"heading\",\"level\":3,\"children\":[{\"type\":\"text\",\"value\":\"2. Tidal Currents\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Tidal currents are linked to the gravitational interaction between the Earth, moon, and sun, and to the rise and fall of tides. They can be predictable and can significantly affect nearshore water movement.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"This lesson treats tidal currents as a current-related concept. The separate R13 Waves, Tides & Surge lesson should explain tides as a broader sea-level and conditions topic.\"}]},{\"type\":\"heading\",\"level\":3,\"children\":[{\"type\":\"text\",\"value\":\"3. Rip Currents\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Rip currents are strong, narrow currents moving directly away from the shore. They commonly form at breaks in sandbars or near structures such as piers and jetties.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"For snorkelers and other water users, the key risk is direction: a rip current moves away from shore.\"}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Recognizing the Risk Before You Enter\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Before entering, ask:\"}]},{\"type\":\"list\",\"listType\":\"ordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Is water movement part of today's conditions?\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Could a current affect your navigation?\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Could a longshore current affect where you exit?\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Are there piers, jetties, or sandbar breaks nearby where rip currents may form?\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Are tidal currents likely to affect nearshore movement?\"}]}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"What to Understand Before Entering\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"You do not need to become an oceanographer to snorkel. You do need to notice that water movement can change the plan.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Before entering, understand:\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"currents have direction\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"longshore currents can move you along the shore\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"tidal currents can affect nearshore movement\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"rip currents move directly away from shore\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"structures and sandbar breaks may be associated with rip currents\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"entry and exit planning should account for moving water\"}]}]},{\"type\":\"heading\",\"level\":2,\"children\":[{\"type\":\"text\",\"value\":\"Knowledge Check\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q1. What is a current?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. A stream of water moving in a consistent direction\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. A wave breaking on shore\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. A type of coral reef\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: A\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: A current is moving water with direction.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q2. Which current flows parallel to shore?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. Rip current\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. Longshore current\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. Surface warning\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: B\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: Longshore currents move along the coastline.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q3. Which current moves directly away from shore?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. Rip current\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. Tidal current only\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. Longshore current\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: A\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: Rip currents are narrow currents that move away from shore.\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Q4. Why can a longshore current matter to a snorkeler?\"}]},{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"A. It can move the snorkeler along the shore and affect entry or exit points\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"B. It changes mask skirt color\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"C. It only matters in deep ocean crossings\"}]}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Correct: A\"}]},{\"type\":\"paragraph\",\"children\":[{\"type\":\"text\",\"value\":\"Explanation: Lateral water movement can change where a snorkeler ends up relative to the planned entry and exit.\"}]}]}"
+              },
+              {
+                "key": "instructor_tips",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Plan the exit as carefully as the entry.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"When current behavior is part of the conditions, think about where the water may move you, not just where you intend to swim.\"}]}]}]}"
+              },
+              {
+                "key": "common_mistakes",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Only thinking about where you want to swim, instead of asking where the water may move you.\"}]},{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"Treating tides as only a water-level topic and forgetting that tidal movement can also affect nearshore currents.\"}]}]}]}"
+              },
+              {
+                "key": "safety_notes",
+                "value": "{\"type\":\"root\",\"children\":[{\"type\":\"list\",\"listType\":\"unordered\",\"children\":[{\"type\":\"list-item\",\"children\":[{\"type\":\"text\",\"value\":\"This lesson focuses on awareness before entry. It does not provide rip-current emergency-response instructions.\"}]}]}]}"
+              },
+              {
+                "key": "key_takeaways",
+                "value": "[\"Currents are streams of water moving in a consistent direction.\",\"Longshore currents move parallel to shore and can affect entry and exit points.\",\"Tidal currents are linked to rising and falling tides and can affect nearshore movement.\",\"Rip currents are strong, narrow currents that move directly away from shore.\",\"This lesson helps with current awareness before entry; it is not emergency-response training.\"]"
+              },
+              {
+                "key": "related_lessons",
+                "value": "[\"__RESOLVE_METAOBJECT__:learning_lesson:pre-snorkel-checklist-and-planning\",\"__RESOLVE_METAOBJECT__:learning_lesson:beach-flags-and-surface-warnings\",\"__RESOLVE_METAOBJECT__:learning_lesson:waves-tides-and-surge\",\"__RESOLVE_METAOBJECT__:learning_lesson:duck-diving-basics\"]"
+              },
+              {
+                "key": "lesson_id",
+                "value": "R12"
+              },
+              {
+                "key": "seo_title",
+                "value": "Currents and Rip Currents for Snorkelers | Oceans Optics Learning Hub"
+              },
+              {
+                "key": "meta_description",
+                "value": "Learn the difference between currents, longshore currents, tidal currents, and rip currents before planning a snorkel."
+              }
+            ]
+          }
+        },
+        "semantics": "Uses the metaobject input form. Provided fields are updated; omitted fields are preserved on existing records.",
+        "managedFieldKeys": [
+          "title",
+          "short_description",
+          "lesson_type",
+          "category",
+          "estimated_reading_time",
+          "hero_media",
+          "lesson_body",
+          "instructor_tips",
+          "common_mistakes",
+          "safety_notes",
+          "key_takeaways",
+          "related_lessons",
+          "related_tools",
+          "related_products",
+          "downloadable_resources",
+          "primary_cta",
+          "lesson_id",
+          "author",
+          "reviewer",
+          "last_reviewed",
+          "seo_title",
+          "meta_description"
+        ]
+      }
+    ]
+  },
+  "resolutionNotes": [
+    "Metaobject references use local resolver tokens such as __RESOLVE_METAOBJECT__:learning_category:gear-masks-vision until real Shopify GIDs exist.",
+    "Unresolved tool, product, file, and CTA placeholders are intentionally omitted from upsert fields until public URLs or Shopify GIDs exist.",
+    "No mutations are executed by this script."
+  ]
+}

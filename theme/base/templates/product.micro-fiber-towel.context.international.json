@@ -1,0 +1,28 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.micro-fiber-towel.json",
+  "context": {
+    "market": "aus"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_NQ99dm": {
+          "settings": {
+            "heading": "More than JUST free shipping",
+            "content": "<h5>Every order is carefully packed and delivered free of charge—quality guaranteed! [3-10 days]</h5>"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "sections": {
+    "main": {
+      "type": "learning-hub-homepage",
+      "blocks": {
+        "step_r07": {
+          "type": "pathway_step",
+          "settings": {
+            "lesson_id": "R07",
+            "title": "Health, Readiness and Personal Responsibility",
+            "description": "Start with honest self-checks, comfort, fitness, and personal responsibility before entering the water."
+          }
+        },
+        "step_r08": {
+          "type": "pathway_step",
+          "settings": {
+            "lesson_id": "R08",
+            "title": "Golden Rules for Safer Snorkeling",
+            "description": "A concise briefing on buddy habits, conditions, limits, signals, and calm decision-making."
+          }
+        },
+        "step_r01": {
+          "type": "pathway_step",
+          "settings": {
+            "lesson_id": "R01",
+            "title": "Choosing a Mask",
+            "description": "Compare lens format, skirt color, and underwater vision needs before moving into detailed fit checks."
+          }
+        },
+        "step_r10": {
+          "type": "pathway_step",
+          "settings": {
+            "lesson_id": "R10",
+            "title": "Pre-Snorkel Checklist and Planning",
+            "description": "Turn the outing into a simple plan for people, place, conditions, equipment, entry, and exit."
+          }
+        },
+        "step_r14": {
+          "type": "pathway_step",
+          "settings": {
+            "lesson_id": "R14",
+            "title": "Buddy Communication and Awareness",
+            "description": "Keep the most universal beginner habit visible: staying aware of your buddy and agreeing on simple signals."
+          }
+        },
+        "step_r17": {
+          "type": "pathway_step",
+          "settings": {
+            "lesson_id": "R17",
+            "title": "Entry and Exit Techniques",
+            "description": "Prepare the practical transition between shore, boat, or platform and the water."
+          }
+        },
+        "category_gear": {
+          "type": "category",
+          "settings": {
+            "label": "Category 1",
+            "title": "Gear, Masks & Vision",
+            "description": "Masks, snorkels, fins, exposure protection, and underwater vision choices."
+          }
+        },
+        "category_safety": {
+          "type": "category",
+          "settings": {
+            "label": "Category 2",
+            "title": "Safety & Conditions",
+            "description": "Readiness, planning, water conditions, buddy responsibility, surface safety, and emergency awareness."
+          }
+        },
+        "category_skills": {
+          "type": "category",
+          "settings": {
+            "label": "Category 3",
+            "title": "In-Water Skills",
+            "description": "Practical skills for entering, exiting, clearing, moving, floating, and building confidence."
+          }
+        },
+        "category_science": {
+          "type": "category",
+          "settings": {
+            "label": "Category 4",
+            "title": "Underwater Science & Your Body",
+            "description": "Pressure, buoyancy, airspaces, light, sound, equalizing, and body temperature."
+          }
+        },
+        "category_conservation": {
+          "type": "category",
+          "settings": {
+            "label": "Category 5",
+            "title": "Marine Life & Conservation",
+            "description": "Marine life basics, coral, conservation, responsible behavior, and snorkeling environments."
+          }
+        },
+        "lesson_r01": {
+          "type": "lesson",
+          "settings": {
+            "lesson_id": "R01",
+            "lesson_type": "Equipment guide",
+            "title": "Choosing a Mask",
+            "description": "Learn how lens format, skirt color, and vision needs affect mask choice before moving into fit, preparation, and care."
+          }
+        },
+        "lesson_r08": {
+          "type": "lesson",
+          "settings": {
+            "lesson_id": "R08",
+            "lesson_type": "Safety briefing",
+            "title": "Golden Rules for Safer Snorkeling",
+            "description": "A short pre-water briefing covering the core habits every snorkeler should remember before entering the water."
+          }
+        },
+        "lesson_r12": {
+          "type": "lesson",
+          "settings": {
+            "lesson_id": "R12",
+            "lesson_type": "Conditions explainer",
+            "title": "Currents & Rip Currents",
+            "description": "Learn what currents, longshore currents, tidal currents, and rip currents are, and why moving water matters before you enter."
+          }
+        }
+      },
+      "block_order": [
+        "step_r07",
+        "step_r08",
+        "step_r01",
+        "step_r10",
+        "step_r14",
+        "step_r17",
+        "category_gear",
+        "category_safety",
+        "category_skills",
+        "category_science",
+        "category_conservation",
+        "lesson_r01",
+        "lesson_r08",
+        "lesson_r12"
+      ],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Oceans Optics Education",
+        "heading": "Learning Hub",
+        "intro": "Structured snorkeling lessons for choosing gear, planning safer sessions, building water confidence, and understanding the underwater world.",
+        "primary_link_label": "Start Here",
+        "primary_link": "",
+        "secondary_link_label": "Browse Subjects",
+        "secondary_link": "",
+        "start_heading": "A beginner path before the first snorkel",
+        "start_intro": "A short sequence built around readiness, safer habits, mask choice, planning, buddy awareness, and entry and exit basics.",
+        "category_heading": "Five ways to explore",
+        "category_intro": "The Learning Hub separates gear decisions, safety planning, in-water skills, science, and conservation so each lesson has a clear job.",
+        "lesson_heading": "Pilot lessons",
+        "lesson_intro": "The first lesson templates are prepared for the approved Stage 5C pilot entries."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

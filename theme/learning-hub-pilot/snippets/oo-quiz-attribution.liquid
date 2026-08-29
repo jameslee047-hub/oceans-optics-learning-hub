@@ -1,0 +1,497 @@
+<script>
+(function () {
+  var QUIZ_KEYS = [
+    'quiz_session_id',
+    'quiz_product_id',
+    'quiz_source',
+    'quiz_page_type',
+    'quiz_page_handle',
+    'quiz_placement',
+    'utm_source',
+    'utm_medium',
+    'utm_campaign',
+    'utm_content',
+    'utm_term',
+    'gclid',
+    'gbraid',
+    'wbraid'
+  ];
+
+  var STORAGE_KEY = 'oo_quiz_attribution';
+  var ATTR_SYNC_KEY = 'oo_quiz_attribution_synced';
+  var EVENT_ENDPOINT = 'https://quiz.oceansoptics.com/api/quiz/shopify-event';
+  var RECENT_EVENT_KEY = 'oo_quiz_recent_add_to_cart_events';
+
+  var PAGE_PRODUCT = {
+    product_id: {% if product %}{{ product.id | json }}{% else %}null{% endif %},
+    product_title: {% if product %}{{ product.title | json }}{% else %}null{% endif %}
+  };
+
+  function getStoredAttribution() {
+    try {
+      var raw = window.localStorage.getItem(STORAGE_KEY);
+      if (!raw) return {};
+      return JSON.parse(raw) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function setStoredAttribution(data) {
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (e) {}
+  }
+
+  function getUrlAttribution() {
+    var params = new URLSearchParams(window.location.search);
+    var data = {};
+
+    QUIZ_KEYS.forEach(function (key) {
+      var value = params.get(key);
+      if (value) data[key] = value;
+    });
+
+    return data;
+  }
+
+  function hasQuizAttribution(data) {
+    return !!(data && data.quiz_session_id);
+  }
+
+  function mergeAttribution(existingData, urlData) {
+    var merged = Object.assign({}, existingData || {});
+
+    Object.keys(urlData || {}).forEach(function (key) {
+      if (urlData[key]) merged[key] = urlData[key];
+    });
+
+    if (hasQuizAttribution(merged)) {
+      merged.quiz_captured_at = new Date().toISOString();
+    }
+
+    return merged;
+  }
+
+  function buildCartAttributes(data) {
+    var attributes = {};
+
+    if (data.quiz_session_id) attributes.quiz_session_id = data.quiz_session_id;
+    if (data.quiz_product_id) attributes.quiz_product_id = data.quiz_product_id;
+    if (data.quiz_source) attributes.quiz_source = data.quiz_source;
+    if (data.quiz_page_type) attributes.quiz_page_type = data.quiz_page_type;
+    if (data.quiz_page_handle) attributes.quiz_page_handle = data.quiz_page_handle;
+    if (data.quiz_placement) attributes.quiz_placement = data.quiz_placement;
+
+    if (data.utm_source) attributes.quiz_utm_source = data.utm_source;
+    if (data.utm_medium) attributes.quiz_utm_medium = data.utm_medium;
+    if (data.utm_campaign) attributes.quiz_utm_campaign = data.utm_campaign;
+    if (data.utm_content) attributes.quiz_utm_content = data.utm_content;
+    if (data.utm_term) attributes.quiz_utm_term = data.utm_term;
+
+    if (data.gclid) attributes.quiz_gclid = data.gclid;
+    if (data.gbraid) attributes.quiz_gbraid = data.gbraid;
+    if (data.wbraid) attributes.quiz_wbraid = data.wbraid;
+
+    if (data.quiz_captured_at) attributes.quiz_captured_at = data.quiz_captured_at;
+
+    return attributes;
+  }
+
+  function syncCartAttributes(data) {
+    if (!hasQuizAttribution(data)) return;
+
+    var attributes = buildCartAttributes(data);
+    var syncSignature = JSON.stringify(attributes);
+
+    try {
+      if (window.sessionStorage.getItem(ATTR_SYNC_KEY) === syncSignature) return;
+    } catch (e) {}
+
+    fetch('/cart/update.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        attributes: attributes
+      })
+    })
+      .then(function () {
+        try {
+          window.sessionStorage.setItem(ATTR_SYNC_KEY, syncSignature);
+        } catch (e) {}
+      })
+      .catch(function () {});
+  }
+
+  function safeString(value, maxLength) {
+    if (value === null || value === undefined) return undefined;
+    var stringValue = String(value).trim();
+    if (!stringValue) return undefined;
+    return stringValue.slice(0, maxLength || 300);
+  }
+
+  function safeNumber(value, fallback) {
+    var num = Number(value);
+    if (!Number.isFinite(num)) return fallback;
+    return num;
+  }
+
+  function getDomProductTitle() {
+    var selectors = [
+      '[data-product-title]',
+      '.product__title',
+      '.product-title',
+      'h1'
+    ];
+
+    for (var i = 0; i < selectors.length; i++) {
+      var el = document.querySelector(selectors[i]);
+      if (el && el.textContent) return el.textContent.trim();
+    }
+
+    return undefined;
+  }
+
+  function isCartAddUrl(url) {
+    if (!url) return false;
+    try {
+      var absoluteUrl = new URL(url, window.location.origin);
+      return absoluteUrl.pathname.indexOf('/cart/add') !== -1;
+    } catch (e) {
+      return String(url).indexOf('/cart/add') !== -1;
+    }
+  }
+
+  function readBodyDetails(body) {
+    var details = {};
+
+    try {
+      if (!body) return details;
+
+      if (window.FormData && body instanceof FormData) {
+        details.variant_id = body.get('id');
+        details.quantity = body.get('quantity') || 1;
+        details.product_id = body.get('product-id') || body.get('product_id');
+        details.selling_plan = body.get('selling_plan');
+        return details;
+      }
+
+      if (window.URLSearchParams && body instanceof URLSearchParams) {
+        details.variant_id = body.get('id');
+        details.quantity = body.get('quantity') || 1;
+        details.product_id = body.get('product-id') || body.get('product_id');
+        details.selling_plan = body.get('selling_plan');
+        return details;
+      }
+
+      if (typeof body === 'string') {
+        var trimmed = body.trim();
+
+        if (trimmed.charAt(0) === '{') {
+          var json = JSON.parse(trimmed);
+          details.variant_id = json.id || json.variant_id;
+          details.quantity = json.quantity || 1;
+          details.product_id = json.product_id || json.productId;
+          details.product_title = json.product_title || json.productTitle;
+          details.variant_title = json.variant_title || json.variantTitle;
+          return details;
+        }
+
+        var params = new URLSearchParams(trimmed);
+        details.variant_id = params.get('id');
+        details.quantity = params.get('quantity') || 1;
+        details.product_id = params.get('product-id') || params.get('product_id');
+        details.selling_plan = params.get('selling_plan');
+        return details;
+      }
+
+      if (typeof body === 'object') {
+        details.variant_id = body.id || body.variant_id;
+        details.quantity = body.quantity || 1;
+        details.product_id = body.product_id || body.productId;
+        details.product_title = body.product_title || body.productTitle;
+        details.variant_title = body.variant_title || body.variantTitle;
+      }
+    } catch (e) {}
+
+    return details;
+  }
+
+  function getFormDetails(form) {
+    var details = {};
+
+    try {
+      var formData = new FormData(form);
+      details = readBodyDetails(formData);
+
+      if (!details.variant_id) {
+        var idInput = form.querySelector('[name="id"]');
+        if (idInput) details.variant_id = idInput.value;
+      }
+
+      if (!details.quantity) {
+        var qtyInput = form.querySelector('[name="quantity"]');
+        if (qtyInput) details.quantity = qtyInput.value;
+      }
+
+      if (!details.product_id) {
+        details.product_id = form.getAttribute('data-product-id') || form.dataset.productId;
+      }
+
+      if (!details.product_title) {
+        details.product_title =
+          form.getAttribute('data-product-title') ||
+          form.dataset.productTitle ||
+          PAGE_PRODUCT.product_title ||
+          getDomProductTitle();
+      }
+    } catch (e) {}
+
+    return details;
+  }
+
+  function enrichDetailsFromCartAddResponse(details, responseJson) {
+    var enriched = Object.assign({}, details || {});
+
+    try {
+      if (!responseJson) return enriched;
+
+      enriched.variant_id = enriched.variant_id || responseJson.variant_id || responseJson.id;
+      enriched.product_id = enriched.product_id || responseJson.product_id;
+      enriched.product_title = enriched.product_title || responseJson.product_title || responseJson.title;
+      enriched.variant_title = enriched.variant_title || responseJson.variant_title;
+
+      if (!enriched.variant_title && Array.isArray(responseJson.variant_options)) {
+        enriched.variant_title = responseJson.variant_options.join(' / ');
+      }
+
+      enriched.quantity = enriched.quantity || responseJson.quantity || 1;
+    } catch (e) {}
+
+    return enriched;
+  }
+
+  function buildAddToCartPayload(details) {
+    var attribution = getStoredAttribution();
+
+    if (!hasQuizAttribution(attribution)) return null;
+
+    details = details || {};
+
+    return {
+      event: 'add_to_cart',
+      quiz_session_id: safeString(attribution.quiz_session_id, 120),
+      quiz_product_id: safeString(attribution.quiz_product_id, 160),
+      product_id: safeString(details.product_id || PAGE_PRODUCT.product_id, 120),
+      variant_id: safeString(details.variant_id || details.id, 120),
+      product_title: safeString(details.product_title || PAGE_PRODUCT.product_title || getDomProductTitle(), 300),
+      variant_title: safeString(details.variant_title, 300),
+      quantity: safeNumber(details.quantity, 1),
+      source: 'shopify_storefront',
+      page_url: safeString(window.location.href, 1000),
+      referrer: safeString(document.referrer, 1000)
+    };
+  }
+
+  function getRecentEvents() {
+    try {
+      var raw = window.sessionStorage.getItem(RECENT_EVENT_KEY);
+      if (!raw) return {};
+      return JSON.parse(raw) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function setRecentEvents(events) {
+    try {
+      window.sessionStorage.setItem(RECENT_EVENT_KEY, JSON.stringify(events));
+    } catch (e) {}
+  }
+
+  function makeEventKey(payload) {
+    return [
+      payload.event,
+      payload.quiz_session_id,
+      payload.quiz_product_id || '',
+      payload.product_id || '',
+      payload.variant_id || '',
+      payload.quantity || '',
+      window.location.pathname
+    ].join('|');
+  }
+
+  function shouldSkipDuplicate(payload) {
+    var key = makeEventKey(payload);
+    var now = Date.now();
+    var events = getRecentEvents();
+
+    Object.keys(events).forEach(function (eventKey) {
+      if (now - events[eventKey] > 5000) delete events[eventKey];
+    });
+
+    if (events[key] && now - events[key] < 2500) {
+      setRecentEvents(events);
+      return true;
+    }
+
+    events[key] = now;
+    setRecentEvents(events);
+    return false;
+  }
+
+  function sendQuizEvent(payload, preferBeacon) {
+    if (!payload || !payload.quiz_session_id) return;
+    if (shouldSkipDuplicate(payload)) return;
+
+    var body = JSON.stringify(payload);
+
+    try {
+      fetch(EVENT_ENDPOINT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: body,
+        keepalive: true
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  function trackAddToCart(details, preferBeacon) {
+    var payload = buildAddToCartPayload(details || {});
+    sendQuizEvent(payload, !!preferBeacon);
+  }
+
+  function getFetchUrl(input) {
+    try {
+      if (typeof input === 'string') return input;
+      if (input && input.url) return input.url;
+    } catch (e) {}
+    return '';
+  }
+
+  function getFetchMethod(input, init) {
+    try {
+      if (init && init.method) return String(init.method).toUpperCase();
+      if (input && input.method) return String(input.method).toUpperCase();
+    } catch (e) {}
+    return 'GET';
+  }
+
+  function getFetchBody(input, init) {
+    try {
+      if (init && init.body) return init.body;
+      return null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function installFetchTracking() {
+    if (!window.fetch) return;
+
+    var originalFetch = window.fetch;
+
+    window.fetch = function (input, init) {
+      var url = getFetchUrl(input);
+      var method = getFetchMethod(input, init);
+      var body = getFetchBody(input, init);
+      var shouldTrack = method !== 'GET' && isCartAddUrl(url);
+      var details = shouldTrack ? readBodyDetails(body) : null;
+
+      return originalFetch.apply(this, arguments).then(function (response) {
+        if (shouldTrack && response && response.ok) {
+          try {
+            response.clone().json()
+              .then(function (json) {
+                trackAddToCart(enrichDetailsFromCartAddResponse(details, json), false);
+              })
+              .catch(function () {
+                trackAddToCart(details, false);
+              });
+          } catch (e) {
+            trackAddToCart(details, false);
+          }
+        }
+
+        return response;
+      });
+    };
+  }
+
+  function installXhrTracking() {
+    if (!window.XMLHttpRequest) return;
+
+    var OriginalXHR = window.XMLHttpRequest;
+    var originalOpen = OriginalXHR.prototype.open;
+    var originalSend = OriginalXHR.prototype.send;
+
+    OriginalXHR.prototype.open = function (method, url) {
+      this.__ooQuizMethod = method ? String(method).toUpperCase() : 'GET';
+      this.__ooQuizUrl = url || '';
+      return originalOpen.apply(this, arguments);
+    };
+
+    OriginalXHR.prototype.send = function (body) {
+      var xhr = this;
+      var shouldTrack = xhr.__ooQuizMethod !== 'GET' && isCartAddUrl(xhr.__ooQuizUrl);
+      var details = shouldTrack ? readBodyDetails(body) : null;
+
+      if (shouldTrack) {
+        xhr.addEventListener('load', function () {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              var json = JSON.parse(xhr.responseText);
+              trackAddToCart(enrichDetailsFromCartAddResponse(details, json), false);
+            } catch (e) {
+              trackAddToCart(details, false);
+            }
+          }
+        });
+      }
+
+      return originalSend.apply(this, arguments);
+    };
+  }
+
+  function installFormFallbackTracking() {
+    document.addEventListener('submit', function (event) {
+      var form = event.target;
+
+      if (!form || !form.action || !isCartAddUrl(form.action)) return;
+
+      var details = getFormDetails(form);
+
+      /*
+        Fallback for non-AJAX add-to-cart forms.
+        AJAX carts are tracked more accurately by fetch/XHR after success.
+        This uses fetch with keepalive so it can still send before navigation.
+      */
+      trackAddToCart(details, false);
+    }, true);
+  }
+
+  var existingData = getStoredAttribution();
+  var urlData = getUrlAttribution();
+  var mergedData = mergeAttribution(existingData, urlData);
+
+  if (hasQuizAttribution(mergedData)) {
+    setStoredAttribution(mergedData);
+    syncCartAttributes(mergedData);
+  }
+
+  installFetchTracking();
+  installXhrTracking();
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', installFormFallbackTracking);
+  } else {
+    installFormFallbackTracking();
+  }
+})();
+</script>

@@ -1,0 +1,227 @@
+{% comment %}
+  Oceans Optics Homepage SEO + FAQ Section
+  Adds visible SEO text, FAQ accordion, and matching FAQPage JSON-LD.
+  Use only on the homepage.
+{% endcomment %}
+
+<section
+  id="oo-homepage-seo-faq-{{ section.id }}"
+  class="oo-homepage-seo-faq"
+  aria-labelledby="oo-homepage-seo-faq-title-{{ section.id }}"
+>
+  <div class="oo-homepage-seo-faq__inner">
+
+    {% if section.settings.heading != blank %}
+      <h2 id="oo-homepage-seo-faq-title-{{ section.id }}" class="oo-homepage-seo-faq__heading">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if section.settings.seo_text != blank %}
+      <div class="oo-homepage-seo-faq__text">
+        {{ section.settings.seo_text }}
+      </div>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="oo-homepage-seo-faq__items">
+        {% for block in section.blocks %}
+          {% if block.settings.question != blank and block.settings.answer != blank %}
+            <details class="oo-homepage-seo-faq__item" {{ block.shopify_attributes }}>
+              <summary class="oo-homepage-seo-faq__question">
+                <span>{{ block.settings.question }}</span>
+              </summary>
+              <div class="oo-homepage-seo-faq__answer">
+                {{ block.settings.answer }}
+              </div>
+            </details>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+</section>
+
+{% if section.settings.enable_faq_schema and section.blocks.size > 0 %}
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {% assign valid_faqs = section.blocks | where: "type", "faq" %}
+      {% for block in valid_faqs %}
+        {% if block.settings.question != blank and block.settings.answer != blank %}
+          {
+            "@type": "Question",
+            "name": {{ block.settings.question | strip_html | json }},
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": {{ block.settings.answer | strip_html | json }}
+            }
+          }{% unless forloop.last %},{% endunless %}
+        {% endif %}
+      {% endfor %}
+    ]
+  }
+  </script>
+{% endif %}
+
+<style>
+  #oo-homepage-seo-faq-{{ section.id }} {
+    font-family: 'Lato', sans-serif;
+    padding: 32px 16px;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__inner {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__heading {
+    font-size: 26px;
+    line-height: 1.25;
+    font-weight: 700;
+    color: #023059;
+    text-align: center;
+    margin: 0 0 18px;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__text {
+    color: #023059;;
+    font-size: 16px;
+    line-height: 1.7;
+    margin: 0 auto 24px;
+    text-align: left;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__text p {
+    margin: 0 0 12px;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__items {
+    border-top: 1px solid #023059;
+    padding-top: 20px;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__item {
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 8px;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__question {
+    background-color: #ffffff;
+    color: #023059;
+    padding: 14px 16px;
+    cursor: pointer;
+    border: 1px solid #023059;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 700;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__question:hover {
+    background-color: #f0f6ff;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__question::-webkit-details-marker {
+    display: none;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} details[open] .oo-homepage-seo-faq__question {
+    background-color: #023059;
+    color: #ffffff;
+    border-radius: 8px 8px 0 0;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} details[open] .oo-homepage-seo-faq__question::before {
+    content: "▾";
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} details:not([open]) .oo-homepage-seo-faq__question::before {
+    content: "▸";
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__answer {
+    padding: 16px;
+    font-size: 16px;
+    line-height: 1.7;
+    background-color: #f9f9f9;
+    color: #333;
+    border-radius: 0 0 8px 8px;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__answer p {
+    margin: 0 0 10px;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__answer p:last-child {
+    margin-bottom: 0;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__answer a {
+    color: #B95E05;
+    text-decoration: none;
+  }
+
+  #oo-homepage-seo-faq-{{ section.id }} .oo-homepage-seo-faq__answer a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "OO Homepage SEO + FAQ",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "richtext",
+      "id": "seo_text",
+      "label": "Homepage SEO text",
+      "default": "<p>Oceans Optics helps snorkelers and divers find prescription snorkel masks, prescription dive masks, and underwater vision gear designed for comfort, clarity, and confidence. Use our Face-Fit tool and Underwater Lens Calculator to choose with confidence.</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_faq_schema",
+      "label": "Enable FAQ schema",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "OO Homepage SEO + FAQ"
+    }
+  ]
+}
+{% endschema %}

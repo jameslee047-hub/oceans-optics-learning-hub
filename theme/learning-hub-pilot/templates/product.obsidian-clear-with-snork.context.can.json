@@ -1,0 +1,43 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "product.obsidian-clear-with-snork.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "collapsible_tab_8w39TL": {
+          "settings": {
+            "content": "<p><strong>This mask features nearsighted (SPH) lenses in negative diopters (e.g., -1.50, -1.75, -2.00).</strong></p><p><strong>Tempered glass lenses for strength, safety, and clear underwater vision.</strong></p><p><strong>Need help? Chat with us live or email info@oceansoptics.com</strong></p>"
+          }
+        },
+        "collapsible_tab_AFrCjF": {
+          "settings": {
+            "heading": "Hand-Assembled, Free Shipping Over $70",
+            "content": "<p>Every Obsidian is made to order. Enjoy Free USPS tracked shipping when you spend $70 or $5.99 for orders under $70. Shipping takes 5-14 days. (5-10 on average)</p>"
+          }
+        },
+        "collapsible_tab_Fi4UYW": {
+          "settings": {
+            "content": "<p>Take advantage of our 30 days from delivery FREE return policy—shop with confidence. See our <a href=\"/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\">full return </a>policy for more info</p>"
+          }
+        },
+        "collapsible_tab_LEPMcQ": {
+          "settings": {
+            "content": "<p><strong>Snorkelling 101 is Your Ultimate Guide to Better Aquatic Adventures!</strong><br/><br/>Now <strong>free</strong> with every order! Access your eGuide instantly after checkout or via email, and dive in at your own leisure.</p>"
+          }
+        }
+      }
+    }
+  }
+}

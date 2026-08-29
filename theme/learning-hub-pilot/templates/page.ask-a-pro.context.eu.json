@@ -1,0 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "parent": "page.ask-a-pro.json",
+  "context": {
+    "market": "can"
+  },
+  "sections": {
+    "1731912527390b62b3": {
+      "settings": {},
+      "blocks": {
+        "forms_inline_fXdneL": {
+          "settings": {
+            "form_id": "336290"
+          }
+        }
+      }
+    }
+  }
+}

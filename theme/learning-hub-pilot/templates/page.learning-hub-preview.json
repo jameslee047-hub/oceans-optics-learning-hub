@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "learning-hub-dev-preview",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

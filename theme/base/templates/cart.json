@@ -1,0 +1,284 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "reef_banner_cart_i8WgcP": {
+      "type": "reef-banner-cart",
+      "name": "Reef Banner",
+      "settings": {}
+    },
+    "1783742312d379f343": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_9a0ffe8_tPFbBa": {
+          "type": "ai_gen_block_9a0ffe8",
+          "settings": {
+            "button_text": "Continue shopping",
+            "fallback_url": "",
+            "font_size": 15,
+            "icon_size": 20,
+            "button_padding": 8,
+            "desktop_width_percent": 100,
+            "horizontal_alignment": "right",
+            "padding_top": 12,
+            "padding_bottom": 0,
+            "padding_top_mobile": 12,
+            "padding_bottom_mobile": 0,
+            "button_color": "#ffffff",
+            "button_hover_color": "#023059",
+            "button_text_color": "#023059",
+            "button_hover_text_color": "#ffffff",
+            "border_thickness": 2,
+            "border_color": "#023059",
+            "border_hover_color": "#023059",
+            "border_radius": 28
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_9a0ffe8_tPFbBa"
+      ],
+      "settings": {}
+    },
+    "17504848627cade385": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_aUqb3a": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_aUqb3a"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "cart-items": {
+      "type": "main-cart-items",
+      "settings": {
+        "color_scheme": "background-2",
+        "padding_top": 12,
+        "padding_bottom": 16
+      }
+    },
+    "cart-footer": {
+      "type": "main-cart-footer",
+      "blocks": {
+        "subtotal": {
+          "type": "subtotal",
+          "settings": {}
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "subtotal",
+        "buttons"
+      ],
+      "settings": {
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "padding_top": 20,
+        "padding_bottom": 0
+      }
+    },
+    "custom_liquid_7NJKj6": {
+      "type": "custom-liquid",
+      "name": "OCEAN10",
+      "settings": {
+        "custom_liquid": "<style>\n  /* Scoped to THIS Custom Liquid only */\n  #shopify-section-{{ section.id }} .oo-coupon{\n    display:flex;\n    align-items:center;\n    gap:10px;\n    padding:10px 12px;\n    margin:8px 24px 12px auto; /* top right bottom left – left is auto so it pushes right */\n    border:2px dashed #023059;\n    border-radius:12px;\n    background:#fff;\n    color:#023059;\n    box-shadow:0 4px 14px rgba(2,48,89,.08);\n    font:600 16px/1.4 Lato,system-ui,sans-serif;\n    max-width:520px;\n    position:relative;\n  }\n\n  @supports ((-webkit-mask:linear-gradient(#000,#000)) or (mask:linear-gradient(#000,#000))){\n    #shopify-section-{{ section.id }} .oo-coupon{\n      -webkit-mask:\n        radial-gradient(12px at left center,transparent 98%,#000 100%) left/24px 100% no-repeat,\n        radial-gradient(12px at right center,transparent 98%,#000 100%) right/24px 100% no-repeat,\n        linear-gradient(#000,#000);\n              mask:\n        radial-gradient(12px at left center,transparent 98%,#000 100%) left/24px 100% no-repeat,\n        radial-gradient(12px at right center,transparent 98%,#000 100%) right/24px 100% no-repeat,\n        linear-gradient(#000,#000);\n    }\n  }\n\n  #shopify-section-{{ section.id }} .oo-chip{\n    background:#B95E05;\n    color:#fff;\n    padding:2px 8px;\n    border-radius:999px;\n    font-weight:800;\n    font-size:12px;\n  }\n\n  #shopify-section-{{ section.id }} .oo-text{margin:0;flex:1}\n\n  #shopify-section-{{ section.id }} .oo-code{\n    font-weight:900;\n    letter-spacing:.5px;\n  }\n\n  #shopify-section-{{ section.id }} .oo-btn{\n    border:1px solid #023059;\n    background:#fff;\n    color:#023059;\n    padding:6px 10px;\n    border-radius:8px;\n    font:700 13px/1 Lato,system-ui,sans-serif;\n    cursor:pointer;\n  }\n\n  #shopify-section-{{ section.id }} .oo-btn:hover{\n    background:#023059;\n    color:#fff;\n  }\n\n  #shopify-section-{{ section.id }} .oo-toast{\n    position:absolute;\n    right:10px;\n    top:-8px;\n    transform:translateY(-100%);\n    background:#023059;\n    color:#fff;\n    border-radius:8px;\n    padding:4px 8px;\n    font:700 12px/1 Lato,system-ui,sans-serif;\n    opacity:0;\n    pointer-events:none;\n    transition:.18s ease;\n  }\n\n  #shopify-section-{{ section.id }} .oo-toast.show{\n    opacity:1;\n    transform:translateY(-110%);\n  }\n\n  /* Mobile: center it */\n  @media (max-width:749px){\n    #shopify-section-{{ section.id }} .oo-coupon{\n      font-size:15px;\n      margin:8px auto 12px; /* auto left/right centers */\n    }\n  }\n</style>\n\n<div class=\"oo-coupon\" role=\"note\" aria-label=\"Discount code\">\n  <span class=\"oo-chip\">10% OFF</span>\n  <p class=\"oo-text\">Use code <span class=\"oo-code\" data-code=\"OCEAN10\">OCEAN10</span> at checkout.</p>\n  <button type=\"button\" class=\"oo-btn oo-copy\" aria-label=\"Copy discount code\">Copy</button>\n  <span class=\"oo-toast\" aria-hidden=\"true\">Copied</span>\n</div>\n\n<script>\n  (()=>{const root=document.getElementById('shopify-section-{{ section.id }}');\n    const coupon=root?.querySelector('.oo-coupon'); if(!coupon) return;\n    const btn=coupon.querySelector('.oo-copy'); const toast=coupon.querySelector('.oo-toast');\n    const code=(coupon.querySelector('.oo-code')?.textContent||'OCEAN10').trim();\n    btn?.addEventListener('click',async()=>{\n      try{await navigator.clipboard.writeText(code);}catch(e){}\n      toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1200);\n    });\n  })();\n</script>",
+        "color_scheme": "",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "1766035063e7c57a14": {
+      "type": "apps",
+      "blocks": {
+        "appstle_loyalty_appstle_loyalty_redeem_widget_gtfyhc": {
+          "type": "shopify://apps/appstle-loyalty/blocks/appstle-loyalty-redeem-widget/1886c0f8-77b6-4a85-af11-b43cc17ae1c1",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "appstle_loyalty_appstle_loyalty_redeem_widget_gtfyhc"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "custom_liquid_XHPTik": {
+      "type": "custom-liquid",
+      "name": "Trust Badge Cart",
+      "settings": {
+        "custom_liquid": "<style>\n  .oo-cart-trust-badges {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    gap: 8px;\n    padding: 8px 0;\n    border-top: 1px solid #e8e8e8;\n    border-bottom: 1px solid #e8e8e8;\nmargin: 16px 20px;\n  }\n\n  .oo-cart-trust-badge {\n    flex: 1;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n  }\n\n  .oo-cart-trust-badge img {\n    width: 100%;\n    max-width: 90px;\n    height: auto;\n    aspect-ratio: 1;\n    display: block;\n  }\n\n  @media (max-width: 480px) {\n    .oo-cart-trust-badge img {\n      max-width: 70px;\n    }\n  }\n</style>\n\n<div class=\"oo-cart-trust-badges\">\n\n  <div class=\"oo-cart-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Quality_Guaranteed.svg?v=1780044690\"\n      alt=\"Quality Guaranteed\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-cart-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Secure_Checkout.svg?v=1780044690\"\n      alt=\"Secure Checkout\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-cart-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Fast_Reliable.svg?v=1780044690\"\n      alt=\"Fast and Reliable Shipping\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n  <div class=\"oo-cart-trust-badge\">\n    <img\n      src=\"https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Free_Easy_returns.svg?v=1780044808\"\n      alt=\"Free and Easy Returns\"\n      width=\"90\"\n      height=\"90\"\n      loading=\"eager\"\n    >\n  </div>\n\n</div>",
+        "color_scheme": "",
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "multicolumn_RAnFbK": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_6bC4Qe": {
+          "type": "column",
+          "settings": {
+            "title": "Free Tracked Delivery",
+            "title_h3": false,
+            "text": "<h5>We carefully build the mask for your order. Pack it delicatley and ship it with care! </h5><h5>Estimated to be with you in 5–14 days, most arrive in 7–10 days.</h5>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_7a9CkR": {
+          "type": "column",
+          "settings": {
+            "title": "Easy Free Returns",
+            "title_h3": false,
+            "text": "<h5>Returns can be made up to 30 days from delivery. Just get in touch and we will be happy to assist you with an exchange, store credit or full refund. Used items can not be returned. See our full <a href=\"/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\">returns policy</a></h5>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_fwmC7k": {
+          "type": "column",
+          "settings": {
+            "title": "More than JUST a Mask",
+            "title_h3": false,
+            "text": "<h5>Every order includes our exclusive digital Snorkeling 101 – Your Ultimate Guide to Better Aquatic Adventures! Get expert tips instantly after checkout & via email, and dive in with confidence.</h5>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_6bC4Qe",
+        "column_7a9CkR",
+        "column_fwmC7k"
+      ],
+      "custom_css": [
+        ".multicolumn .title-wrapper-with-link {justify-content: center;}",
+        ".multicolumn .title {text-align: center;}",
+        ".multicolumn .rte p,.multicolumn .rte li {line-height: 1.7; margin: 6px 0;}",
+        ".multicolumn .rte ul {margin-left: 1.25em; list-style: disc outside;}"
+      ],
+      "name": "Shop With Confidence",
+      "settings": {
+        "title": "Shop with Confidence",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 3,
+        "column_alignment": "left",
+        "background_style": "primary",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 0,
+        "padding_bottom": 36
+      }
+    },
+    "17591218979d006fa3": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_mebU9H": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1080
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_mebU9H"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "featured_collection_KcwBhG": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "title": "Complete Your Kit Before You Go",
+        "heading_size": "h1",
+        "description": "<p><em>\"A few extras our customers always wish they'd grabbed. One cart, one trip, done.\"</em></p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "vacation-goodies",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": true,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "featured_collection_LJXtHc": {
+      "type": "featured-collection",
+      "name": "t:sections.featured-collection.presets.name",
+      "settings": {
+        "title": "You may love our exclusive I Can Sea Tees!",
+        "heading_size": "h1",
+        "description": "<p>Rep the I Can Sea Club - Fish ID Tees, funny Memes and more..</p>",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "i-can-sea-shirts",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": true,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    }
+  },
+  "order": [
+    "reef_banner_cart_i8WgcP",
+    "1783742312d379f343",
+    "17504848627cade385",
+    "cart-items",
+    "cart-footer",
+    "custom_liquid_7NJKj6",
+    "1766035063e7c57a14",
+    "custom_liquid_XHPTik",
+    "multicolumn_RAnFbK",
+    "17591218979d006fa3",
+    "featured_collection_KcwBhG",
+    "featured_collection_LJXtHc"
+  ]
+}

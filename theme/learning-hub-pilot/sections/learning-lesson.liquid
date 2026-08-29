@@ -1,0 +1,215 @@
+{{ 'learning-hub.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign lesson_title = metaobject.title.value | default: 'Learning lesson'
+  assign short_description = metaobject.short_description.value
+  assign lesson_type = metaobject.lesson_type.value
+  assign reading_time = metaobject.estimated_reading_time.value
+  assign category = metaobject.category.value
+  assign key_takeaways = metaobject.key_takeaways.value
+  assign related_lessons = metaobject.related_lessons.value
+  assign related_tools = metaobject.related_tools.value
+  assign related_products = metaobject.related_products.value
+  assign downloadable_resources = metaobject.downloadable_resources.value
+  assign primary_cta = metaobject.primary_cta.value
+  assign hero_media = metaobject.hero_media.value
+%}
+
+<article class="learning-hub learning-lesson color-{{ section.settings.color_scheme }} gradient">
+  <div class="learning-hub__band">
+    <div class="page-width">
+      <nav class="learning-breadcrumbs" aria-label="Breadcrumbs">
+        <a href="/pages/learn">Learning Hub</a>
+        {% if category != blank %}
+          <span aria-hidden="true">/</span>
+          <a href="/pages/learn-category/{{ category.system.handle }}">{{ category.title.value | escape }}</a>
+        {% endif %}
+      </nav>
+
+      <header>
+        {% if lesson_type != blank %}
+          <p class="learning-kicker">
+            {{ lesson_type | escape }}
+          </p>
+        {% endif %}
+
+        <h1>{{ lesson_title | escape }}</h1>
+
+        {% if short_description != blank %}
+          <p class="learning-hub__lead">{{ short_description | escape }}</p>
+        {% endif %}
+
+        <div class="learning-meta">
+          {% if category != blank %}
+            <span class="learning-meta__item">{{ category.title.value | escape }}</span>
+          {% endif %}
+          {% if reading_time != blank %}
+            <span class="learning-meta__item">{{ reading_time | escape }}</span>
+          {% endif %}
+        </div>
+      </header>
+    </div>
+  </div>
+
+  {% if hero_media != blank and hero_media.preview_image != blank %}
+    <div class="page-width">
+      {{ hero_media.preview_image | image_url: width: 1600 | image_tag: loading: 'eager', widths: '375, 550, 750, 1100, 1500, 1600', alt: lesson_title }}
+    </div>
+  {% endif %}
+
+  <div class="learning-hub__band">
+    <div class="page-width learning-lesson-flow">
+      {% if metaobject.lesson_body != blank %}
+        <div class="learning-article">
+          <div class="learning-rich-text">
+            {{ metaobject.lesson_body | metafield_tag }}
+          </div>
+        </div>
+      {% endif %}
+
+      {% if key_takeaways != blank or metaobject.instructor_tips != blank or metaobject.common_mistakes != blank or metaobject.safety_notes != blank %}
+        <section class="learning-supporting" aria-label="Lesson recap and supporting notes">
+          {% if key_takeaways != blank %}
+            <section class="learning-panel learning-panel--takeaways">
+              <h2>Key Takeaways</h2>
+              <ul class="learning-takeaways">
+                {% for takeaway in key_takeaways %}
+                  <li>{{ takeaway | escape }}</li>
+                {% endfor %}
+              </ul>
+            </section>
+          {% endif %}
+
+          {% if metaobject.instructor_tips != blank or metaobject.common_mistakes != blank %}
+            <div class="learning-support-grid">
+              {% if metaobject.instructor_tips != blank %}
+                <section class="learning-panel learning-panel--support">
+                  <h2>Instructor Tips</h2>
+                  {{ metaobject.instructor_tips | metafield_tag }}
+                </section>
+              {% endif %}
+
+              {% if metaobject.common_mistakes != blank %}
+                <section class="learning-panel learning-panel--support">
+                  <h2>Common Mistakes</h2>
+                  {{ metaobject.common_mistakes | metafield_tag }}
+                </section>
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if metaobject.safety_notes != blank %}
+            <section class="learning-panel learning-panel--safety">
+              <h2>Safety Note</h2>
+              {{ metaobject.safety_notes | metafield_tag }}
+            </section>
+          {% endif %}
+        </section>
+      {% endif %}
+
+      {% if downloadable_resources != blank or related_tools != blank or related_products != blank or primary_cta.url != blank %}
+        <section class="learning-panel learning-lesson-next-step">
+          <h2>Next Step</h2>
+
+          {% if downloadable_resources != blank %}
+            <div>
+              <h3>Downloads</h3>
+              <ul class="learning-resource-list">
+                {% for resource in downloadable_resources %}
+                  {% if resource.url != blank %}
+                    <li>
+                      <a href="{{ resource.url }}">{{ resource.alt | default: resource.filename | default: 'Download resource' | escape }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          {% if related_tools != blank %}
+            <div>
+              <h3>Tools</h3>
+              <ul class="learning-resource-list">
+                {% for tool in related_tools %}
+                  {% if tool.url != blank %}
+                    <li>
+                      <a href="{{ tool.url }}">{{ tool.text | default: tool.title | default: 'Open tool' | escape }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          {% if related_products != blank %}
+            <div>
+              <h3>Related Products</h3>
+              <ul class="learning-resource-list">
+                {% for product in related_products %}
+                  {% if product.url != blank %}
+                    <li>
+                      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          {% endif %}
+
+          {% if primary_cta.url != blank %}
+            <a class="button" href="{{ primary_cta.url }}">
+              {{ primary_cta.text | default: primary_cta.title | default: 'Continue' | escape }}
+            </a>
+          {% endif %}
+        </section>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if related_lessons != blank %}
+    <div class="learning-hub__band learning-hub__band--tinted">
+      <div class="page-width">
+        <div class="learning-hub__section-heading">
+          <div>
+            <p class="learning-hub__eyebrow">Next Reads</p>
+            <h2>Related Lessons</h2>
+          </div>
+        </div>
+
+        <div class="learning-grid learning-grid--two">
+          {% for lesson in related_lessons %}
+            <a class="learning-card" href="/pages/learn/{{ lesson.system.handle }}">
+              {% if lesson.lesson_type.value != blank %}
+                <span class="learning-card__meta">{{ lesson.lesson_type.value | escape }}</span>
+              {% endif %}
+              <h3>{{ lesson.title.value | escape }}</h3>
+              {% if lesson.short_description.value != blank %}
+                <p>{{ lesson.short_description.value | escape }}</p>
+              {% endif %}
+              <span class="learning-card__footer">Open lesson</span>
+            </a>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endif %}
+</article>
+
+{% schema %}
+{
+  "name": "Learning lesson",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Learning lesson"
+    }
+  ]
+}
+{% endschema %}

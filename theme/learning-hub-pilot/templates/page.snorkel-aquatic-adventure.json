@@ -1,0 +1,518 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "featured_collection_a7RwhY": {
+      "type": "featured-collection",
+      "disabled": true,
+      "settings": {
+        "title": "Choose your RX Mask!",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": true,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": true,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 40,
+        "padding_bottom": 36
+      }
+    },
+    "contact_form_z4Nbzc": {
+      "type": "contact-form",
+      "disabled": true,
+      "settings": {
+        "heading": "",
+        "heading_size": "h1",
+        "color_scheme": "background-2",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_banner_7xDRRB": {
+      "type": "image-banner",
+      "blocks": {
+        "heading_M8rQGa": {
+          "type": "heading",
+          "settings": {
+            "heading": "Are you ready for the <strong>Greatest Aquatic Adventure</strong> of a lifetime?",
+            "heading_size": "h1"
+          }
+        },
+        "text_TKxjr3": {
+          "type": "text",
+          "settings": {
+            "text": "<em>Now you can see the ocean like never before—experience visual clarity along with unmatched confidence! </em>",
+            "text_style": "body"
+          }
+        },
+        "buttons_Yj4mMN": {
+          "type": "buttons",
+          "settings": {
+            "button_label_1": "CHOOSE YOURS",
+            "button_link_1": "shopify://collections/all-our-masks",
+            "button_style_secondary_1": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_M8rQGa",
+        "text_TKxjr3",
+        "buttons_Yj4mMN"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/1_9754718e-3f38-45e8-ac29-91047dc8c97e.png",
+        "image_2": "shopify://shop_images/1_ecec3d8b-04e9-4fc8-920d-7b0965068f9e.png",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "small",
+        "desktop_content_position": "top-left",
+        "show_text_box": true,
+        "desktop_content_alignment": "left",
+        "color_scheme": "background-2",
+        "image_behavior": "ambient",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": true,
+        "show_text_below": true
+      }
+    },
+    "collection_list_PyDR4j": {
+      "type": "collection-list",
+      "blocks": {
+        "featured_collection_QxW38e": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "all-our-masks"
+          }
+        },
+        "featured_collection_kMgAnQ": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "nearsighted-prescription-snorkel-masks"
+          }
+        },
+        "featured_collection_ep8agw": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "farsighted-prescription-dive-mask"
+          }
+        },
+        "featured_collection_qjWRLp": {
+          "type": "featured_collection",
+          "settings": {
+            "collection": "frontpage"
+          }
+        }
+      },
+      "block_order": [
+        "featured_collection_QxW38e",
+        "featured_collection_kMgAnQ",
+        "featured_collection_ep8agw",
+        "featured_collection_qjWRLp"
+      ],
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_ratio": "square",
+        "columns_desktop": 4,
+        "color_scheme": "",
+        "show_view_all": false,
+        "columns_mobile": "1",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multirow_3hCB7c": {
+      "type": "multirow",
+      "blocks": {
+        "row_TP7Pgk": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/2_96d31013-d1e1-4b1f-baf3-395c9a42c3d6.png",
+            "caption": "Want to avoid these",
+            "heading": "Common Issues?",
+            "text": "<h4>Mask <strong>fogging</strong> up</h4><h4>Needless <strong>exhaustion</strong></h4><h4>Equipment <strong>confusion</strong></h4><h4><strong>Water </strong>in your mask</h4><h4>Feeling <strong>overwhelmed </strong></h4>",
+            "button_label": "CHOOSE YOURS",
+            "button_link": "shopify://collections/all-our-masks"
+          }
+        }
+      },
+      "block_order": [
+        "row_TP7Pgk"
+      ],
+      "settings": {
+        "image_height": "small",
+        "desktop_image_width": "small",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "center",
+        "image_layout": "alternate-left",
+        "section_color_scheme": "background-2",
+        "row_color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multirow_AetEWD": {
+      "type": "multirow",
+      "blocks": {
+        "row_V4WtVw": {
+          "type": "row",
+          "settings": {
+            "image": "shopify://shop_images/NEMO.png",
+            "caption": "Are you",
+            "heading": "Interested in Seeing?",
+            "text": "<h4>The <strong>vibrant</strong> details of the Oceans Coral reefs</h4><h4>Sharp, <strong>in-focus marine life</strong>, that you can finally identify</h4><h4>What everyone else sees and not missing a <strong>single moment</strong></h4><h4>Without <strong>straining</strong> your eyes & getting a <strong>headache</strong></h4><h4></h4>",
+            "button_label": "CHOOSE YOURS",
+            "button_link": "shopify://collections/all-our-masks"
+          }
+        }
+      },
+      "block_order": [
+        "row_V4WtVw"
+      ],
+      "settings": {
+        "image_height": "small",
+        "desktop_image_width": "small",
+        "heading_size": "h1",
+        "text_style": "body",
+        "button_style": "secondary",
+        "desktop_content_position": "middle",
+        "desktop_content_alignment": "center",
+        "image_layout": "alternate-right",
+        "section_color_scheme": "",
+        "row_color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
+        "mobile_content_alignment": "center",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "multicolumn_c6Tm3j": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_QQj6TP": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>Want to know how to deal with common issues?</strong>",
+            "text": "<h4><strong>• Clearing your mask</strong></h4><h4><strong>• Unnecacary Fatique</strong></h4><h4><strong>• Feeling overwhelmed or panicked underwater</strong></h4><h4><strong>• Foggy masks </strong></h4><h4><strong>• Not knowing how to set up gear</strong></h4>",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_Tpxfnd": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/2_96d31013-d1e1-4b1f-baf3-395c9a42c3d6.png",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_nByAbd": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/NEMO.png",
+            "title": "",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_enhRyY": {
+          "type": "column",
+          "settings": {
+            "title": "<strong>Do you want to see?</strong>",
+            "text": "<h4><strong>• The vibrant  vivid colors of the Oceans reefs?</strong></h4><h4><strong>•  Sharp in focus marine life that you can actually identify?</strong></h4><h4><strong>• What everyone else sees and not miss one single moment again?</strong></h4><h4><strong>• Without squinting or straining your eyes & getting a headache?</strong></h4><h4></h4>",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_QQj6TP",
+        "column_Tpxfnd",
+        "column_nByAbd",
+        "column_enhRyY"
+      ],
+      "disabled": true,
+      "settings": {
+        "title": "It all starts with a little prep..",
+        "heading_size": "h1",
+        "image_width": "half",
+        "image_ratio": "square",
+        "columns_desktop": 2,
+        "column_alignment": "left",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "shopify://collections/all-our-masks",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
+        "columns_mobile": "1",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "image_banner_kE9f7D": {
+      "type": "image-banner",
+      "settings": {
+        "image": "shopify://shop_images/Choose_Yours.svg",
+        "image_2": "shopify://shop_images/5_RX_Mask_Guide.svg",
+        "image_overlay_opacity": 0,
+        "banner_link": "shopify://collections/all-our-masks",
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "show_text_box": false,
+        "desktop_content_alignment": "center",
+        "color_scheme": "",
+        "image_behavior": "none",
+        "mobile_content_alignment": "center",
+        "stack_images_on_mobile": false,
+        "show_text_below": false
+      }
+    },
+    "1726387701194f63d6": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_all_reviews_text_4G7UGa": {
+          "type": "shopify://apps/judge-me-reviews/blocks/all_reviews_text/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_all_reviews_text_4G7UGa"
+      ],
+      "settings": {
+        "include_margins": false
+      }
+    },
+    "rich_text_iJiqzz": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_AB7LTM": {
+          "type": "heading",
+          "settings": {
+            "heading": "We recognized the <strong>need</strong> for a <strong>solution</strong>.",
+            "heading_size": "h1"
+          }
+        },
+        "text_x6mUEJ": {
+          "type": "text",
+          "settings": {
+            "text": "<h4>Having worked in the busiest dive and snorkel location in the world, we  witnessed so many different people <strong>struggle</strong> due to <strong>poor vision</strong> or <strong>lack of training</strong>. Leaving not enough time to source a solution. That is why we knew we had to find a better way!</h4>"
+          }
+        },
+        "button_VnJX6V": {
+          "type": "button",
+          "disabled": true,
+          "settings": {
+            "button_label": "Button label",
+            "button_link": "",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_AB7LTM",
+        "text_x6mUEJ",
+        "button_VnJX6V"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "featured_collection_f9AJTJ": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "collection": "all-our-masks",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "enable_desktop_slider": false,
+        "color_scheme": "background-2",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "rich_text_hDxn9C": {
+      "type": "rich-text",
+      "blocks": {
+        "caption_JDMRJD": {
+          "type": "caption",
+          "settings": {
+            "caption": "\"Give a person a mask, and they'll snorkel for a day. Show them how to snorkel, and they'll enjoy it for a lifetime.”",
+            "text_style": "subtitle",
+            "text_size": "large"
+          }
+        }
+      },
+      "block_order": [
+        "caption_JDMRJD"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "",
+        "full_width": true,
+        "padding_top": 88,
+        "padding_bottom": 72
+      }
+    },
+    "172612874830cea2f7": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_featured_carousel_8g89KW": {
+          "type": "shopify://apps/judge-me-reviews/blocks/featured_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "maxwidth": 1300
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_featured_carousel_8g89KW"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "rich_text_zhdWjb": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_TfgKnp": {
+          "type": "heading",
+          "settings": {
+            "heading": "After checkout, unlock your exclusive guide to Aquatic Adventures",
+            "heading_size": "h1"
+          }
+        },
+        "text_RRrByC": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Start gearing up while you wait for your shiny new mask to arrive. Dive into expert tips to ensure a lifetime of glorious aquatic adventures—</p>"
+          }
+        },
+        "button_HwkPJ3": {
+          "type": "button",
+          "settings": {
+            "button_label": "CHOOSE YOURS",
+            "button_link": "shopify://collections/all-our-masks",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "heading_TfgKnp",
+        "text_RRrByC",
+        "button_HwkPJ3"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "background-2",
+        "full_width": true,
+        "padding_top": 40,
+        "padding_bottom": 52
+      }
+    },
+    "1726386712a2952dda": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_PRHUTC": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "alignment": "center",
+            "background_color": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_PRHUTC"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "featured_collection_a7RwhY",
+    "contact_form_z4Nbzc",
+    "image_banner_7xDRRB",
+    "collection_list_PyDR4j",
+    "multirow_3hCB7c",
+    "multirow_AetEWD",
+    "multicolumn_c6Tm3j",
+    "image_banner_kE9f7D",
+    "1726387701194f63d6",
+    "rich_text_iJiqzz",
+    "featured_collection_f9AJTJ",
+    "rich_text_hDxn9C",
+    "172612874830cea2f7",
+    "rich_text_zhdWjb",
+    "1726386712a2952dda"
+  ]
+}
