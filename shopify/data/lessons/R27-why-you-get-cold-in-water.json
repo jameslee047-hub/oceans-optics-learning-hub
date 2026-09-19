@@ -1,0 +1,85 @@
+{
+  "type": "learning_lesson",
+  "handle": "why-you-get-cold-in-water",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Why You Get Cold in Water",
+    "short_description": "Understand why your body loses heat faster in water than in air, and why exposure protection matters.",
+    "lesson_type": "Science lesson",
+    "category": "underwater-science-your-body",
+    "estimated_reading_time": "2-4 minutes",
+    "hero_media": null,
+    "lesson_body": "## Why You Get Cold in Water\n\nWater pulls heat away from your body far more efficiently than air does, which is why you can feel chilled snorkeling in water that would feel comfortable as air temperature. Understanding why helps explain why exposure gear matters even in water that doesn't feel especially cold at first.\n\n## Why Water Cools You Faster Than Air\n\nWater conducts heat away from your body much more efficiently than air. That means your body loses warmth faster in water than it would sitting in air at the same temperature, even water that feels mild on first entry can gradually draw down your body temperature over time. This is why a longer snorkel in cool water can leave you feeling cold even if the first few minutes felt fine.\n\n## Recognizing the Early Signs\n\nFeeling a bit cool at first is normal, but shivering, becoming clumsy, or feeling unusually tired are signs your body is working to stay warm and it's time to get out and warm up. Catching this early is easier and more comfortable than waiting until you're seriously chilled.\n\n## Overheating Is Also Possible\n\nIn warm water, especially with a wetsuit on, the opposite problem can occur: overheating. Staying hydrated and taking breaks in the shade between snorkels helps you avoid heat-related discomfort, particularly in tropical conditions.\n\n## Why This Connects to Your Gear\n\nUnderstanding why you get cold is the reasoning behind choosing the right exposure protection for the conditions you'll be in. See [Exposure Protection & Staying Warm](lesson:exposure-protection-staying-warm) for choosing wetsuits, rash guards, and other gear based on water temperature and exposure time.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "Why can you feel cold snorkeling in water that wouldn't feel cold as air temperature?",
+          "answers": [
+            "Water conducts heat away from your body much more efficiently than air",
+            "Water always contains less oxygen than air",
+            "Wetsuits trap cold water against your skin"
+          ],
+          "correct_index": 0,
+          "explanation": "Water draws heat away from the body far more efficiently than air, so the same temperature feels colder in water than in air."
+        },
+        {
+          "question": "What is a sign that your body is struggling to stay warm?",
+          "answers": [
+            "Feeling comfortable and relaxed",
+            "Shivering, clumsiness, or unusual tiredness",
+            "Feeling thirsty"
+          ],
+          "correct_index": 1,
+          "explanation": "Shivering, clumsiness, and unusual tiredness are signs the body is working hard to maintain warmth, and it's time to exit and warm up."
+        },
+        {
+          "question": "Can overheating happen while snorkeling?",
+          "answers": [
+            "No, only cold-water risk exists",
+            "Yes, especially in warm water while wearing a wetsuit",
+            "Only during scuba diving, not snorkeling"
+          ],
+          "correct_index": 1,
+          "explanation": "Warm water combined with a wetsuit and sun exposure can lead to overheating, which is why hydration and shade breaks matter too."
+        },
+        {
+          "question": "How does this lesson connect to choosing exposure gear?",
+          "answers": [
+            "It explains the physiology behind why the right gear matters",
+            "It has no real connection to gear choice",
+            "It replaces the need for exposure gear entirely"
+          ],
+          "correct_index": 0,
+          "explanation": "Understanding how and why the body loses heat in water is the reasoning behind choosing exposure protection suited to the conditions."
+        }
+      ]
+    },
+    "instructor_tips": "- Use a relatable comparison, like how a swimming pool that feels fine at first can leave you shivering an hour later, to make heat loss concrete.\n- Mention that even tropical water can eventually feel cold on a long snorkel, since heat loss is gradual and cumulative.\n- Don't skip the overheating side, it's a real risk in a wetsuit under a hot sun and often overlooked.",
+    "common_mistakes": "- Assuming water that feels fine at first will stay comfortable for the whole outing.\n- Ignoring early signs like shivering or clumsiness instead of exiting to warm up.\n- Overlooking the risk of overheating while wearing a wetsuit in warm, sunny conditions.",
+    "safety_notes": "If you or a buddy start shivering uncontrollably, feel unusually clumsy or confused, or feel excessively tired while in the water, treat it as a sign to exit and warm up. In warm conditions, watch for signs of overheating like dizziness or nausea, and take breaks in shade with water to drink.",
+    "key_takeaways": [
+      "Water draws heat from your body much more efficiently than air.",
+      "Feeling fine at first doesn't mean you won't get cold over a longer snorkel.",
+      "Shivering, clumsiness, or unusual tiredness are signs to exit and warm up.",
+      "Overheating is also possible in warm water, especially while wearing a wetsuit."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R06",
+        "title": "Exposure Protection & Staying Warm",
+        "handle": "exposure-protection-staying-warm",
+        "description": "Choosing the right gear based on this physiology."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R27",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Why You Get Cold in Water | Oceans Optics Learning Hub",
+    "meta_description": "Learn why the body loses heat faster in water than in air, and how this connects to choosing the right exposure protection."
+  }
+}

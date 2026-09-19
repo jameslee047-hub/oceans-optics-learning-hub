@@ -102,6 +102,17 @@ Do not invent URLs.
 
 The `Primary CTA` field is optional. Safety, science, and conservation lessons do not need a commercial CTA simply to fill the field.
 
+## Cross-Lesson References
+
+Cross-lesson references should help the learner decide what to read next.
+
+- Use customer-facing lesson titles, not internal lesson IDs.
+- Make the lesson title clickable using the canonical lesson handle syntax: `[Lesson Title](lesson:lesson-handle)`.
+- Explain why the linked lesson is useful.
+- Keep the sentence short and natural.
+- Avoid wording such as "belongs in", "covered in", "outside scope", or "see section".
+- Do not over-link. Add a cross-link only when it genuinely helps the learner.
+
 ## Knowledge Check Format
 
 Keep knowledge checks inside Markdown lesson files for now. Use this format:
@@ -139,4 +150,3 @@ Suggested `visual_status` values:
 - needs design
 
 Do not use `recommended visual` as a future public Shopify content field.
-

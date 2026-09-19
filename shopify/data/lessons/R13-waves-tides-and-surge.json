@@ -1,0 +1,128 @@
+{
+  "type": "learning_lesson",
+  "handle": "waves-tides-and-surge",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Waves, Tides & Surge",
+    "short_description": "Understand waves, tides, and surge, and how each affects your snorkeling plans.",
+    "lesson_type": "Conditions explainer",
+    "category": "safety-conditions",
+    "estimated_reading_time": "3-5 minutes",
+    "hero_media": null,
+    "lesson_body": "## Waves, Tides & Surge\n\nNot all water movement is a current. Waves, tides, and surge each affect your snorkel differently, and understanding them helps you choose better timing and entry points. For current-driven hazards like rip currents and longshore currents, see [Currents & Rip Currents](lesson:currents-and-rip-currents), this lesson focuses on the other three.\n\n## Waves\n\nWaves are disturbances that travel across the water's surface, usually caused by wind. Their size depends on wind speed, how long it blows, and the distance it travels over open water. Near shore, waves can break and create a surf zone with turbulent, unpredictable water. Breaking waves are a common source of injury and disorientation during entries and exits, so approach wave-exposed areas with extra caution. See [Entry and Exit Techniques](lesson:entry-and-exit-techniques) for handling choppy conditions.\n\nWaves usually arrive in sets, groups of larger waves followed by a calmer lull that can last a minute or longer. Watching the water for a few minutes before entering helps you spot the pattern. Time your entry for the start of a lull rather than pushing through while a set is breaking, and aim to get past the surf zone before the next set arrives.\n\n## Tides\n\nTides are the regular rise and fall of sea level, caused by the gravitational pull of the moon and sun. Most coastlines see two high tides and two low tides each day, though the exact pattern and range vary by location. Tides matter for snorkeling because they change water depth, how strong nearby currents run, and sometimes visibility.\n\nTide height changes more than just how deep the water feels. Higher tide generally means more water over reef and rock, which can make entries and exits easier, though it can also submerge hazards that would otherwise be visible. Lower tide can expose rocks, coral, or sandbars, meaning a longer walk to reach swimmable water and more care needed to avoid contact with the bottom. Neither is universally safer, check what your specific spot does. Tides also drive tidal currents, see [Currents & Rip Currents](lesson:currents-and-rip-currents) for how slack tide affects current strength specifically.\n\n## Surge\n\nSurge is the back-and-forth movement of water along the shoreline, driven by a combination of waves and tidal forces. It's often mild in sheltered bays and coves, but can become strong in exposed areas, especially when wave energy is high. Surge near rocks or reefs is worth extra respect, since being pushed and pulled repeatedly in a confined space raises the risk of injury or getting caught on something.\n\nIf surge does catch you near rocks or reefs, work with it rather than against it. Hold onto something stable, a line, an anchor, a solid rock, when surge pulls you back, and let it carry you forward when it pushes. If there's nothing to hold onto, keep steady, controlled movements rather than fighting it outright. Time any critical move, like climbing out near rocks, for the calmer window between surges rather than forcing it mid-surge.\n\n## Checking Conditions Before You Go\n\nWaves, tides, and surge are all things you can check ahead of time. Check NOAA Tides & Currents (tidesandcurrents.noaa.gov) for US tide predictions, or Tideschart.com for locations outside the US. Check the local marine weather forecast for wind speed, direction, and storm systems, since wind is what drives wave size directly.\n\nMid-morning to mid-afternoon generally gives the best underwater visibility, low sun angles at sunrise and sunset make it harder to see into the water. And a few minutes watching the water from shore before you commit to an entry point tells you more than any forecast can.\n\nThis is one part of a broader pre-snorkel routine, see [Pre-Snorkel Checklist and Planning](lesson:pre-snorkel-checklist-and-planning) for the full picture.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "What primarily causes waves?",
+          "answers": [
+            "The gravitational pull of the moon",
+            "Underwater earthquakes",
+            "Wind interacting with the water's surface"
+          ],
+          "correct_index": 2,
+          "explanation": "Waves are disturbances driven by wind, with their size depending on wind speed, duration, and distance traveled over water."
+        },
+        {
+          "question": "What are tides?",
+          "answers": [
+            "The regular rise and fall of sea level from gravitational forces",
+            "Water movement caused entirely by wind",
+            "A type of current found only near reefs"
+          ],
+          "correct_index": 0,
+          "explanation": "Tides are caused by the gravitational pull of the moon and sun, producing a regular pattern of rising and falling sea level."
+        },
+        {
+          "question": "Why does surge deserve extra caution near rocks or reefs?",
+          "answers": [
+            "Surge only occurs near rocks",
+            "Being pushed and pulled repeatedly in a confined space raises injury risk",
+            "Surge is always stronger over open sand"
+          ],
+          "correct_index": 1,
+          "explanation": "Surge near rocks or reefs can repeatedly push and pull a snorkeler in a tight space, increasing the chance of injury or getting caught."
+        },
+        {
+          "question": "Why is checking a tide table useful before snorkeling?",
+          "answers": [
+            "It tells you the water temperature",
+            "It predicts wave height precisely",
+            "It helps you anticipate changes in depth and current strength during your outing"
+          ],
+          "correct_index": 2,
+          "explanation": "Tides change water depth and can affect current strength, so knowing the tide schedule helps you plan entry, exit, and timing."
+        },
+        {
+          "question": "What's the safest way to time an entry through breaking waves?",
+          "answers": [
+            "Watch for the set-and-lull pattern and enter during the lull",
+            "Push through as soon as you're ready, regardless of the wave pattern",
+            "Waves don't come in a predictable pattern, so timing doesn't matter"
+          ],
+          "correct_index": 0,
+          "explanation": "Waves usually arrive in sets followed by calmer lulls. Watching the pattern for a few minutes and entering during a lull is safer than pushing through a breaking set."
+        },
+        {
+          "question": "What's the right way to handle surge near rocks or reef?",
+          "answers": [
+            "Fight against it with continuous hard swimming",
+            "Work with it, holding on during the pull and moving with the push, timing critical moves for the calm window",
+            "Surge near rocks isn't something you can do anything about"
+          ],
+          "correct_index": 1,
+          "explanation": "Fighting surge wastes energy and increases injury risk. Timing your movement with it, and using something to hold onto, is safer and more effective."
+        },
+        {
+          "question": "Does this lesson cover rip currents and longshore currents?",
+          "answers": [
+            "Yes, in full detail",
+            "Only briefly, with no cross-reference",
+            "No, those are covered in a separate lesson on currents"
+          ],
+          "correct_index": 2,
+          "explanation": "Current-driven hazards are covered separately in Currents & Rip Currents, this lesson focuses on waves, tides, and surge."
+        }
+      ]
+    },
+    "instructor_tips": "- The same spot can feel completely different a few hours later, don't assume today's entry will match what you remember from a previous visit at a different tide.\n- Waves and surge often build on each other, if both are up at once, treat that combination as more serious than either one alone.\n- If you're ever unsure whether conditions are safe to enter, that uncertainty is itself the answer, wait, or pick a different spot.",
+    "common_mistakes": "- Assuming water movement seen from shore matches what you'll feel once entering.\n- Not checking tide timing before planning entry or exit points.\n- Entering during a wave set instead of waiting for the lull.\n- Fighting surge directly instead of timing movement with it.\n- Underestimating surge strength near rocks or reef structures.",
+    "safety_notes": "Wave, tide, and surge conditions vary by location and change throughout the day. Always check current local conditions, tide tables, and any posted warnings before entering the water, and avoid wave-exposed or surge-prone entry points if you're unsure of your ability to handle them.",
+    "key_takeaways": [
+      "Waves, tides, and surge are different from currents, and each affects snorkeling differently.",
+      "Waves are wind-driven, arrive in sets with calmer lulls between, and can create hazardous surf zones near shore.",
+      "Tides change water depth and current strength throughout the day, check a tide table before you go.",
+      "Surge is stronger near rocks and reefs than over open sand, work with it, don't fight it.",
+      "Check tide tables, marine forecasts, and local conditions before entering the water."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R12",
+        "title": "Currents & Rip Currents",
+        "handle": "currents-and-rip-currents",
+        "description": "Current-driven hazards specifically."
+      },
+      {
+        "lesson_id": "R10",
+        "title": "Pre-Snorkel Checklist and Planning",
+        "handle": "pre-snorkel-checklist-and-planning",
+        "description": "Building condition checks into your routine."
+      },
+      {
+        "lesson_id": "R17",
+        "title": "Entry and Exit Techniques",
+        "handle": "entry-and-exit-techniques",
+        "description": "Handling wave-exposed entries and exits."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R13",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Waves, Tides & Surge for Snorkelers | Oceans Optics Learning Hub",
+    "meta_description": "Learn how waves, tides, and surge affect snorkeling conditions, water depth, and visibility, and how to plan around them."
+  }
+}

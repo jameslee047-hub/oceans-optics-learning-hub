@@ -2,6 +2,7 @@
 
 ## Curriculum Status
 Category: Gear, Masks & Vision
+Lesson type: Skill lesson
 Pathways: Equipment Essentials
 Curriculum decision: KEEP
 Related lessons: R01, R02, R20

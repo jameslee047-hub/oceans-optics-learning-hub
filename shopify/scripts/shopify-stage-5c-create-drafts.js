@@ -57,7 +57,7 @@ query Stage5CScopes {
   }
 }`;
 
-const DEFINITIONS_QUERY = `#graphql
+export const DEFINITIONS_QUERY = `#graphql
 query Stage5CDefinitions($first: Int!, $after: String) {
   metaobjectDefinitions(first: $first, after: $after) {
     edges {
@@ -109,7 +109,7 @@ query Stage5CDefinitions($first: Int!, $after: String) {
   }
 }`;
 
-const CREATE_DEFINITION_MUTATION = `#graphql
+export const CREATE_DEFINITION_MUTATION = `#graphql
 mutation Stage5CCreateMetaobjectDefinition($definition: MetaobjectDefinitionCreateInput!) {
   metaobjectDefinitionCreate(definition: $definition) {
     metaobjectDefinition {
@@ -159,7 +159,7 @@ mutation Stage5CCreateMetaobjectDefinition($definition: MetaobjectDefinitionCrea
   }
 }`;
 
-const UPDATE_DEFINITION_MUTATION = `#graphql
+export const UPDATE_DEFINITION_MUTATION = `#graphql
 mutation Stage5CUpdateMetaobjectDefinition($id: ID!, $definition: MetaobjectDefinitionUpdateInput!) {
   metaobjectDefinitionUpdate(id: $id, definition: $definition) {
     metaobjectDefinition {
@@ -233,7 +233,7 @@ mutation Stage5CCreateMetaobject($metaobject: MetaobjectCreateInput!) {
   }
 }`;
 
-const METAOBJECTS_QUERY = `#graphql
+export const METAOBJECTS_QUERY = `#graphql
 query Stage5CMetaobjects($type: String!, $first: Int!, $after: String) {
   metaobjects(type: $type, first: $first, after: $after) {
     nodes {
@@ -293,11 +293,11 @@ function isRelevantDefinition(definition) {
   return RELEVANT_TERMS.some((term) => haystack.includes(term.toLowerCase()));
 }
 
-function definitionByType(definitions, type) {
+export function definitionByType(definitions, type) {
   return definitions.find((definition) => definition.type === type);
 }
 
-function userErrorsFrom(response, key) {
+export function userErrorsFrom(response, key) {
   return response?.body?.data?.[key]?.userErrors ?? [];
 }
 
@@ -305,7 +305,7 @@ function graphqlErrors(response) {
   return response?.body?.errors?.map((error) => error.message) ?? [];
 }
 
-async function graphqlOrThrow(client, query, variables, label) {
+export async function graphqlOrThrow(client, query, variables, label) {
   const graphql = client.graphql ?? client.graphqlReadOnly;
   if (!graphql) throw new Error(`${label} failed: client does not expose a GraphQL method.`);
   const response = await graphql(query, variables);
@@ -315,7 +315,7 @@ async function graphqlOrThrow(client, query, variables, label) {
   return response;
 }
 
-async function loadAllDefinitions(client) {
+export async function loadAllDefinitions(client) {
   const definitions = [];
   let after = null;
   for (let page = 0; page < 10; page += 1) {
@@ -347,7 +347,7 @@ async function loadAllMetaobjects(client, type) {
   return { entries, actualApiVersion, warning: `Stopped ${type} metaobject scan after 10 pages.` };
 }
 
-function buildFieldDefinition(field, referenceDefinitionIds = {}) {
+export function buildFieldDefinition(field, referenceDefinitionIds = {}) {
   const output = {
     key: field.key,
     name: field.name,
@@ -377,7 +377,7 @@ function buildFieldDefinition(field, referenceDefinitionIds = {}) {
   return output;
 }
 
-function buildDefinitionInput(definition, referenceDefinitionIds = {}) {
+export function buildDefinitionInput(definition, referenceDefinitionIds = {}) {
   const input = {
     name: definition.name,
     type: definition.type,
@@ -440,7 +440,7 @@ function existingFieldTypeName(field) {
   return typeof field.type === "string" ? field.type : field.type?.name;
 }
 
-function compareDefinitionToSchema(plannedDefinition, existingDefinition, referenceDefinitionIds = {}) {
+export function compareDefinitionToSchema(plannedDefinition, existingDefinition, referenceDefinitionIds = {}) {
   const mismatches = [];
   const expectedInput = buildDefinitionInput(plannedDefinition, referenceDefinitionIds);
   const expectedFields = new Map(expectedInput.fieldDefinitions.map((field) => [field.key, field]));

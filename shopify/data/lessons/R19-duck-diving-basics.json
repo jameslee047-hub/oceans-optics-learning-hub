@@ -1,0 +1,114 @@
+{
+  "type": "learning_lesson",
+  "handle": "duck-diving-basics",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Duck Diving Basics",
+    "short_description": "Learn the basic technique for diving below the surface to get a closer look underwater.",
+    "lesson_type": "Skill lesson",
+    "category": "in-water-skills",
+    "estimated_reading_time": "3-5 minutes",
+    "hero_media": null,
+    "lesson_body": "## Duck Diving Basics\n\nDuck diving is how snorkelers descend below the surface for a closer look at the reef, a wreck, or anything else worth a nearer view. It's a breath-hold skill, which means the safety principles in [Breath-Hold Safety, CO2 & Shallow-Water Blackout](lesson:breath-hold-safety-co2-and-shallow-water-blackout) apply directly here, read that lesson before practicing duck dives regularly.\n\n## Basic Technique\n\n1. Start face down at the surface with your mask and snorkel in place, and take a normal, relaxed breath, not a forced or extended one.\n2. Bend at the hips, folding your upper body downward toward the bottom.\n3. Lift your legs up out of the water. Their weight helps drive your body downward as your hips continue the roll.\n4. Once submerged, kick calmly to continue your descent, keeping movements smooth rather than rushed.\n\nSome snorkelers remove the snorkel from their mouth just before descending and replace it once back at the surface, to avoid water entering if the tube floods. Others simply leave it in and clear it with the blast method on resurfacing, see [Clearing Your Snorkel](lesson:clearing-your-snorkel). Either approach is common; find what feels natural and confirm with an instructor if you're unsure which your local operator teaches.\n\n## Ascending and Resurfacing\n\nAscend calmly rather than rushing, sudden movement wastes energy and air. This isn't only about comfort, DAN's own data shows roughly 99% of blackouts happen at the surface or within about 5 metres of it, so the ascent and the first breaths after it deserve your full attention, not a rush to get back to diving.\n\nBefore you break the surface, look up and check what's above you, boats, other swimmers, anything you couldn't see while your attention was on the dive. Keep one hand raised as you ascend so you're visible and can catch anything overhead before you're there, this matters most in areas with boat traffic. See [Surface Safety Devices](lesson:surface-safety-devices) for equipment that helps you stay visible in the first place.\n\nOnce you reach the surface, clear your snorkel if needed and breathe normally. Avoid immediately attempting another dive, give yourself time to breathe normally and recover first.\n\n## Buddy Safety While Duck Diving\n\nDuck diving means one person is underwater while visibility and awareness are reduced. A good habit is for buddy pairs to alternate: one dives while the other stays on the surface watching, and that watch doesn't end the moment your buddy resurfaces. Keep watching for a full 30 seconds after they're back up, and confirm with a clear OK signal, not just a glance, blackout can still happen in those first breaths after surfacing. See [Buddy Communication and Awareness](lesson:buddy-communication-and-awareness) for staying visible and aware of each other.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "What drives the initial descent in a duck dive?",
+          "answers": [
+            "Bending at the hips and lifting the legs out of the water",
+            "Kicking hard from a horizontal position",
+            "Pulling yourself down with your arms"
+          ],
+          "correct_index": 0,
+          "explanation": "Bending at the hips and lifting the legs, using their weight, is what drives the body downward to start the dive."
+        },
+        {
+          "question": "What kind of breath should you take before duck diving?",
+          "answers": [
+            "Several rapid breaths in a row",
+            "A forced, extra-deep breath to maximize dive time",
+            "A normal, relaxed breath"
+          ],
+          "correct_index": 2,
+          "explanation": "A normal, relaxed breath is safer than a forced or extended one, which connects to the breath-hold safety principles covered separately."
+        },
+        {
+          "question": "Why is it a good habit for buddy pairs to alternate duck dives?",
+          "answers": [
+            "It's required by all dive operators",
+            "It keeps one person watching from the surface while the other descends",
+            "It makes the dive faster"
+          ],
+          "correct_index": 1,
+          "explanation": "Alternating means someone is always watching from the surface, which supports quicker help if something goes wrong, including in the moments right after the diver resurfaces."
+        },
+        {
+          "question": "What should you do immediately after surfacing from a duck dive?",
+          "answers": [
+            "Clear your snorkel if needed and breathe normally before diving again",
+            "Attempt another dive right away to make the most of the outing",
+            "Remove your mask and rest on your back"
+          ],
+          "correct_index": 0,
+          "explanation": "Clearing your airway and breathing normally before attempting another dive gives your body time to recover."
+        },
+        {
+          "question": "Why should you look up and check what's above you before finishing your ascent from a duck dive?",
+          "answers": [
+            "It's only a concern in areas without lifeguards",
+            "Ascending is naturally slower than descending, so timing doesn't matter",
+            "You've been focused on the dive and may not have seen surface traffic, like a boat, that's now a collision risk as you surface"
+          ],
+          "correct_index": 2,
+          "explanation": "Checking your surroundings and keeping a hand raised as you ascend helps you spot and avoid boats or other hazards you couldn't see while your attention was underwater, this matters most where there's real boat traffic."
+        }
+      ]
+    },
+    "instructor_tips": "- Practice the hip-bend and leg-lift motion at the surface a few times before combining it with an actual descent, it's easier to get the timing right without the added task of submerging.\n- Keep the goal in mind as calm and controlled, not deep or long, a duck dive that goes well doesn't need to be impressive.\n- If you notice yourself rushing to the surface, treat that as a signal you pushed the dive a little further than you should have, ease off next time rather than treating it as normal.",
+    "common_mistakes": "- Taking a forced or extra-deep breath before diving instead of a normal one.\n- Rushing the ascent instead of returning to the surface calmly.\n- Attempting another dive immediately after surfacing without recovering first.\n- Duck diving without a buddy watching from the surface.",
+    "safety_notes": "Duck diving is a breath-hold skill. Never hold your breath longer than feels comfortable, never hyperventilate beforehand, and always dive with a buddy watching from the surface. See [Breath-Hold Safety, CO2 & Shallow-Water Blackout](lesson:breath-hold-safety-co2-and-shallow-water-blackout) for the full safety picture before practicing duck dives.",
+    "key_takeaways": [
+      "Duck diving uses a hip-bend and leg-lift to drive a calm descent below the surface.",
+      "Take a normal breath before diving, never a forced or extended one.",
+      "Ascend calmly and recover fully before attempting another dive, most blackouts happen at or near the surface, not at depth.",
+      "Look up and check what's above you, boats included, before you break the surface, and keep a hand raised as you ascend.",
+      "Always duck dive with a buddy watching from the surface, and keep watching for a full 30 seconds after they resurface, confirmed with a clear OK signal."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R15",
+        "title": "Breath-Hold Safety, CO2 & Shallow-Water Blackout",
+        "handle": "breath-hold-safety-co2-and-shallow-water-blackout",
+        "description": "The safety principles behind this skill."
+      },
+      {
+        "lesson_id": "R26",
+        "title": "Equalizing Basics",
+        "handle": "equalizing-basics",
+        "description": "Managing ear and sinus pressure as you descend."
+      },
+      {
+        "lesson_id": "R18",
+        "title": "Clearing Your Snorkel",
+        "handle": "clearing-your-snorkel",
+        "description": "Clearing a flooded snorkel on resurfacing."
+      },
+      {
+        "lesson_id": "R14",
+        "title": "Buddy Communication and Awareness",
+        "handle": "buddy-communication-and-awareness",
+        "description": "Staying aware of your buddy while diving."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R19",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Duck Diving Basics for Snorkeling | Oceans Optics Learning Hub",
+    "meta_description": "Learn the basic duck-diving technique for descending below the surface while snorkeling, plus buddy safety and resurfacing tips."
+  }
+}

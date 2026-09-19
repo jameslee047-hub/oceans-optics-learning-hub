@@ -2,6 +2,7 @@
 
 ## Curriculum Status
 Category: Gear, Masks & Vision
+Lesson type: Equipment guide
 Pathways: Equipment Essentials (R01 → R31 → R02 → R03 → R04 → R05 → R06 → R27 → R09)
 Curriculum decision: KEEP
 Related lessons: R10, R27

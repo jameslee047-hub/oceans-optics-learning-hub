@@ -1,0 +1,91 @@
+{
+  "type": "learning_lesson",
+  "handle": "marine-life-basics",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Marine Life Basics",
+    "short_description": "Learn to recognize the broad groups of marine life you're likely to encounter while snorkeling.",
+    "lesson_type": "Conservation lesson",
+    "category": "marine-life-conservation",
+    "estimated_reading_time": "3-4 minutes",
+    "hero_media": null,
+    "lesson_body": "## Marine Life Basics\n\nYou don't need to be a marine biologist to enjoy identifying what you see while snorkeling. Knowing a few broad groups gives you a helpful starting point for making sense of the wildlife around you.\n\n## Cartilaginous Fish\n\nSharks and rays fall into this group, named for skeletons made of cartilage rather than bone. Look for their sleek, streamlined bodies, the graceful gliding motion of rays, and the swift, purposeful movement of sharks.\n\n## Bony Fish\n\nThis is the most diverse group of fish in the ocean, with skeletons made of bone and a swim bladder that helps them control buoyancy. Scales, fins, and gills are the easiest features to spot when identifying bony fish while snorkeling.\n\n## Invertebrates\n\nInvertebrates have no backbone and come in an enormous range of shapes, sizes, and colors, from sea stars and sea urchins to jellyfish and coral polyps. Taking time to look closely into the nooks and crannies of a reef often reveals invertebrates that are easy to miss at a glance.\n\n## Marine Mammals\n\nDolphins, whales, and seals are warm-blooded animals that have adapted fully to ocean life. Look for signs like dorsal fins, flippers, or a spout of water as they surface to breathe. Keep a respectful distance and observe quietly, getting too close can disturb their natural behavior.\n\n## Watching Responsibly\n\nIdentifying marine life is more rewarding when you observe without disturbing it. Keeping your distance, moving calmly, and letting animals behave naturally around you leads to better sightings and less stress on the wildlife. See [Coral, Conservation and Responsible Behavior](lesson:coral-conservation-and-responsible-behavior) for more on responsible underwater behavior.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "What distinguishes cartilaginous fish, like sharks and rays, from bony fish?",
+          "answers": [
+            "Cartilaginous fish have skeletons made of cartilage instead of bone",
+            "Cartilaginous fish have no skeleton at all",
+            "Cartilaginous fish are always larger than bony fish"
+          ],
+          "correct_index": 0,
+          "explanation": "Cartilaginous fish, such as sharks and rays, have skeletons made of cartilage rather than bone, unlike the bony fish group."
+        },
+        {
+          "question": "What helps bony fish control their buoyancy?",
+          "answers": [
+            "Their fins alone",
+            "A swim bladder",
+            "Their scales"
+          ],
+          "correct_index": 1,
+          "explanation": "Bony fish have a swim bladder, an internal organ that helps them control buoyancy in the water."
+        },
+        {
+          "question": "What is a defining feature of invertebrates?",
+          "answers": [
+            "They are always brightly colored",
+            "They have no backbone",
+            "They can only be found in sand"
+          ],
+          "correct_index": 1,
+          "explanation": "Invertebrates are defined by having no backbone, and they come in a huge range of shapes, sizes, and colors."
+        },
+        {
+          "question": "What is the recommended way to observe marine mammals while snorkeling?",
+          "answers": [
+            "Swim close to get a better look",
+            "Keep a respectful distance and observe quietly",
+            "Try to touch them if they approach"
+          ],
+          "correct_index": 1,
+          "explanation": "Keeping a respectful distance and observing calmly avoids disturbing marine mammals' natural behavior."
+        }
+      ]
+    },
+    "instructor_tips": "- Use simple, visible features (skeleton type, presence of a backbone, warm- vs cold-blooded) to help learners sort what they see into these four groups.\n- Mention marine mammals last, they're the group learners most want to see but should approach with the most restraint.\n- Encourage learners to look closely at seemingly \"empty\" patches of reef, invertebrates are often hiding in plain sight.",
+    "common_mistakes": "- Assuming all fish belong to one group, rather than recognizing the cartilaginous vs. bony distinction.\n- Overlooking invertebrates because they're less immediately obvious than fish.\n- Approaching marine mammals too closely instead of observing from a respectful distance.",
+    "safety_notes": null,
+    "key_takeaways": [
+      "Cartilaginous fish, like sharks and rays, have skeletons made of cartilage rather than bone.",
+      "Bony fish are the most diverse group, identified by scales, fins, gills, and a swim bladder.",
+      "Invertebrates have no backbone and include sea stars, urchins, jellyfish, and coral polyps.",
+      "Marine mammals should be observed from a respectful distance to avoid disturbing their behavior."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R30",
+        "title": "Coral, Conservation and Responsible Behavior",
+        "handle": "coral-conservation-and-responsible-behavior",
+        "description": "Coral itself and responsible underwater behavior."
+      },
+      {
+        "lesson_id": "R28",
+        "title": "Types of Snorkeling Experiences",
+        "handle": "types-of-snorkeling-experiences",
+        "description": "The environments where you're likely to see different marine life."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R29",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Marine Life Basics for Snorkelers | Oceans Optics Learning Hub",
+    "meta_description": "Learn to identify broad groups of marine life while snorkeling, including cartilaginous fish, bony fish, invertebrates, and marine mammals."
+  }
+}

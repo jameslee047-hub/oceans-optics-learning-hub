@@ -1,0 +1,413 @@
+{
+  "schema_version": 2,
+  "media": {
+    "clear-vs-dark-skirt": {
+      "layout": "comparison",
+      "width_treatment": "compact",
+      "overall_caption": "Clear skirts allow more peripheral light, while dark skirts reduce side glare and visual distraction.",
+      "items": [
+        {
+          "label": "Clear Skirt",
+          "alt": "Clear silicone snorkel mask showing how a transparent skirt allows more peripheral light into the mask.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/4c82f1bd-aa6f-402a-b5f2-c9c24c85d975.png?v=1774515876",
+          "shopify_file_gid": "gid://shopify/MediaImage/48954034061645",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        },
+        {
+          "label": "Dark Skirt",
+          "alt": "Dark silicone snorkel mask showing how an opaque skirt blocks peripheral light around the mask.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/8b0d855f-e4e5-473a-8ab2-b047f6bf9816.png?v=1774515876",
+          "shopify_file_gid": "gid://shopify/MediaImage/48954034159949",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "donning-the-mask": {
+      "layout": "animated",
+      "width_treatment": "standard",
+      "items": [
+        {
+          "label": "Donning the Mask",
+          "alt": "Snorkeler lifting the mask strap over the head to put on the mask correctly.",
+          "media_type": "video",
+          "url": "https://cdn.shopify.com/videos/c/vp/75fe1f5476a04e68bc583da5ee738066/75fe1f5476a04e68bc583da5ee738066.SD-480p-0.9Mbps-93146888.mp4",
+          "shopify_file_gid": "gid://shopify/Video/64596776124749",
+          "width": 852,
+          "height": 480,
+          "aspect_ratio": "16 / 9"
+        }
+      ]
+    },
+    "mask-comfort-check": {
+      "layout": "animated",
+      "width_treatment": "standard",
+      "items": [
+        {
+          "label": "Comfort Check",
+          "alt": "Snorkeler pressing a mask lightly to the face to check the seal before securing the strap.",
+          "media_type": "video",
+          "url": "https://cdn.shopify.com/videos/c/vp/24b3790df1fe43ae9dd62a14abf323dd/24b3790df1fe43ae9dd62a14abf323dd.SD-480p-0.9Mbps-93146889.mp4",
+          "shopify_file_gid": "gid://shopify/Video/64596776157517",
+          "width": 854,
+          "height": 480,
+          "aspect_ratio": "16 / 9"
+        }
+      ]
+    },
+    "fogged-mask": {
+      "layout": "standard",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "label": "A Fogged Mask",
+          "alt": "Snorkeling mask with a fogged-over lens, showing reduced visibility.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/2a4e5367-571b-45ea-b8ed-30292269e136.png?v=1774515881",
+          "shopify_file_gid": "gid://shopify/MediaImage/48954035568973",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "classic-open-top-j-snorkel": {
+      "layout": "standard",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "label": "Classic / Open-Top J Snorkel",
+          "alt": "A classic open-top J-shaped snorkel with a simple curved tube, corrugated mouthpiece section, and mask-strap clip.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Classic_J-type_snorkel.png?v=1788257207",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598966042957",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "semi-dry-splash-guard-snorkel": {
+      "layout": "standard",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "label": "Semi-Dry / Splash-Guard Snorkel",
+          "alt": "Close-up of a snorkel's splash-guard top, showing angled vents designed to reduce incidental surface splash entering the tube.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Splashgaurd_for_snorkel.png?v=1788257206",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598965977421",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "dry-top-snorkel": {
+      "layout": "standard",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "label": "Dry-Top Snorkel with Purge Valve",
+          "alt": "Snorkel with a dry-top valve at the top opening of the snorkel tube.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/2e2e82bc-e224-493d-9b1c-f9132711c7df.png?v=1774515872",
+          "shopify_file_gid": "gid://shopify/MediaImage/48954032947533",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "flexible-snorkel-features": {
+      "layout": "standard",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "label": "Flexible / Corrugated Lower Section",
+          "alt": "Close-up of a snorkel's clear corrugated lower tube and mouthpiece, showing the flexible ribbed section.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Flexible_Lower_Section.png?v=1788257208",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598966075725",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "sun-protection-overview": {
+      "layout": "diagram",
+      "width_treatment": "compact",
+      "items": [
+        {
+          "alt": "Icons showing UV protection, rash guard coverage, and reef-safe sunscreen for sun protection while snorkeling.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/96dfa627-fa69-4e28-ab4d-aca9aa5c9dbb.png?v=1774515881",
+          "shopify_file_gid": "gid://shopify/MediaImage/48954035700045",
+          "width": 2000,
+          "height": 1333,
+          "aspect_ratio": "2000 / 1333"
+        }
+      ]
+    },
+    "single-vs-dual-lens-mask": {
+      "layout": "comparison",
+      "width_treatment": "compact",
+      "items": [
+        {
+          "label": "Single-Lens Mask",
+          "alt": "A single-lens snorkel mask with one continuous viewing lens across both eyes.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Single-lens_mask.png?v=1788257415",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598830350669",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        },
+        {
+          "label": "Dual-Lens Mask",
+          "alt": "A dual-lens snorkel mask with separate left and right lenses, showing corrective lens markings.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Dual-lens_mask.png?v=1788257141",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598830383437",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "open-vs-closed-heel-fins": {
+      "layout": "comparison",
+      "width_treatment": "compact",
+      "items": [
+        {
+          "label": "Open-Heel Fin",
+          "alt": "A pair of open-heel fins with an adjustable heel strap, designed to be worn with dive boots.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Open-heel_fin.png?v=1788257355",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598830448973",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        },
+        {
+          "label": "Closed-Heel / Full-Foot Fin",
+          "alt": "A closed-heel, full-foot-pocket fin designed to be worn barefoot or with thin fin socks.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Closed-heel___full-foot_fin.png?v=1788257381",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598830285133",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "long-vs-short-fins": {
+      "layout": "comparison",
+      "width_treatment": "compact",
+      "items": [
+        {
+          "label": "Longer Blade",
+          "alt": "A fin with a longer blade, designed to move more water per stroke.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Long-blade_fin.png?v=1788257296",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598830481741",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        },
+        {
+          "label": "Shorter / Moderate Blade",
+          "alt": "A shorter, travel-friendly fin blade designed for easier maneuvering and packing.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Short-blade___travel_fin.png?v=1788257262",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598830317901",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "prescription-lens-example": {
+      "layout": "standard",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "alt": "A prescription snorkel mask with corrective lens power markings visible on each lens.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Prescription_mask___lens_example.png?v=1788257323",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598830547277",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "face-width-height-sizing": {
+      "layout": "diagram",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "alt": "Diagram showing how to measure face width and face height for mask sizing, with ruler guides labeled Width and Height.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Mask_width_height_sizing.png?v=1788257234",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598830514509",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "sph-lens-strength-visual": {
+      "layout": "standard",
+      "width_treatment": "educational-wide",
+      "items": [
+        {
+          "alt": "Prescription lens-strength visual showing SPH values used for corrective mask lenses.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/SPH___lens-strength_visual.png?v=1788323863",
+          "shopify_file_gid": "gid://shopify/MediaImage/64598830252365",
+          "width": 2668,
+          "height": 604,
+          "aspect_ratio": "2668 / 604"
+        }
+      ]
+    },
+    "currents-rip-aerial": {
+      "layout": "standard",
+      "width_treatment": "wide",
+      "items": [
+        {
+          "alt": "Aerial view of nearshore water showing a visible channel associated with rip-current movement.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/rip_from_above2_394617_398633.jpg?v=1788322608",
+          "shopify_file_gid": "gid://shopify/MediaImage/64613183390029",
+          "width": 700,
+          "height": 450,
+          "aspect_ratio": "700 / 450"
+        }
+      ]
+    },
+    "longshore-current": {
+      "layout": "diagram",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "label": "Longshore Current",
+          "alt": "Diagram showing a longshore current moving parallel to the shoreline.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Longshore_current.png?v=1788322469",
+          "shopify_file_gid": "gid://shopify/MediaImage/64613176901965",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "tidal-currents": {
+      "layout": "diagram",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "label": "Tidal Currents",
+          "alt": "Educational diagram illustrating tidal water movement and the relationship between high and low tide.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Tidal_currents.png?v=1788322468",
+          "shopify_file_gid": "gid://shopify/MediaImage/64613176869197",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "rip-current": {
+      "layout": "diagram",
+      "width_treatment": "narrow",
+      "items": [
+        {
+          "label": "Rip Current",
+          "alt": "Diagram showing a rip current moving away from shore through the surf zone.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Rip_current.png?v=1788322470",
+          "shopify_file_gid": "gid://shopify/MediaImage/64613176934733",
+          "width": 500,
+          "height": 500,
+          "aspect_ratio": "1 / 1"
+        }
+      ]
+    },
+    "surface-safety-devices": {
+      "layout": "gallery",
+      "width_treatment": "compact",
+      "overall_caption": "A signaling buoy, whistle, and life jacket each solve a different surface-safety problem: visibility, attention, and flotation.",
+      "items": [
+        {
+          "label": "Signaling Buoy",
+          "alt": "Bright orange signaling buoy used to make a snorkeler more visible at the surface.",
+          "media_type": "image",
+          "asset_filename": "learning-safety-signaling-buoy.png",
+          "width": 1100,
+          "height": 825,
+          "aspect_ratio": "4 / 3",
+          "internal_source_note": "Legacy Oceans Optics Free Snorkeling Guide asset"
+        },
+        {
+          "label": "Whistle",
+          "alt": "Safety whistle used by a snorkeler to attract attention over water.",
+          "media_type": "image",
+          "asset_filename": "learning-safety-whistle.png",
+          "width": 1100,
+          "height": 825,
+          "aspect_ratio": "4 / 3",
+          "internal_source_note": "Legacy Oceans Optics Free Snorkeling Guide asset"
+        },
+        {
+          "label": "Life Jacket",
+          "alt": "Orange life jacket that provides extra flotation support for snorkeling.",
+          "media_type": "image",
+          "asset_filename": "learning-safety-life-jacket.png",
+          "width": 1100,
+          "height": 825,
+          "aspect_ratio": "4 / 3",
+          "internal_source_note": "Legacy Oceans Optics Free Snorkeling Guide asset"
+        }
+      ]
+    },
+    "beach-warning-flags-us": {
+      "layout": "diagram",
+      "width_treatment": "educational-wide",
+      "overall_caption": "Common US / USLA beach-warning examples. Local flag systems vary, so always read posted signage or ask a lifeguard.",
+      "items": [
+        {
+          "label": "Common US / USLA Flag Examples",
+          "alt": "Diagram of common US beach warning flag examples including yellow, red, double red, purple, watercraft-area flags, and windsock guidance, with a reminder that local systems vary.",
+          "media_type": "image",
+          "asset_filename": "learning-beach-warning-flags-us.svg",
+          "width": 1200,
+          "height": 720,
+          "aspect_ratio": "5 / 3"
+        }
+      ]
+    },
+    "breath-hold-risk-window": {
+      "layout": "diagram",
+      "width_treatment": "standard",
+      "items": [
+        {
+          "label": "Breath-Hold Risk Window",
+          "alt": "Diagram showing the increased shallow-water blackout risk during ascent and immediately after surfacing.",
+          "media_type": "image",
+          "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/ascent_risk_diagram.png?v=1788770101",
+          "width": 1440,
+          "height": 960,
+          "aspect_ratio": "3 / 2"
+        }
+      ]
+    }
+  }
+}

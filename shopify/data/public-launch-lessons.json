@@ -1,0 +1,28 @@
+{
+  "description": "Handles of lessons approved for the first public Learning Hub launch. markdownToShopifyRichText() uses this list to decide whether a `[Title](lesson:handle)` link becomes a real link or renders as plain text. Add a handle here only once that lesson is part of an approved public launch batch -- this file is the launch-scope gate, not an editorial-approval record.",
+  "handles": [
+    "choosing-a-mask",
+    "mask-fit-positioning-adjustment",
+    "mask-preparation-defogging-care",
+    "choosing-and-setting-up-a-snorkel",
+    "choosing-fins",
+    "exposure-protection-staying-warm",
+    "prescription-masks-nearsightedness-farsightedness-lens-selection",
+    "health-readiness-and-personal-responsibility",
+    "golden-rules-for-safer-snorkeling",
+    "surface-safety-devices",
+    "pre-snorkel-checklist-and-planning",
+    "beach-flags-and-surface-warnings",
+    "currents-and-rip-currents",
+    "waves-tides-and-surge",
+    "buddy-communication-and-awareness",
+    "breath-hold-safety-co2-and-shallow-water-blackout",
+    "snorkeling-emergencies-recognition-and-preparedness",
+    "entry-and-exit-techniques",
+    "clearing-your-snorkel",
+    "duck-diving-basics",
+    "mask-clearing-techniques",
+    "efficient-kicking-techniques",
+    "floating-and-treading-water"
+  ]
+}

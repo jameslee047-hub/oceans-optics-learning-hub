@@ -14,7 +14,7 @@
   { "lesson_id": "R13", "title": "Waves, Tides & Surge", "handle": "waves-tides-and-surge" },
   { "lesson_id": "R14", "title": "Buddy Communication and Awareness", "handle": "buddy-communication-and-awareness" },
   { "lesson_id": "R15", "title": "Breath-Hold Safety, CO2 & Shallow-Water Blackout", "handle": "breath-hold-safety-co2-and-shallow-water-blackout" },
-  { "lesson_id": "R16", "title": "Snorkeling Emergencies & First Aid Awareness", "handle": "snorkeling-emergencies-and-first-aid-awareness" },
+  { "lesson_id": "R16", "title": "Snorkeling Emergencies: Recognition & Preparedness", "handle": "snorkeling-emergencies-recognition-and-preparedness" },
   { "lesson_id": "R17", "title": "Entry and Exit Techniques", "handle": "entry-and-exit-techniques" },
   { "lesson_id": "R18", "title": "Clearing Your Snorkel", "handle": "clearing-your-snorkel" },
   { "lesson_id": "R19", "title": "Duck Diving Basics", "handle": "duck-diving-basics" },
@@ -28,5 +28,6 @@
   { "lesson_id": "R27", "title": "Why You Get Cold in Water", "handle": "why-you-get-cold-in-water" },
   { "lesson_id": "R28", "title": "Types of Snorkeling Experiences", "handle": "types-of-snorkeling-experiences" },
   { "lesson_id": "R29", "title": "Marine Life Basics", "handle": "marine-life-basics" },
-  { "lesson_id": "R30", "title": "Coral, Conservation and Responsible Behavior", "handle": "coral-conservation-and-responsible-behavior" }
+  { "lesson_id": "R30", "title": "Coral, Conservation and Responsible Behavior", "handle": "coral-conservation-and-responsible-behavior" },
+  { "lesson_id": "R31", "title": "Prescription Masks: Nearsightedness, Farsightedness & Lens Selection", "handle": "prescription-masks-nearsightedness-farsightedness-lens-selection" }
 ]

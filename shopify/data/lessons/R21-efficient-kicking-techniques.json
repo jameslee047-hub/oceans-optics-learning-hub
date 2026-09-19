@@ -1,0 +1,101 @@
+{
+  "type": "learning_lesson",
+  "handle": "efficient-kicking-techniques",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Efficient Kicking Techniques",
+    "short_description": "Compare the flutter, frog, and straight-leg kicks, and learn when each one works best.",
+    "lesson_type": "Skill lesson",
+    "category": "in-water-skills",
+    "estimated_reading_time": "3-5 minutes",
+    "hero_media": null,
+    "lesson_body": "## Efficient Kicking Techniques\n\nHow you kick affects your speed, your energy use, and your impact on what's beneath you. This lesson compares three common kick styles so you can choose the right one for the moment. For fin selection itself, see [Choosing Fins](lesson:choosing-fins).\n\n## Straight-Leg/Flutter Kick\n\nThe straight-leg/flutter kick is the most familiar kicking style: legs mostly straight with a slight bend at the knee, kicking in a steady, alternating rhythm driven from the hips, not the knees. It's a versatile, all-purpose kick that works well for general swimming and covering distance in open water, though it moves enough water to make it a poor choice close to coral or a silty bottom.\n\n## Frog Kick\n\nThe frog kick brings your knees up with heels near your body, then pushes your legs outward and back together in a wide sweep. It's gentler and more controlled than the straight-leg/flutter kick, which makes it a good choice near coral or in tight spaces, since it produces less disturbance and stirs up less sand or silt. Many snorkelers prefer it for observing marine life without disrupting the environment.\n\n## Modified Flutter Kick\n\nThe modified flutter kick uses the same alternating rhythm as the straight-leg/flutter kick, scaled down: bend more at the knee and let your lower legs and feet do most of the work, in smaller, more controlled kicks. It moves less water than a full straight-leg/flutter kick, which makes it a useful, easier-to-learn alternative to the frog kick when you want less disturbance near coral or a silty bottom but haven't practiced the frog kick yet.\n\n## Choosing a Kick for the Moment\n\nNone of these kicks is universally \"best,\" each suits a different situation:\n\n- Use the **straight-leg/flutter kick** for general, all-purpose movement in open water.\n- Use the **frog kick** when you're near coral, reef structures, or want minimal disturbance.\n- Use the **modified flutter kick** as an easier, still-effective alternative when you want less disturbance but haven't practiced the frog kick yet.\n\nSwitching between them as conditions change is a normal part of becoming a more efficient snorkeler.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "Which kick style is generally considered the best choice for minimizing disturbance near coral?",
+          "answers": [
+            "Straight-leg/flutter kick",
+            "Modified flutter kick",
+            "Frog kick"
+          ],
+          "correct_index": 2,
+          "explanation": "The frog kick's controlled, outward-and-back motion creates the least disturbance, making it the best choice near coral and reef structures."
+        },
+        {
+          "question": "What's a common efficiency mistake with the straight-leg/flutter kick and frog kick specifically?",
+          "answers": [
+            "Kicking from the knees instead of driving the motion from the hips",
+            "Kicking from the hips instead of the knees",
+            "Pointing the toes"
+          ],
+          "correct_index": 0,
+          "explanation": "Both the straight-leg/flutter kick and frog kick rely on power from the hips, kicking mainly from the knee wastes energy and causes early fatigue. The modified flutter kick is the exception, it's deliberately driven more from the knee and lower leg to keep the motion small."
+        },
+        {
+          "question": "When is the straight-leg/flutter kick most useful?",
+          "answers": [
+            "When maneuvering in tight spaces near coral",
+            "When you need maximum speed for a short burst",
+            "When you want efficient, sustained movement over distance"
+          ],
+          "correct_index": 2,
+          "explanation": "The straight-leg/flutter kick favors sustained, efficient propulsion over distance rather than short bursts of speed."
+        },
+        {
+          "question": "What should guide your choice of kick style during a snorkel?",
+          "answers": [
+            "Always use the same kick regardless of conditions",
+            "The situation, such as proximity to coral or the distance you need to cover",
+            "Whichever kick feels fastest at all times"
+          ],
+          "correct_index": 1,
+          "explanation": "Switching kick styles based on the situation, like using the frog kick near coral, is a normal part of efficient, responsible snorkeling."
+        },
+        {
+          "question": "Why might you use the modified flutter kick instead of the frog kick near coral?",
+          "answers": [
+            "It's a similar low-disturbance option that's easier to learn than the frog kick",
+            "It's faster than the frog kick in every situation",
+            "It's required by law in protected marine areas"
+          ],
+          "correct_index": 0,
+          "explanation": "The modified flutter kick isn't a replacement for a well-executed frog kick, but it's a smaller, easier-to-learn version of the straight-leg/flutter kick that still reduces disturbance, a good option while you're still building frog kick technique."
+        }
+      ]
+    },
+    "instructor_tips": "- Practice each kick separately in calm, shallow water before mixing them together, it's easier to feel the difference between styles when you're not also managing other conditions.",
+    "common_mistakes": "- Kicking the straight-leg/flutter kick or frog kick from the knees instead of driving the motion from the hips, the modified flutter kick is the exception, it's meant to be driven from the knee and lower leg.\n- Using large, forceful kicks when a smaller, controlled motion would be more efficient.\n- Using the straight-leg/flutter kick close to coral, where the frog kick or modified flutter kick's lower disturbance is a better fit.",
+    "safety_notes": null,
+    "key_takeaways": [
+      "The straight-leg/flutter kick is a versatile, all-purpose kicking style, best suited to open water and covering distance.",
+      "The frog kick creates the least disturbance, making it the best choice near coral.",
+      "The modified flutter kick is a smaller, easier-to-learn alternative to the frog kick for reducing disturbance near coral or silt.",
+      "Drive the straight-leg/flutter kick and frog kick from the hips, not the knees, the modified flutter kick is the deliberate exception, using more knee bend to stay small."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R05",
+        "title": "Choosing Fins",
+        "handle": "choosing-fins",
+        "description": "How fin type affects which kicks feel most natural."
+      },
+      {
+        "lesson_id": "R30",
+        "title": "Coral, Conservation and Responsible Behavior",
+        "handle": "coral-conservation-and-responsible-behavior",
+        "description": "Why reef-safe kicking, like the frog kick, matters around coral."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R21",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Efficient Kicking Techniques for Snorkeling | Oceans Optics Learning Hub",
+    "meta_description": "Compare flutter, frog, and straight-leg kicking techniques for snorkeling, and learn when to use each for efficient, reef-safe movement."
+  }
+}

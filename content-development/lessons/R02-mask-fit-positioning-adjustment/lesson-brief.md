@@ -2,6 +2,7 @@
 
 ## Curriculum Status
 Category: Gear, Masks & Vision
+Lesson type: Skill lesson
 Pathways: Equipment Essentials (R01 → R31 → R02 → R03 → ...); Prescription Masks & Underwater Vision (R01 → R31 → R02)
 Curriculum decision: KEEP
 Related lessons: R01, R03, R20 (R31 for a tool-only cross-link, not scope overlap)

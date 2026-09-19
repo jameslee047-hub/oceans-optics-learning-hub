@@ -105,6 +105,10 @@
     - Prescription mask fit
     - Caring for prescription lenses
 
+## Future Platform Feature: Customer Accounts & Learning Progress
+
+Planning only — not built, not scheduled. The Learning Hub is intended to eventually become account-based: Shopify Customer Account sign-in (email, first name, last name; marketing consent kept separate and never automatic), a customer-facing "My Learning" dashboard (overall/pathway/lesson progress, Continue Learning, Knowledge Check results), and progress data keyed to the stable internal lesson IDs above (R01, R02, ...) so it survives future title/handle changes. Full spec, technical direction, privacy requirements, and the implementation gate (do not build until the lesson set, IDs, Knowledge Check structure, and frontend system are stable) are in `planning/shopify-implementation/11-FINAL-SHOPIFY-PLAN.md`, section 11.
+
 ## Counts
 
 - Permanent categories: 5.

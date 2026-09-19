@@ -1,0 +1,102 @@
+{
+  "type": "learning_lesson",
+  "handle": "beach-flags-and-surface-warnings",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Beach Flags and Surface Warnings",
+    "short_description": "Learn common beach flag and warning-sign conventions, and why you should always confirm their meaning locally.",
+    "lesson_type": "Conditions explainer",
+    "category": "safety-conditions",
+    "estimated_reading_time": "3-5 minutes",
+    "hero_media": null,
+    "lesson_body": "## Beach Flags and Surface Warnings\n\nMany beaches use flags or posted signs to warn visitors about hazards, restricted areas, or local conditions. Recognizing that a flag system exists, and knowing to check what it means at your specific location, is one of the simplest safety habits you can build.\n\nThis is not a lesson about currents or wave conditions themselves, see [Currents & Rip Currents](lesson:currents-and-rip-currents) for that. This lesson is about recognizing posted warnings.\n\n## Flag Systems Vary by Location\n\nThere is no single, worldwide flag system, and there isn't even one single system used at every beach within the United States. Colors, shapes, and meanings can differ by country, region, state, and individual beach authority. The United States Lifesaving Association (USLA) publishes a national reference system, but adopting it is a local decision, not a requirement everywhere, some states such as Florida have passed laws requiring standardized flags at public beaches, while other areas use their own local conventions.\n\nWhen you arrive at a new beach, look for posted signage explaining the local flag system, or ask a lifeguard or local authority if you are unsure.\n\n## Common Flag and Warning Conventions (United States)\n\nThe following match the USLA's published national reference system. Treat this as a general starting point, not a guarantee of what a specific beach's flags mean, always confirm locally.\n\n[MEDIA: beach-warning-flags-us]\n\n- **Yellow:** Medium hazard, moderate surf and/or currents.\n- **Red:** High hazard, strong surf and/or currents.\n- **Red over red (double red):** Water is closed to the public.\n- **Purple:** Marine pests present, such as jellyfish or stingrays.\n- **Red over yellow:** A recommended swimming area with lifeguard supervision.\n- **Black and white (checkered):** Marks an area for surfboards and other non-powered watercraft.\n- **Yellow with a black ball or symbol:** Surfboards and other non-powered watercraft are prohibited.\n- **Orange windsock:** Offshore winds are present, inflatables should not be used.\n- **Red and white (quartered):** Emergency evacuation, swimmers should leave the water.\n\nAgain, confirm these locally. A flag that means one thing at one beach can mean something different, or nothing at all, somewhere else, even within the same country.\n\n## Snorkeling Abroad\n\nIf you snorkel outside the US, don't assume the flags above apply. There is no single global standard. Even the International Life Saving Federation, the closest thing to a global authority on this, states openly that a unified international system doesn't exist, some countries reject the red/yellow \"lifeguarded area\" flag outright, and some reject black-and-white flags for unrelated cultural reasons. As one example of real variation, several European countries add a green flag for calm, supervised conditions, a color the US system doesn't use at all, so don't assume a color's meaning, or its absence, carries over from what you know at home.\n\nThe reliable way to find out what flags mean at your destination:\n\n- Ask your resort, dive shop, or tour operator, they'll know the local system.\n- Look for posted signage at the beach itself, most systems are explained on-site.\n- Ask a lifeguard or local authority directly if you're unsure.\n- If you're researching before a trip, search for that country's national or regional lifesaving authority, similar to USLA in the US, rather than relying on general travel articles.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "Are beach flag colors and meanings the same everywhere in the world?",
+          "answers": [
+            "Yes, they are fully standardized worldwide",
+            "No, they vary by region, country, and even beach authority",
+            "Only red and yellow flags are used anywhere"
+          ],
+          "correct_index": 1,
+          "explanation": "Flag systems differ by country, region, state, and individual beach, so meanings should always be confirmed locally."
+        },
+        {
+          "question": "What should you do if you see a flag you don't recognize?",
+          "answers": [
+            "Guess based on common conventions and enter the water",
+            "Ignore it since flags are usually decorative",
+            "Ask a lifeguard, staff member, resort, or local authority what it means"
+          ],
+          "correct_index": 2,
+          "explanation": "Asking someone with local knowledge avoids the risk of misunderstanding a warning that may not match conventions you've seen elsewhere."
+        },
+        {
+          "question": "In the USLA's official US system, what does a yellow flag with a black ball mean?",
+          "answers": [
+            "Surfboards and other non-powered watercraft are prohibited",
+            "A recommended swimming area",
+            "Marine pests are present"
+          ],
+          "correct_index": 0,
+          "explanation": "This flag specifically marks an area where watercraft use is not allowed, distinct from the general watercraft-area flag (black and white checkered)."
+        },
+        {
+          "question": "Does a single international beach flag system exist?",
+          "answers": [
+            "Yes, it's managed globally by one organization",
+            "No, even the International Life Saving Federation confirms no unified global system exists",
+            "Yes, but only in Europe"
+          ],
+          "correct_index": 1,
+          "explanation": "The ILS, the closest thing to a global authority on this, states directly that no unified system exists, and even the most common flag isn't accepted everywhere."
+        },
+        {
+          "question": "If no one is available to explain an unfamiliar warning and you're unsure what it means, what's the safest choice?",
+          "answers": [
+            "Enter the water and adjust if there's a problem",
+            "Assume it doesn't apply to snorkelers",
+            "Avoid entering the water until you know more"
+          ],
+          "correct_index": 2,
+          "explanation": "Treating an unclear warning conservatively is safer than guessing, especially with no one available to confirm its meaning."
+        }
+      ]
+    },
+    "instructor_tips": "- A flag can change during the day as conditions shift, if you've been out for a while, glance at it again before you go back in.\n- No flag posted doesn't automatically mean the water's safe, it might mean nobody's checked yet, not that there's nothing to check.\n- If the flag says stay out and the water looks calm to you, trust the flag over your own read of the water. Conditions can look deceptively fine from the beach.",
+    "common_mistakes": "- Assuming a flag color means the same thing everywhere, including elsewhere in the same country.\n- Entering the water without checking for posted warnings at all.\n- Guessing at an unfamiliar flag's meaning instead of asking someone local.\n- Assuming the US system, or any home system, applies automatically when snorkeling abroad.",
+    "safety_notes": "Flag and warning-sign systems vary by region and are not standardized worldwide, or even nationwide within some countries. The US conventions in this lesson reflect USLA's published national reference, but local adoption varies. Always confirm the meaning of local flags with a lifeguard, posted signage, or local authority before entering the water.",
+    "key_takeaways": [
+      "Flag and warning systems are not standardized worldwide, or even across every US state or beach.",
+      "The conventions listed here reflect USLA's official US reference system, but local adoption still varies, always confirm locally.",
+      "No unified international flag system exists, confirmed directly by the International Life Saving Federation.",
+      "Ask a lifeguard, local authority, resort, or dive shop if a warning is unclear, especially when traveling.",
+      "When in doubt about a warning, don't enter the water."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R12",
+        "title": "Currents & Rip Currents",
+        "handle": "currents-and-rip-currents",
+        "description": "Water-movement hazards specifically."
+      },
+      {
+        "lesson_id": "R10",
+        "title": "Pre-Snorkel Checklist and Planning",
+        "handle": "pre-snorkel-checklist-and-planning",
+        "description": "Checking conditions as part of your overall routine."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R11",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Beach Flags and Surface Warnings | Oceans Optics Learning Hub",
+    "meta_description": "Learn common beach flag color conventions and warning signs, and why flag meanings vary by region and should always be checked locally."
+  }
+}

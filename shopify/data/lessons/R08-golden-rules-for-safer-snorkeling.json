@@ -9,43 +9,102 @@
     "category": "safety-conditions",
     "estimated_reading_time": "1-3 minutes",
     "hero_media": null,
-    "lesson_body": "## Golden Rules for Safer Snorkeling\n\nBefore you think about gear, location, or technique, get the basic habits right. These are the rules that keep a simple snorkel from becoming stressful.\n\nRead them like a quick pre-water briefing from an instructor.\n\n## The Rules\n\n1. Snorkel with a buddy.\n   Keep visual contact and agree on a simple check-in system before you enter the water.\n\n2. Carry a way to signal.\n   A whistle, float, or other visible support item can help you get attention when you need it.\n\n3. Slow down.\n   Rushing leads to mistakes. Take your time and keep the pace calm.\n\n4. Know your limits.\n   Do not let peer pressure push you into a situation that causes stress or overexertion.\n\n5. Check the conditions before you go in.\n   Pay attention to tides, currents, rip currents, and changing environmental conditions.\n\n6. Respect marine life.\n   Do not harass, touch, or disturb marine life. Treat coral and dead coral with care.\n\n7. Stay hydrated and do not go too far.\n   Keep the session manageable and avoid drifting beyond a comfortable distance.\n\n8. Avoid alcohol and drugs.\n   Do not snorkel under the influence. Clear judgment matters in the water.\n\n9. Pay attention to breathing, discomfort, and panic.\n   Keep your breathing slow and steady, take breaks, and do not ignore discomfort or panic.\n\n10. Follow equipment guidance.\n    Use your mask and snorkel equipment according to the manufacturer's guidance.\n\n## Knowledge Check\n\n**Q1. What comes first in this briefing?**\n\n- A. Duck diving\n- B. Snorkeling with a buddy\n- C. Choosing fins\n\n**Correct:** B\n\n**Explanation:** The buddy system is the first rule in this safety briefing.\n\n**Q2. Which condition should you pay attention to before entering?**\n\n- A. Rip current\n- B. Mask skirt color\n- C. Fin strap style\n\n**Correct:** A\n\n**Explanation:** Rip currents are part of the environmental conditions snorkelers should notice before entering.\n\n**Q3. What should you do if peer pressure is pushing you beyond your comfort level?**\n\n- A. Keep going so you do not slow the group down\n- B. Stay within your limits\n- C. Swim farther away from shore\n\n**Correct:** B\n\n**Explanation:** The lesson emphasizes knowing your limits and avoiding stressful or overexerting situations.",
-    "instructor_tips": "- If you feel rushed, pressured, uncomfortable, or unsure about the conditions, slow down and reset before entering.\n- Buddy, signal, limits, and conditions come before everything else.",
-    "common_mistakes": "- Getting excited about entering the water and skipping the simple checks.\n- Assuming calm breathing will happen automatically instead of keeping the pace steady from the start.",
-    "safety_notes": "- This is a pre-water briefing, not a complete safety course.",
+    "lesson_body": "## Golden Rules for Safer Snorkeling\n\nBefore you think about gear, location, or technique, get the basic habits right. These are the rules that keep a simple snorkel from becoming stressful.\n\nRead them like a quick pre-water briefing from an instructor, roughly ordered from the risks that are hardest to recover from to the ones that matter but give you more room for error.\n\n## The Rules\n\n1. Snorkel with a buddy.\n   Keep visual contact and agree on a simple check-in system before you enter the water. Your buddy is what turns almost any other problem on this list from dangerous into survivable.\n2. Never hyperventilate before a breath-hold or duck dive.\n   Taking several fast, deep breaths to hold your breath longer does not work the way it feels like it should. It delays your urge to breathe without adding meaningful oxygen, which raises the risk of blacking out underwater with no warning. For more on this risk, see [Breath-Hold Safety, CO2 & Shallow-Water Blackout](lesson:breath-hold-safety-co2-and-shallow-water-blackout).\n3. Watch for boat traffic.\n   Snorkel in marked or protected areas where possible, and stay aware of nearby boats. Being struck by a vessel is a real, documented risk, not a rare edge case.\n4. Check the conditions before you go in.\n   Pay attention to tides, currents, rip currents, and changing environmental conditions.\n5. Know your limits.\n   Do not let peer pressure push you into a situation that causes stress or overexertion.\n6. Pay attention to breathing, discomfort, and panic.\n   Keep your breathing slow and steady, take breaks, and do not ignore discomfort or panic.\n7. Carry a way to signal.\n   A whistle, float, or other visible support item can help you get attention when you need it.\n8. If you're snorkeling somewhere remote or unsupervised, prepare before you go in.\n   Tell someone on land your plan, keep a charged phone and emergency numbers accessible on shore, and pack a basic first aid kit for cuts, stings, or minor injuries. Your buddy is your safety net in the water, this is your safety net once you're back on land.\n9. Avoid alcohol and drugs.\n   Do not snorkel under the influence. Clear judgment matters in the water.\n10. Slow down.\n    Rushing leads to mistakes. Take your time and keep the pace calm.\n11. Stay hydrated and do not go too far.\n    Keep the session manageable and avoid drifting beyond a comfortable distance.\n12. Respect marine life.\n    Do not harass, touch, or disturb marine life. Treat coral and dead coral with care.\n13. Follow equipment guidance.\n    Use your mask and snorkel equipment according to the manufacturer's guidance.\n\nFor sun protection planning, see [Exposure Protection & Staying Warm](lesson:exposure-protection-staying-warm). It matters, but it is a longer-term risk rather than an acute one, so it gets its own lesson rather than a slot here.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "What comes first in this briefing, and why?",
+          "answers": [
+            "Snorkeling with a buddy, because it's the safety net for almost every other risk on the list",
+            "Choosing fins, because comfort matters most",
+            "Duck diving, because it's the most exciting part"
+          ],
+          "correct_index": 0,
+          "explanation": "A buddy is what turns most other problems on this list from dangerous into survivable, which is why it leads the list."
+        },
+        {
+          "question": "Why should you avoid hyperventilating before a breath-hold or duck dive?",
+          "answers": [
+            "It delays your urge to breathe without adding meaningful oxygen, raising blackout risk",
+            "It has no real effect on breath-hold safety",
+            "It guarantees a longer, safer breath-hold"
+          ],
+          "correct_index": 0,
+          "explanation": "Hyperventilation removes the warning signal that normally tells you to surface, which is why blackout can happen with no warning at all."
+        },
+        {
+          "question": "Why is watching for boat traffic part of this briefing?",
+          "answers": [
+            "Being struck by a vessel is a real, documented risk, not a rare edge case",
+            "It has no real bearing on snorkeling safety",
+            "Boats can always see snorkelers regardless of visibility"
+          ],
+          "correct_index": 0,
+          "explanation": "DAN specifically names watercraft strikes as a real snorkeling risk, staying in marked areas and watching for boats reduces it."
+        },
+        {
+          "question": "What should you do if peer pressure is pushing you beyond your comfort level?",
+          "answers": [
+            "Keep going so you do not slow the group down",
+            "Stay within your limits",
+            "Swim farther away from shore"
+          ],
+          "correct_index": 1,
+          "explanation": "The lesson emphasizes knowing your limits and avoiding stressful or overexerting situations."
+        },
+        {
+          "question": "What should you prepare before snorkeling somewhere remote or unsupervised?",
+          "answers": [
+            "Tell someone your plan, and keep a phone, emergency numbers, and a first aid kit accessible on land",
+            "Nothing extra, a buddy in the water covers everything",
+            "Less preparation than usual, since fewer people means fewer risks"
+          ],
+          "correct_index": 0,
+          "explanation": "A buddy is your safety net in the water. A plan, a phone, and first aid are your safety net once you're back on land, especially where help isn't nearby."
+        }
+      ]
+    },
+    "instructor_tips": "- If you feel rushed, pressured, uncomfortable, or unsure about the conditions, slow down and reset before entering.\n- Buddy, hyperventilation awareness, and boat traffic come before everything else, they're the risks with the least room for error.\n- Boat traffic and breath-hold blackout are documented leading causes of snorkeling injury and death, not rare footnotes, treat them with the same weight as the buddy system.\n- In remote or unsupervised locations, treat a phone, emergency numbers, and a first aid kit as standard kit, not optional extras.",
+    "common_mistakes": "- Getting excited about entering the water and skipping the simple checks.\n- Assuming calm breathing will happen automatically instead of keeping the pace steady from the start.\n- Hyperventilating before a breath-hold or duck dive, thinking it helps, when it actually raises blackout risk.\n- Snorkeling in an unmarked area with boat traffic without checking for a protected zone or staying visible.\n- Heading to a remote or unsupervised spot without telling anyone, without a way to call for help, or without basic first aid on hand.",
+    "safety_notes": "This is a pre-water briefing, not a complete safety course.\n\nIf you have a heart condition or another medical concern that could affect you in the water, check with a doctor before snorkeling. Sudden cardiac events are among the documented causes of snorkeling deaths, and no amount of good technique or gear replaces medical clearance.",
     "key_takeaways": [
-      "Do not snorkel alone.",
-      "Keep the pace calm.",
-      "Know your limits and avoid pressure.",
-      "Check environmental conditions before entering.",
-      "Respect marine life and coral.",
-      "Do not ignore discomfort, panic, or impaired judgment."
+      "Snorkel with a buddy and stay in contact.",
+      "Never hyperventilate before a breath-hold or duck dive.",
+      "Check conditions, boat traffic, limits, and emergency signals.",
+      "Stop when discomfort, panic, or impaired judgment appears.",
+      "Prepare extra communication and first-aid support for remote sites.",
+      "Get medical clearance for relevant heart or medical concerns."
     ],
     "related_lessons": [
       {
         "lesson_id": "R07",
         "title": "Health, Readiness and Personal Responsibility",
-        "handle": "health-readiness-and-personal-responsibility"
+        "handle": "health-readiness-and-personal-responsibility",
+        "description": ""
       },
       {
         "lesson_id": "R09",
         "title": "Surface Safety Devices",
-        "handle": "surface-safety-devices"
+        "handle": "surface-safety-devices",
+        "description": ""
       },
       {
         "lesson_id": "R10",
         "title": "Pre-Snorkel Checklist and Planning",
-        "handle": "pre-snorkel-checklist-and-planning"
+        "handle": "pre-snorkel-checklist-and-planning",
+        "description": ""
       },
       {
         "lesson_id": "R14",
         "title": "Buddy Communication and Awareness",
-        "handle": "buddy-communication-and-awareness"
+        "handle": "buddy-communication-and-awareness",
+        "description": ""
       },
       {
         "lesson_id": "R16",
-        "title": "Snorkeling Emergencies & First Aid Awareness",
-        "handle": "snorkeling-emergencies-and-first-aid-awareness"
+        "title": "Snorkeling Emergencies: Recognition & Preparedness",
+        "handle": "snorkeling-emergencies-recognition-and-preparedness",
+        "description": ""
       }
     ],
     "related_tools": [],
@@ -53,17 +112,19 @@
     "downloadable_resources": [
       {
         "handle": "pre-snorkel-checklist",
-        "label": "Pre snorkel checklist",
-        "url": null,
+        "label": "Pre-Snorkel Checklist",
+        "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/pre_snorkel_checklist.pdf?v=1789556434",
+        "asset_filename": "pre_snorkel_checklist.pdf",
+        "drive_file_id": "1rXOIzQ6eFT0WsIdmCSMqoRq3Nz4Qf7Mk",
         "gid": null,
-        "file_gid": null
+        "file_gid": "gid://shopify/GenericFile/64735134646605"
       }
     ],
     "primary_cta": null,
     "lesson_id": "R08",
     "author": null,
-    "reviewer": null,
-    "last_reviewed": null,
+    "reviewer": "James Lee",
+    "last_reviewed": "2026-09-02",
     "seo_title": "Golden Rules for Safer Snorkeling | Oceans Optics Learning Hub",
     "meta_description": "A short instructor-style briefing on buddy checks, conditions, limits, marine life, and safer snorkeling habits."
   }

@@ -102,13 +102,13 @@ Heading: Knowledge Beyond the Gear
 
 Copy:
 
-Oceans Optics was built by snorkelers and scuba instructors, so we know that the right equipment is only part of having a great experience underwater.
+Oceans Optics was built by snorkelers and scuba instructors who wanted more people to fall in love with the ocean the way we did. The right gear is only part of that. Knowing what you're doing is the rest.
 
-Our goal is to help you understand why things work, not simply tell you what to buy.
+We've watched too many people grab a mask and snorkel and just go, with no briefing and no idea what to look out for. This learning zone is where that changes.
 
-From finding a mask that fits properly to understanding underwater vision, currents, equalizing, and basic snorkeling skills, we want to make reliable knowledge easier to access before you enter the water.
+From finding a mask that fits properly to understanding underwater vision, currents, equalizing, and basic snorkeling skills, we want reliable knowledge within easy reach before you ever touch the water.
 
-And when something needs more explanation, we'll point you toward the next lesson rather than trying to cram everything onto one page.
+Whether you're at home waiting for your mask to arrive, on the plane, or on the sun lounger before you head down to the water, think of it as having an instructor on call, giving you a clear answer whenever a question comes up.
 
 Supporting points:
 

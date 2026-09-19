@@ -1,0 +1,113 @@
+{
+  "type": "learning_lesson",
+  "handle": "pre-snorkel-checklist-and-planning",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Pre-Snorkel Checklist and Planning",
+    "short_description": "A practical before-you-go routine covering gear checks, sun and hair prep, condition checks, and when to cancel or postpone.",
+    "lesson_type": "Safety briefing",
+    "category": "safety-conditions",
+    "estimated_reading_time": "4-6 minutes",
+    "hero_media": null,
+    "lesson_body": "## Pre-Snorkel Checklist and Planning\n\nWe choose to snorkel because we want to have fun, see some incredible marine life, and feel that rush of floating over a reef for the first time. That feeling is the whole point, and it's easy to get there. A few minutes of preparation is really all that stands between you and a great day in the water, run through it before you go, and you get to spend your session actually enjoying what's below you instead of dealing with a problem or a spot you didn't check first.\n\nThis lesson is about planning and preparation. For the core safety rules themselves, see [Golden Rules for Safer Snorkeling](lesson:golden-rules-for-safer-snorkeling). For reading conditions like beach flags, currents, and water movement, see [Beach Flags and Surface Warnings](lesson:beach-flags-and-surface-warnings) and [Currents & Rip Currents](lesson:currents-and-rip-currents).\n\n## Personal Preparation\n\nBefore you get into your gear, take care of the basics:\n\n- Apply sunscreen at least 15 minutes before you enter the water, that's roughly how long it takes to bind to skin, and reapply after swimming since even water-resistant formulas wear off. Use a reef-safe (mineral) sunscreen where you can, several destinations, including Thailand's national marine parks, restrict chemical sunscreens like oxybenzone and octinoxate because of coral damage.\n- Apply thermal or sting protection if conditions call for it\n- Stay hydrated, especially in hot climates\n- Tie back long hair and keep it clear of your face and mask seal\n- Do a light stretch or warm-up if that helps you feel loose and comfortable\n\nNone of these steps are complicated, but skipping them is a common source of avoidable discomfort once you are already in the water.\n\n## Check Conditions Before You Commit\n\nBefore you decide where and when to enter, check:\n\n- Posted beach flags or warning signs, see [Beach Flags and Surface Warnings](lesson:beach-flags-and-surface-warnings)\n- Currents, tides, and general water movement, see [Currents & Rip Currents](lesson:currents-and-rip-currents)\n- Any locally known hazards for the specific site\n\nPlan your entry and exit points before you get in the water, not once you are already swimming.\n\n## Inspect Your Gear\n\nA quick gear check on land is much easier than discovering a problem once you are already in the water.\n\n**Mask:**\n\n- Lens is not cracked\n- Frame is not ripped or broken\n- Skirt seal has no visible tears or cracks\n\n**Snorkel:**\n\n- Mouthpiece is intact, not chewed or damaged\n- Purge valve, if present, opens and closes correctly\n- Dry-top mechanism, if present, closes properly when submerged\n\nIf anything fails this check, address it before you enter the water, not after.\n\n## Know When to Cancel or Postpone\n\nGood planning includes being willing to change your plans. If conditions look worse than expected, if you or a buddy are not feeling well, or if something in your gear check fails and cannot be fixed on the spot, it is better to cancel or postpone than to enter the water anyway.\n\nThis is not a failure of planning, it is exactly what planning is for.\n\n## Take the Checklist With You\n\nSave it to your phone or print it before your next snorkel.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "What should you do if your mask has a cracked lens during a pre-snorkel gear check?",
+          "answers": [
+            "Ignore it if the crack is small",
+            "Fix it after your snorkel session",
+            "Address it before entering the water"
+          ],
+          "correct_index": 2,
+          "explanation": "A gear problem found on land is much easier and safer to address than one discovered once you are already in the water."
+        },
+        {
+          "question": "When should you plan your entry and exit points?",
+          "answers": [
+            "Before you enter the water",
+            "While you are already swimming",
+            "Only if the water looks rough"
+          ],
+          "correct_index": 0,
+          "explanation": "Planning entry and exit points ahead of time avoids scrambling to find a safe way in or out once you are already committed."
+        },
+        {
+          "question": "What should you do if conditions look worse than expected when you arrive?",
+          "answers": [
+            "Snorkel anyway since you already made the trip",
+            "Consider cancelling or postponing",
+            "Only worry about it once you're in the water"
+          ],
+          "correct_index": 1,
+          "explanation": "Good planning includes being willing to change your plans when conditions do not match expectations."
+        },
+        {
+          "question": "Why tie back long hair before snorkeling?",
+          "answers": [
+            "It has no real effect on your session",
+            "It only matters for freediving",
+            "Hair under the mask seal can break the seal and cause leaks"
+          ],
+          "correct_index": 2,
+          "explanation": "Loose hair caught under the skirt seal is a common, avoidable cause of mask leaks."
+        }
+      ]
+    },
+    "instructor_tips": "- Make the gear check a habit, not a one-time lesson, every session benefits from it, not just your first.\n- Don't treat backing out as a failure, even if others in your group want to go ahead. If something's off for you, sit that one out.",
+    "common_mistakes": "- Skipping the gear check because the equipment \"looked fine\" at a glance.\n- Entering the water without checking posted flags or asking about local hazards.\n- Feeling pressured to snorkel anyway after noticing a problem during the checklist.\n- Treating sunscreen or hydration as optional extras rather than part of the routine.",
+    "safety_notes": "This checklist supports good decision-making but does not replace local knowledge, lifeguard guidance, or your own judgment about conditions. If in doubt, do not enter the water.",
+    "key_takeaways": [
+      "Prepare yourself, then check conditions, then check your gear.",
+      "A cracked lens, torn seal, or damaged mouthpiece should be fixed before entering.",
+      "Plan your entry and exit points before you get in the water.",
+      "Cancelling or postponing is a normal, responsible planning outcome."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R08",
+        "title": "Golden Rules for Safer Snorkeling",
+        "handle": "golden-rules-for-safer-snorkeling",
+        "description": "The core safety rules."
+      },
+      {
+        "lesson_id": "R11",
+        "title": "Beach Flags and Surface Warnings",
+        "handle": "beach-flags-and-surface-warnings",
+        "description": "Reading posted warnings."
+      },
+      {
+        "lesson_id": "R12",
+        "title": "Currents & Rip Currents",
+        "handle": "currents-and-rip-currents",
+        "description": "Water-movement awareness."
+      },
+      {
+        "lesson_id": "R09",
+        "title": "Surface Safety Devices",
+        "handle": "surface-safety-devices",
+        "description": "Choosing a signaling buoy, whistle, or life jacket as part of your kit."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [
+      {
+        "handle": "pre-snorkel-checklist",
+        "label": "Pre-Snorkel Checklist",
+        "url": "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/pre_snorkel_checklist.pdf?v=1789556434",
+        "asset_filename": "pre_snorkel_checklist.pdf",
+        "drive_file_id": "1rXOIzQ6eFT0WsIdmCSMqoRq3Nz4Qf7Mk",
+        "gid": null,
+        "file_gid": "gid://shopify/GenericFile/64735134646605"
+      }
+    ],
+    "primary_cta": null,
+    "lesson_id": "R10",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Pre-Snorkel Checklist and Planning | Oceans Optics Learning Hub",
+    "meta_description": "Learn the practical pre-snorkel routine: gear inspection, sun and hair prep, condition checks, and knowing when to cancel or postpone."
+  }
+}

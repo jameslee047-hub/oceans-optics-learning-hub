@@ -1,0 +1,85 @@
+{
+  "type": "learning_lesson",
+  "handle": "light-vision-and-sound-underwater",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Light, Vision & Sound Underwater",
+    "short_description": "Understand why colors fade, objects look closer than they are, and sound behaves differently once you're underwater.",
+    "lesson_type": "Science lesson",
+    "category": "underwater-science-your-body",
+    "estimated_reading_time": "3-4 minutes",
+    "hero_media": null,
+    "lesson_body": "## Light, Vision & Sound Underwater\n\nWater changes the way you see and hear in ways that can catch new snorkelers off guard. Understanding why helps you interpret what you're experiencing rather than wondering if something's wrong with your gear.\n\n## How Light Changes Underwater\n\nAs light travels through water, different wavelengths are absorbed at different rates. Warm colors like red and orange fade first, even at fairly shallow depths, which is why the underwater world often looks more blue and green than it would in a photo taken with flash or under bright surface light.\n\nLight also bends as it passes from air into water, an effect called refraction. Because your mask creates an air pocket in front of your eyes, this bending makes objects appear larger and closer than they actually are. This is a normal, expected effect of how mask optics work, not a sign of a problem with your vision or your gear.\n\n## How Sound Changes Underwater\n\nSound travels roughly four times faster through water than through air. That might sound like it would make sounds easier to locate, but the opposite is often true: because sound reaches both ears so quickly underwater, it becomes harder to tell exactly which direction it's coming from. This is worth knowing if you're relying on sound for communication or awareness while snorkeling with others.\n\n## Why This Matters\n\nKnowing that colors fade, objects appear closer than they are, and sound is hard to localize helps you snorkel with better judgment. It also explains a common observation: someone who needs vision correction may notice these effects differently, which is part of why lens selection for prescription masks is its own topic. See [Prescription Masks: Nearsightedness, Farsightedness & Lens Selection](lesson:prescription-masks-nearsightedness-farsightedness-lens-selection) for that buying decision.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "Why do colors like red and orange fade first as depth increases?",
+          "answers": [
+            "They are absorbed by water more than other wavelengths",
+            "They only exist near the surface",
+            "Fish eat the color out of the water"
+          ],
+          "correct_index": 0,
+          "explanation": "Different wavelengths of light are absorbed at different rates in water, and warm colors like red are absorbed first, even at shallow depths."
+        },
+        {
+          "question": "Why do objects appear larger and closer underwater through a mask?",
+          "answers": [
+            "Because of refraction caused by the air pocket in front of your eyes",
+            "Because your eyes adjust permanently to underwater vision",
+            "Because water always magnifies everything equally at any depth"
+          ],
+          "correct_index": 0,
+          "explanation": "Light bends as it passes from water into the air pocket inside your mask, making objects appear larger and closer than they actually are."
+        },
+        {
+          "question": "How does sound behave differently underwater compared to air?",
+          "answers": [
+            "It travels slower and is easier to localize",
+            "It travels faster but is harder to localize by direction",
+            "It doesn't travel through water at all"
+          ],
+          "correct_index": 1,
+          "explanation": "Sound travels roughly four times faster underwater, which paradoxically makes it harder to tell which direction it's coming from."
+        },
+        {
+          "question": "Why is it useful to know these light and sound effects before snorkeling?",
+          "answers": [
+            "They help you interpret what you're experiencing rather than assuming something is wrong",
+            "They only matter for professional divers",
+            "They change how buoyancy works"
+          ],
+          "correct_index": 0,
+          "explanation": "Understanding these normal effects helps you make sense of what you see and hear underwater, rather than mistaking them for gear problems."
+        }
+      ]
+    },
+    "instructor_tips": "- Use the refraction effect to explain why objects and distances can be misjudged underwater, especially useful before duck diving practice.\n- Mention color loss with depth when learners ask why underwater photos need added lighting or color correction.\n- Note that sound being hard to localize underwater is a good reason to rely on visual signals with a buddy, not just calling out.",
+    "common_mistakes": "- Assuming an object is closer than it actually is due to the mask's magnification effect.\n- Expecting colors to look the same at depth as they do near the surface.\n- Relying on sound alone to locate a buddy or a boat underwater.",
+    "safety_notes": null,
+    "key_takeaways": [
+      "Warm colors like red fade first as depth increases.",
+      "A mask's air pocket makes objects appear larger and closer than they really are.",
+      "Sound travels faster underwater but is harder to localize by direction.",
+      "These effects are normal and not a sign of a problem with your gear or vision."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R31",
+        "title": "Prescription Masks: Nearsightedness, Farsightedness & Lens Selection",
+        "handle": "prescription-masks-nearsightedness-farsightedness-lens-selection",
+        "description": "Choosing lens correction with underwater vision in mind."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R25",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Light, Vision & Sound Underwater | Oceans Optics Learning Hub",
+    "meta_description": "Learn why light and sound behave differently underwater, including color loss with depth and why objects appear closer than they are."
+  }
+}

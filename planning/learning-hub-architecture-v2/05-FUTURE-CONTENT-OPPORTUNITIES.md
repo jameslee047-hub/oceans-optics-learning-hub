@@ -118,6 +118,10 @@ Possible future topics:
 - Dive-specific medical guidance.
 - Equalising in scuba context.
 
+## Future Platform Feature: Customer Accounts & Learning Progress
+
+Distinct from the content opportunities above, this is a platform capability, not a lesson topic: an eventual account-gated Learning Hub with a customer-facing "My Learning" dashboard (progress, pathway completion, Continue Learning, Knowledge Check results). Full requirements, data-model direction, privacy notes, and the do-not-build-until gate are documented in `planning/shopify-implementation/11-FINAL-SHOPIFY-PLAN.md` (section 11) — not duplicated here. Planning only; not built, not scheduled.
+
 ## Editorial Cleanup Opportunities
 
 The recovered archive preserved original wording. Future rewrite should address:

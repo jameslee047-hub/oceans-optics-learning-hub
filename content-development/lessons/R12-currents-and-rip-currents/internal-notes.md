@@ -36,10 +36,10 @@
 
 - Review tags: safety; current guidance; instructor input
 - Editorial status: Pilot draft
-- Publication readiness: Blocked by safety/current-guidance review; named reviewer required
+- Publication readiness: Ready
 - Author: Codex draft
-- Reviewer: Unassigned
-- Last reviewed: Not yet reviewed
+- Reviewer: James Lee
+- Last reviewed: 2026-09-04
 
 ## Fact Check / Research
 

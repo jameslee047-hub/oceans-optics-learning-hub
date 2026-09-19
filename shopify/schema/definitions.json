@@ -39,6 +39,7 @@
         { "key": "category", "name": "Primary category", "type": "metaobject_reference", "required": true, "referenceTarget": "learning_category" },
         { "key": "estimated_reading_time", "name": "Estimated reading time", "type": "single_line_text_field", "required": true },
         { "key": "hero_media", "name": "Hero media", "type": "file_reference", "required": false, "validation": "image/video file when present" },
+        { "key": "media", "name": "Inline media", "type": "list.metaobject_reference", "required": false, "referenceTarget": "learning_media", "validation": "learning_media records matched to [MEDIA: media_key] markers in lesson_body by media_key" },
         { "key": "lesson_body", "name": "Lesson body", "type": "rich_text_field", "required": true },
         { "key": "instructor_tips", "name": "Instructor tips", "type": "rich_text_field", "required": false },
         { "key": "common_mistakes", "name": "Common mistakes", "type": "rich_text_field", "required": false },
@@ -119,6 +120,40 @@
         { "key": "short_description", "name": "Short description", "type": "multi_line_text_field", "required": true },
         { "key": "image", "name": "Image or icon", "type": "file_reference", "required": false, "validation": "image file when present" },
         { "key": "ordered_lessons", "name": "Ordered lessons", "type": "list.metaobject_reference", "required": true, "referenceTarget": "learning_lesson" }
+      ]
+    },
+    {
+      "type": "learning_media",
+      "name": "Learning Media",
+      "displayNameField": "media_key",
+      "access": {
+        "storefront": "PUBLIC_READ"
+      },
+      "capabilities": {},
+      "fields": [
+        { "key": "media_key", "name": "Media key", "type": "single_line_text_field", "required": true, "validation": "stable unique identifier matching [MEDIA: media_key] in a lesson body" },
+        { "key": "layout", "name": "Layout", "type": "single_line_text_field", "required": true, "validation": "one of: standard, comparison, diagram, animated, gallery" },
+        { "key": "overall_caption", "name": "Overall caption", "type": "multi_line_text_field", "required": false },
+        { "key": "media_items", "name": "Media items", "type": "list.metaobject_reference", "required": true, "referenceTarget": "learning_media_item" },
+        { "key": "width_treatment", "name": "Width / span treatment", "type": "single_line_text_field", "required": false, "validation": "e.g. contained, full" },
+        { "key": "internal_editor_note", "name": "Internal editor note", "type": "multi_line_text_field", "required": false, "validation": "internal only -- must never render publicly" }
+      ]
+    },
+    {
+      "type": "learning_media_item",
+      "name": "Learning Media Item",
+      "displayNameField": "alt_text",
+      "access": {
+        "storefront": "PUBLIC_READ"
+      },
+      "capabilities": {},
+      "fields": [
+        { "key": "media", "name": "Media file", "type": "file_reference", "required": true, "validation": "image or video/GIF file" },
+        { "key": "media_type", "name": "Media type", "type": "single_line_text_field", "required": false, "validation": "one of: image, animated, video" },
+        { "key": "label", "name": "Label", "type": "single_line_text_field", "required": false },
+        { "key": "alt_text", "name": "Alt text", "type": "single_line_text_field", "required": true, "validation": "required for any meaningful visual image; belongs to this item, not shared across a comparison/gallery" },
+        { "key": "caption", "name": "Caption", "type": "multi_line_text_field", "required": false },
+        { "key": "credit_source", "name": "Credit / source", "type": "single_line_text_field", "required": false }
       ]
     }
   ]

@@ -2,6 +2,7 @@
 
 ## Curriculum Status
 Category: Gear, Masks & Vision
+Lesson type: Equipment guide
 Pathways: Equipment Essentials (R01 → R31 → R02 → R03 → R04 → R05 → R06 → R27 → R09 — R31 may be identified within this pathway as particularly relevant to learners who need vision correction); Prescription Masks & Underwater Vision (R01 → R31 → R02, R25 optional supporting science) — this pathway is approved to launch once this lesson is drafted and reviewed, not before
 Curriculum decision: NEW (approved as launch-level, FINAL APPROVED)
 Related lessons: R01, R02, R25

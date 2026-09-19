@@ -128,6 +128,76 @@ Shopify feature/type used: Admin GraphQL metaobject definition mutations, `metao
 
 Unresolved issue: API credentials, target store permissions, and exact environment setup should be created only when planning is approved.
 
+## 11. Customer Accounts & Learning Progress (Future Phase — Documentation Only)
+
+**Status: PLANNING ONLY. Not built. Not scheduled. No authentication, customer metafields, apps, extensions, or theme changes exist for this yet.**
+
+Recommended solution: eventually gate the full Learning Hub behind Shopify Customer Accounts, and give logged-in learners a "My Learning" dashboard showing progress across lessons, pathways, and Knowledge Checks. This section exists so the requirement is captured before it is designed in detail, and so current lesson/schema work doesn't quietly foreclose it.
+
+Why: the Learning Hub is intended to become an account-based learning experience. Capturing the requirement now, without building it now, keeps the door open (stable lesson IDs, stable question IDs) without slowing down current content and frontend work.
+
+### 11.1 Account Access Model
+
+- Sign-in uses an Oceans Optics / Shopify customer account. Required account data: email, first name, last name.
+- **Account creation/access must NOT imply marketing consent.** Marketing/email subscription consent stays a separate, explicit opt-in, never bundled with account creation or Learning Hub access.
+- Not yet decided: whether the Learning Hub homepage stays publicly browsable with individual lessons gated, or whether the entire hub requires an account. Do not decide this now — both are still on the table.
+
+### 11.2 My Learning Dashboard (Future)
+
+Logged-in learners would eventually see a customer-facing "My Learning" area with:
+
+- Overall Learning Hub progress, pathway progress, lessons completed/started/remaining
+- Last lesson viewed, "Continue Learning" / Resume
+- Knowledge Checks completed, potentially Knowledge Check results
+- Completion dates
+
+Example shape:
+
+```
+Start Here — 4 of 6 complete
+Gear, Masks & Vision — 5 of 7 complete
+Overall Learning Hub — 12 of 31 complete
+```
+
+Progress UX (all future, not launch requirements unless explicitly promoted later): progress bars, checkmarks on completed lessons, "Continue where you left off," completion indicators on lesson/category/pathway cards, pathway completion, overall percentage. Possible later enhancement: pathway badges, completion certificates.
+
+### 11.3 Lesson Progress Data Model (Future)
+
+- Record: lesson started, lesson completed, completion timestamp, most recently viewed lesson.
+- **Use the existing stable internal lesson IDs (R01, R02, etc.) as the storage key.** These IDs stay internal and must never need to be customer-visible. Public titles/handles may change later without breaking historical progress, because progress is keyed to the ID, not the handle or title.
+
+### 11.4 Knowledge Check Progress Data Model (Future)
+
+- Knowledge Check questions should eventually get stable internal identifiers, e.g. `R01-Q01`, `R01-Q02`, `R01-Q03`.
+- These would support tracking: answered, selected answer, correct/incorrect, Knowledge Check complete, completion timestamp.
+- **Do not add these IDs to current lesson copy yet.** See the matching note in `content-development/KNOWLEDGE-CHECK-SCHEMA-PROPOSAL.md` — stable question IDs should be incorporated when the Knowledge Check data schema (the `knowledge_check` JSON field proposed in section 5 above) is finalized, not before.
+
+### 11.5 Technical Direction (Not Final)
+
+- Storefront: Learning Hub lessons keep the custom storefront experience already built (no change here).
+- Authentication: Shopify Customer Accounts.
+- Customer account area: a possible "My Learning" dashboard/customer-account extension.
+- Progress storage: customer-associated Learning Hub progress data. **Do not finalize the exact storage model yet.** Evaluate customer metafields vs. a dedicated app/database for scalability when this phase actually starts. Explicitly avoid an architecture that requires one customer metafield per individual lesson (30+ lessons would not scale as individual metafields) — prefer a single structured record (e.g. one JSON metafield or one external store) over per-lesson fields.
+
+### 11.6 Privacy / Data Requirements (Future)
+
+- Keep **account data required for access** (name, email) clearly distinct from **optional marketing consent** — never auto-subscribe a Learning Hub user to marketing.
+- Treat progress data as customer-associated data: the eventual implementation must account for normal Shopify/customer privacy and data-deletion requirements (e.g. customer data erasure requests must also remove or anonymize associated progress data).
+
+### 11.7 Implementation Gate — Do Not Build Until
+
+Do not build account/progress functionality until:
+
+- A. The launch lesson set and stable lesson IDs are finalized.
+- B. The Knowledge Check structure is finalized.
+- C. Stable Knowledge Check question IDs have been decided.
+- D. Lesson routing/handles are sufficiently stable.
+- E. The main Learning Hub frontend/visual system is established.
+
+**Target implementation window:** after the core Learning Hub content and frontend are substantially complete, but before public Learning Hub launch. This sequencing keeps authentication/progress work from slowing down current lesson design, while still building it before launch rather than bolting it on after.
+
+Unresolved issue: exact storage model (metafields vs. app/database), exact dashboard scope, and whether the homepage stays public-with-gated-lessons vs. fully gated all need a decision when this phase actually starts — none of that is decided here.
+
 ## Final Metaobject Set
 
 | Metaobject | Purpose | URL handle | URL pattern |
@@ -149,6 +219,7 @@ Unresolved issue: API credentials, target store permissions, and exact environme
 
 - Structured quiz/question metaobjects
 - saved learner progress
+- customer accounts / Learning Hub sign-in and the "My Learning" dashboard (see section 11 above — planning only, not scheduled)
 - certificates, rewards, or discount logic
 - PDF generation automation
 - multilingual/metaobject translation workflow
@@ -161,4 +232,6 @@ Unresolved issue: API credentials, target store permissions, and exact environme
 - Whether reviewer/last-reviewed should display publicly or remain admin-only
 - Which first downloads are worth designing after the pilot pages work
 - Whether the future prescription pathway should launch with phase one or remain parked
+- Whether the Learning Hub homepage stays public-with-gated-lessons or becomes fully account-gated (section 11.1)
+- Final customer-progress storage model: metafields vs. app/database (section 11.5)
 

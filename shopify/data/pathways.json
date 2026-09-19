@@ -28,13 +28,14 @@
       "ordered_lessons": [
         { "lesson_id": "R07", "handle": "health-readiness-and-personal-responsibility" },
         { "lesson_id": "R08", "handle": "golden-rules-for-safer-snorkeling" },
+        { "lesson_id": "R09", "handle": "surface-safety-devices" },
         { "lesson_id": "R10", "handle": "pre-snorkel-checklist-and-planning" },
         { "lesson_id": "R11", "handle": "beach-flags-and-surface-warnings" },
         { "lesson_id": "R12", "handle": "currents-and-rip-currents" },
         { "lesson_id": "R13", "handle": "waves-tides-and-surge" },
         { "lesson_id": "R14", "handle": "buddy-communication-and-awareness" },
         { "lesson_id": "R15", "handle": "breath-hold-safety-co2-and-shallow-water-blackout" },
-        { "lesson_id": "R16", "handle": "snorkeling-emergencies-and-first-aid-awareness" }
+        { "lesson_id": "R16", "handle": "snorkeling-emergencies-recognition-and-preparedness" }
       ]
     }
   },
@@ -48,11 +49,13 @@
       "image": null,
       "ordered_lessons": [
         { "lesson_id": "R01", "handle": "choosing-a-mask" },
+        { "lesson_id": "R31", "handle": "prescription-masks-nearsightedness-farsightedness-lens-selection" },
         { "lesson_id": "R02", "handle": "mask-fit-positioning-adjustment" },
         { "lesson_id": "R03", "handle": "mask-preparation-defogging-care" },
         { "lesson_id": "R04", "handle": "choosing-and-setting-up-a-snorkel" },
         { "lesson_id": "R05", "handle": "choosing-fins" },
         { "lesson_id": "R06", "handle": "exposure-protection-staying-warm" },
+        { "lesson_id": "R27", "handle": "why-you-get-cold-in-water" },
         { "lesson_id": "R09", "handle": "surface-safety-devices" }
       ]
     }
@@ -72,6 +75,8 @@
         { "lesson_id": "R21", "handle": "efficient-kicking-techniques" },
         { "lesson_id": "R22", "handle": "relaxed-breathing-and-efficient-movement" },
         { "lesson_id": "R23", "handle": "floating-and-treading-water" },
+        { "lesson_id": "R24", "handle": "buoyancy-pressure-and-airspaces" },
+        { "lesson_id": "R26", "handle": "equalizing-basics" },
         { "lesson_id": "R19", "handle": "duck-diving-basics" }
       ]
     }

@@ -30,6 +30,10 @@ Add a future production field:
 }
 ```
 
+## Future: Stable Question IDs for Progress Tracking
+
+Not part of this proposal and not implemented now. When the Learning Hub eventually supports learner accounts and progress tracking (see `planning/shopify-implementation/11-FINAL-SHOPIFY-PLAN.md`, section 11.4), each Knowledge Check question will need a stable internal identifier — e.g. `R01-Q01`, `R01-Q02`, `R01-Q03` — so answered/correct/complete state can be recorded per question and survive future question-wording edits. Do not add these IDs to current lesson copy or the JSON structure above yet; incorporate them when the `knowledge_check` data schema is finalized, so the ID scheme is designed alongside the final question structure rather than retrofitted.
+
 ## Validation Options
 
 - Require `questions` as an array.

@@ -1,0 +1,113 @@
+{
+  "type": "learning_lesson",
+  "handle": "entry-and-exit-techniques",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Entry and Exit Techniques",
+    "short_description": "Learn safe, low-disturbance ways to enter and exit the water from shore, deep water, or a boat.",
+    "lesson_type": "Skill lesson",
+    "category": "in-water-skills",
+    "estimated_reading_time": "3-5 minutes",
+    "hero_media": null,
+    "lesson_body": "## Entry and Exit Techniques\n\nHow you get into and out of the water affects your comfort, your safety, and your impact on the environment around you. This lesson covers the basics of entering and exiting from a few common situations.\n\nFor choosing an entry or exit point with water movement in mind, see [Currents & Rip Currents](lesson:currents-and-rip-currents).\n\n## Entering the Water\n\n### Wading In\n\nIf you are wading in from a shallow, sandy shore, carry your fins in your hand rather than trying to walk in them. Shuffle your feet along the bottom rather than stepping down cleanly, this gives a stingray buried in the sand a chance to move away before you step on it, which is how most stingray injuries actually happen. Walk in until you can sit comfortably, put your fins on while seated, and confirm your mask and snorkel are adjusted and ready. Put your face in the water and check that the area ahead is clear before you start swimming.\n\n### Deep-Water Entry\n\nFor a deeper water entry, such as jumping in from a dock or a rocky edge, put on all your gear before you reach the edge. Look at the water ahead and below you first, confirm it's clear and deep enough before you commit, depth and visibility right at an entry point can vary a lot, especially around rocks. Line your toes up with the edge, hold your mask and snorkel firmly against your face with one hand, and hold the back of your mask strap with the other. Step forward deliberately rather than jumping, skipping, or hopping, since edges can be slippery and an uncontrolled entry increases the chance of losing gear or landing awkwardly.\n\nThis method works well for modest heights, but risk goes up the higher you are, dive-training guidance generally caps a stepping-in entry like this at around 2 metres (roughly 6 feet). Above that, look for another way in, steps, a ladder, easing in from a seated position, or ask your boat or site guide what they'd recommend.\n\n### Boat Entry\n\nBoat entries usually follow either the deep-water entry method above or use a ladder to lower yourself into the water, depending on the boat. Follow your boat crew's specific instructions, since setups vary.\n\n## Exiting the Water\n\n### Shore Exit\n\nHead toward the shallows near the shore. If conditions are calm, find a spot where you can sit, remove your fins, and stand up when ready. If conditions are choppy, keep facing the ocean and walk backward slowly, pausing when waves come in rather than trying to fight through them.\n\n### Boat Ladder Exit\n\nMost boat ladders are difficult to climb while still wearing fins. Make contact with the ladder, remove one fin and pass it up to someone on the boat, then swap hands while maintaining contact with the ladder and remove the other fin. Climb the ladder slowly once both fins are off.\n\nGive the person climbing the ladder space. If conditions are choppy, keep extra distance and move more slowly to avoid a collision at the ladder.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "When wading into the water from a shallow shore, when should you put your fins on?",
+          "answers": [
+            "While seated, after wading in far enough to sit comfortably",
+            "While standing at the water's edge",
+            "Only after you start swimming"
+          ],
+          "correct_index": 0,
+          "explanation": "Putting fins on while seated is more stable and controlled than trying to balance on one foot at the water's edge."
+        },
+        {
+          "question": "What is the recommended way to step into deep water during a deep-water entry?",
+          "answers": [
+            "Jump or hop in for a big splash",
+            "Run and dive in headfirst",
+            "Step forward deliberately, holding your mask and strap in place"
+          ],
+          "correct_index": 2,
+          "explanation": "A deliberate step reduces the risk of slipping, losing your mask, or landing awkwardly on an uneven or slippery edge."
+        },
+        {
+          "question": "Why should you remove your fins one at a time before climbing a boat ladder?",
+          "answers": [
+            "It's a tradition with no real safety purpose",
+            "Fins make climbing a ladder difficult and unsafe",
+            "Fins are not allowed on boats"
+          ],
+          "correct_index": 1,
+          "explanation": "Fins make it hard to get a secure footing on ladder rungs, so removing them first makes the climb safer."
+        },
+        {
+          "question": "What should you do if conditions are choppy during a shore exit?",
+          "answers": [
+            "Turn your back to the ocean and walk straight out",
+            "Swim as fast as possible to the shore",
+            "Face the ocean and walk backward slowly, pausing as waves come in"
+          ],
+          "correct_index": 2,
+          "explanation": "Facing the ocean lets you see and react to incoming waves rather than being caught off guard from behind."
+        },
+        {
+          "question": "What should you do before stepping into deep water from a dock or rocky edge?",
+          "answers": [
+            "Assume it's fine since others have used the spot before",
+            "Look at the water ahead and below to confirm it's clear and deep enough",
+            "Enter as quickly as possible to get it over with"
+          ],
+          "correct_index": 1,
+          "explanation": "Depth and visibility right at an entry point can vary a lot, especially around rocks, checking before you step in is the difference between a clean entry and stepping onto something you didn't see."
+        },
+        {
+          "question": "Why should you shuffle your feet rather than step down cleanly when wading over a sandy bottom?",
+          "answers": [
+            "It gives a stingray buried in the sand a chance to move away before you step on it",
+            "It's faster than walking normally",
+            "It helps you spot fish more easily"
+          ],
+          "correct_index": 0,
+          "explanation": "Shuffling reduces the chance of stepping directly on a ray, which is how most stingray injuries actually happen."
+        }
+      ]
+    },
+    "instructor_tips": "- Practice the ladder hand-off sequence, remove one fin, pass it up, swap hands, remove the other fin, a few times before you actually need it, so it feels automatic rather than something you're figuring out for the first time on a moving boat.\n- If you're stepping off a boat in any swell, time your step for when the boat is at the top of its roll, not on the way down, stepping off during a downward roll adds distance and force to your landing you don't need.",
+    "common_mistakes": "- Jumping, skipping, or hopping during a deep-water entry instead of stepping in deliberately.\n- Trying to climb a boat ladder while still wearing fins.\n- Crowding the ladder while someone else is climbing it.\n- Fighting directly against incoming waves during a shore exit instead of pausing and waiting them out.",
+    "safety_notes": "Take your time during entries and exits, especially around ladders, rocks, or choppy water. Rushing is a common cause of slips, collisions, and lost gear.",
+    "key_takeaways": [
+      "Put fins on while seated for a wade-in entry, not while standing.",
+      "Shuffle your feet on a sandy bottom rather than stepping down cleanly, to avoid a stingray.",
+      "Look at the water ahead and below before a deep-water entry, and keep it under about 2 metres of height, or find another way in.",
+      "Step deliberately during a deep-water entry, never jump or skip.",
+      "Remove fins one at a time before climbing a boat ladder.",
+      "Give the person on the ladder space, especially in choppy conditions."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R18",
+        "title": "Clearing Your Snorkel",
+        "handle": "clearing-your-snorkel",
+        "description": "Handling water that enters your snorkel once you're in."
+      },
+      {
+        "lesson_id": "R12",
+        "title": "Currents & Rip Currents",
+        "handle": "currents-and-rip-currents",
+        "description": "Choosing entry and exit points with water movement in mind."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R17",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Entry and Exit Techniques for Snorkeling | Oceans Optics Learning Hub",
+    "meta_description": "Learn safe entry and exit techniques for snorkeling from shore, deep water, and boats, including ladder technique and shore exits."
+  }
+}

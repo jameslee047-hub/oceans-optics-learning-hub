@@ -1,0 +1,104 @@
+{
+  "type": "learning_lesson",
+  "handle": "mask-fit-positioning-adjustment",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Mask Fit, Positioning & Adjustment",
+    "short_description": "Learn how to check mask fit, seal, strap position, adjustment, and comfort before entering the water. This will help ensure you are set-up and ready for snorkeling!",
+    "lesson_type": "Skill lesson",
+    "category": "gear-masks-vision",
+    "estimated_reading_time": "4-6 minutes",
+    "hero_media": null,
+    "lesson_body": "## Mask Fit, Positioning & Adjustment\n\nChoosing a mask is only the first step. The mask also needs to sit correctly, seal comfortably, and stay secure without being overtightened.\n\nThis lesson focuses on fit and adjustment for a mask you already have in hand. For mask-selection decisions such as lens format, skirt color, and mask volume, see [Choosing a Mask](lesson:choosing-a-mask). For corrective-lens decisions, see [Prescription Masks: Nearsightedness, Farsightedness & Lens Selection](lesson:prescription-masks-nearsightedness-farsightedness-lens-selection).\n\n## Start With Loose Straps\n\nBefore putting the mask on, loosen the straps. Starting loose gives you room to position the mask properly before tightening anything.\n\nIf the strap is already tight, then it will be harder to find a good seal. A tight strap can also make it harder to judge whether the mask is sealing because of fit due to being pressed hard against your face, this creating skin folds.\n\n## Place the Mask Gently\n\nPlace the mask skirt against your face so the nose pocket fully covers your nose. The upper lip should not be crowded by the skirt, and no hair should sit under the sealing edge (even a single strand can cause leaks).\n\nYou may see slightly different ways of bringing the strap into place. The important points are the same: position the skirt carefully, keep the seal clear, and bring the strap into place without twisting it or pulling hard on the buckles.\n\nFollow any instructions that come with your specific mask, and ask an instructor or Oceans Optics support if you are unsure whether the mask is sitting correctly. You can send us photos and we will review!\n\n[MEDIA: donning-the-mask]\n\n## Strap Position\n\nThe back strap should sit comfortably on the crown of your head, above the ears. If the strap sits too low, it can pull the mask out of position. If it sits too high or twists, it may feel unstable and It can even pull on your nose and cause slight pain.\n\nOnce the strap is in place, check that the mask still sits evenly on your face and fully covers the nose.\n\n## Adjust Evenly\n\nTighten both sides gradually and evenly. The goal is snug and comfortable, not maximum pressure.\n\nIf one side is much tighter than the other, the mask can pull unevenly and create small gaps in the seal. If both sides are too tight, the mask may feel secure on land but become uncomfortable during the snorkel.\n\nBe gentle with buckles and strap hardware. Practice loosening and tightening them on land so you understand how they work before you rely on them near the water.\n\n## Check the Seal and Comfort\n\nA mask should seal without digging into your face. Pressing the mask hard into the skin is not the same as a good fit.\n\nUse a simple comfort check: the mask should feel secure, the skirt should sit evenly, and you should not feel sharp pressure around the bridge of the nose, under the nose, or on the upper lip. If the mask becomes uncomfortable before you even enter the water, it is unlikely to feel better after a long session.\n\n[MEDIA: mask-comfort-check]\n\n## Hair and Facial Hair\n\nHair under the skirt can break the seal. Tie long hair back before fitting the mask, and keep bangs or loose strands away from the sealing edge.\n\nFacial hair can also make sealing harder, especially around the upper lip and below the nose. If you have a mustache or beard, pay close attention to whether the skirt sits flat and whether small leaks appear in the same place each time.\n\nIf a mask still leaks or feels uncomfortable after careful positioning and adjustment, the issue may be model or size rather than technique. In that case, revisit the sizing guidance instead of simply tightening the strap more.\n\n[TOOL: Mask Sizing Tool]\n\n## What the Mask Sizing Tool Does and Doesn't Replace\n\nThe Mask Sizing Tool can help narrow mask model or size options based on face measurements. That is useful before or during the buying process.\n\nIt does not replace the physical fit check. Face measurements can point you toward a likely size, but your actual seal, comfort, strap position, and face shape still need to be checked with the mask on your face.\n\nThis lesson does not prescribe one grooming or product solution for facial hair. Use the fit result as the guide: if the mask will not seal comfortably, you may need a different adjustment, a different model, or specific fitting advice.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "Where should the back strap generally sit?",
+          "answers": [
+            "Low on the neck",
+            "On the crown of the head, above the ears",
+            "Across the ears"
+          ],
+          "correct_index": 1,
+          "explanation": "A crown-level strap position helps the mask sit evenly without pulling it downward."
+        },
+        {
+          "question": "What is the goal when tightening a mask strap?",
+          "answers": [
+            "Make it as tight as possible",
+            "Tighten gradually and evenly until it feels snug and comfortable",
+            "Tighten one side first, then leave the other loose"
+          ],
+          "correct_index": 1,
+          "explanation": "A good mask should seal through fit and positioning, not excessive strap pressure."
+        },
+        {
+          "question": "If a mask is leaking from one side, what should you consider checking?",
+          "answers": [
+            "Both straps have been tightened evenly (1 is not longer than the other)",
+            "The mask is not sitting over any hair",
+            "The strap is not over tight",
+            "All answers are correct"
+          ],
+          "correct_index": 3,
+          "explanation": "A leak from one side can mean the mask has been adjusted incorrectly. Double check the straps are not too tight, they are evenly adjusted, the mask is sitting straight on your face, and that there is no hair anywhere under the seal."
+        }
+      ]
+    },
+    "instructor_tips": "- Start loose, then adjust gradually.\n- A seal should come from fit and positioning, not from crushing the mask against the face.\n- Persistent leaks after careful adjustment often mean the model or size should be checked, not just the strap tension.",
+    "common_mistakes": "- Putting the mask on with the straps already tight.\n- Wearing the strap too low on the back of the head.\n- Tightening one side more than the other.\n- Letting hair sit under the skirt seal.",
+    "safety_notes": "If a mask causes pain, sharp pressure, panic, or persistent leaks, stop and refit it on land before using it in the water. Do not solve every fit problem by tightening the strap harder.",
+    "key_takeaways": [
+      "Mask fit is separate from mask selection.",
+      "The strap should sit on the crown of the head, above the ears.",
+      "Tighten both sides evenly and avoid overtightening.",
+      "Keep hair out of the sealing edge.",
+      "A sizing tool can guide model choice, but the mask still needs a real seal and comfort check."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R01",
+        "title": "Choosing a Mask",
+        "handle": "choosing-a-mask",
+        "description": "Lens format, skirt color, mask volume, and selection decisions."
+      },
+      {
+        "lesson_id": "R03",
+        "title": "Mask Preparation, Defogging & Care",
+        "handle": "mask-preparation-defogging-care",
+        "description": "Prep, cleaning, and storage after fit is sorted."
+      },
+      {
+        "lesson_id": "R20",
+        "title": "Mask Clearing Techniques",
+        "handle": "mask-clearing-techniques",
+        "description": "Clearing water that enters the mask while you are already in the water."
+      },
+      {
+        "lesson_id": "R31",
+        "title": "Prescription Masks: Nearsightedness, Farsightedness & Lens Selection",
+        "handle": "prescription-masks-nearsightedness-farsightedness-lens-selection",
+        "description": "If your mask also needs corrective lenses."
+      }
+    ],
+    "related_tools": [
+      {
+        "kind": "TOOL",
+        "handle": "mask-sizing-tool",
+        "label": "Use the Mask Sizing Tool",
+        "url": "/pages/how-to-check-if-a-mask-will-fit-you-online",
+        "gid": null,
+        "file_gid": null
+      }
+    ],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R02",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Mask Fit, Positioning & Adjustment | Oceans Optics Learning Hub",
+    "meta_description": "Learn practical snorkeling mask fit checks, strap positioning, comfort checks, and how sizing guidance relates to physical fit."
+  }
+}

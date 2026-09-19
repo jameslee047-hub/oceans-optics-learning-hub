@@ -1,0 +1,91 @@
+{
+  "type": "learning_lesson",
+  "handle": "types-of-snorkeling-experiences",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Types of Snorkeling Experiences",
+    "short_description": "Get to know the different environments snorkelers explore, from coral reefs to shipwrecks to sandy seabeds.",
+    "lesson_type": "Conditions explainer",
+    "category": "marine-life-conservation",
+    "estimated_reading_time": "3-4 minutes",
+    "hero_media": null,
+    "lesson_body": "## Types of Snorkeling Experiences\n\nSnorkeling looks different depending on where you go. Each environment offers its own scenery, wildlife, and considerations. Knowing what to expect helps you choose destinations that match your interests and experience level.\n\n## Reef Snorkeling\n\nCoral reefs are some of the most popular snorkeling destinations, rich with colorful fish, sea turtles, and intricate coral formations. Shallow reefs close to shore often offer calm water and good visibility, making them a great starting point for newer snorkelers.\n\n## Wall Snorkeling\n\nUnderwater walls or drop-offs offer a dramatic change in scenery, where the seabed suddenly falls away into deeper water. These sites can bring encounters with larger, open-ocean species like rays and schools of fish, alongside the reef life closer to the wall's edge.\n\n## Wreck Snorkeling\n\nSunken ships, planes, or other submerged structures give you a chance to explore underwater history while observing marine life that has made these structures home. Wreck sites can require more experience and comfort in the water than a calm, shallow reef.\n\n## Sand Snorkeling\n\nSandy seabeds may look plain at first glance, but they're home to creatures that blend into their surroundings, like stingrays, flounders, and other camouflaged animals. Seagrass beds and sandy patches near reefs are often good places to look closely.\n\n## Artificial Reef Snorkeling\n\nMan-made structures, like sunken sculptures or purpose-built artificial reefs, provide habitat for marine life and often support conservation and tourism goals. These sites can attract a surprising variety of fish and make for interesting underwater photography.\n\n## Choosing Where to Go\n\nConditions vary a lot between these environments, a calm, shallow reef and an exposed wall site call for different levels of comfort and experience. See [Currents & Rip Currents](lesson:currents-and-rip-currents) and [Waves, Tides & Surge](lesson:waves-tides-and-surge) for the conditions worth checking before choosing a site.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "Which type of snorkeling site is often recommended as a good starting point for newer snorkelers?",
+          "answers": [
+            "Wreck snorkeling",
+            "Shallow reef snorkeling",
+            "Wall snorkeling"
+          ],
+          "correct_index": 1,
+          "explanation": "Shallow reefs close to shore often have calm water and good visibility, making them a good starting point for less experienced snorkelers."
+        },
+        {
+          "question": "What might you expect to find at a wall snorkeling site?",
+          "answers": [
+            "Only sandy, featureless terrain",
+            "A dramatic drop-off with a chance to see larger, open-ocean species",
+            "Man-made structures only"
+          ],
+          "correct_index": 1,
+          "explanation": "Wall sites feature a sudden drop-off into deeper water, often bringing encounters with larger species alongside typical reef life."
+        },
+        {
+          "question": "What can sand snorkeling offer despite looking plain at first?",
+          "answers": [
+            "The most colorful coral formations",
+            "Camouflaged creatures like stingrays and flounders",
+            "Guaranteed shark sightings"
+          ],
+          "correct_index": 1,
+          "explanation": "Sandy seabeds are home to camouflaged animals that blend into their surroundings, making them worth a closer look."
+        },
+        {
+          "question": "What should you consider before choosing a snorkeling site type?",
+          "answers": [
+            "Only the wildlife you hope to see",
+            "Conditions and your comfort level, since these vary between site types",
+            "Nothing, all sites are equally suitable for any snorkeler"
+          ],
+          "correct_index": 1,
+          "explanation": "Conditions and required experience vary significantly between site types, so matching the site to your comfort level and checking conditions matters."
+        }
+      ]
+    },
+    "instructor_tips": "- Match site recommendations to a learner's comfort level, a wreck or wall site isn't the right first outing for a nervous beginner.\n- Point out that visibility and calmness often make reef sites the easiest starting point.\n- Mention that artificial reefs are worth visiting both for wildlife and to see conservation efforts in action.",
+    "common_mistakes": "- Choosing a wreck or wall site before building comfort at a calmer, shallower location.\n- Assuming all snorkeling sites have similar conditions and difficulty.\n- Overlooking sandy areas as \"boring\" when they often hold unique, camouflaged wildlife.",
+    "safety_notes": null,
+    "key_takeaways": [
+      "Reef, wall, wreck, sand, and artificial reef snorkeling each offer a different experience.",
+      "Shallow reef sites are often the easiest starting point for newer snorkelers.",
+      "Wreck and wall sites can require more experience and comfort in the water.",
+      "Checking conditions matters no matter which type of site you choose."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R29",
+        "title": "Marine Life Basics",
+        "handle": "marine-life-basics",
+        "description": "What you might see across these different environments."
+      },
+      {
+        "lesson_id": "R12",
+        "title": "Currents & Rip Currents",
+        "handle": "currents-and-rip-currents",
+        "description": "And Waves, Tides & Surge for checking conditions at any site."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R28",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Types of Snorkeling Experiences | Oceans Optics Learning Hub",
+    "meta_description": "Explore the different types of snorkeling experiences, including reef, wreck, wall, sand, and artificial reef snorkeling."
+  }
+}

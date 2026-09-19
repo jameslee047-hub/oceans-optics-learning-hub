@@ -1,0 +1,114 @@
+{
+  "type": "learning_lesson",
+  "handle": "mask-preparation-defogging-care",
+  "publication_status": "DRAFT",
+  "fields": {
+    "title": "Mask Preparation, Defogging & Care",
+    "short_description": "Learn how to prepare, defog, clean, dry, and store a snorkeling mask without damaging the lens or skirt. Get ready for uninterrupted clear vision and happy snorkeling.",
+    "lesson_type": "Skill lesson",
+    "category": "gear-masks-vision",
+    "estimated_reading_time": "4-6 minutes",
+    "hero_media": null,
+    "lesson_body": "## Mask Preparation, Defogging & Care\n\nA mask that fits well still needs basic preparation and care. Fogging, salt, sand, sunscreen, and damp storage can make a good mask frustrating to use.\n\nThis lesson keeps the guidance simple and material-aware. Always check the instructions for your specific mask before treating it, especially if it has prescription, coated, or mirrored lenses.\n\n## Why Masks Fog\n\nFog forms when warm, moist air trapped inside your mask meets the cooler lens. That warm air comes from your breath and skin. Even in tropical water, the water is often several degrees cooler than your body's 37°C, so the air trapped against the glass cools quickly and the moisture in it condenses into the tiny droplets you see as fog.\n\nBrand new masks are especially prone to fogging. During manufacturing, the silicone skirt is molded and cured, and that process releases a fine vapor that settles as a thin residue on the nearby glass lens. This film creates a slightly rough surface that fog clings to, and it resists normal anti fog treatments until it is scrubbed off, which is why new masks need pre treating before first use.\n\n[MEDIA: fogged-mask]\n\n## Preparing a New Mask\n\nIf your mask came with preparation instructions, follow those first. That guidance should take priority over any general online tip.\n\nFor a standard uncoated glass lens, use a small amount of plain white toothpaste, not gel, on the inside of the lens. Rub it gently over the glass in small circles with a clean finger for 30 to 60 seconds, then rinse thoroughly. This breaks down the manufacturing residue that causes new masks to fog, which regular soap alone usually cannot remove. A quick wash with mild dishwashing liquid afterward is fine for removing any remaining residue or oils from handling.\n\nDo not use flame or lighter methods, rough pads, or gel toothpaste as general beginner guidance. The risk of cracking the lens or damaging the skirt isn't worth it for a small time saving. If the lens is coated, mirrored, plastic, filmed, specially treated for prescription use, or covered by specific manufacturer instructions, follow those instructions instead. Toothpaste can damage coatings and films.\n\n## Defogging Before a Snorkel\n\nUse a mask defog product and follow the product instructions. A very small amount of mild regular dishwashing liquid or babysoap, diluted in a little water, can also be used on a standard glass lens. Spread a thin film over the inside surface, then lightly rinse so vision remains clear while some defogging film remains.\n\nAvoid heavy soapy residue. Too much can smear the lens and make vision worse. The goal is a clean, even film that reduces fog without blocking clarity.\n\nIf your mask keeps fogging after careful defogging, check three things:\n\n1. Was the lens prepared correctly for first use?\n2. Is the defog method safe for your lens material or coating?\n3. Is water, sunscreen, or skin oil contaminating the inside of the lens?\n\n## Cleaning After Each Use\n\nAfter snorkeling, rinse the mask thoroughly with fresh water. Remove salt, sand, and sunscreen from the skirt, frame, buckles, and strap.\n\nIf the mask needs more cleaning, use a gentle, non-abrasive approach. Avoid harsh chemicals and rough scrubbing, especially on lenses. A soft brush can help with textured areas, strap grooves, or frame edges, but the lens surface should be treated carefully.\n\n## Drying and Storage\n\nLet the mask dry completely before storing it. Store it away from direct sunlight and heat, which can age the skirt and strap materials.\n\nDo not pack a wet mask into a closed bag for long periods. Damp storage encourages odor and mold.\n\nIf mold appears, clean the mask gently and confirm the method is suitable for the materials. Coated and prescription lenses should still be treated carefully.",
+    "knowledge_check": {
+      "questions": [
+        {
+          "question": "What should you check before using an abrasive new-mask prep method?",
+          "answers": [
+            "Whether the lens material and coating allow it",
+            "Whether the mask skirt is dark or clear",
+            "Whether the snorkel is attached"
+          ],
+          "correct_index": 0,
+          "explanation": "Abrasive methods can damage some prescription, coated, mirrored, or plastic lenses."
+        },
+        {
+          "question": "Why are brand new masks especially prone to fogging?",
+          "answers": [
+            "The glass hasn't been used in water yet",
+            "A thin manufacturing residue on the lens creates a rough surface fog clings to",
+            "New masks are made from a different type of glass"
+          ],
+          "correct_index": 1,
+          "explanation": "During curing, the silicone skirt releases a fine vapor that settles on the nearby lens. This film resists normal defogging until it's physically removed."
+        },
+        {
+          "question": "What's the correct pairing of methods for mask care?",
+          "answers": [
+            "Toothpaste for every defog, before every snorkel",
+            "Dish soap for new-mask prep, toothpaste for regular pre-snorkel defogging",
+            "Toothpaste for new-mask prep, dish soap for regular pre-snorkel defogging"
+          ],
+          "correct_index": 2,
+          "explanation": "Toothpaste breaks down the tougher manufacturing residue on a brand new lens. Dish soap is enough for the lighter, ongoing defog needed before each snorkel."
+        },
+        {
+          "question": "What is the goal of defogging before a snorkel?",
+          "answers": [
+            "Leave a heavy layer of product on the lens",
+            "Create a thin, even film that helps reduce fog",
+            "Scrub the skirt until it changes color"
+          ],
+          "correct_index": 1,
+          "explanation": "Too much product can smear the lens; a thin, even film is the goal."
+        },
+        {
+          "question": "Why should a mask be fully dry before storage?",
+          "answers": [
+            "Damp storage can encourage odor and mold",
+            "Dry masks no longer need straps",
+            "Drying changes the prescription strength"
+          ],
+          "correct_index": 0,
+          "explanation": "Damp storage encourages odor and mold, so drying the mask fully before it's put away matters."
+        }
+      ]
+    },
+    "instructor_tips": "- Treat lens material and coating as the deciding factor before choosing a prep method.\n- Prepare standard uncoated glass lenses before first use so manufacturing residue doesn't cause ongoing fog.\n- Defog with a thin, even film rather than a heavy smear.\n- Try to avoid exhaling through your nose into the mask, warm breath against the lens speeds up fogging.\n- Splashing cool water on your face before entering can reduce the temperature gap that causes condensation in the first place.\n- Rinse and dry the mask after every session, even if it looks clean.",
+    "common_mistakes": "- Using an abrasive preparation method on a lens that may be coated or prescription.\n- Waiting until the mask is already fogged in the water before thinking about defogging.\n- Letting sunscreen or skin oil sit on the inside of the lens, grease attracts condensation.\n- Storing the mask while it is still damp.\n- Drying the mask in direct sun or near heat.",
+    "safety_notes": "Only use preparation, defogging, and cleaning products as directed. If a product irritates your eyes or leaves heavy residue, rinse the mask thoroughly and switch to a safer method for that lens.",
+    "key_takeaways": [
+      "New masks often need preparation before first use.",
+      "Manufacturer guidance comes first, especially for prescription or coated lenses.",
+      "Defogging works best as a thin, even film.",
+      "Rinse with fresh water after every use.",
+      "Dry fully and store away from direct sunlight and heat."
+    ],
+    "related_lessons": [
+      {
+        "lesson_id": "R01",
+        "title": "Choosing a Mask",
+        "handle": "choosing-a-mask",
+        "description": "Selection decisions."
+      },
+      {
+        "lesson_id": "R02",
+        "title": "Mask Fit, Positioning & Adjustment",
+        "handle": "mask-fit-positioning-adjustment",
+        "description": "Fit and seal."
+      },
+      {
+        "lesson_id": "R20",
+        "title": "Mask Clearing Techniques",
+        "handle": "mask-clearing-techniques",
+        "description": "Clearing water from a mask while in the water."
+      },
+      {
+        "lesson_id": "R31",
+        "title": "Prescription Masks: Nearsightedness, Farsightedness & Lens Selection",
+        "handle": "prescription-masks-nearsightedness-farsightedness-lens-selection",
+        "description": "Prescription-mask context."
+      }
+    ],
+    "related_tools": [],
+    "related_products": [],
+    "downloadable_resources": [],
+    "primary_cta": null,
+    "lesson_id": "R03",
+    "author": null,
+    "reviewer": null,
+    "last_reviewed": null,
+    "seo_title": "Mask Preparation, Defogging & Care | Oceans Optics Learning Hub",
+    "meta_description": "Learn safe beginner guidance for snorkeling mask preparation, defogging, cleaning, drying, storage, and mold prevention."
+  }
+}

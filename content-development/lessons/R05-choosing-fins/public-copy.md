@@ -13,7 +13,7 @@
 
 Fins help you move through the water with less effort, but the best pair is not always the longest or stiffest pair. Fin choice affects comfort, fatigue, control, packing, and how aware you need to be around the bottom.
 
-This lesson covers fin selection. It does not teach kicking technique; that belongs in `Efficient Kicking Techniques` and `Relaxed Breathing & Efficient Movement`.
+This lesson covers fin selection. For help using fins efficiently, see [Efficient Kicking Techniques](lesson:efficient-kicking-techniques) and [Relaxed Breathing & Efficient Movement](lesson:relaxed-breathing-and-efficient-movement).
 
 ## Start With Fit and Comfort
 
@@ -33,6 +33,8 @@ Comfort matters because finning should feel steady and relaxed. If the fin makes
 
 Heel style affects footwear, adjustability, and where the fins make the most sense.
 
+[MEDIA: open-vs-closed-heel-fins]
+
 ### Open-Heel Fins
 
 Open-heel fins have an adjustable heel strap and are commonly worn with dive boots. They can be useful when you need foot protection, extra warmth, or a more adjustable fit.
@@ -50,6 +52,8 @@ They are often a practical choice for warm-water snorkeling, but they leave the 
 Fin performance depends on a combination of blade length, blade stiffness, material, blade shape or design, channels or ribs where relevant, user strength, kicking technique, and control. No single feature tells the whole story.
 
 Technique can outweigh the specification sheet. A stiff or long fin does not make an inefficient kick efficient. A snorkeler with relaxed, controlled technique may get better useful performance from a moderate fin than another snorkeler gets from a more powerful-looking fin.
+
+[MEDIA: long-vs-short-fins]
 
 ### Longer Blades
 
@@ -104,7 +108,7 @@ If fins cause cramps, pain, or rapid fatigue, slow down, rest, and reassess the 
 
 - Choose the fin you can control, not just the fin that feels most powerful.
 - For many beginners, comfort and easy kicking matter more than maximum blade length.
-- If you snorkel around reef or shallow seabed, teach body position, awareness, and fin control before talking about blade length.
+- If you snorkel around reefs or shallow seabed, teach body position, awareness, and fin control before talking about blade length.
 - Remind students that technique can outweigh the specification sheet.
 
 ## Common Mistakes
@@ -117,14 +121,11 @@ If fins cause cramps, pain, or rapid fatigue, slow down, rest, and reassess the 
 
 ## Key Takeaways
 
-- Fit and comfort come first.
-- Open-heel fins usually pair with boots and offer more adjustability.
-- Closed-heel fins can be simple, lightweight, and warm-water friendly.
-- Longer blades can move more water but require suitable strength, technique, space, and control.
-- Shorter or moderate blades can be easier for travel, maneuvering, relaxed cadence, and shallow-water awareness.
-- Softer fins are often easier on the legs and ankles; very soft blades may feel underpowered for strong swimmers.
-- Stiffer fins can transfer more force when properly matched, but too much stiffness can create fatigue or cramping.
-- Good body position, awareness, and kicking technique prevent bottom or coral contact.
+- Fit and comfort come before blade power.
+- Heel style determines footwear, adjustability, and foot protection.
+- Longer blades need suitable strength, technique, space, and control.
+- Stiffness should match the swimmer, not ego.
+- Good body position and technique prevent bottom contact.
 
 ## Knowledge Check
 
@@ -138,7 +139,17 @@ If fins cause cramps, pain, or rapid fatigue, slow down, rest, and reassess the 
 
 **Explanation:** Open-heel fins usually use an adjustable strap and are commonly paired with boots.
 
-**Q2. Why might short fins be useful in shallow reef areas?**
+**Q2. What is a real drawback of longer fin blades, even though they can move more water per stroke?**
+
+- A. They require more space, strength, and control, and are less convenient for travel or shallow areas
+- B. They are not allowed for snorkeling in most locations
+- C. They remove the need for good kicking technique
+
+**Correct:** A
+
+**Explanation:** Longer blades can be efficient with the right strength and technique, but that comes with a real cost in space, control, and travel convenience.
+
+**Q3. Why might short fins be useful in shallow reef areas?**
 
 - A. They can make precise fin awareness and control easier
 - B. They are always faster than long fins
@@ -148,12 +159,22 @@ If fins cause cramps, pain, or rapid fatigue, slow down, rest, and reassess the 
 
 **Explanation:** Shorter blades can be easier to control around shallow or fragile environments, but body position and technique still prevent contact.
 
-**Q3. What is one drawback of long or very stiff fins for a beginner?**
+**Q4. What can happen if a fin is stiffer than a swimmer's leg strength and technique can support?**
 
-- A. They may create more fatigue
-- B. They cannot be rinsed
-- C. They only work with clear mask skirts
+- A. Unnecessary fatigue, inefficient kicking, or cramping
+- B. Automatically faster swimming with no downside
+- C. No effect on the swimmer either way
 
 **Correct:** A
 
-**Explanation:** More powerful fins can demand more leg strength and may tire a beginner faster.
+**Explanation:** Stiffness only helps when it's matched to the swimmer. Mismatched stiffness costs energy instead of converting it into thrust.
+
+**Q5. Which statement best reflects how fin performance actually works?**
+
+- A. A longer or stiffer fin automatically makes a snorkeler faster
+- B. Technique and fit to the individual swimmer matter more than blade length or stiffness alone
+- C. Only advanced snorkelers need to think about fin fit
+
+**Correct:** B
+
+**Explanation:** A stiff or long fin does not fix an inefficient kick. A relaxed, well-controlled swimmer can outperform someone using a more powerful-looking fin badly.

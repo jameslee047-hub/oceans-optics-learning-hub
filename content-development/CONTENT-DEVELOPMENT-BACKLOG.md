@@ -29,16 +29,16 @@ Use `CATEGORY DECISION REQUIRED` only when the item is genuinely learner-facing 
 
 ## Summary
 
-- Total backlog items: 72
+- Total backlog items: 75
 - Existing-lesson enhancements: 13
 - Future lesson candidates: 9
-- Future pathway / feature items: 22
+- Future pathway / feature items: 25
 - Instructor-input items: 6
 - Fact-check / research items: 7
 - Safety / current-guidance review items: 15
 - Publication blockers: 26
 
-Updated 2026-08-27 by the curriculum/scope audit (`content-development/LESSON-PLAN-OVERVIEW.md`, `content-development/CURRICULUM-GAP-AUDIT.md`). New items CG-068 through CG-072 added below; no existing rows were edited or removed.
+Updated 2026-08-27 by the curriculum/scope audit (`content-development/LESSON-PLAN-OVERVIEW.md`, `content-development/CURRICULUM-GAP-AUDIT.md`). Items CG-068 through CG-072 added at that time. CG-073 (Customer Accounts & Learning Progress platform feature) added later, planning-only; no existing rows were edited or removed.
 
 ## R01 Gap Mapping
 
@@ -129,6 +129,9 @@ The R01 gaps should not become six automatic new lesson ideas.
 | CG-070 | FACT CHECK / RESEARCH | Reconcile AXIS guidance before drafting R31 | Reconcile the "ignore AXIS" simplification in `page.which-lens-astigmatism.json` with the `fs-cylinder-guide.liquid` / `ns-cylinder-guide.liquid` rounding tables, which discuss CYL sign but never mention AXIS, before writing R31 copy. | `theme/learning-hub-pilot/templates/page.which-lens-astigmatism.json`; `theme/learning-hub-pilot/sections/fs-cylinder-guide.liquid`; `theme/learning-hub-pilot/sections/ns-cylinder-guide.liquid` | None | R31 (proposed) | Gear, Masks & Vision | None | Prescription Masks & Underwater Vision | Prevents R31 from publishing two different simplified rules for the same customer decision. | YES | Launch (if R31 approved) | Needs research |
 | CG-071 | EXISTING LESSON ENHANCEMENT | R01 structural additions pending scope approval | Add "what will you use it for," a fit/comfort acknowledgment linking to R02, and a "where to learn more" closing section to R01, per the current-vs-recommended scope comparison. | `content-development/LESSON-PLAN-OVERVIEW.md` (R01 Current Scope vs. Recommended Scope) | R01 | R01 Choosing a Mask | Gear, Masks & Vision | None | Equipment Essentials | The current draft under-delivers on its "Choosing a Mask" title; do not treat the in-progress editor wording pass as final scope. | YES | Launch | Needs James/Airies approval; do not implement until scope is approved |
 | CG-072 | FUTURE PATHWAY / FEATURE | R24/R27 pathway placement decision | Decide pathway membership for R24 (Buoyancy, Pressure & Airspaces) and R27 (Why You Get Cold in Water), currently absent from all five approved pathways and reachable only via related-lesson links. | `content-development/CURRICULUM-GAP-AUDIT.md` | None | R24; R27 | Underwater Science & Your Body | None | In-Water Skills Builder; Equipment Essentials (candidates) | Prevents two well-scoped lessons from being undiscoverable at launch. | NO | Post-launch | Open |
+| CG-073 | FUTURE PATHWAY / FEATURE | Customer accounts & Learning Progress ("My Learning") | Platform feature (not a content gap): eventual Shopify Customer Account sign-in gating the Learning Hub, plus a "My Learning" dashboard showing lesson/pathway/overall progress, Continue Learning, and Knowledge Check results. Progress keyed to stable internal lesson IDs (R01, R02, ...) and future stable Knowledge Check question IDs (R01-Q01, ...), not to public titles/handles. Marketing consent stays separate from account access. Full spec, technical direction, privacy notes, and implementation gate in `planning/shopify-implementation/11-FINAL-SHOPIFY-PLAN.md` (section 11). | `planning/shopify-implementation/11-FINAL-SHOPIFY-PLAN.md`; `planning/learning-hub-architecture-v2/05-FUTURE-CONTENT-OPPORTUNITIES.md`; `planning/learning-hub-architecture-v2/06-FINAL-HUB-OVERVIEW.md`; `content-development/KNOWLEDGE-CHECK-SCHEMA-PROPOSAL.md` | None | All lessons (platform-wide) | Not learner-facing (platform/account layer) | None | All pathways | Turns the Learning Hub into an account-based, trackable learning product; must not slow down current content/frontend work. | NO | Future expansion — do not build until launch lesson set, lesson IDs, Knowledge Check structure/IDs, routing, and frontend system are stable (see gate in section 11.7) | Parked; needs James/Airies decision on homepage gating model and progress storage model before design starts |
+| CG-074 | FUTURE PATHWAY / FEATURE | Mask choice comparison download | Create the `mask-choice-comparison` downloadable resource referenced in R01's internal notes. No file or Shopify File GID exists yet; the placeholder is suppressed from generated output for the first public launch rather than left dangling. | `content-development/lessons/R01-choosing-a-mask/internal-notes.md` | R01 | R01 Choosing a Mask | Gear, Masks & Vision | None | Equipment Essentials | Gives shoppers a quick side-by-side comparison resource, but must not block launch without a real asset. | NO | Post-launch | Open |
+| CG-075 | FUTURE PATHWAY / FEATURE | Current types quick reference download | Create the `current-types-quick-reference` downloadable resource referenced in R12's internal notes. No file or Shopify File GID exists yet; the placeholder is suppressed from generated output for the first public launch rather than left dangling. | `content-development/lessons/R12-currents-and-rip-currents/internal-notes.md` | R12 | R12 Currents & Rip Currents | Safety & Conditions | None | Safer Snorkeling; Ocean-Aware Snorkeler | Gives learners a quick current-type reference, but must not block launch without a real asset. | NO | Post-launch | Open |
 
 ### Reclassification Recommendation: Prescription Masks & Underwater Vision (2026-08-27)
 
