@@ -12,6 +12,10 @@
   --oo-learning-soft-blue: #eef7fb;
   --oo-learning-soft-orange: #fff4ea;
   --oo-learning-panel: #ffffff;
+  --oo-learning-success: #15803d;
+  --oo-learning-success-rgb: 21, 128, 61;
+  --oo-learning-danger: #b91c1c;
+  --oo-learning-danger-rgb: 185, 28, 28;
   color: var(--oo-learning-ink);
   letter-spacing: 0;
 }
@@ -34,10 +38,7 @@
 }
 
 .learning-hub__intro {
-  display: grid;
-  grid-template-columns: minmax(0, 1.25fr) minmax(26rem, 0.75fr);
-  gap: 3.2rem;
-  align-items: center;
+  max-width: 82rem;
 }
 
 .learning-hub__eyebrow,
@@ -235,6 +236,72 @@
     0 0 0 calc(var(--buttons-border-width) + 1px) var(--oo-learning-blue);
 }
 
+.learning-hub .learning-cta,
+.learning-hub a.learning-cta,
+.learning-hub button.learning-cta,
+.learning-hub .button.learning-cta,
+.learning-hub .learning-topic-card__cta {
+  --color-button: var(--oo-learning-orange-rgb);
+  --color-button-text: var(--oo-learning-white-rgb);
+  --alpha-button-background: 1;
+  display: inline-flex;
+  min-height: 4.6rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.2rem;
+  border: 0.1rem solid var(--oo-learning-orange);
+  border-radius: var(--buttons-radius-outset, 0.4rem);
+  background-color: var(--oo-learning-orange);
+  color: #ffffff !important;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+
+.learning-hub .learning-cta:visited,
+.learning-hub .learning-cta:hover,
+.learning-hub .learning-cta:focus,
+.learning-hub .learning-cta:focus-visible,
+.learning-hub .learning-cta:active,
+.learning-hub .learning-topic-card__cta:visited,
+.learning-hub .learning-topic-card__cta:hover,
+.learning-hub .learning-topic-card__cta:focus,
+.learning-hub .learning-topic-card__cta:focus-visible,
+.learning-hub .learning-topic-card__cta:active {
+  color: #ffffff !important;
+  text-decoration: none;
+}
+
+.learning-hub .learning-cta:not([disabled]):hover,
+.learning-hub .learning-cta:not([disabled]):focus,
+.learning-hub .learning-cta:not([disabled]):active,
+.learning-hub .learning-topic-card__cta:hover,
+.learning-hub .learning-topic-card__cta:focus,
+.learning-hub .learning-topic-card__cta:active {
+  border-color: var(--oo-learning-orange-hover);
+  background-color: var(--oo-learning-orange-hover);
+  color: #ffffff !important;
+}
+
+.learning-hub .learning-cta *,
+.learning-hub .learning-topic-card__cta * {
+  color: #ffffff !important;
+}
+
+.learning-hub .button.learning-cta::after {
+  box-shadow:
+    0 0 0 calc(var(--buttons-border-width) + var(--border-offset)) rgba(var(--oo-learning-white-rgb), var(--border-opacity)),
+    0 0 0 var(--buttons-border-width) var(--oo-learning-orange);
+}
+
+.learning-hub .button.learning-cta:not([disabled]):hover::after {
+  box-shadow:
+    0 0 0 calc(var(--buttons-border-width) + 1.3px) rgba(var(--oo-learning-white-rgb), var(--border-opacity)),
+    0 0 0 calc(var(--buttons-border-width) + 1px) var(--oo-learning-orange-hover);
+}
+
 .learning-hub__summary {
   display: grid;
   gap: 1.2rem;
@@ -407,6 +474,16 @@
   line-height: 1.3;
 }
 
+.learning-quiz-jump {
+  display: inline-flex;
+  width: auto;
+  min-height: 3.2rem;
+  align-items: center;
+  padding: 0 1.4rem;
+  font-size: 1.3rem;
+  line-height: 1.3;
+}
+
 .learning-breadcrumbs {
   display: flex;
   flex-wrap: wrap;
@@ -422,6 +499,110 @@
   color: var(--oo-learning-blue);
   text-decoration: underline;
   text-underline-offset: 0.25rem;
+}
+
+.learning-utility-nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem 1.6rem;
+  margin-bottom: 2.4rem;
+  font-size: 1.4rem;
+}
+
+.learning-utility-nav-band {
+  padding: 3.2rem 0;
+  border-top: 0.1rem solid rgba(2, 48, 89, 0.12);
+}
+
+.learning-utility-nav-band .learning-utility-nav {
+  margin-bottom: 0;
+}
+
+.learning-lesson-nav {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.learning-lesson-nav--single .learning-lesson-nav-card {
+  grid-column: 1 / -1;
+}
+
+.learning-lesson-nav-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  padding: 1.6rem;
+  border: 0.1rem solid var(--oo-learning-line);
+  border-radius: 0.8rem;
+  background: #ffffff;
+  color: var(--oo-learning-blue);
+  text-decoration: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.learning-lesson-nav-card--next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+.learning-lesson-nav-card:hover,
+.learning-lesson-nav-card:focus-visible {
+  border-color: rgba(185, 94, 5, 0.46);
+  box-shadow: 0 0.8rem 2rem rgba(2, 48, 89, 0.08);
+  transform: translateY(-0.2rem);
+  outline: none;
+}
+
+.learning-lesson-nav-card:focus-visible {
+  outline: 0.2rem solid var(--oo-learning-orange);
+  outline-offset: 0.3rem;
+}
+
+.learning-lesson-nav-card__label {
+  color: var(--oo-learning-orange);
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.learning-lesson-nav-card__title {
+  color: var(--oo-learning-blue);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.learning-lesson-nav-card__position {
+  color: var(--oo-learning-muted);
+  font-size: 1.25rem;
+}
+
+@media screen and (max-width: 749px) {
+  .learning-lesson-nav {
+    grid-template-columns: 1fr;
+  }
+
+  .learning-lesson-nav-card--next {
+    text-align: left;
+    align-items: flex-start;
+  }
+}
+
+.learning-utility-nav a {
+  color: var(--oo-learning-blue);
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+  font-weight: 700;
+}
+
+@media screen and (max-width: 749px) {
+  .learning-utility-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.8rem;
+  }
 }
 
 .learning-rich-text {
@@ -444,21 +625,393 @@
   margin-bottom: 1.6rem;
 }
 
+.learning-rich-text code {
+  padding: 0.1rem 0.35rem;
+  border-radius: 0.4rem;
+  background: var(--oo-learning-soft-blue);
+  color: var(--oo-learning-blue);
+  font-family: inherit;
+  font-size: 0.95em;
+  font-weight: 700;
+}
+
+/* Matches the RESOLVED href, not the authoring-time `lesson:handle` scheme:
+   lessonUrlFromHandle() in shopify/scripts/lib/learning-data.js already
+   rewrites `lesson:handle` to `/pages/learn/{handle}` before the rich text
+   ever reaches Shopify, so a selector written against `[href^="lesson:"]`
+   never matches anything in production -- it silently never applied,
+   letting ordinary inline lesson-to-lesson links fall through to the
+   standalone-link button treatment below instead of rendering as plain
+   inline text. Explicit [TOOL:]/[PRODUCT:]/[CTA:] destinations never start
+   with /pages/learn/, so they still correctly get the button treatment. */
+a.learning-inline-reference,
+.learning-rich-text a[href^="/pages/learn/"] {
+  color: var(--oo-learning-blue);
+  font-family: inherit;
+  font-weight: 700;
+}
+
+a.learning-inline-reference,
+.learning-rich-text a[href^="/pages/learn/"] {
+  text-decoration: underline;
+  text-decoration-color: rgba(185, 94, 5, 0.45);
+  text-decoration-thickness: 0.12rem;
+  text-underline-offset: 0.18em;
+}
+
+a.learning-inline-reference:hover,
+.learning-rich-text a[href^="/pages/learn/"]:hover,
+a.learning-inline-reference:focus-visible,
+.learning-rich-text a[href^="/pages/learn/"]:focus-visible {
+  color: var(--oo-learning-orange);
+  text-decoration-color: currentColor;
+}
+
+.learning-inline-action {
+  display: flex;
+  align-items: center;
+  margin: 2rem 0 2.4rem;
+}
+
+.learning-inline-action .button {
+  width: 36rem;
+  max-width: 100%;
+  margin: 0;
+}
+
+.learning-action-choice-group {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+  margin: 2rem auto 2.4rem;
+}
+
+.learning-action-choice-group .learning-inline-action,
+.learning-action-choice-group > p {
+  display: flex;
+  align-items: stretch;
+  margin: 0;
+}
+
+.learning-action-choice-group .button,
+.learning-action-choice-group > p > a {
+  width: 100%;
+  max-width: none;
+}
+
+/* A grouped-actions block where one link (the last one -- see
+   buildPrimarySecondaryGroup in learning-hub-inline-media.js) is kept as the
+   single primary orange CTA and the rest are demoted to compact inline text
+   links on their own row underneath it, instead of every link getting equal
+   full-width-button weight. */
+.learning-action-choice-group--primary-secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.8rem;
+}
+
+.learning-action-choice-group--primary-secondary > .learning-action-choice-group__primary {
+  display: block;
+  align-items: normal;
+}
+
+.learning-action-choice-group--primary-secondary > .learning-action-choice-group__primary > a {
+  width: 36rem;
+  max-width: 100%;
+}
+
+.learning-action-choice-group--primary-secondary > .learning-action-choice-group__secondary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  color: var(--oo-learning-muted);
+  font-size: 1.4rem;
+}
+
+.learning-action-choice-group__sep {
+  margin: 0 0.6rem;
+  color: var(--oo-learning-muted);
+}
+
+.learning-rich-text p:has(> a:only-child:not(.learning-inline-reference):not([href^="/pages/learn/"])) {
+  margin: 2rem 0 2.4rem;
+}
+
+.learning-rich-text p:has(> a:only-child:not(.learning-inline-reference):not([href^="/pages/learn/"])) > a {
+  display: inline-flex;
+  width: 36rem;
+  max-width: 100%;
+  min-height: 4.4rem;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2.2rem;
+  border: 0.1rem solid var(--oo-learning-orange);
+  border-radius: var(--buttons-radius-outset, 0.4rem);
+  background: var(--oo-learning-orange);
+  color: #ffffff !important;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+
+.learning-rich-text p:has(> a:only-child:not(.learning-inline-reference):not([href^="/pages/learn/"])) > a:hover,
+.learning-rich-text p:has(> a:only-child:not(.learning-inline-reference):not([href^="/pages/learn/"])) > a:focus,
+.learning-rich-text p:has(> a:only-child:not(.learning-inline-reference):not([href^="/pages/learn/"])) > a:focus-visible,
+.learning-rich-text p:has(> a:only-child:not(.learning-inline-reference):not([href^="/pages/learn/"])) > a:active {
+  border-color: var(--oo-learning-orange-hover);
+  background: var(--oo-learning-orange-hover);
+  color: #ffffff !important;
+  text-decoration: none;
+}
+
+.learning-rich-text p:has(> a:only-child:not(.learning-inline-reference):not([href^="/pages/learn/"])) > a:focus-visible {
+  outline: 0.2rem solid var(--oo-learning-blue);
+  outline-offset: 0.3rem;
+  box-shadow: 0 0 0 0.4rem rgba(var(--oo-learning-white-rgb), 0.95), 0 0 0 0.6rem rgba(var(--oo-learning-blue-rgb), 0.36);
+}
+
+.learning-media {
+  width: 100%;
+  max-width: 85rem;
+  margin: 2.8rem auto;
+}
+
+/* Standard instructional media should sit with the lesson, not behave like
+   a hero simply because the source image is large. */
+.learning-media--standard {
+  max-width: 80rem;
+}
+
+.learning-media--small {
+  max-width: 60rem;
+}
+
+.learning-media--narrow {
+  max-width: 32rem;
+}
+
+/* Opt-in per-record modifier (learning_media.width_treatment) for a
+   concise comparison that shouldn't dominate the page -- applied only to
+   the specific record that requests it, never to comparison/gallery/diagram
+   blocks generally. */
+.learning-media--compact {
+  max-width: 64rem;
+}
+
+.learning-media--wide {
+  max-width: 90rem;
+}
+
+.learning-media--educational-wide {
+  max-width: 90rem;
+}
+
+.learning-media--hero {
+  max-width: 106rem;
+}
+
+.learning-media__comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.6rem;
+}
+
+.learning-media__item {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.learning-media__image {
+  overflow: hidden;
+  aspect-ratio: var(--learning-media-aspect, 4 / 3);
+  border-radius: 1.2rem;
+  border: 0;
+  background: transparent;
+}
+
+.learning-media__image img,
+.learning-media__image video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.learning-media--diagram .learning-media__image,
+.learning-media--animated .learning-media__image {
+  aspect-ratio: var(--learning-media-aspect, 16 / 9);
+}
+
+.learning-media--diagram .learning-media__image img {
+  object-fit: contain;
+}
+
+.learning-media__gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
+  gap: 1.6rem;
+}
+
+.learning-media--compact .learning-media__gallery {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.learning-media__label {
+  margin: 0;
+  color: var(--oo-learning-blue);
+  font-size: 1.4rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.learning-media__item-caption {
+  margin: 0;
+  color: var(--oo-learning-muted);
+  font-size: 1.3rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.learning-media__credit {
+  margin: 0;
+  color: var(--oo-learning-muted);
+  font-size: 1.15rem;
+  font-style: italic;
+  line-height: 1.35;
+  text-align: center;
+}
+
+.learning-media figcaption {
+  max-width: 82rem;
+  margin: 1rem 0 0;
+  color: var(--oo-learning-muted);
+  font-size: 1.35rem;
+  line-height: 1.45;
+}
+
+.learning-media--warning {
+  max-width: 82rem;
+  padding: 1.2rem 1.4rem;
+  border: 0.1rem dashed rgba(185, 94, 5, 0.45);
+  border-radius: 0.8rem;
+  background: var(--oo-learning-soft-orange);
+  color: var(--oo-learning-blue);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.learning-downloads {
+  max-width: 82rem;
+  margin: 0 auto 2.8rem;
+}
+
+.learning-download-list {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.learning-download-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.6rem;
+  padding: 1.6rem 1.8rem;
+  border: 0.1rem solid rgba(var(--oo-learning-blue-rgb), 0.16);
+  border-radius: 0.8rem;
+  background: var(--oo-learning-white);
+  color: var(--oo-learning-blue);
+  text-decoration: none;
+  transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
+}
+
+.learning-download-card:hover {
+  border-color: rgba(var(--oo-learning-orange-rgb), 0.42);
+  box-shadow: 0 1.2rem 2.8rem rgba(var(--oo-learning-blue-rgb), 0.12);
+  color: var(--oo-learning-blue);
+  transform: translateY(-0.1rem);
+}
+
+.learning-download-card:focus-visible {
+  outline: 0.2rem solid var(--oo-learning-blue);
+  outline-offset: 0.3rem;
+  box-shadow: 0 0 0 0.4rem rgba(var(--oo-learning-white-rgb), 0.95), 0 0 0 0.6rem rgba(var(--oo-learning-blue-rgb), 0.36);
+}
+
+.learning-download-card strong,
+.learning-download-card small {
+  display: block;
+}
+
+.learning-download-card strong {
+  color: var(--oo-learning-blue);
+  font-size: 1.6rem;
+  line-height: 1.35;
+}
+
+.learning-download-card small {
+  margin-top: 0.3rem;
+  color: var(--oo-learning-blue);
+  font-size: 1.35rem;
+  line-height: 1.4;
+}
+
+.learning-download-card > span:last-child {
+  display: inline-grid;
+  flex: 0 0 auto;
+  place-items: center;
+  width: 3.8rem;
+  height: 3.8rem;
+  border-radius: 999rem;
+  background: var(--oo-learning-orange);
+  color: var(--oo-learning-white);
+  font-size: 2rem;
+  font-weight: 800;
+}
+
+.learning-hero-inner {
+  max-width: 106rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* h1/lead carry their own narrower reading-width max-width; without their
+   own centering they sit flush against the left edge of the (now centered)
+   hero-inner box instead of sharing its visual centre line. Text inside
+   stays left-aligned -- only the column itself is centered. */
+.learning-hero-inner h1,
+.learning-hero-inner .learning-hub__lead {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
 .learning-lesson-flow {
   display: grid;
   gap: 3.2rem;
   align-items: start;
+  max-width: 110rem;
+  margin-right: auto;
+  margin-left: auto;
 }
 
 .learning-article {
   width: 100%;
-  max-width: 76rem;
+  max-width: 106rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .learning-supporting {
   display: grid;
   width: 100%;
-  max-width: 96rem;
+  max-width: 106rem;
+  margin-left: auto;
+  margin-right: auto;
   gap: 1.6rem;
 }
 
@@ -557,6 +1110,64 @@
   text-underline-offset: 0.25rem;
 }
 
+.learning-related-lessons {
+  display: grid;
+  width: 100%;
+  max-width: 106rem;
+  margin-left: auto;
+  margin-right: auto;
+  gap: 1.6rem;
+}
+
+.learning-related-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.2rem;
+}
+
+.learning-related-card {
+  display: flex;
+  min-height: 14rem;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.6rem;
+  border: 0.1rem solid var(--oo-learning-line);
+  border-radius: 0.8rem;
+  background: #ffffff;
+  color: var(--oo-learning-blue);
+  text-decoration: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.learning-related-card[href]:hover,
+.learning-related-card[href]:focus-visible {
+  border-color: rgba(185, 94, 5, 0.48);
+  box-shadow: 0 0.8rem 2.4rem rgba(2, 48, 89, 0.08);
+  transform: translateY(-0.2rem);
+  outline: none;
+}
+
+.learning-related-card[href] {
+  cursor: pointer;
+}
+
+.learning-related-card[href]:focus-visible {
+  outline: 0.2rem solid var(--oo-learning-orange);
+  outline-offset: 0.3rem;
+}
+
+.learning-related-card h3 {
+  margin: 0;
+  color: var(--oo-learning-blue);
+}
+
+.learning-related-card p {
+  margin: 0;
+  color: var(--oo-learning-ink);
+  font-size: 1.45rem;
+  line-height: 1.5;
+}
+
 .learning-empty {
   margin: 0;
   color: var(--oo-learning-muted);
@@ -595,35 +1206,48 @@
   margin: 0;
 }
 
+/* Development-only preview chrome: intentionally minimal and never sticky --
+   this is not part of the real Learning Hub frontend and must not influence
+   it or sit over lesson content. */
 .learning-preview-nav {
-  position: sticky;
-  top: 0;
-  z-index: 2;
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  background: rgba(255, 255, 255, 0.94);
-  border-bottom: 0.1rem solid var(--oo-learning-line);
+  align-items: center;
+  gap: 0.6rem 1.2rem;
+  padding: 0.6rem 0;
+  border-bottom: 0.1rem dashed var(--oo-learning-line);
+  font-size: 1.25rem;
+}
+
+.learning-preview-nav__label {
+  color: var(--oo-learning-muted);
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .learning-preview-nav a {
-  display: inline-flex;
-  min-height: 3.6rem;
-  align-items: center;
-  padding: 0.6rem 1rem;
-  border: 0.1rem solid var(--oo-learning-line);
-  border-radius: 0.8rem;
   color: var(--oo-learning-blue);
-  font-size: 1.3rem;
   font-weight: 700;
   line-height: 1.3;
-  text-decoration: none;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.learning-preview-nav select {
+  padding: 0.4rem 0.8rem;
+  border: 0.1rem solid var(--oo-learning-line);
+  border-radius: 0.6rem;
+  background: #ffffff;
+  color: var(--oo-learning-blue);
+  font-family: inherit;
+  font-size: 1.25rem;
+  font-weight: 700;
 }
 
 .learning-preview-page {
-  scroll-margin-top: 8rem;
+  scroll-margin-top: 2rem;
 }
 
 .learning-preview-page + .learning-preview-page {
@@ -672,7 +1296,13 @@
   gap: 1rem;
   padding-left: 0;
   list-style: none;
-  counter-reset: learning-rule;
+  counter-reset: learning-rule calc(var(--learning-rule-start, 1) - 1);
+}
+
+@media screen and (min-width: 990px) {
+  .learning-rule-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .learning-rule-list li {
@@ -709,11 +1339,17 @@
 
 .learning-rule-list strong {
   color: var(--oo-learning-blue);
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 1.35;
 }
 
 .learning-rule-list span {
   margin-top: 0.4rem;
   color: var(--oo-learning-muted);
+  font-size: 1.4rem;
+  font-weight: 400;
+  line-height: 1.55;
 }
 
 .learning-panel--safety {
@@ -769,11 +1405,11 @@
 
 .learning-sequence-card {
   position: relative;
-  display: grid;
-  min-height: 16.4rem;
-  align-content: start;
-  gap: 0.6rem;
-  padding: 1.6rem;
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1.25rem 1.35rem;
   border: 0.1rem solid var(--oo-learning-line);
   border-radius: 0.8rem;
   background: #ffffff;
@@ -791,19 +1427,29 @@
 
 .learning-sequence-card__number {
   color: var(--oo-learning-orange);
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 800;
   line-height: 1;
 }
 
 .learning-sequence-card__title {
   color: var(--oo-learning-blue);
-  font-size: 2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   line-height: 1.15;
 }
 
+.learning-sequence-card__bottom {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.7rem;
+}
+
 .learning-sequence-card__subtitle {
+  min-width: 0;
   color: var(--oo-learning-blue);
   font-size: 1.35rem;
   font-weight: 700;
@@ -818,17 +1464,12 @@
 }
 
 .learning-sequence-card__cue {
-  position: absolute;
-  right: 1.4rem;
-  bottom: 1.2rem;
+  flex: 0 0 auto;
+  margin-left: auto;
   color: var(--oo-learning-orange);
-  font-size: 1.8rem;
+  font-size: 1.65rem;
   font-weight: 800;
-}
-
-.learning-sequence-card:nth-child(3n) .learning-sequence-card__cue,
-.learning-sequence-card:last-child .learning-sequence-card__cue {
-  display: none;
+  line-height: 1;
 }
 
 .learning-topic-grid {
@@ -839,42 +1480,56 @@
 
 .learning-topic-card {
   position: relative;
-  display: flex;
-  min-height: 27rem;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: 1.8rem;
+  display: grid;
+  min-height: 0;
+  gap: 1rem;
+  padding: 1.35rem 1.45rem;
   border: 0.1rem solid var(--oo-learning-line);
   border-radius: 0.8rem;
   background: #ffffff;
   color: var(--oo-learning-blue);
+  text-decoration: none;
   transition: border-color 160ms ease, box-shadow 160ms ease;
 }
 
-.learning-topic-card:hover {
+.learning-topic-card:hover,
+.learning-topic-card:focus-visible {
   border-color: rgba(185, 94, 5, 0.46);
   box-shadow: 0 0.8rem 2rem rgba(2, 48, 89, 0.08);
+  text-decoration: none;
 }
 
 .learning-topic-card--pathway {
   border-color: rgba(185, 94, 5, 0.34);
 }
 
-.learning-topic-card__cta:focus-visible {
+.learning-topic-card:focus-visible {
   outline: 0.2rem solid var(--oo-learning-orange);
   outline-offset: 0.3rem;
 }
 
+.learning-topic-card__header,
+.learning-topic-card__bottom {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.learning-topic-card__bottom {
+  justify-content: space-between;
+}
+
 .learning-topic-card__number {
   display: grid;
-  width: 4.4rem;
-  height: 4.4rem;
+  flex: 0 0 auto;
+  width: 3.6rem;
+  height: 3.6rem;
   place-items: center;
   border: 0.1rem solid rgba(185, 94, 5, 0.28);
   border-radius: 50%;
   background: var(--oo-learning-soft-orange);
   color: var(--oo-learning-orange);
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   font-weight: 800;
   line-height: 1;
 }
@@ -889,18 +1544,28 @@
 }
 
 .learning-topic-card__title {
-  margin-top: 1.6rem;
+  min-width: 0;
   color: var(--oo-learning-blue);
-  font-size: 2rem;
+  font-size: 1.85rem;
   font-weight: 800;
   line-height: 1.16;
 }
 
 .learning-topic-card__description {
-  margin: 1.2rem 0 0;
+  min-width: 0;
+  margin: 0;
   color: var(--oo-learning-blue);
   font-size: 1.45rem;
   line-height: 1.5;
+}
+
+.learning-topic-card__cue {
+  flex: 0 0 auto;
+  margin-left: auto;
+  color: var(--oo-learning-orange);
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .learning-topic-card__cta {
@@ -955,18 +1620,17 @@
 }
 
 .learning-knowledge__visual {
-  display: grid;
-  min-height: 34rem;
-  place-items: center;
-  border: 0.1rem dashed rgba(2, 48, 89, 0.32);
+  overflow: hidden;
   border-radius: 0.8rem;
-  background:
-    linear-gradient(135deg, rgba(2, 48, 89, 0.08), rgba(185, 94, 5, 0.08)),
-    #ffffff;
-  color: var(--oo-learning-blue);
-  font-size: 1.5rem;
-  font-weight: 800;
-  text-align: center;
+  background: transparent;
+}
+
+.learning-knowledge__visual img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
+  border-radius: inherit;
 }
 
 .learning-knowledge__copy p {
@@ -1020,10 +1684,57 @@
   background: #ffffff;
 }
 
+/* Production lesson template only (dev-preview keeps its own `.learning-preview`-
+   scoped padding elsewhere): the header band and the body band previously each
+   carried the base .learning-hub__band 4.8rem top/bottom padding, stacking into
+   ~9.6rem of empty space between the metadata chips and the first body heading. */
+.learning-lesson:not(.learning-preview-page) .learning-lesson-hero {
+  padding: 3.2rem 0 2.4rem;
+}
+
+.learning-lesson:not(.learning-preview-page) .learning-lesson-body-band {
+  padding-top: 2.4rem;
+}
+
+/* .learning-hero-inner normally centers a narrower reading column (see the
+   dev-preview usage of the same class); the production lesson header instead
+   needs to align flush with the lesson body's left edge and must not be
+   centered, so it's widened to fill its now-matching-width parent
+   (.page-width.learning-lesson-flow, the same wrapper the body content uses)
+   and its title/lead no longer get their own centering margins. */
+.learning-lesson:not(.learning-preview-page) .learning-hero-inner {
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.learning-lesson:not(.learning-preview-page) .learning-hero-inner h1,
+.learning-lesson:not(.learning-preview-page) .learning-hero-inner .learning-hub__lead {
+  margin-left: 0;
+  margin-right: 0;
+}
+
 .learning-rich-text {
-  max-width: 76rem;
+  max-width: 106rem;
   margin-top: 0;
+  margin-left: auto;
+  margin-right: auto;
   color: var(--oo-learning-ink);
+}
+
+.learning-rich-text > p,
+.learning-rich-text > ul,
+.learning-rich-text > ol,
+.learning-rich-text > blockquote,
+.learning-rich-text > h2,
+.learning-rich-text > h3,
+.learning-rich-text > h4,
+.learning-rich-text > .learning-action-choice-group,
+.learning-rich-text > .learning-inline-action {
+  max-width: 82rem;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
 }
 
 .learning-rich-text p,
@@ -1059,13 +1770,6 @@
   border-color: rgba(185, 94, 5, 0.34);
 }
 
-.learning-lesson-next-step {
-  display: grid;
-  max-width: 96rem;
-  gap: 1.4rem;
-  background: #ffffff;
-}
-
 .learning-rule-list {
   gap: 0.8rem;
 }
@@ -1085,31 +1789,49 @@
   color: var(--oo-learning-blue);
 }
 
+/* Outer section is a plain, visually neutral layout wrapper only -- width,
+   centering, spacing. It never carries a border or state color; the
+   .learning-quiz__card below is the only visible "card" and the only
+   element state color is ever applied to, so a wrong/right answer frames
+   just the compact question area, not the full page width. */
 .learning-quiz {
-  max-width: 76rem;
-  margin-top: 3.2rem;
+  width: 100%;
+  max-width: 58rem;
+  margin-top: 2.4rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.learning-quiz h2 {
+  margin: 0 0 0.8rem;
+  font-size: 1.8rem;
+}
+
+.learning-quiz__form {
+  display: grid;
+  gap: 1.2rem;
+}
+
+/* The compact bordered question card: counter, question, answers, and the
+   result/explanation once checked all live inside here. Always neutral --
+   correctness color belongs to the individual answer rows only (see
+   .learning-quiz__answer.is-correct/.is-incorrect below), never to this
+   container. The JS still toggles is-correct/is-incorrect classes on this
+   element for state-tracking purposes, but nothing here styles them. */
+.learning-quiz__card {
   padding: 2rem;
-  border: 0.1rem solid rgba(2, 48, 89, 0.2);
+  border: 0.15rem solid rgba(2, 48, 89, 0.2);
   border-radius: 0.8rem;
   background: #ffffff;
   box-shadow: 0 0.4rem 1.4rem rgba(2, 48, 89, 0.05);
 }
 
-.learning-quiz h2 {
-  margin: 0 0 1.6rem;
-}
-
-.learning-quiz__form {
-  display: grid;
-  gap: 1.6rem;
-}
-
 .learning-quiz__progress {
-  margin: 0 0 0.8rem;
+  margin: 0 0 0.6rem;
   color: var(--oo-learning-orange);
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 800;
-  line-height: 1.35;
+  line-height: 1.3;
   text-transform: uppercase;
 }
 
@@ -1121,11 +1843,11 @@
 }
 
 .learning-quiz__question {
-  margin: 0 0 1.2rem;
+  margin: 0 0 1rem;
   color: var(--oo-learning-blue);
-  font-size: 1.9rem;
+  font-size: 1.7rem;
   font-weight: 800;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 .learning-quiz__question:focus,
@@ -1137,7 +1859,7 @@
 
 .learning-quiz__answers {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.7rem;
 }
 
 .learning-quiz__answer {
@@ -1154,60 +1876,93 @@
 
 .learning-quiz__answer-content {
   display: grid;
-  grid-template-columns: 3.6rem minmax(0, 1fr);
-  gap: 1rem;
+  grid-template-columns: 2.8rem minmax(0, 1fr);
+  gap: 0.8rem;
   align-items: center;
-  min-height: 5.6rem;
-  padding: 1rem;
-  border: 0.1rem solid rgba(2, 48, 89, 0.22);
-  border-radius: 0.8rem;
+  min-height: 3.8rem;
+  padding: 0.7rem 0.9rem;
+  border: 0.15rem solid rgba(2, 48, 89, 0.22);
+  border-radius: 0.7rem;
   background: #ffffff;
   color: var(--oo-learning-ink);
-  font-size: 1.48rem;
-  line-height: 1.45;
+  font-size: 1.35rem;
+  line-height: 1.35;
 }
 
 .learning-quiz__letter {
   display: grid;
-  width: 3.6rem;
-  height: 3.6rem;
+  width: 2.8rem;
+  height: 2.8rem;
   place-items: center;
   border-radius: 50%;
   background: var(--oo-learning-soft-orange);
   color: var(--oo-learning-orange);
   font-weight: 800;
+  font-size: 1.2rem;
   line-height: 1;
 }
 
 .learning-quiz__answer input:focus-visible + .learning-quiz__answer-content {
   outline: 0.2rem solid var(--oo-learning-orange);
-  outline-offset: 0.3rem;
+  outline-offset: 0.2rem;
 }
 
-.learning-quiz__answer input:checked + .learning-quiz__answer-content {
-  border-color: var(--oo-learning-blue);
-  background: var(--oo-learning-soft-blue);
+/* Before checking only: the learner's selected answer gets the Oceans
+   Optics orange selection treatment. Scoped to :not(:disabled) rather than
+   layered under/above the correctness classes below -- once an answer is
+   checked, the JS marks that radio disabled (see renderQuestion()), so this
+   selector simply stops matching and the orange state cannot compete with
+   is-correct/is-incorrect on shared properties (border-color, background).
+   State priority is therefore selector-driven, not specificity-driven:
+   unchecked -> neutral or selected; checked -> neutral, correct, or
+   incorrect; never both layered together. */
+.learning-quiz__answer input:checked:not(:disabled) + .learning-quiz__answer-content {
+  border-color: var(--oo-learning-orange);
+  background: var(--oo-learning-soft-orange);
 }
 
+/* After checking: the correct option always gets a restrained green
+   indication (even when the learner picked something else -- this logic was
+   already in place, only the color changed here), and the learner's own
+   wrong pick gets a red indication. Backgrounds stay subtle tints, not solid
+   fills, and this is always paired with the "Correct"/"Not quite" text plus
+   the correct-answer callout in .learning-quiz__result -- never color alone. */
 .learning-quiz__answer.is-correct .learning-quiz__answer-content {
-  border-color: var(--oo-learning-blue);
-  box-shadow: inset 0 0 0 0.2rem var(--oo-learning-blue);
+  border-color: var(--oo-learning-success);
+  background: rgba(var(--oo-learning-success-rgb), 0.08);
+  box-shadow: inset 0 0 0 0.1rem var(--oo-learning-success);
 }
 
 .learning-quiz__answer.is-incorrect .learning-quiz__answer-content {
-  border-color: var(--oo-learning-orange);
-  background: var(--oo-learning-soft-orange);
-  box-shadow: inset 0 0 0 0.2rem var(--oo-learning-orange);
+  border-color: var(--oo-learning-danger);
+  background: rgba(var(--oo-learning-danger-rgb), 0.08);
+  box-shadow: inset 0 0 0 0.1rem var(--oo-learning-danger);
+}
+
+/* The A/B/C letter badge follows the same result once known, instead of
+   staying orange (which read as a leftover "selection" cue once correctness
+   is already shown by the border/background above). */
+.learning-quiz__answer.is-correct .learning-quiz__letter {
+  background: rgba(var(--oo-learning-success-rgb), 0.14);
+  color: var(--oo-learning-success);
+}
+
+.learning-quiz__answer.is-incorrect .learning-quiz__letter {
+  background: rgba(var(--oo-learning-danger-rgb), 0.14);
+  color: var(--oo-learning-danger);
 }
 
 .learning-quiz__result {
   display: grid;
-  gap: 0.5rem;
-  padding: 1.3rem 1.4rem;
-  border-radius: 0.8rem;
+  gap: 0.4rem;
+  margin-top: 1.2rem;
+  padding: 1rem 1.1rem;
+  border: 0.1rem solid rgba(2, 48, 89, 0.16);
+  border-radius: 0.7rem;
+  background: #fbfcfd;
   color: var(--oo-learning-ink);
-  font-size: 1.45rem;
-  line-height: 1.5;
+  font-size: 1.3rem;
+  line-height: 1.4;
 }
 
 .learning-quiz__result[hidden] {
@@ -1216,31 +1971,34 @@
 
 .learning-quiz__result strong {
   color: var(--oo-learning-blue);
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   line-height: 1.25;
 }
 
-.learning-quiz__result--correct {
-  border: 0.1rem solid rgba(2, 48, 89, 0.28);
-  background: var(--oo-learning-soft-blue);
+/* The result box itself stays neutral (same border/background as the base
+   .learning-quiz__result rule above, no matter which state class is set) --
+   correctness color belongs to the answer rows only. The "Correct"/"Not
+   quite" text is still colored below so the result remains distinguishable,
+   just without a colored surrounding border, background, or focus outline. */
+.learning-quiz__result--correct strong {
+  color: var(--oo-learning-success);
 }
 
-.learning-quiz__result--incorrect {
-  border: 0.1rem solid rgba(185, 94, 5, 0.32);
-  background: var(--oo-learning-soft-orange);
+.learning-quiz__result--incorrect strong {
+  color: var(--oo-learning-danger);
 }
 
 .learning-quiz__score {
-  padding: 1.4rem;
+  padding: 1.1rem;
   border: 0.1rem solid rgba(2, 48, 89, 0.22);
-  border-radius: 0.8rem;
+  border-radius: 0.7rem;
   background: var(--oo-learning-soft-blue);
 }
 
 .learning-quiz__score h3 {
   margin: 0;
   color: var(--oo-learning-blue);
-  font-size: 3.2rem;
+  font-size: 2.4rem;
   line-height: 1;
 }
 
@@ -1249,12 +2007,46 @@
 }
 
 .learning-quiz__actions {
-  margin-top: 0;
+  margin-top: 1.2rem;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+/* Compact secondary controls, scoped to the quiz only -- the base
+   .learning-cta button used elsewhere (downloads, tools, products) is
+   untouched. */
+.learning-quiz__actions .button {
+  min-height: 2.9rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.35rem;
 }
 
 .learning-quiz__actions .button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+}
+
+.learning-quiz__back,
+.learning-quiz__back:visited {
+  min-height: 2.9rem;
+  border: 0.1rem solid rgba(2, 48, 89, 0.28);
+  background: #ffffff;
+  color: var(--oo-learning-blue);
+  box-shadow: none;
+}
+
+.learning-quiz__back:hover,
+.learning-quiz__back:focus,
+.learning-quiz__back:focus-visible,
+.learning-quiz__back:active {
+  border-color: var(--oo-learning-blue);
+  background: var(--oo-learning-soft-blue);
+  color: var(--oo-learning-blue);
+}
+
+.learning-quiz__back:focus-visible {
+  outline: 0.2rem solid var(--oo-learning-orange);
+  outline-offset: 0.3rem;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1270,13 +2062,11 @@
 }
 
 @media screen and (max-width: 989px) {
-  .learning-hub__intro,
   .learning-support-grid {
     grid-template-columns: 1fr;
   }
 
-  .learning-supporting,
-  .learning-lesson-next-step {
+  .learning-supporting {
     max-width: 76rem;
   }
 
@@ -1321,9 +2111,28 @@
   }
 
   .learning-grid--three,
+  .learning-related-grid,
+  .learning-media__comparison,
+  .learning-media--compact .learning-media__gallery,
   .learning-topic-grid,
   .learning-knowledge {
     grid-template-columns: 1fr;
+  }
+
+  .learning-inline-action {
+    align-items: stretch;
+  }
+
+  .learning-inline-action .button {
+    width: 100%;
+  }
+
+  .learning-action-choice-group {
+    grid-template-columns: 1fr;
+  }
+
+  .learning-rich-text p:has(> a:only-child:not(.learning-inline-reference):not([href^="/pages/learn/"])) > a {
+    width: 100%;
   }
 
   .learning-sequence-grid {
@@ -1335,19 +2144,27 @@
   }
 
   .learning-sequence-card {
-    min-height: 14.8rem;
-  }
-
-  .learning-sequence-card__cue {
-    display: none;
-  }
-
-  .learning-knowledge__visual {
-    min-height: 20rem;
+    min-height: 0;
   }
 
   .learning-rule-list li {
     padding-left: 5rem;
+  }
+
+  .learning-quiz h2 {
+    font-size: 1.6rem;
+  }
+
+  .learning-quiz__card {
+    padding: 1.25rem;
+  }
+
+  .learning-quiz__question {
+    font-size: 1.5rem;
+  }
+
+  .learning-quiz__actions {
+    flex-wrap: wrap;
   }
 }
 

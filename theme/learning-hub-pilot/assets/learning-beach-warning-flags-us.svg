@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Common US Beach Warning Flags</title>
+  <desc id="desc">Educational reference showing common United States and USLA beach warning flag examples, with a reminder that local systems vary.</desc>
+  <rect width="1200" height="720" fill="#ffffff"/>
+  <text x="600" y="72" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="44" font-weight="700" fill="#023059">Common US / USLA Flag Examples</text>
+  <text x="600" y="116" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#023059">Flag systems vary by beach and country. Always follow the posted local sign.</text>
+
+  <g font-family="Arial, Helvetica, sans-serif" fill="#023059">
+    <g transform="translate(48 170)">
+      <rect width="270" height="168" rx="18" fill="#ffffff" stroke="#d7e2ea" stroke-width="4"/>
+      <rect x="90" y="26" width="90" height="54" fill="#f4c542" stroke="#023059" stroke-width="3"/>
+      <line x1="90" y1="20" x2="90" y2="96" stroke="#023059" stroke-width="6"/>
+      <text x="135" y="140" text-anchor="middle" font-size="18" font-weight="700">Yellow</text>
+      <text x="135" y="162" text-anchor="middle" font-size="16">Medium hazard</text>
+    </g>
+
+    <g transform="translate(326 170)">
+      <rect width="270" height="168" rx="18" fill="#ffffff" stroke="#d7e2ea" stroke-width="4"/>
+      <rect x="90" y="26" width="90" height="54" fill="#d32626" stroke="#023059" stroke-width="3"/>
+      <line x1="90" y1="20" x2="90" y2="96" stroke="#023059" stroke-width="6"/>
+      <text x="135" y="140" text-anchor="middle" font-size="18" font-weight="700">Red</text>
+      <text x="135" y="162" text-anchor="middle" font-size="16">High hazard</text>
+    </g>
+
+    <g transform="translate(604 170)">
+      <rect width="270" height="168" rx="18" fill="#ffffff" stroke="#d7e2ea" stroke-width="4"/>
+      <rect x="90" y="24" width="90" height="24" fill="#d32626" stroke="#023059" stroke-width="3"/>
+      <rect x="90" y="54" width="90" height="24" fill="#d32626" stroke="#023059" stroke-width="3"/>
+      <line x1="90" y1="20" x2="90" y2="96" stroke="#023059" stroke-width="6"/>
+      <text x="135" y="140" text-anchor="middle" font-size="18" font-weight="700">Double red</text>
+      <text x="135" y="162" text-anchor="middle" font-size="16">Water closed</text>
+    </g>
+
+    <g transform="translate(882 170)">
+      <rect width="270" height="168" rx="18" fill="#ffffff" stroke="#d7e2ea" stroke-width="4"/>
+      <rect x="90" y="26" width="90" height="54" fill="#7d3c98" stroke="#023059" stroke-width="3"/>
+      <line x1="90" y1="20" x2="90" y2="96" stroke="#023059" stroke-width="6"/>
+      <text x="135" y="140" text-anchor="middle" font-size="18" font-weight="700">Purple</text>
+      <text x="135" y="162" text-anchor="middle" font-size="16">Dangerous marine life</text>
+    </g>
+
+    <g transform="translate(156 392)">
+      <rect width="270" height="168" rx="18" fill="#ffffff" stroke="#d7e2ea" stroke-width="4"/>
+      <rect x="90" y="26" width="45" height="54" fill="#f4c542" stroke="#023059" stroke-width="3"/>
+      <rect x="135" y="26" width="45" height="54" fill="#111111" stroke="#023059" stroke-width="3"/>
+      <line x1="90" y1="20" x2="90" y2="96" stroke="#023059" stroke-width="6"/>
+      <text x="135" y="140" text-anchor="middle" font-size="18" font-weight="700">Yellow / black</text>
+      <text x="135" y="162" text-anchor="middle" font-size="16">Check local meaning</text>
+    </g>
+
+    <g transform="translate(466 392)">
+      <rect width="270" height="168" rx="18" fill="#ffffff" stroke="#d7e2ea" stroke-width="4"/>
+      <rect x="90" y="26" width="45" height="54" fill="#ffffff" stroke="#023059" stroke-width="3"/>
+      <rect x="135" y="26" width="45" height="54" fill="#111111" stroke="#023059" stroke-width="3"/>
+      <line x1="90" y1="20" x2="90" y2="96" stroke="#023059" stroke-width="6"/>
+      <text x="135" y="140" text-anchor="middle" font-size="18" font-weight="700">Black / white</text>
+      <text x="135" y="162" text-anchor="middle" font-size="16">Check local meaning</text>
+    </g>
+
+    <g transform="translate(776 392)">
+      <rect width="270" height="168" rx="18" fill="#ffffff" stroke="#d7e2ea" stroke-width="4"/>
+      <path d="M90 26 C120 14 142 40 180 26 L180 80 C142 92 120 66 90 80 Z" fill="#efefef" stroke="#023059" stroke-width="3"/>
+      <line x1="90" y1="20" x2="90" y2="96" stroke="#023059" stroke-width="6"/>
+      <text x="135" y="140" text-anchor="middle" font-size="18" font-weight="700">Windsock / signs</text>
+      <text x="135" y="162" text-anchor="middle" font-size="16">Read posted guidance</text>
+    </g>
+  </g>
+
+  <rect x="184" y="632" width="832" height="48" rx="24" fill="#B95E05"/>
+  <text x="600" y="664" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="23" font-weight="700" fill="#ffffff">Use this as a reference, not a universal rulebook.</text>
+</svg>

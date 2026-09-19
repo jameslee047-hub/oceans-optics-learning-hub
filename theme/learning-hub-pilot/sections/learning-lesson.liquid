@@ -1,4 +1,16 @@
 {{ 'learning-hub.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'learning-hub-media-data.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'learning-hub-inline-media.js' | asset_url }}" defer="defer"></script>
+{% comment %}
+  Loaded before learning-hub-knowledge-check.js (both use `defer`, so
+  execution follows this document order): the "Lesson X of Y" chip this adds
+  to .learning-meta must exist before the Take Quiz button is appended, so
+  the row reads [Category] [Reading time] [Lesson X of Y] [Take Quiz].
+{% endcomment %}
+<script src="{{ 'learning-hub-lesson-position-data.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'learning-hub-lesson-position.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'learning-hub-knowledge-check-data.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'learning-hub-knowledge-check.js' | asset_url }}" defer="defer"></script>
 
 {% liquid
   assign lesson_title = metaobject.title.value | default: 'Learning lesson'
@@ -8,46 +20,56 @@
   assign category = metaobject.category.value
   assign key_takeaways = metaobject.key_takeaways.value
   assign related_lessons = metaobject.related_lessons.value
-  assign related_tools = metaobject.related_tools.value
-  assign related_products = metaobject.related_products.value
   assign downloadable_resources = metaobject.downloadable_resources.value
-  assign primary_cta = metaobject.primary_cta.value
   assign hero_media = metaobject.hero_media.value
 %}
 
-<article class="learning-hub learning-lesson color-{{ section.settings.color_scheme }} gradient">
-  <div class="learning-hub__band">
-    <div class="page-width">
-      <nav class="learning-breadcrumbs" aria-label="Breadcrumbs">
-        <a href="/pages/learn">Learning Hub</a>
-        {% if category != blank %}
-          <span aria-hidden="true">/</span>
-          <a href="/pages/learn-category/{{ category.system.handle }}">{{ category.title.value | escape }}</a>
-        {% endif %}
-      </nav>
+{% capture utility_nav %}
+  <nav class="learning-utility-nav" aria-label="Lesson navigation">
+    {% if category != blank %}
+      <a class="learning-inline-reference" href="/pages/learn-category/{{ category.system.handle }}">← Back to {{ category.title.value | escape }}</a>
+    {% endif %}
+    <a class="learning-inline-reference" href="/pages/learn">Learning Hub Home</a>
+  </nav>
+{% endcapture %}
 
-      <header>
-        {% if lesson_type != blank %}
-          <p class="learning-kicker">
-            {{ lesson_type | escape }}
-          </p>
-        {% endif %}
-
-        <h1>{{ lesson_title | escape }}</h1>
-
-        {% if short_description != blank %}
-          <p class="learning-hub__lead">{{ short_description | escape }}</p>
-        {% endif %}
-
-        <div class="learning-meta">
+<article class="learning-hub learning-lesson color-{{ section.settings.color_scheme }} gradient" data-lesson-handle="{{ metaobject.system.handle }}">
+  <div class="learning-hub__band learning-lesson-hero">
+    <div class="page-width learning-lesson-flow">
+      <div class="learning-hero-inner">
+        <nav class="learning-breadcrumbs" aria-label="Breadcrumbs">
+          <a href="/pages/learn">Learning Hub</a>
           {% if category != blank %}
-            <span class="learning-meta__item">{{ category.title.value | escape }}</span>
+            <span aria-hidden="true">/</span>
+            <a href="/pages/learn-category/{{ category.system.handle }}">{{ category.title.value | escape }}</a>
           {% endif %}
-          {% if reading_time != blank %}
-            <span class="learning-meta__item">{{ reading_time | escape }}</span>
+        </nav>
+
+        {{ utility_nav }}
+
+        <header>
+          {% if lesson_type != blank %}
+            <p class="learning-kicker">
+              {{ lesson_type | escape }}
+            </p>
           {% endif %}
-        </div>
-      </header>
+
+          <h1>{{ lesson_title | escape }}</h1>
+
+          {% if short_description != blank %}
+            <p class="learning-hub__lead">{{ short_description | escape }}</p>
+          {% endif %}
+
+          <div class="learning-meta">
+            {% if category != blank %}
+              <span class="learning-meta__item">{{ category.title.value | escape }}</span>
+            {% endif %}
+            {% if reading_time != blank %}
+              <span class="learning-meta__item">{{ reading_time | escape }}</span>
+            {% endif %}
+          </div>
+        </header>
+      </div>
     </div>
   </div>
 
@@ -57,7 +79,7 @@
     </div>
   {% endif %}
 
-  <div class="learning-hub__band">
+  <div class="learning-hub__band learning-lesson-body-band">
     <div class="page-width learning-lesson-flow">
       {% if metaobject.lesson_body != blank %}
         <div class="learning-article">
@@ -65,6 +87,26 @@
             {{ metaobject.lesson_body | metafield_tag }}
           </div>
         </div>
+      {% endif %}
+
+      {% if downloadable_resources != blank %}
+        <section class="learning-panel learning-downloads">
+          <p class="learning-hub__eyebrow">Take the Checklist With You</p>
+          <h2>Downloads</h2>
+          <div class="learning-download-list">
+            {% for resource in downloadable_resources %}
+              {% if resource.url != blank %}
+                <div class="learning-download-card">
+                  <span>
+                    <strong>{{ resource.alt | default: resource.filename | default: 'Download resource' | escape }}</strong>
+                    <small>Printable checklist for planning before you enter the water.</small>
+                  </span>
+                  <a class="button learning-cta" href="{{ resource.url }}" download>Download Checklist</a>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </section>
       {% endif %}
 
       {% if key_takeaways != blank or metaobject.instructor_tips != blank or metaobject.common_mistakes != blank or metaobject.safety_notes != blank %}
@@ -107,68 +149,36 @@
         </section>
       {% endif %}
 
-      {% if downloadable_resources != blank or related_tools != blank or related_products != blank or primary_cta.url != blank %}
-        <section class="learning-panel learning-lesson-next-step">
-          <h2>Next Step</h2>
+      {% comment %}
+        Shell only -- learning-hub-knowledge-check.js fills in the actual
+        question/answers from learning-hub-knowledge-check-data.js (keyed by
+        this lesson's handle) and removes this section entirely when the
+        lesson has no Knowledge Check. Kept out of lesson_body so the correct
+        answer is never present in the initial page text.
+      {% endcomment %}
+      <section class="learning-quiz" id="knowledge-check" data-learning-quiz data-lesson-handle="{{ metaobject.system.handle }}">
+        <p class="learning-hub__eyebrow">Knowledge Check</p>
+        <h2>Check Your Understanding</h2>
+        <form class="learning-quiz__form" data-quiz-form>
+          <div class="learning-quiz__card" data-quiz-card>
+            <div class="learning-quiz__stage" data-quiz-stage></div>
+            <div class="learning-quiz__result" data-quiz-result role="status" aria-live="polite" tabindex="-1" hidden></div>
+          </div>
+          <div class="learning-hub__actions learning-quiz__actions">
+            <button class="button learning-quiz__back" type="button" data-quiz-back hidden>Back</button>
+            <button class="button learning-cta" type="button" data-quiz-primary disabled>Check Answer</button>
+            <button class="button learning-cta" type="button" data-quiz-retry hidden>Try Again</button>
+          </div>
+        </form>
+      </section>
 
-          {% if downloadable_resources != blank %}
-            <div>
-              <h3>Downloads</h3>
-              <ul class="learning-resource-list">
-                {% for resource in downloadable_resources %}
-                  {% if resource.url != blank %}
-                    <li>
-                      <a href="{{ resource.url }}">{{ resource.alt | default: resource.filename | default: 'Download resource' | escape }}</a>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </div>
-          {% endif %}
-
-          {% if related_tools != blank %}
-            <div>
-              <h3>Tools</h3>
-              <ul class="learning-resource-list">
-                {% for tool in related_tools %}
-                  {% if tool.url != blank %}
-                    <li>
-                      <a href="{{ tool.url }}">{{ tool.text | default: tool.title | default: 'Open tool' | escape }}</a>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </div>
-          {% endif %}
-
-          {% if related_products != blank %}
-            <div>
-              <h3>Related Products</h3>
-              <ul class="learning-resource-list">
-                {% for product in related_products %}
-                  {% if product.url != blank %}
-                    <li>
-                      <a href="{{ product.url }}">{{ product.title | escape }}</a>
-                    </li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </div>
-          {% endif %}
-
-          {% if primary_cta.url != blank %}
-            <a class="button" href="{{ primary_cta.url }}">
-              {{ primary_cta.text | default: primary_cta.title | default: 'Continue' | escape }}
-            </a>
-          {% endif %}
-        </section>
-      {% endif %}
     </div>
   </div>
 
   {% if related_lessons != blank %}
     <div class="learning-hub__band learning-hub__band--tinted">
       <div class="page-width">
+        <div class="learning-related-lessons">
         <div class="learning-hub__section-heading">
           <div>
             <p class="learning-hub__eyebrow">Next Reads</p>
@@ -176,23 +186,47 @@
           </div>
         </div>
 
-        <div class="learning-grid learning-grid--two">
+        <div class="learning-related-grid">
           {% for lesson in related_lessons %}
-            <a class="learning-card" href="/pages/learn/{{ lesson.system.handle }}">
-              {% if lesson.lesson_type.value != blank %}
-                <span class="learning-card__meta">{{ lesson.lesson_type.value | escape }}</span>
-              {% endif %}
-              <h3>{{ lesson.title.value | escape }}</h3>
-              {% if lesson.short_description.value != blank %}
-                <p>{{ lesson.short_description.value | escape }}</p>
-              {% endif %}
-              <span class="learning-card__footer">Open lesson</span>
-            </a>
+            {% if lesson.system.handle != blank %}
+              <a class="learning-related-card" href="/pages/learn/{{ lesson.system.handle }}">
+                <h3>{{ lesson.title.value | escape }}</h3>
+                {% if lesson.short_description.value != blank %}
+                  <p>{{ lesson.short_description.value | escape }}</p>
+                {% endif %}
+                <span class="learning-card__footer">Read next →</span>
+              </a>
+            {% else %}
+              <div class="learning-related-card learning-related-card--static">
+                <h3>{{ lesson.title.value | escape }}</h3>
+                {% if lesson.short_description.value != blank %}
+                  <p>{{ lesson.short_description.value | escape }}</p>
+                {% endif %}
+                <span class="learning-card__footer">Planned lesson</span>
+              </div>
+            {% endif %}
           {% endfor %}
+        </div>
         </div>
       </div>
     </div>
   {% endif %}
+
+  {% comment %}
+    Shell only -- learning-hub-lesson-position.js fills in the actual
+    previous/next cards from learning-hub-lesson-position-data.js (keyed by
+    this lesson's handle) and removes this section entirely for a lesson
+    with neither a previous nor a next public lesson in its category.
+  {% endcomment %}
+  <div class="learning-hub__band" data-lesson-sequence hidden>
+    <div class="page-width learning-lesson-flow"></div>
+  </div>
+
+  <div class="learning-hub__band learning-utility-nav-band">
+    <div class="page-width">
+      {{ utility_nav }}
+    </div>
+  </div>
 </article>
 
 {% schema %}

@@ -8,7 +8,8 @@
           "settings": {
             "lesson_id": "R07",
             "title": "Health, Readiness and Personal Responsibility",
-            "description": "Start with honest self-checks, comfort, fitness, and personal responsibility before entering the water."
+            "description": "Start with honest self-checks, comfort, fitness, and personal responsibility before entering the water.",
+            "url": "/pages/learn/health-readiness-and-personal-responsibility"
           }
         },
         "step_r08": {
@@ -16,7 +17,8 @@
           "settings": {
             "lesson_id": "R08",
             "title": "Golden Rules for Safer Snorkeling",
-            "description": "A concise briefing on buddy habits, conditions, limits, signals, and calm decision-making."
+            "description": "A concise briefing on buddy habits, conditions, limits, signals, and calm decision-making.",
+            "url": "/pages/learn/golden-rules-for-safer-snorkeling"
           }
         },
         "step_r01": {
@@ -24,7 +26,8 @@
           "settings": {
             "lesson_id": "R01",
             "title": "Choosing a Mask",
-            "description": "Compare lens format, skirt color, and underwater vision needs before moving into detailed fit checks."
+            "description": "Compare lens format, skirt color, and underwater vision needs before moving into detailed fit checks.",
+            "url": "/pages/learn/choosing-a-mask"
           }
         },
         "step_r10": {
@@ -32,7 +35,8 @@
           "settings": {
             "lesson_id": "R10",
             "title": "Pre-Snorkel Checklist and Planning",
-            "description": "Turn the outing into a simple plan for people, place, conditions, equipment, entry, and exit."
+            "description": "Turn the outing into a simple plan for people, place, conditions, equipment, entry, and exit.",
+            "url": "/pages/learn/pre-snorkel-checklist-and-planning"
           }
         },
         "step_r14": {
@@ -40,7 +44,8 @@
           "settings": {
             "lesson_id": "R14",
             "title": "Buddy Communication and Awareness",
-            "description": "Keep the most universal beginner habit visible: staying aware of your buddy and agreeing on simple signals."
+            "description": "Keep the most universal beginner habit visible: staying aware of your buddy and agreeing on simple signals.",
+            "url": "/pages/learn/buddy-communication-and-awareness"
           }
         },
         "step_r17": {
@@ -48,37 +53,41 @@
           "settings": {
             "lesson_id": "R17",
             "title": "Entry and Exit Techniques",
-            "description": "Prepare the practical transition between shore, boat, or platform and the water."
+            "description": "Prepare the practical transition between shore, boat, or platform and the water.",
+            "url": "/pages/learn/entry-and-exit-techniques"
           }
         },
         "category_gear": {
           "type": "category",
           "settings": {
-            "label": "Category 1",
+            "label": "7 lessons",
             "title": "Gear, Masks & Vision",
-            "description": "Masks, snorkels, fins, exposure protection, and underwater vision choices."
+            "description": "Masks, snorkels, fins, exposure protection, and underwater vision choices.",
+            "url": "/pages/learn-category/gear-masks-vision"
           }
         },
         "category_safety": {
           "type": "category",
           "settings": {
-            "label": "Category 2",
+            "label": "10 lessons",
             "title": "Safety & Conditions",
-            "description": "Readiness, planning, water conditions, buddy responsibility, surface safety, and emergency awareness."
+            "description": "Readiness, planning, water conditions, buddy responsibility, surface safety, and emergency awareness.",
+            "url": "/pages/learn-category/safety-conditions"
           }
         },
         "category_skills": {
           "type": "category",
           "settings": {
-            "label": "Category 3",
+            "label": "6 lessons",
             "title": "In-Water Skills",
-            "description": "Practical skills for entering, exiting, clearing, moving, floating, and building confidence."
+            "description": "Practical skills for entering, exiting, clearing, moving, floating, and building confidence.",
+            "url": "/pages/learn-category/in-water-skills"
           }
         },
         "category_science": {
           "type": "category",
           "settings": {
-            "label": "Category 4",
+            "label": "Coming soon",
             "title": "Underwater Science & Your Body",
             "description": "Pressure, buoyancy, airspaces, light, sound, equalizing, and body temperature."
           }
@@ -86,7 +95,7 @@
         "category_conservation": {
           "type": "category",
           "settings": {
-            "label": "Category 5",
+            "label": "Coming soon",
             "title": "Marine Life & Conservation",
             "description": "Marine life basics, coral, conservation, responsible behavior, and snorkeling environments."
           }
@@ -97,7 +106,8 @@
             "lesson_id": "R01",
             "lesson_type": "Equipment guide",
             "title": "Choosing a Mask",
-            "description": "Learn how lens format, skirt color, and vision needs affect mask choice before moving into fit, preparation, and care."
+            "description": "Learn how lens format, skirt color, and vision needs affect mask choice before moving into fit, preparation, and care.",
+            "url": "/pages/learn/choosing-a-mask"
           }
         },
         "lesson_r08": {
@@ -106,7 +116,8 @@
             "lesson_id": "R08",
             "lesson_type": "Safety briefing",
             "title": "Golden Rules for Safer Snorkeling",
-            "description": "A short pre-water briefing covering the core habits every snorkeler should remember before entering the water."
+            "description": "A short pre-water briefing covering the core habits every snorkeler should remember before entering the water.",
+            "url": "/pages/learn/golden-rules-for-safer-snorkeling"
           }
         },
         "lesson_r12": {
@@ -115,7 +126,8 @@
             "lesson_id": "R12",
             "lesson_type": "Conditions explainer",
             "title": "Currents & Rip Currents",
-            "description": "Learn what currents, longshore currents, tidal currents, and rip currents are, and why moving water matters before you enter."
+            "description": "Learn what currents, longshore currents, tidal currents, and rip currents are, and why moving water matters before you enter.",
+            "url": "/pages/learn/currents-and-rip-currents"
           }
         }
       },
@@ -144,12 +156,12 @@
         "primary_link": "",
         "secondary_link_label": "Browse Subjects",
         "secondary_link": "",
-        "start_heading": "A beginner path before the first snorkel",
-        "start_intro": "A short sequence built around readiness, safer habits, mask choice, planning, buddy awareness, and entry and exit basics.",
+        "start_heading": "New to snorkeling? Start here.",
+        "start_intro": "A practical beginner sequence covering readiness, safety, gear, planning, buddy awareness, and getting in and out of the water.",
         "category_heading": "Five ways to explore",
         "category_intro": "The Learning Hub separates gear decisions, safety planning, in-water skills, science, and conservation so each lesson has a clear job.",
-        "lesson_heading": "Pilot lessons",
-        "lesson_intro": "The first lesson templates are prepared for the approved Stage 5C pilot entries."
+        "lesson_heading": "Popular Lessons",
+        "lesson_intro": "A few lessons to get you started right away."
       }
     }
   },

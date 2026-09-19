@@ -13,8 +13,32 @@
   </div>
 </section>
 
-<script src="{{ 'learning-hub-preview-data.js' | asset_url }}" defer></script>
+{% comment %}
+  The fixture data <script src> tag is generated into a tiny pointer snippet
+  (learning-hub-preview-data-script-tag.liquid) that names a content-hashed
+  asset filename (learning-hub-preview-data.<hash>.js), and that pointer
+  snippet is rendered inline here on this always-dynamic page (confirmed
+  cf-cache-status: DYNAMIC, never cached) rather than hardcoded. Confirmed via
+  direct Admin API comparison against served CDN bytes that Shopify's
+  theme-asset CDN caches by path only, ignoring the `?v=` query string
+  entirely (a never-before-seen query string still came back as a cache HIT),
+  with an observed ~1 year max-age -- a content-only re-push of a FIXED
+  filename can leave the edge serving a stale response indefinitely with no
+  query-string workaround. Content-hashing the filename means the CDN has
+  genuinely never cached that exact path before whenever content changes.
+  Regenerate both files with `npm run learning:generate-preview-fixture`
+  (from shopify/) -- never hand-edit either one.
+{% endcomment %}
+{% render 'learning-hub-preview-data-script-tag' %}
 <script src="{{ 'learning-hub-preview.js' | asset_url }}" defer></script>
+{% comment %}
+  learning-hub-preview.js itself is still a cached static asset (hand-authored,
+  not regenerated) and would hit the same staleness risk described above if
+  its contents are ever edited -- re-pushing alone will not be enough to make
+  a change visible. If that happens, apply the same inline-snippet treatment
+  used above, or ask for a fresh Admin API byte comparison before assuming a
+  push took effect.
+{% endcomment %}
 
 {% schema %}
 {

@@ -22,31 +22,16 @@
 
         <div class="learning-hub__actions">
           {% if section.settings.primary_link_label != blank %}
-            <a class="button" href="{{ section.settings.primary_link | default: '#learning-hub-start-here' }}">
+            <a class="button learning-cta" href="{{ section.settings.primary_link | default: '#learning-hub-start-here' }}">
               {{ section.settings.primary_link_label | escape }}
             </a>
           {% endif %}
 
           {% if section.settings.secondary_link_label != blank %}
-            <a class="button button--secondary" href="{{ section.settings.secondary_link | default: '#learning-hub-categories' }}">
+            <a class="button learning-cta" href="{{ section.settings.secondary_link | default: '#learning-hub-categories' }}">
               {{ section.settings.secondary_link_label | escape }}
             </a>
           {% endif %}
-        </div>
-      </div>
-
-      <div class="learning-hub__summary" aria-label="Learning Hub summary">
-        <div class="learning-hub__summary-item">
-          <span class="learning-hub__summary-number">30</span>
-          <p class="learning-hub__summary-label">Smaller, focused lessons</p>
-        </div>
-        <div class="learning-hub__summary-item">
-          <span class="learning-hub__summary-number">5</span>
-          <p class="learning-hub__summary-label">Core learning categories</p>
-        </div>
-        <div class="learning-hub__summary-item">
-          <span class="learning-hub__summary-number">3</span>
-          <p class="learning-hub__summary-label">Pilot lessons ready for theme review</p>
         </div>
       </div>
     </div>
@@ -65,21 +50,25 @@
           {% endif %}
         </div>
 
-        <ol class="learning-steps">
+        <div class="learning-sequence-grid">
           {% for block in step_blocks %}
-            <li class="learning-step" {{ block.shopify_attributes }}>
-              <span class="learning-step__number">{{ forloop.index }}</span>
-              <div>
-                <h3>
-                  {{ block.settings.title | escape }}
-                </h3>
+            {% if block.settings.url != blank %}
+              <a class="learning-sequence-card" href="{{ block.settings.url }}" {{ block.shopify_attributes }}>
+            {% else %}
+              <div class="learning-sequence-card" {{ block.shopify_attributes }}>
+            {% endif %}
+                <span class="learning-sequence-card__number">{{ forloop.index }}</span>
+                <span class="learning-sequence-card__title">{{ block.settings.title | escape }}</span>
                 {% if block.settings.description != blank %}
-                  <p>{{ block.settings.description | escape }}</p>
+                  <span class="learning-sequence-card__subtitle">{{ block.settings.description | escape }}</span>
                 {% endif %}
+            {% if block.settings.url != blank %}
+              </a>
+            {% else %}
               </div>
-            </li>
+            {% endif %}
           {% endfor %}
-        </ol>
+        </div>
       </div>
     </div>
   {% endif %}
@@ -221,13 +210,13 @@
       "type": "text",
       "id": "start_heading",
       "label": "Start heading",
-      "default": "A beginner path before the first snorkel"
+      "default": "New to snorkeling? Start here."
     },
     {
       "type": "textarea",
       "id": "start_intro",
       "label": "Start intro",
-      "default": "A short sequence built around readiness, safer habits, mask choice, planning, buddy awareness, and entry and exit basics."
+      "default": "A practical beginner sequence covering readiness, safety, gear, planning, buddy awareness, and getting in and out of the water."
     },
     {
       "type": "text",
@@ -245,13 +234,13 @@
       "type": "text",
       "id": "lesson_heading",
       "label": "Lesson heading",
-      "default": "Pilot lessons"
+      "default": "Popular Lessons"
     },
     {
       "type": "textarea",
       "id": "lesson_intro",
       "label": "Lesson intro",
-      "default": "The first lesson templates are prepared for the approved Stage 5C pilot entries."
+      "default": "A few lessons to get you started right away."
     }
   ],
   "blocks": [
@@ -273,6 +262,11 @@
           "type": "textarea",
           "id": "description",
           "label": "Description"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
         }
       ]
     },

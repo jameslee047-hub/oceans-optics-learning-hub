@@ -1,8 +1,59 @@
+import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
-import { REPO_ROOT, loadCategories, loadLessons } from "./lib/learning-data.js";
+import {
+  LEARNING_MEDIA_LAYOUTS,
+  REPO_ROOT,
+  loadApprovedLessons,
+  loadCategories,
+  loadLearningMediaRegistry,
+  loadLessons,
+  loadPublicLaunchLessonHandles,
+  parseContentMarker,
+  parseMediaMarker,
+  resolveContentMarker,
+  resolveLearningMediaMarker
+} from "./lib/learning-data.js";
 
-const OUTPUT_PATH = path.join(REPO_ROOT, "theme/learning-hub-pilot/assets/learning-hub-preview-data.js");
+// Written to a content-hashed filename, not a fixed one: Shopify's CDN for
+// theme assets was confirmed (via direct byte comparison against the Admin
+// API's authoritative asset content) to cache by path only, ignoring the
+// `?v=`/any query string entirely -- a content-only re-push of a FIXED
+// filename can leave the CDN edge serving a stale response indefinitely
+// (observed max-age ~1 year), with no query-string workaround available.
+// Inlining the ~300KB+ fixture data directly into a Liquid snippet was tried
+// and rejected -- Shopify enforces a 256KB limit on Liquid template files,
+// which this content already exceeds. Instead, the data stays a plain static
+// asset (no size limit there) under a filename that changes whenever content
+// changes, so the CDN has genuinely never cached that exact path before. A
+// tiny separate Liquid snippet (see SCRIPT_TAG_SNIPPET_PATH below) holds only
+// the <script src> tag pointing at the current hashed filename, and IS
+// rendered inline on the always-dynamic (never cached) dev-preview page, so
+// that pointer itself is never stale.
+const ASSETS_DIR = path.join(REPO_ROOT, "theme/learning-hub-pilot/assets");
+const SCRIPT_TAG_SNIPPET_PATH = path.join(REPO_ROOT, "theme/learning-hub-pilot/snippets/learning-hub-preview-data-script-tag.liquid");
+const mediaRegistry = loadLearningMediaRegistry();
+
+// content-development/media/learning-media.json is a hand-authored local
+// fixture, not a schema-enforced Shopify metaobject -- any field name typed
+// into it reaches this file's raw JSON dump verbatim. Any key prefixed
+// `internal_` (the same convention the proposed `learning_media` Shopify
+// schema uses for `internal_editor_note`, documented as "never rendered
+// publicly") is stripped here before that dump, so internal authoring/
+// provenance notes can never leak into the customer-facing page regardless
+// of which specific field name a future editor picks.
+function stripInternalFields(value) {
+  if (Array.isArray(value)) return value.map(stripInternalFields);
+  if (value && typeof value === "object") {
+    const result = {};
+    for (const [key, val] of Object.entries(value)) {
+      if (key.startsWith("internal_")) continue;
+      result[key] = stripInternalFields(val);
+    }
+    return result;
+  }
+  return value;
+}
 
 // Homepage/"Start Here" marketing copy has no canonical public-copy.md source.
 // It lives here (the single hand-authored place) instead of in the generated
@@ -24,11 +75,20 @@ const HOMEPAGE = {
   featuredHeading: "Popular Lessons",
   whyHeading: "Knowledge Beyond the Gear",
   whyCopy: [
-    "Oceans Optics was built by snorkelers and scuba instructors, so we know that the right equipment is only part of having a great experience underwater.",
-    "Our goal is to help you understand why things work, not simply tell you what to buy.",
-    "From finding a mask that fits properly to understanding underwater vision, currents, equalizing, and basic snorkeling skills, we want to make reliable knowledge easier to access before you enter the water.",
-    "And when something needs more explanation, we'll point you toward the next lesson rather than trying to cram everything onto one page."
+    "Oceans Optics was built by snorkelers and scuba instructors who wanted more people to fall in love with the ocean the way we did. The right gear is only part of that. Knowing what you're doing is the rest.",
+    "We've watched too many people grab a mask and snorkel and just go, with no briefing and no idea what to look out for. This learning zone is where that changes.",
+    "From finding a mask that fits properly to understanding underwater vision, currents, equalizing, and basic snorkeling skills, we want reliable knowledge within easy reach before you ever touch the water.",
+    "Whether you're at home waiting for your mask to arrive, on the plane, or on the sun lounger before you head down to the water, think of it as having an instructor on call, giving you a clear answer whenever a question comes up."
   ],
+  whyProofPoints: [
+    "Gear choices explained in plain language",
+    "Snorkeling and scuba instructor perspective",
+    "Clear next lessons instead of overloaded pages"
+  ],
+  whyImage: {
+    url: "https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Clear_RX_Snorkel_Mask_4.jpg?v=1774516593",
+    alt: "Clear prescription snorkel mask displayed against a clean background."
+  },
   bottomHeading: "Ready to Explore?",
   bottomCopy: "Start with the basics, jump into a subject that interests you, or come back whenever you need a refresher.",
   bottomPrimaryCta: "Start Here",
@@ -85,6 +145,13 @@ const PRESENTATION_PLACEHOLDERS = {
   ]
 };
 
+const INLINE_LESSON_REFERENCE_TITLES = new Set(
+  loadApprovedLessons()
+    .map((lesson) => lesson.title)
+    .concat(["Prescription Masks: Nearsightedness, Farsightedness & Lens Selection"])
+    .map((title) => title.toLowerCase().replace(/&amp;/g, "&").replace(/\s+/g, " ").trim())
+);
+
 function escapeHtmlText(text) {
   return String(text ?? "")
     .replace(/&/g, "&amp;")
@@ -92,11 +159,214 @@ function escapeHtmlText(text) {
     .replace(/>/g, "&gt;");
 }
 
+function stripCustomerLessonId(text) {
+  return String(text ?? "").replace(/\bR\d{2}\s+(?=[A-Z])/g, "").trim();
+}
+
+function stripTicks(value) {
+  return String(value ?? "").replace(/^`|`$/g, "").trim();
+}
+
+function publicField(markdown, key) {
+  const pattern = new RegExp(`^- ${key}:\\s*(.+)$`, "m");
+  const match = pattern.exec(markdown);
+  return match ? stripCustomerLessonId(stripTicks(match[1])) : null;
+}
+
+function fallbackTitleFromPublicCopy(markdown, fallback) {
+  const firstLine = String(markdown ?? "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .find(Boolean);
+
+  return stripCustomerLessonId(firstLine?.replace(/^#+\s+/, "") || fallback);
+}
+
+function readRelatedLessonIndex() {
+  const byHandle = new Map(loadApprovedLessons().map((lesson) => [
+    lesson.handle,
+    {
+      lesson_id: lesson.lesson_id,
+      handle: lesson.handle,
+      title: stripCustomerLessonId(lesson.title),
+      short_description: null
+    }
+  ]));
+  const lessonRoot = path.join(REPO_ROOT, "content-development", "lessons");
+
+  if (fs.existsSync(lessonRoot)) {
+    for (const dirent of fs.readdirSync(lessonRoot, { withFileTypes: true })) {
+      if (!dirent.isDirectory()) continue;
+      const match = /^(R\d{2})-(.+)$/.exec(dirent.name);
+      if (!match) continue;
+
+      const publicCopyPath = path.join(lessonRoot, dirent.name, "public-copy.md");
+      const fallbackTitle = dirent.name.slice(4).replace(/-/g, " ");
+      let title = byHandle.get(match[2])?.title || fallbackTitle;
+      let shortDescription = byHandle.get(match[2])?.short_description || null;
+
+      if (fs.existsSync(publicCopyPath)) {
+        const markdown = fs.readFileSync(publicCopyPath, "utf8");
+        title = publicField(markdown, "Title") || fallbackTitleFromPublicCopy(markdown, title);
+        shortDescription = publicField(markdown, "Short description") || shortDescription;
+      }
+
+      byHandle.set(match[2], {
+        lesson_id: match[1],
+        handle: match[2],
+        title: stripCustomerLessonId(title),
+        short_description: shortDescription ? stripCustomerLessonId(shortDescription) : null
+      });
+    }
+  }
+
+  return [...byHandle.values()].sort((a, b) => a.handle.localeCompare(b.handle));
+}
+
+function isLessonReference(text) {
+  const key = stripCustomerLessonId(text).toLowerCase().replace(/&amp;/g, "&").replace(/\s+/g, " ").trim();
+  return INLINE_LESSON_REFERENCE_TITLES.has(key);
+}
+
+let inlineLessonReferencesByHandle = null;
+
+function inlineLessonReferenceByHandle(handle) {
+  if (!inlineLessonReferencesByHandle) {
+    inlineLessonReferencesByHandle = new Map(readRelatedLessonIndex().map((lesson) => [lesson.handle, lesson]));
+  }
+
+  return inlineLessonReferencesByHandle.get(handle);
+}
+
 function inlineHtml(text) {
   let out = escapeHtmlText(text);
-  out = out.replace(/`([^`]+)`/g, "<code>$1</code>");
+  out = out.replace(/\[([^\]]+)\]\(lesson:([a-z0-9-]+)\)/g, (_match, label, handle) => {
+    const reference = inlineLessonReferenceByHandle(handle);
+    if (!reference) return label;
+
+    return [
+      `<a class="learning-inline-reference" href="#preview-${escapeHtmlText(reference.lesson_id.toLowerCase())}">`,
+      label,
+      "</a>"
+    ].join("");
+  });
+  out = out.replace(/`([^`]+)`/g, (_match, value) => {
+    const clean = stripCustomerLessonId(value);
+    return isLessonReference(clean)
+      ? `<span class="learning-inline-reference">${clean}</span>`
+      : `<code>${clean}</code>`;
+  });
   out = out.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   return out;
+}
+
+function contentMarkerHtml(kind, rawLabel) {
+  const marker = resolveContentMarker(kind, rawLabel);
+  const tone = marker.kind === "PRODUCT" ? "collection" : marker.kind.toLowerCase();
+  const buttonClass = "button learning-cta";
+  const label = escapeHtmlText(marker.label);
+  const url = escapeHtmlText(marker.url);
+
+  if (!marker.url) return "";
+
+  return [
+    `<div class="learning-inline-action learning-inline-action--${tone}">`,
+    `<a class="${buttonClass}" href="${url}">${label}</a>`,
+    '</div>'
+  ].join("");
+}
+
+function htmlAttr(name, value) {
+  if (value === undefined || value === null || value === "") return "";
+  return ` ${name}="${escapeHtmlText(value)}"`;
+}
+
+function mediaWarningHtml(message) {
+  return `<aside class="learning-media learning-media--warning" role="note">${escapeHtmlText(message)}</aside>`;
+}
+
+// Renders a still image or a GIF (both are plain <img> elements -- a GIF is
+// just an image format, it needs no player). Looping video is a distinct
+// media_type so the future GIF -> optimized-video swap never touches [MEDIA:]
+// or the surrounding markup, only this branch and the registry record.
+function visualHtml(item) {
+  if (!item?.url && !item?.asset_filename) return "";
+  const url = item.url || "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==";
+  const assetAttr = item.asset_filename ? htmlAttr("data-learning-asset-filename", item.asset_filename) : "";
+  const aspect = item.aspect_ratio ? ` style="--learning-media-aspect: ${escapeHtmlText(item.aspect_ratio)};"` : "";
+
+  if (item.media_type === "video") {
+    return [
+      `<div class="learning-media__image learning-media__image--video"${aspect}>`,
+      `<video muted loop playsinline preload="metadata" aria-label="${escapeHtmlText(item.alt)}"${assetAttr}${htmlAttr("width", item.width)}${htmlAttr("height", item.height)}>`,
+      `<source src="${escapeHtmlText(url)}">`,
+      "</video>",
+      "</div>"
+    ].join("");
+  }
+
+  return [
+    `<div class="learning-media__image"${aspect}>`,
+    `<img src="${escapeHtmlText(url)}" alt="${escapeHtmlText(item.alt)}" loading="lazy" decoding="async"${assetAttr}${htmlAttr("width", item.width)}${htmlAttr("height", item.height)}>`,
+    "</div>"
+  ].join("");
+}
+
+function mediaItemHtml(item) {
+  const visual = visualHtml(item);
+  if (!visual) return "";
+
+  return [
+    '<div class="learning-media__item">',
+    visual,
+    item.label ? `<p class="learning-media__label">${escapeHtmlText(item.label)}</p>` : "",
+    item.caption ? `<p class="learning-media__item-caption">${escapeHtmlText(item.caption)}</p>` : "",
+    item.credit_source ? `<p class="learning-media__credit">${escapeHtmlText(item.credit_source)}</p>` : "",
+    "</div>"
+  ].join("");
+}
+
+function mediaMarkerHtml(rawKey) {
+  const media = resolveLearningMediaMarker(rawKey, mediaRegistry);
+
+  if (!media.resolved) {
+    return mediaWarningHtml(`Missing Learning Hub media record: ${media.key}`);
+  }
+
+  if (!LEARNING_MEDIA_LAYOUTS.has(media.layout)) {
+    return mediaWarningHtml(`Unsupported Learning Hub media layout: ${media.layout}`);
+  }
+
+  // media_type "video" only ever needs its src URL; a still image or GIF also
+  // needs alt text (a Shopify file reference alone isn't renderable here).
+  const validItems = media.items.filter((item) => (item.url || item.asset_filename) && (item.alt || item.media_type === "video"));
+  if (media.layout === "comparison" && validItems.length < 2) {
+    return mediaWarningHtml(`Comparison media requires two resolved images: ${media.key}`);
+  }
+  if (media.layout !== "comparison" && !validItems.length) {
+    return mediaWarningHtml(`Learning Hub media requires at least one resolved item: ${media.key}`);
+  }
+
+  let body;
+  if (media.layout === "comparison") {
+    body = `<div class="learning-media__comparison">${validItems.slice(0, 2).map(mediaItemHtml).join("")}</div>`;
+  } else if (media.layout === "gallery") {
+    body = `<div class="learning-media__gallery">${validItems.map(mediaItemHtml).join("")}</div>`;
+  } else {
+    body = mediaItemHtml(validItems[0]);
+  }
+
+  // width_treatment is an opt-in, per-record modifier (e.g. "compact") so an
+  // individual media block can be sized down without affecting every other
+  // comparison/gallery/diagram in the Learning Hub.
+  const widthClass = media.width_treatment ? ` learning-media--${escapeHtmlText(media.width_treatment)}` : "";
+
+  return [
+    `<figure class="learning-media learning-media--${escapeHtmlText(media.layout)}${widthClass}">`,
+    body,
+    media.overall_caption ? `<figcaption>${escapeHtmlText(media.overall_caption)}</figcaption>` : "",
+    "</figure>"
+  ].join("");
 }
 
 function markdownBodyToHtml(markdown) {
@@ -105,6 +375,8 @@ function markdownBodyToHtml(markdown) {
   let paragraphLines = [];
   let listItems = [];
   let listType = null;
+  let listStart = null;
+  let actionBlocks = [];
 
   const flushParagraph = () => {
     if (!paragraphLines.length) return;
@@ -120,15 +392,28 @@ function markdownBodyToHtml(markdown) {
       const items = listItems
         .map((item) => `<li><strong>${inlineHtml(item.main)}</strong><span>${inlineHtml(item.continuation || "")}</span></li>`)
         .join("\n          ");
-      blocks.push(`<ol class="learning-rule-list">\n          ${items}\n        </ol>`);
+      const startStyle = listStart && listStart > 1 ? ` style="--learning-rule-start: ${listStart};"` : "";
+      blocks.push(`<ol class="learning-rule-list"${startStyle}>\n          ${items}\n        </ol>`);
     } else {
       const tag = listType === "ordered" ? "ol" : "ul";
+      const startAttr = listType === "ordered" && listStart && listStart > 1 ? ` start="${listStart}"` : "";
       const items = listItems.map((item) => `<li>${inlineHtml(item.main)}</li>`).join("\n          ");
-      blocks.push(`<${tag}>\n          ${items}\n        </${tag}>`);
+      blocks.push(`<${tag}${startAttr}>\n          ${items}\n        </${tag}>`);
     }
 
     listItems = [];
     listType = null;
+    listStart = null;
+  };
+
+  const flushActions = () => {
+    if (!actionBlocks.length) return;
+    blocks.push(
+      actionBlocks.length > 1
+        ? `<div class="learning-action-choice-group">${actionBlocks.join("")}</div>`
+        : actionBlocks[0]
+    );
+    actionBlocks = [];
   };
 
   for (const rawLine of lines) {
@@ -139,10 +424,28 @@ function markdownBodyToHtml(markdown) {
       continue;
     }
 
+    const contentMarker = parseContentMarker(line);
+    if (contentMarker) {
+      flushParagraph();
+      flushList();
+      actionBlocks.push(contentMarkerHtml(contentMarker.kind, contentMarker.rawLabel));
+      continue;
+    }
+
+    const mediaMarker = parseMediaMarker(line);
+    if (mediaMarker) {
+      flushParagraph();
+      flushList();
+      flushActions();
+      blocks.push(mediaMarkerHtml(mediaMarker.rawKey));
+      continue;
+    }
+
     const headingMatch = /^(#{2,4})\s+(.+)$/.exec(line);
     if (headingMatch) {
       flushParagraph();
       flushList();
+      flushActions();
       const level = headingMatch[1].length;
       blocks.push(`<h${level}>${inlineHtml(headingMatch[2])}</h${level}>`);
       continue;
@@ -151,8 +454,10 @@ function markdownBodyToHtml(markdown) {
     const orderedMatch = /^(\d+)\.\s+(.+)$/.exec(line);
     if (orderedMatch) {
       flushParagraph();
+      flushActions();
       if (listType && listType !== "ordered") flushList();
       listType = "ordered";
+      if (!listItems.length) listStart = Number(orderedMatch[1]);
       listItems.push({ main: orderedMatch[2], continuation: null });
       continue;
     }
@@ -160,8 +465,10 @@ function markdownBodyToHtml(markdown) {
     const unorderedMatch = /^[-*]\s+(.+)$/.exec(line);
     if (unorderedMatch) {
       flushParagraph();
+      flushActions();
       if (listType && listType !== "unordered") flushList();
       listType = "unordered";
+      if (!listItems.length) listStart = null;
       listItems.push({ main: unorderedMatch[1], continuation: null });
       continue;
     }
@@ -172,69 +479,15 @@ function markdownBodyToHtml(markdown) {
     }
 
     flushList();
+    flushActions();
     paragraphLines.push(line);
   }
 
   flushParagraph();
   flushList();
+  flushActions();
 
   return `\n        ${blocks.join("\n        ")}\n      `;
-}
-
-function splitKnowledgeCheck(lessonBody) {
-  const marker = "## Knowledge Check\n\n";
-  const idx = String(lessonBody ?? "").indexOf(marker);
-  if (idx < 0) return { knowledgeCheckMarkdown: "" };
-  return { knowledgeCheckMarkdown: lessonBody.slice(idx + marker.length).trim() };
-}
-
-function parseKnowledgeCheckQuestions(markdown) {
-  const lines = String(markdown ?? "").split(/\r?\n/);
-  const questions = [];
-  let current = null;
-
-  const pushCurrent = () => {
-    if (current) questions.push(current);
-    current = null;
-  };
-
-  for (const rawLine of lines) {
-    const line = rawLine.trim();
-    if (!line) continue;
-
-    const qMatch = /^\*\*Q\d+\.\s+(.+?)\*\*$/.exec(line);
-    if (qMatch) {
-      pushCurrent();
-      current = { question: qMatch[1].trim(), answers: [], correctLetter: null, explanation: "" };
-      continue;
-    }
-
-    const answerMatch = /^-\s+([A-Z])\.\s+(.+)$/.exec(line);
-    if (answerMatch && current) {
-      current.answers.push(answerMatch[2].trim());
-      continue;
-    }
-
-    const correctMatch = /^\*\*Correct:\*\*\s*([A-Z])$/.exec(line);
-    if (correctMatch && current) {
-      current.correctLetter = correctMatch[1];
-      continue;
-    }
-
-    const explanationMatch = /^\*\*Explanation:\*\*\s*(.+)$/.exec(line);
-    if (explanationMatch && current) {
-      current.explanation = explanationMatch[1].trim();
-      continue;
-    }
-  }
-  pushCurrent();
-
-  return questions.map((q) => ({
-    question: q.question,
-    answers: q.answers,
-    correct_index: q.correctLetter ? q.correctLetter.charCodeAt(0) - 65 : 0,
-    explanation: q.explanation
-  }));
 }
 
 function bulletArray(markdown) {
@@ -255,7 +508,6 @@ function injectPresentationPlaceholders(html, lessonId) {
 
 function buildLessonFixture(entry) {
   const fields = entry.fields;
-  const { knowledgeCheckMarkdown } = splitKnowledgeCheck(fields.lesson_body);
 
   return {
     type: "learning_lesson",
@@ -267,11 +519,24 @@ function buildLessonFixture(entry) {
     category: fields.category,
     estimated_reading_time: fields.estimated_reading_time,
     lesson_body_html: injectPresentationPlaceholders(markdownBodyToHtml(fields.lesson_body), fields.lesson_id),
-    knowledge_check: { questions: parseKnowledgeCheckQuestions(knowledgeCheckMarkdown) },
+    knowledge_check: { questions: fields.knowledge_check?.questions ?? [] },
     instructor_tips: bulletArray(fields.instructor_tips),
     common_mistakes: bulletArray(fields.common_mistakes),
-    safety_notes: bulletArray(fields.safety_notes),
-    key_takeaways: fields.key_takeaways || []
+    // Safety Notes is written as prose in every currently-normalized lesson,
+    // not a bullet list -- bulletArray() would silently return [] and hide
+    // the panel entirely, even though the real Shopify/Liquid render (which
+    // just runs the rich_text_field through metafield_tag) shows it fine.
+    // Reuse the same markdown-to-HTML conversion already used for
+    // lesson_body so prose renders as prose and a list (if a lesson ever
+    // legitimately writes one) renders as a list, matching production
+    // either way instead of forcing a bullet-only convention onto this field.
+    safety_notes_html: markdownBodyToHtml(fields.safety_notes),
+    key_takeaways: fields.key_takeaways || [],
+    related_lessons: fields.related_lessons || [],
+    related_tools: fields.related_tools || [],
+    related_products: fields.related_products || [],
+    downloadable_resources: fields.downloadable_resources || [],
+    primary_cta: fields.primary_cta || null
   };
 }
 
@@ -317,8 +582,13 @@ function serializeLessonFixture(fixture) {
   lines.push("  },");
   lines.push(`  instructor_tips: [\n${fixture.instructor_tips.map((t) => `    ${JSON.stringify(t)}`).join(",\n")}\n  ],`);
   lines.push(`  common_mistakes: [\n${fixture.common_mistakes.map((t) => `    ${JSON.stringify(t)}`).join(",\n")}\n  ],`);
-  lines.push(`  safety_notes: [${fixture.safety_notes.length ? `\n${fixture.safety_notes.map((t) => `    ${JSON.stringify(t)}`).join(",\n")}\n  ` : ""}],`);
-  lines.push(`  key_takeaways: [\n${fixture.key_takeaways.map((t) => `    ${JSON.stringify(t)}`).join(",\n")}\n  ]`);
+  lines.push(`  safety_notes_html: \`${fixture.safety_notes_html}\`,`);
+  lines.push(`  key_takeaways: [\n${fixture.key_takeaways.map((t) => `    ${JSON.stringify(t)}`).join(",\n")}\n  ],`);
+  lines.push(`  related_lessons: ${JSON.stringify(fixture.related_lessons)},`);
+  lines.push(`  related_tools: ${JSON.stringify(fixture.related_tools)},`);
+  lines.push(`  related_products: ${JSON.stringify(fixture.related_products)},`);
+  lines.push(`  downloadable_resources: ${JSON.stringify(fixture.downloadable_resources)},`);
+  lines.push(`  primary_cta: ${JSON.stringify(fixture.primary_cta)}`);
   lines.push("}");
   return lines.join("\n");
 }
@@ -328,6 +598,7 @@ function serializeStringArray(values, indent) {
 }
 
 const categories = loadCategories();
+const relatedLessonIndex = readRelatedLessonIndex();
 const lessons = loadLessons()
   .map(buildLessonFixture)
   .sort((a, b) => a.lesson_id.localeCompare(b.lesson_id));
@@ -344,6 +615,13 @@ const startHereBlock = START_HERE.map(
     `    {\n      lesson_id: '${item.lesson_id}',\n      title: ${JSON.stringify(item.title)},\n      description: ${JSON.stringify(item.description)}\n    }`
 ).join(",\n");
 
+const relatedLessonIndexBlock = relatedLessonIndex
+  .map(
+    (lesson) =>
+      `    {\n      handle: '${lesson.handle}',\n      title: ${JSON.stringify(lesson.title)},\n      short_description: ${JSON.stringify(lesson.short_description)}\n    }`
+  )
+  .join(",\n");
+
 const lessonsBlock = lessons.map((fixture) => jsIndent(serializeLessonFixture(fixture), 4)).join(",\n");
 
 const output = `// GENERATED FILE -- DO NOT EDIT BY HAND.
@@ -356,6 +634,8 @@ const output = `// GENERATED FILE -- DO NOT EDIT BY HAND.
 //     content-development/lessons/*/public-copy.md via
 //     shopify/scripts/generate-pilot-data.js. Edit public-copy.md, not this file.
 //   - Category title/short description: shopify/data/categories.json.
+//   - Related lesson preview targets: approved lesson index plus local
+//     content-development/lessons/*/public-copy.md where present.
 //   - Homepage and "Start Here" marketing copy has no canonical public-copy.md
 //     source; it is hand-authored in
 //     shopify/scripts/generate-preview-fixture.js and generated into this file.
@@ -376,6 +656,8 @@ window.OOLearningHubPreviewData = {
     featuredHeading: ${JSON.stringify(HOMEPAGE.featuredHeading)},
     whyHeading: ${JSON.stringify(HOMEPAGE.whyHeading)},
     whyCopy: ${serializeStringArray(HOMEPAGE.whyCopy, 6)},
+    whyProofPoints: ${serializeStringArray(HOMEPAGE.whyProofPoints, 6)},
+    whyImage: ${JSON.stringify(HOMEPAGE.whyImage)},
     bottomHeading: ${JSON.stringify(HOMEPAGE.bottomHeading)},
     bottomCopy: ${JSON.stringify(HOMEPAGE.bottomCopy)},
     bottomPrimaryCta: ${JSON.stringify(HOMEPAGE.bottomPrimaryCta)},
@@ -387,11 +669,133 @@ ${startHereBlock}
   categories: [
 ${categoriesBlock}
   ],
+  relatedLessonIndex: [
+${relatedLessonIndexBlock}
+  ],
   lessons: [
 ${lessonsBlock}
   ]
 };
 `;
 
-fs.writeFileSync(OUTPUT_PATH, output);
-console.log(`Generated ${path.relative(REPO_ROOT, OUTPUT_PATH)}`);
+const contentHash = crypto.createHash("md5").update(output).digest("hex").slice(0, 12);
+const hashedAssetFilename = `learning-hub-preview-data.${contentHash}.js`;
+const hashedAssetPath = path.join(ASSETS_DIR, hashedAssetFilename);
+
+// Remove any previously-generated hashed copies so they don't accumulate
+// forever -- safe because the only reference to this filename is the pointer
+// snippet regenerated right below, which always points at the current hash.
+for (const file of fs.readdirSync(ASSETS_DIR)) {
+  if (/^learning-hub-preview-data\.[0-9a-f]{12}\.js$/.test(file) && file !== hashedAssetFilename) {
+    fs.unlinkSync(path.join(ASSETS_DIR, file));
+  }
+}
+
+fs.writeFileSync(hashedAssetPath, output);
+console.log(`Generated ${path.relative(REPO_ROOT, hashedAssetPath)}`);
+
+fs.writeFileSync(
+  SCRIPT_TAG_SNIPPET_PATH,
+  `{% comment %} GENERATED FILE -- DO NOT EDIT BY HAND. Regenerate with: npm run learning:generate-preview-fixture (from shopify/) {% endcomment %}\n<script src="{{ '${hashedAssetFilename}' | asset_url }}" defer></script>\n`
+);
+console.log(`Generated ${path.relative(REPO_ROOT, SCRIPT_TAG_SNIPPET_PATH)} -> ${hashedAssetFilename}`);
+
+const mediaOutputPath = path.join(REPO_ROOT, "theme/learning-hub-pilot/assets/learning-hub-media-data.js");
+const mediaOutput = `// GENERATED FILE -- DO NOT EDIT BY HAND.
+// Regenerate with: npm run learning:generate-preview-fixture (from shopify/)
+// Source: content-development/media/learning-media.json
+window.OOLearningHubMediaRegistry = ${JSON.stringify(stripInternalFields(mediaRegistry), null, 2)};
+`;
+
+fs.writeFileSync(mediaOutputPath, mediaOutput);
+console.log(`Generated ${path.relative(REPO_ROOT, mediaOutputPath)}`);
+
+// Production Knowledge Check data, keyed by lesson handle (never by internal
+// lesson_id -- the handle is already public in the page URL, the ID is not).
+// Consumed by learning-hub-knowledge-check.js on the real lesson template.
+// Question wording/options/answers/explanations come straight from each
+// lesson's parsed "## Knowledge Check" section (shopify/data/lessons/*.json
+// `knowledge_check` field) -- this file only reshapes that data, it never
+// edits it.
+const knowledgeCheckOutputPath = path.join(REPO_ROOT, "theme/learning-hub-pilot/assets/learning-hub-knowledge-check-data.js");
+const knowledgeCheckByHandle = {};
+for (const lesson of loadLessons()) {
+  const questions = lesson.fields.knowledge_check?.questions ?? [];
+  if (questions.length) knowledgeCheckByHandle[lesson.handle] = { questions };
+}
+const knowledgeCheckOutput = `// GENERATED FILE -- DO NOT EDIT BY HAND.
+// Regenerate with: npm run learning:generate-preview-fixture (from shopify/)
+// Source: each lesson's "## Knowledge Check" section in
+// content-development/lessons/*/public-copy.md, parsed into
+// shopify/data/lessons/*.json's \`knowledge_check\` field by
+// shopify/scripts/generate-pilot-data.js. Edit public-copy.md, not this file.
+window.OOLearningHubKnowledgeCheckData = ${JSON.stringify(knowledgeCheckByHandle, null, 2)};
+`;
+
+fs.writeFileSync(knowledgeCheckOutputPath, knowledgeCheckOutput);
+console.log(`Generated ${path.relative(REPO_ROOT, knowledgeCheckOutputPath)}`);
+
+// Production "Lesson X of Y" + Previous/Next navigation data, keyed by
+// lesson handle. Scoped to shopify/data/public-launch-lessons.json (the same
+// launch-scope gate lessonUrlFromHandle() uses) so a lesson never gets a
+// position number relative to unpublished siblings, and never links to a
+// DRAFT lesson as its previous/next.
+//
+// Ordered within each category by `lesson_id` (R01, R02, ... -- the
+// original editorial authoring sequence): there is no dedicated
+// per-category position field on `learning_lesson`, and
+// learning-category.liquid's own `metaobjects.learning_lesson.values` loop
+// has no defined sort order (an unspecified Shopify connection order), so
+// it is not a usable source of truth for a customer-facing lesson number.
+// lesson_id is already required on every lesson and is stable/sequential
+// within a category by construction (confirmed against the current 23
+// launch lessons: gear-masks-vision -> 7, safety-conditions -> 10,
+// in-water-skills -> 6, matching editorial expectations exactly).
+const launchHandles = loadPublicLaunchLessonHandles();
+const categoryTitleByHandle = new Map(categories.map((category) => [category.handle, category.fields.title]));
+const launchLessonsByCategory = new Map();
+for (const lesson of loadLessons()) {
+  if (!launchHandles.has(lesson.handle)) continue;
+  const categoryHandle = lesson.fields.category;
+  if (!categoryHandle) continue;
+  if (!launchLessonsByCategory.has(categoryHandle)) launchLessonsByCategory.set(categoryHandle, []);
+  launchLessonsByCategory.get(categoryHandle).push(lesson);
+}
+
+const lessonPositionByHandle = {};
+for (const [categoryHandle, categoryLessons] of launchLessonsByCategory) {
+  categoryLessons.sort((a, b) => {
+    const numA = parseInt(String(a.fields.lesson_id).replace(/\D/g, ""), 10);
+    const numB = parseInt(String(b.fields.lesson_id).replace(/\D/g, ""), 10);
+    return numA - numB;
+  });
+
+  categoryLessons.forEach((lesson, i) => {
+    const position = i + 1;
+    const previous = categoryLessons[i - 1] || null;
+    const next = categoryLessons[i + 1] || null;
+
+    lessonPositionByHandle[lesson.handle] = {
+      category_handle: categoryHandle,
+      category_title: categoryTitleByHandle.get(categoryHandle) || null,
+      index: position,
+      total: categoryLessons.length,
+      previous: previous ? { handle: previous.handle, title: previous.fields.title, index: position - 1 } : null,
+      next: next ? { handle: next.handle, title: next.fields.title, index: position + 1 } : null
+    };
+  });
+}
+
+const lessonPositionOutputPath = path.join(REPO_ROOT, "theme/learning-hub-pilot/assets/learning-hub-lesson-position-data.js");
+const lessonPositionOutput = `// GENERATED FILE -- DO NOT EDIT BY HAND.
+// Regenerate with: npm run learning:generate-preview-fixture (from shopify/)
+// Source: shopify/data/lessons/*.json, filtered to
+// shopify/data/public-launch-lessons.json and ordered within each category
+// by lesson_id. Consumed by learning-hub-lesson-position.js on the
+// production lesson template for the "Lesson X of Y" chip and the
+// Previous/Next lesson navigation.
+window.OOLearningHubLessonPositionData = ${JSON.stringify(lessonPositionByHandle, null, 2)};
+`;
+
+fs.writeFileSync(lessonPositionOutputPath, lessonPositionOutput);
+console.log(`Generated ${path.relative(REPO_ROOT, lessonPositionOutputPath)}`);
