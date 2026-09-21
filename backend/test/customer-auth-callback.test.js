@@ -4,6 +4,7 @@ import { generateKeyPair, exportJWK, SignJWT, createLocalJWKSet } from "jose";
 import { completeCustomerAuthCallback } from "../lib/customer-auth-callback-service.js";
 import { createOAuthTransaction } from "../lib/oauth-transaction.js";
 import { verifyCustomerIdToken } from "../lib/customer-account-jwt.js";
+import { exchangeAuthorizationCode } from "../lib/customer-account-token-exchange.js";
 import { extractNumericCustomerId } from "../lib/shopify-customer-gid.js";
 import { verifySessionToken, mintSessionToken } from "../lib/session-token.js";
 import { createFakeSupabase } from "./fake-supabase.js";
@@ -80,10 +81,16 @@ test("rejects a request missing state", async () => {
   assert.equal(result.body.error, "missing_code_or_state");
 });
 
-test("rejects a missing transaction cookie (e.g. cookie blocked or already consumed)", async () => {
+test("rejects a missing transaction cookie (e.g. cookie blocked or already consumed) with an unambiguous error code", async () => {
   const result = await completeCustomerAuthCallback(baseDeps({ transactionCookieValue: null }));
   assert.equal(result.status, 400);
-  assert.equal(result.body.error, "missing_token");
+  // Not the generic signed-token "missing_token" reason -- that reads as if
+  // Shopify's own OAuth token were missing, which is exactly the ambiguity
+  // that caused the live incident's error to be initially misread. This is
+  // the actual live failure this whole hardening pass exists to make
+  // unambiguous.
+  assert.equal(result.body.error, "missing_oauth_transaction_cookie");
+  assert.notEqual(result.body.error, "missing_token");
 });
 
 test("rejects a tampered transaction cookie", async () => {
@@ -273,6 +280,72 @@ test("end-to-end with real cryptographic ID token verification and real GID extr
 
   assert.equal(result.status, 200);
   assert.equal(result.body.customerId, "555000777");
+});
+
+test("regression: the exact Shopify-documented token response shape {access_token, id_token, expires_in} flows through the REAL exchangeAuthorizationCode and does not produce missing_token", async () => {
+  // Uses the real lib/customer-account-token-exchange.js (not a fake) with
+  // only its fetchImpl mocked, so this exercises the same
+  // request-shape/response-normalization code that runs in production --
+  // not a re-implementation of it. This is the specific regression this
+  // test guards: a live browser test once returned {"error":"missing_token"},
+  // and this proves that error does NOT originate from a well-formed token
+  // exchange response being mishandled (the actual root cause was the OAuth
+  // transaction cookie being absent -- see the incident report -- but this
+  // closes off the token-exchange-shape explanation definitively).
+  const now = Math.floor(Date.now() / 1000);
+  const realIdToken = await new SignJWT({ nonce: "regression-nonce", sub: "opaque-oidc-subject-regression" })
+    .setProtectedHeader({ alg: "RS256", kid: "test-key-1" })
+    .setIssuer(ISSUER)
+    .setAudience(CLIENT_ID)
+    .setIssuedAt(now)
+    .setExpirationTime(now + 300)
+    .sign(signingKey);
+
+  let capturedAccessToken;
+  const tokenEndpointFetch = async (url, init) => {
+    assert.equal(url, VALID_DISCOVERY.token_endpoint);
+    assert.equal(init.method, "POST");
+    assert.equal(init.headers["Content-Type"], "application/x-www-form-urlencoded");
+    const params = new URLSearchParams(init.body);
+    assert.equal(params.get("grant_type"), "authorization_code");
+    assert.equal(params.has("client_secret"), false);
+    return {
+      ok: true,
+      json: async () => ({
+        access_token: "regression-access-token",
+        id_token: realIdToken,
+        expires_in: 3600
+      })
+    };
+  };
+
+  const supabase = createFakeSupabase();
+  const result = await completeCustomerAuthCallback(
+    baseDeps({
+      transactionCookieValue: validTransactionCookie({ state: "state-regression", nonce: "regression-nonce", codeVerifier: "verifier-regression" }),
+      returnedState: "state-regression",
+      // The real function -- only fetchImpl is injected/mocked.
+      exchangeAuthorizationCode: (args) => exchangeAuthorizationCode({ ...args, fetchImpl: tokenEndpointFetch }),
+      verifyCustomerIdToken, // real
+      fetchAuthenticatedCustomerId: async ({ accessToken }) => {
+        capturedAccessToken = accessToken;
+        return "gid://shopify/Customer/555000321";
+      },
+      extractNumericCustomerId, // real
+      getSupabaseClient: async () => supabase
+    })
+  );
+
+  assert.notEqual(result.body.error, "missing_token", "must not be misdiagnosed as a missing OAuth transaction cookie");
+  assert.notEqual(result.body.error, "missing_oauth_transaction_cookie", "must not be misdiagnosed as a missing OAuth transaction cookie");
+  assert.equal(result.status, 200);
+  assert.equal(result.body.authenticated, true);
+  assert.equal(result.body.customerId, "555000321");
+  assert.equal(capturedAccessToken, "regression-access-token", "the real access_token from the exchange must reach the Customer Account API call");
+
+  const verified = verifySessionToken(result.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
+  assert.equal(verified.valid, true);
+  assert.equal(verified.payload.shopify_customer_id, "555000321");
 });
 
 test("post-auth failure (e.g. Supabase error) is reported without exposing internals", async () => {

@@ -62,9 +62,11 @@ export default async function handler(req, res) {
     mintSessionToken
   });
 
-  if (result.status >= 500) {
-    console.error("customer-auth/callback failed", result.body);
-  }
+  // Diagnostic logging for every failure branch (safe values only: reason
+  // strings, HTTP status, Shopify's own OAuth error codes, JSON key names --
+  // never a code/token/verifier/cookie/email) already happens inside
+  // completeCustomerAuthCallback, co-located with each failure so the log
+  // line and the specific check it corresponds to can't drift apart.
 
   res.status(result.status).json(result.body);
 }

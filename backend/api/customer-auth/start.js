@@ -50,7 +50,12 @@ export default async function handler(req, res) {
   authorizationUrl.searchParams.set("code_challenge", codeChallenge);
   authorizationUrl.searchParams.set("code_challenge_method", "S256");
 
+  // Two separate setHeader calls, not res.writeHead(302, { Location }) --
+  // avoids any ambiguity about whether a wrapped/framework `res` object
+  // correctly merges headers passed to writeHead() with ones already set
+  // via setHeader(). Both are plain, unambiguous Node response methods.
   res.setHeader("Set-Cookie", serializeOAuthTransactionCookie(transaction));
-  res.writeHead(302, { Location: authorizationUrl.toString() });
+  res.setHeader("Location", authorizationUrl.toString());
+  res.statusCode = 302;
   res.end();
 }

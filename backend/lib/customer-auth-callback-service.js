@@ -10,6 +10,11 @@
 // query customer { id } using the access_token -> validate the returned
 // GID and extract the numeric Shopify customer ID -> find-or-create
 // learning_users by that numeric ID -> mint our Learning Progress JWT.
+//
+// Diagnostic logging throughout this file is deliberately restricted to
+// safe values only: fixed reason strings, HTTP status codes, Shopify's own
+// OAuth error codes/descriptions, and JSON key NAMES. Never log/print a
+// code, verifier, cookie value, access_token, id_token, or email.
 import crypto from "node:crypto";
 import { verifyOAuthTransaction } from "./oauth-transaction.js";
 
@@ -46,10 +51,33 @@ export async function completeCustomerAuthCallback({
 
   const transaction = verifyOAuthTransaction(transactionCookieValue, { secret: sessionTokenSecret });
   if (!transaction.valid) {
-    return { status: 400, body: { error: transaction.reason } };
+    // `cookiePresent: false` here means the browser sent no
+    // oo_lp_oauth_txn cookie at all on this request -- typically because
+    // /start's Set-Cookie was scoped to a different host than the one
+    // Shopify redirected back to (e.g. a Vercel preview deployment URL
+    // instead of the exact registered redirect_uri host), or because the
+    // browser dropped it for some other reason. `cookiePresent: true` with
+    // a reason like "expired"/"invalid_signature" points to a different,
+    // more specific problem instead.
+    console.error("customer-auth/callback: OAuth transaction invalid", {
+      reason: transaction.reason,
+      cookiePresent: Boolean(transactionCookieValue)
+    });
+
+    // verifyOAuthTransaction's "missing_token" is lib/signed-token.js's
+    // generic "no token string at all" reason -- shared with
+    // verifySessionToken's unrelated bearer-token check. Surfacing that
+    // exact word here reads as if Shopify's OAuth token were missing (it
+    // isn't reached yet at this point in the flow), which is exactly the
+    // ambiguity that caused this to be misread during the live incident.
+    // Only THIS callback path remaps it to something unambiguous; the
+    // shared primitive and its other caller are untouched.
+    const errorCode = transaction.reason === "missing_token" ? "missing_oauth_transaction_cookie" : transaction.reason;
+    return { status: 400, body: { error: errorCode } };
   }
 
   if (!constantTimeStringEqual(returnedState, transaction.state)) {
+    console.error("customer-auth/callback: state mismatch");
     return { status: 400, body: { error: "state_mismatch" } };
   }
 
@@ -57,6 +85,7 @@ export async function completeCustomerAuthCallback({
   try {
     discovery = await discoverOidcConfiguration(shopStorefrontDomain);
   } catch (error) {
+    console.error("customer-auth/callback: OIDC discovery failed", error.message);
     return { status: 502, body: { error: "discovery_failed" } };
   }
 
@@ -70,6 +99,10 @@ export async function completeCustomerAuthCallback({
       codeVerifier: transaction.codeVerifier
     });
   } catch (error) {
+    // error.message here is already restricted to safe content -- HTTP
+    // status, Shopify's own OAuth error code/description, or JSON key
+    // names -- see lib/customer-account-token-exchange.js.
+    console.error("customer-auth/callback: token exchange failed", error.message);
     return { status: 502, body: { error: "token_exchange_failed" } };
   }
 
@@ -87,6 +120,7 @@ export async function completeCustomerAuthCallback({
       expectedNonce: transaction.nonce
     });
   } catch (error) {
+    console.error("customer-auth/callback: id_token verification failed", error.message);
     return { status: 401, body: { error: "invalid_id_token" } };
   }
 
@@ -94,6 +128,7 @@ export async function completeCustomerAuthCallback({
   try {
     customerAccountApi = await discoverCustomerAccountApi(shopStorefrontDomain);
   } catch (error) {
+    console.error("customer-auth/callback: Customer Account API discovery failed", error.message);
     return { status: 502, body: { error: "customer_account_api_discovery_failed" } };
   }
 
@@ -104,6 +139,7 @@ export async function completeCustomerAuthCallback({
       accessToken: tokenResponse.access_token
     });
   } catch (error) {
+    console.error("customer-auth/callback: customer { id } query failed", error.message);
     return { status: 502, body: { error: "customer_account_api_query_failed" } };
   }
 
@@ -111,6 +147,7 @@ export async function completeCustomerAuthCallback({
   try {
     shopifyCustomerId = extractNumericCustomerId(customerGid);
   } catch (error) {
+    console.error("customer-auth/callback: invalid customer GID shape");
     return { status: 401, body: { error: "invalid_customer_gid" } };
   }
 
@@ -126,6 +163,7 @@ export async function completeCustomerAuthCallback({
 
     return { status: 200, body: { authenticated: true, customerId: shopifyCustomerId, token } };
   } catch (error) {
+    console.error("customer-auth/callback: post-auth user lookup/token mint failed", error.message);
     return { status: 500, body: { error: "identity_finalization_failed" } };
   }
 }
