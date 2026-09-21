@@ -9,6 +9,8 @@ import { extractNumericCustomerId } from "../lib/shopify-customer-gid.js";
 import { verifySessionToken, mintSessionToken } from "../lib/session-token.js";
 import { createFakeSupabase } from "./fake-supabase.js";
 import { findOrCreateLearningUser } from "../lib/supabase.js";
+import { createAuthHandoff, consumeAuthHandoff } from "../lib/auth-handoff.js";
+import { exchangeAuthHandoff } from "../lib/customer-auth-exchange-service.js";
 
 const SESSION_SECRET = "test-session-secret";
 const SHOP_STOREFRONT_DOMAIN = "oceansoptics.com";
@@ -41,8 +43,8 @@ before(async () => {
   jwks = createLocalJWKSet({ keys: [publicJwk] });
 });
 
-function validTransactionCookie({ state = "state-1", nonce = "nonce-1", codeVerifier = "verifier-1" } = {}) {
-  return createOAuthTransaction({ state, nonce, codeVerifier, secret: SESSION_SECRET });
+function validTransactionCookie({ state = "state-1", nonce = "nonce-1", codeVerifier = "verifier-1", returnPath = "/pages/learn" } = {}) {
+  return createOAuthTransaction({ state, nonce, codeVerifier, returnPath, secret: SESSION_SECRET });
 }
 
 function baseDeps(overrides = {}) {
@@ -53,7 +55,6 @@ function baseDeps(overrides = {}) {
     sessionTokenSecret: SESSION_SECRET,
     shopStorefrontDomain: SHOP_STOREFRONT_DOMAIN,
     shopifyClientId: CLIENT_ID,
-    shopifyShopDomain: SHOP,
     redirectUri: REDIRECT_URI,
     discoverOidcConfiguration: async () => VALID_DISCOVERY,
     exchangeAuthorizationCode: async () => ({ id_token: "irrelevant-in-most-tests", access_token: "test-access-token" }),
@@ -64,9 +65,39 @@ function baseDeps(overrides = {}) {
     extractNumericCustomerId,
     getSupabaseClient: async () => createFakeSupabase(),
     findOrCreateLearningUser,
-    mintSessionToken,
+    createAuthHandoff,
     ...overrides
   };
+}
+
+// Extracts the one-time handoff code from the callback's redirect URL
+// fragment -- never a query string or path segment, since browsers don't
+// send URL fragments to any server.
+function extractHandoffCode(redirectTo) {
+  const url = new URL(redirectTo);
+  const params = new URLSearchParams(url.hash.replace(/^#/, ""));
+  return params.get("oo_lp_handoff");
+}
+
+// Completes the full Phase B pipeline this callback now produces: takes a
+// successful callback result (a 302 redirect carrying a handoff code) and
+// exchanges that code the same way the storefront bootstrap script would,
+// via the real exchange service, to get back the actual Learning Progress
+// JWT. Used by tests that need to assert on the minted token/customer ID,
+// since the callback itself no longer returns either directly.
+async function exchangeCallbackResult(result, supabase) {
+  assert.equal(result.status, 302);
+  const handoffCode = extractHandoffCode(result.redirectTo);
+  assert.ok(handoffCode, "redirect must carry a handoff code");
+
+  return exchangeAuthHandoff({
+    handoff: handoffCode,
+    sessionTokenSecret: SESSION_SECRET,
+    shopifyShopDomain: SHOP,
+    getSupabaseClient: async () => supabase,
+    consumeAuthHandoff,
+    mintSessionToken
+  });
 }
 
 test("rejects a request missing the authorization code", async () => {
@@ -110,7 +141,7 @@ test("rejects a tampered transaction cookie", async () => {
 
 test("rejects an expired transaction cookie", async () => {
   const fixedNow = () => 1_700_000_000_000;
-  const token = createOAuthTransaction({ state: "state-1", nonce: "nonce-1", codeVerifier: "verifier-1", secret: SESSION_SECRET, now: fixedNow });
+  const token = createOAuthTransaction({ state: "state-1", nonce: "nonce-1", codeVerifier: "verifier-1", returnPath: "/pages/learn", secret: SESSION_SECRET, now: fixedNow });
   const result = await completeCustomerAuthCallback(baseDeps({ transactionCookieValue: token }));
   assert.equal(result.status, 400);
   assert.equal(result.body.error, "expired");
@@ -198,23 +229,33 @@ test("rejects a non-Customer GID (e.g. an Order GID)", async () => {
   assert.equal(result.body.error, "invalid_customer_gid");
 });
 
-test("never leaks access_token/id_token/email/OIDC sub into the response body", async () => {
+test("never leaks access_token/id_token/email/OIDC sub/customerId/session token into the redirect", async () => {
   const result = await completeCustomerAuthCallback(
     baseDeps({
       exchangeAuthorizationCode: async () => ({ id_token: "secret.id.token", access_token: "secret-access-token" }),
       verifyCustomerIdToken: async () => ({ sub: "opaque-oidc-subject-should-not-leak", email: "should-never-appear@example.com" })
     })
   );
-  assert.equal(result.status, 200);
-  const serialized = JSON.stringify(result.body);
-  assert.ok(!serialized.includes("secret.id.token"));
-  assert.ok(!serialized.includes("secret-access-token"));
-  assert.ok(!serialized.includes("example.com"));
-  assert.ok(!serialized.includes("opaque-oidc-subject"));
-  assert.deepEqual(Object.keys(result.body).sort(), ["authenticated", "customerId", "token"]);
+  assert.equal(result.status, 302);
+  assert.equal(result.body, undefined, "a successful callback must not return a JSON body at all");
+
+  assert.ok(!result.redirectTo.includes("secret.id.token"));
+  assert.ok(!result.redirectTo.includes("secret-access-token"));
+  assert.ok(!result.redirectTo.includes("example.com"));
+  assert.ok(!result.redirectTo.includes("opaque-oidc-subject"));
+  assert.ok(!result.redirectTo.includes("555000111"), "the numeric Shopify customer ID must not appear in the redirect either");
+
+  // The ONLY thing the redirect carries is the fixed origin, the validated
+  // return path, and a one-time opaque handoff code in the fragment.
+  const url = new URL(result.redirectTo);
+  assert.equal(url.origin, "https://oceansoptics.com");
+  assert.equal(url.pathname, "/pages/learn");
+  const handoffCode = extractHandoffCode(result.redirectTo);
+  assert.ok(handoffCode);
+  assert.equal(url.search, "");
 });
 
-test("successful flow: find-or-creates the user by numeric shopify_customer_id and mints a valid Learning Progress token", async () => {
+test("successful flow: find-or-creates the user by numeric shopify_customer_id, issues a handoff, and the exchange mints a valid Learning Progress token", async () => {
   const supabase = createFakeSupabase();
   const result = await completeCustomerAuthCallback(
     baseDeps({
@@ -223,14 +264,14 @@ test("successful flow: find-or-creates the user by numeric shopify_customer_id a
     })
   );
 
-  assert.equal(result.status, 200);
-  assert.equal(result.body.authenticated, true);
-  assert.equal(result.body.customerId, "555000999");
-
   assert.equal(supabase.tables.learning_users.length, 1);
   assert.equal(supabase.tables.learning_users[0].shopify_customer_id, "555000999");
 
-  const verified = verifySessionToken(result.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
+  const exchangeResult = await exchangeCallbackResult(result, supabase);
+  assert.equal(exchangeResult.status, 200);
+  assert.equal(exchangeResult.body.authenticated, true);
+
+  const verified = verifySessionToken(exchangeResult.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
   assert.equal(verified.valid, true);
   assert.equal(verified.payload.shopify_customer_id, "555000999");
 });
@@ -278,8 +319,9 @@ test("end-to-end with real cryptographic ID token verification and real GID extr
     })
   );
 
-  assert.equal(result.status, 200);
-  assert.equal(result.body.customerId, "555000777");
+  const exchangeResult = await exchangeCallbackResult(result, supabase);
+  const verified = verifySessionToken(exchangeResult.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
+  assert.equal(verified.payload.shopify_customer_id, "555000777");
 });
 
 test("end-to-end succeeds with a real, cryptographically valid id_token that has NO sub claim at all", async () => {
@@ -312,10 +354,13 @@ test("end-to-end succeeds with a real, cryptographically valid id_token that has
     })
   );
 
-  assert.equal(result.status, 200);
-  assert.equal(result.body.authenticated, true);
-  assert.equal(result.body.customerId, "555000888");
   assert.equal(supabase.tables.learning_users[0].shopify_customer_id, "555000888");
+
+  const exchangeResult = await exchangeCallbackResult(result, supabase);
+  assert.equal(exchangeResult.status, 200);
+  assert.equal(exchangeResult.body.authenticated, true);
+  const verified = verifySessionToken(exchangeResult.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
+  assert.equal(verified.payload.shopify_customer_id, "555000888");
 });
 
 test("regression: the exact Shopify-documented token response shape {access_token, id_token, expires_in} flows through the REAL exchangeAuthorizationCode and does not produce missing_token", async () => {
@@ -372,14 +417,15 @@ test("regression: the exact Shopify-documented token response shape {access_toke
     })
   );
 
-  assert.notEqual(result.body.error, "missing_token", "must not be misdiagnosed as a missing OAuth transaction cookie");
-  assert.notEqual(result.body.error, "missing_oauth_transaction_cookie", "must not be misdiagnosed as a missing OAuth transaction cookie");
-  assert.equal(result.status, 200);
-  assert.equal(result.body.authenticated, true);
-  assert.equal(result.body.customerId, "555000321");
+  assert.notEqual(result.status, 400, "must not be misdiagnosed as a missing OAuth transaction cookie");
+  assert.equal(result.status, 302);
   assert.equal(capturedAccessToken, "regression-access-token", "the real access_token from the exchange must reach the Customer Account API call");
 
-  const verified = verifySessionToken(result.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
+  const exchangeResult = await exchangeCallbackResult(result, supabase);
+  assert.equal(exchangeResult.status, 200);
+  assert.equal(exchangeResult.body.authenticated, true);
+
+  const verified = verifySessionToken(exchangeResult.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
   assert.equal(verified.valid, true);
   assert.equal(verified.payload.shopify_customer_id, "555000321");
 });
@@ -411,9 +457,40 @@ test("bearer token minted from this flow cannot impersonate another customer", a
     })
   );
 
-  const verifiedA = verifySessionToken(resultA.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
-  const verifiedB = verifySessionToken(resultB.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
+  const exchangeA = await exchangeCallbackResult(resultA, supabase);
+  const exchangeB = await exchangeCallbackResult(resultB, supabase);
+
+  const verifiedA = verifySessionToken(exchangeA.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
+  const verifiedB = verifySessionToken(exchangeB.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
   assert.equal(verifiedA.payload.shopify_customer_id, "111111111");
   assert.equal(verifiedB.payload.shopify_customer_id, "222222222");
   assert.notEqual(verifiedA.payload.shopify_customer_id, verifiedB.payload.shopify_customer_id);
+});
+
+test("one customer's handoff code cannot be exchanged to impersonate a different customer's identity", async () => {
+  const supabase = createFakeSupabase();
+  const resultA = await completeCustomerAuthCallback(
+    baseDeps({ getSupabaseClient: async () => supabase, fetchAuthenticatedCustomerId: async () => "gid://shopify/Customer/333000111" })
+  );
+  const handoffCodeA = extractHandoffCode(resultA.redirectTo);
+
+  // A second, unrelated login for a different customer must not be able to
+  // consume the first customer's still-valid, unconsumed handoff code by
+  // any means other than presenting that exact code.
+  const wrongExchange = await exchangeAuthHandoff({
+    handoff: `${handoffCodeA}-tampered`,
+    sessionTokenSecret: SESSION_SECRET,
+    shopifyShopDomain: SHOP,
+    getSupabaseClient: async () => supabase,
+    consumeAuthHandoff,
+    mintSessionToken
+  });
+  assert.equal(wrongExchange.status, 400);
+  assert.equal(wrongExchange.body.error, "invalid_or_expired_handoff");
+
+  // The real, untampered code still works exactly once.
+  const rightExchange = await exchangeCallbackResult(resultA, supabase);
+  assert.equal(rightExchange.status, 200);
+  const verified = verifySessionToken(rightExchange.body.token, { secret: SESSION_SECRET, expectedShop: SHOP });
+  assert.equal(verified.payload.shopify_customer_id, "333000111");
 });

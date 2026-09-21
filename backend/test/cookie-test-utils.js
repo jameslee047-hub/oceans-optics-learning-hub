@@ -47,3 +47,23 @@ export function createMockNodeResponse() {
   };
   return res;
 }
+
+// Temporarily sets process.env vars for the duration of an async callback,
+// restoring the previous values (or deleting the key if it was previously
+// unset) afterward. MUST await `fn()` inside the try -- returning the bare
+// promise from `fn()` without awaiting it here would let `finally` restore
+// the environment before an async handler actually finishes reading it,
+// which is exactly the bug this comment exists to prevent from recurring.
+export async function withEnv(vars, fn) {
+  const previous = {};
+  for (const key of Object.keys(vars)) previous[key] = process.env[key];
+  Object.assign(process.env, vars);
+  try {
+    return await fn();
+  } finally {
+    for (const key of Object.keys(vars)) {
+      if (previous[key] === undefined) delete process.env[key];
+      else process.env[key] = previous[key];
+    }
+  }
+}

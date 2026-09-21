@@ -1,12 +1,14 @@
 // GET /api/customer-auth/callback -- completes the Customer Account API
 // Authorization Code + PKCE flow started by ./start.js.
 //
-// TEMPORARY diagnostic response for this Phase A.2 proof: returns
-// { authenticated, customerId, token } directly instead of redirecting back
-// into the storefront with the token. The storefront hand-off/UI comes in
-// the next phase, once this identity flow has been proven end-to-end on
-// the real store. Never returns access_token, id_token, the OIDC sub, or
-// any email claim.
+// On success, this does NOT return the Learning Progress JWT (nor the
+// customer ID, nor any Shopify token) directly or in any URL -- it 302s the
+// browser back to the storefront return path carried inside the signed
+// OAuth transaction, with a one-time opaque handoff code in the URL
+// FRAGMENT (#oo_lp_handoff=...), which browsers never send to a server.
+// The storefront bootstrap script exchanges that code for the actual
+// session token via POST /api/customer-auth/exchange. See
+// lib/auth-handoff.js and lib/customer-auth-exchange-service.js.
 //
 // This file is a thin adapter: it parses the request and writes the
 // response, but all the actual OAuth/verification/lookup logic lives in
@@ -20,8 +22,8 @@ import { verifyCustomerIdToken } from "../../lib/customer-account-jwt.js";
 import { discoverCustomerAccountApi } from "../../lib/customer-account-api-discovery.js";
 import { fetchAuthenticatedCustomerId } from "../../lib/customer-account-graphql.js";
 import { extractNumericCustomerId } from "../../lib/shopify-customer-gid.js";
-import { mintSessionToken } from "../../lib/session-token.js";
 import { getSupabaseClient, findOrCreateLearningUser } from "../../lib/supabase.js";
+import { createAuthHandoff } from "../../lib/auth-handoff.js";
 import { readOAuthTransactionCookie, clearOAuthTransactionCookie } from "../../lib/oauth-cookie.js";
 import { completeCustomerAuthCallback } from "../../lib/customer-auth-callback-service.js";
 
@@ -48,7 +50,6 @@ export default async function handler(req, res) {
     sessionTokenSecret: process.env.SESSION_TOKEN_SECRET,
     shopStorefrontDomain: process.env.SHOP_STOREFRONT_DOMAIN,
     shopifyClientId: process.env.SHOPIFY_CLIENT_ID,
-    shopifyShopDomain: process.env.SHOPIFY_SHOP_DOMAIN,
     redirectUri: REDIRECT_URI,
     discoverOidcConfiguration,
     exchangeAuthorizationCode,
@@ -59,7 +60,7 @@ export default async function handler(req, res) {
     extractNumericCustomerId,
     getSupabaseClient,
     findOrCreateLearningUser,
-    mintSessionToken
+    createAuthHandoff
   });
 
   // Diagnostic logging for every failure branch (safe values only: reason
@@ -67,6 +68,13 @@ export default async function handler(req, res) {
   // never a code/token/verifier/cookie/email) already happens inside
   // completeCustomerAuthCallback, co-located with each failure so the log
   // line and the specific check it corresponds to can't drift apart.
+
+  if (result.status === 302) {
+    res.setHeader("Location", result.redirectTo);
+    res.statusCode = 302;
+    res.end();
+    return;
+  }
 
   res.status(result.status).json(result.body);
 }

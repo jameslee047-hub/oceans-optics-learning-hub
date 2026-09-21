@@ -9,6 +9,7 @@ import { discoverOidcConfiguration } from "../../lib/shopify-discovery.js";
 import { generateRandomToken, generatePkceVerifier, computePkceChallenge } from "../../lib/pkce.js";
 import { createOAuthTransaction } from "../../lib/oauth-transaction.js";
 import { serializeOAuthTransactionCookie } from "../../lib/oauth-cookie.js";
+import { sanitizeReturnPath } from "../../lib/return-path.js";
 
 export const REDIRECT_URI = "https://oceans-optics-learning-progress.vercel.app/api/customer-auth/callback";
 export const SCOPE = "openid email customer-account-api:full";
@@ -32,11 +33,16 @@ export default async function handler(req, res) {
   const nonce = generateRandomToken();
   const codeVerifier = generatePkceVerifier();
   const codeChallenge = computePkceChallenge(codeVerifier);
+  // Validated here, once, and carried inside the signed transaction -- the
+  // callback never re-reads or trusts a return_to value supplied directly
+  // on its own request (see lib/return-path.js).
+  const returnPath = sanitizeReturnPath(req.query?.return_to);
 
   const transaction = createOAuthTransaction({
     state,
     nonce,
     codeVerifier,
+    returnPath,
     secret: process.env.SESSION_TOKEN_SECRET
   });
 

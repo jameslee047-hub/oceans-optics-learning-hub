@@ -9,7 +9,11 @@
 // its `sub` is never persisted) -> discover the Customer Account API ->
 // query customer { id } using the access_token -> validate the returned
 // GID and extract the numeric Shopify customer ID -> find-or-create
-// learning_users by that numeric ID -> mint our Learning Progress JWT.
+// learning_users by that numeric ID -> issue a one-time opaque handoff
+// code (see lib/auth-handoff.js) -> redirect back to the storefront. The
+// Learning Progress JWT itself is minted later, by
+// lib/customer-auth-exchange-service.js, once the storefront exchanges
+// that handoff code -- never here, and never placed in a URL.
 //
 // Diagnostic logging throughout this file is deliberately restricted to
 // safe values only: fixed reason strings, HTTP status codes, Shopify's own
@@ -17,6 +21,7 @@
 // code, verifier, cookie value, access_token, id_token, or email.
 import crypto from "node:crypto";
 import { verifyOAuthTransaction } from "./oauth-transaction.js";
+import { buildReturnUrl } from "./return-path.js";
 
 function constantTimeStringEqual(a, b) {
   const bufA = Buffer.from(String(a ?? ""));
@@ -32,7 +37,6 @@ export async function completeCustomerAuthCallback({
   sessionTokenSecret,
   shopStorefrontDomain,
   shopifyClientId,
-  shopifyShopDomain,
   redirectUri,
   discoverOidcConfiguration,
   exchangeAuthorizationCode,
@@ -43,7 +47,7 @@ export async function completeCustomerAuthCallback({
   extractNumericCustomerId,
   getSupabaseClient,
   findOrCreateLearningUser,
-  mintSessionToken
+  createAuthHandoff
 }) {
   if (!code || !returnedState) {
     return { status: 400, body: { error: "missing_code_or_state" } };
@@ -151,19 +155,23 @@ export async function completeCustomerAuthCallback({
     return { status: 401, body: { error: "invalid_customer_gid" } };
   }
 
+  // The Learning Progress JWT is deliberately NOT minted or returned here.
+  // This callback is a server-to-server OAuth redirect target -- Shopify
+  // strips Set-Cookie from App Proxy responses, and the token must never
+  // appear in a URL (query string or fragment), so instead we hand the
+  // browser back a one-time opaque handoff code. The storefront bootstrap
+  // script exchanges it for the actual session token via
+  // POST /api/customer-auth/exchange (see lib/auth-handoff.js and
+  // lib/customer-auth-exchange-service.js).
   try {
     const supabase = await getSupabaseClient();
-    await findOrCreateLearningUser(supabase, shopifyCustomerId);
+    const userId = await findOrCreateLearningUser(supabase, shopifyCustomerId);
+    const handoffCode = await createAuthHandoff(supabase, userId);
 
-    const token = mintSessionToken({
-      shopifyCustomerId,
-      shop: shopifyShopDomain,
-      secret: sessionTokenSecret
-    });
-
-    return { status: 200, body: { authenticated: true, customerId: shopifyCustomerId, token } };
+    const redirectTo = `${buildReturnUrl(transaction.returnPath)}#oo_lp_handoff=${handoffCode}`;
+    return { status: 302, redirectTo };
   } catch (error) {
-    console.error("customer-auth/callback: post-auth user lookup/token mint failed", error.message);
+    console.error("customer-auth/callback: post-auth user lookup/handoff creation failed", error.message);
     return { status: 500, body: { error: "identity_finalization_failed" } };
   }
 }

@@ -140,5 +140,49 @@ export function createFakeSupabase() {
     return builder;
   }
 
-  return { from, tables };
+  // Simulates consume_learning_auth_handoff() from
+  // migrations/0002_auth_handoffs.sql: matches by code_hash, requires
+  // consumed_at IS NULL and expires_at > now(), and marks it consumed --
+  // all synchronously (no `await` before the mutation), so two "concurrent"
+  // calls made back-to-back (e.g. via Promise.all) can never interleave.
+  // This proves the LIBRARY code calls a single atomic operation rather
+  // than a separate select-then-update; the real guarantee against actual
+  // concurrent database transactions comes from Postgres row locking in
+  // the real function, not from this fake.
+  function rpc(name, args) {
+    async function run() {
+      if (name !== "consume_learning_auth_handoff") {
+        return { data: null, error: new Error(`fake-supabase: unknown rpc "${name}"`) };
+      }
+
+      const handoffs = ensureTable("learning_auth_handoffs");
+      const nowIso = new Date().toISOString();
+      const row = handoffs.find(
+        (h) => h.code_hash === args.p_code_hash && h.consumed_at == null && h.expires_at > nowIso
+      );
+      if (!row) return { data: [], error: null };
+
+      row.consumed_at = nowIso;
+      const user = ensureTable("learning_users").find((u) => u.id === row.user_id);
+      return { data: user ? [{ shopify_customer_id: user.shopify_customer_id }] : [], error: null };
+    }
+
+    return {
+      then(resolve, reject) {
+        run().then(resolve, reject);
+      },
+      async maybeSingle() {
+        const { data, error } = await run();
+        return { data: Array.isArray(data) ? data[0] ?? null : data, error };
+      },
+      async single() {
+        const { data, error } = await run();
+        const row = Array.isArray(data) ? data[0] : data;
+        if (!row) return { data: null, error: error || new Error("fake-supabase: no rows for single()") };
+        return { data: row, error: null };
+      }
+    };
+  }
+
+  return { from, rpc, tables };
 }

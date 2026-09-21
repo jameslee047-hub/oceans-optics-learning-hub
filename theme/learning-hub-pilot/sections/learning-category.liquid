@@ -1,4 +1,5 @@
 {{ 'learning-hub.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'learning-hub-progress-auth.js' | asset_url }}" defer="defer"></script>
 
 {% liquid
   assign category_title = metaobject.title.value | default: 'Learning category'

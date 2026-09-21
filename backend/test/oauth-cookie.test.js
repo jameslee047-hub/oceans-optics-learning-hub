@@ -22,6 +22,7 @@ function realisticTransactionToken() {
     state: "test-state",
     nonce: "test-nonce",
     codeVerifier: "test-code-verifier",
+    returnPath: "/pages/learn",
     secret: SECRET
   });
 }
