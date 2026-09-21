@@ -100,7 +100,12 @@ test("rejects an id_token whose nonce does not match the OAuth transaction", asy
   );
 });
 
-test("rejects an id_token with no sub claim", async () => {
+// `sub` is not a requirement of this verification: our identity comes from
+// the Customer Account API's `customer { id }` query, made after this
+// verification succeeds -- not from the ID token. Real Shopify id_tokens
+// have been observed in production without a `sub` claim, and this must
+// not fail the OAuth flow.
+test("accepts a cryptographically valid id_token with NO sub claim at all, when issuer/audience/expiry/nonce are correct", async () => {
   const now = Math.floor(Date.now() / 1000);
   const token = await new SignJWT({ nonce: "expected-nonce" })
     .setProtectedHeader({ alg: "RS256", kid: KEY_ID })
@@ -110,18 +115,14 @@ test("rejects an id_token with no sub claim", async () => {
     .setExpirationTime(now + 300)
     .sign(signingKey.privateKey);
 
-  await assert.rejects(
-    () => verifyCustomerIdToken(token, { jwks, issuer: ISSUER, audience: AUDIENCE, expectedNonce: "expected-nonce" }),
-    /id_token_missing_sub/
-  );
+  const payload = await verifyCustomerIdToken(token, { jwks, issuer: ISSUER, audience: AUDIENCE, expectedNonce: "expected-nonce" });
+  assert.equal("sub" in payload, false);
 });
 
-test("rejects an id_token with an empty-string sub claim", async () => {
+test("accepts an id_token with an empty-string sub claim", async () => {
   const token = await signToken({ sub: "" });
-  await assert.rejects(
-    () => verifyCustomerIdToken(token, { jwks, issuer: ISSUER, audience: AUDIENCE, expectedNonce: "expected-nonce" }),
-    /id_token_missing_sub/
-  );
+  const payload = await verifyCustomerIdToken(token, { jwks, issuer: ISSUER, audience: AUDIENCE, expectedNonce: "expected-nonce" });
+  assert.equal(payload.sub, "");
 });
 
 test("accepts a non-numeric, opaque sub with no assumed GID/numeric format", async () => {

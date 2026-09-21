@@ -282,6 +282,42 @@ test("end-to-end with real cryptographic ID token verification and real GID extr
   assert.equal(result.body.customerId, "555000777");
 });
 
+test("end-to-end succeeds with a real, cryptographically valid id_token that has NO sub claim at all", async () => {
+  // Some real Shopify Customer Account API id_tokens have been observed in
+  // production without a `sub` claim. Identity comes from the Customer
+  // Account API's customer { id } query below, not from the id_token, so
+  // this must succeed exactly like the end-to-end test above.
+  const now = Math.floor(Date.now() / 1000);
+  const noSubIdToken = await new SignJWT({ nonce: "no-sub-nonce" })
+    .setProtectedHeader({ alg: "RS256", kid: "test-key-1" })
+    .setIssuer(ISSUER)
+    .setAudience(CLIENT_ID)
+    .setIssuedAt(now)
+    .setExpirationTime(now + 300)
+    .sign(signingKey);
+
+  const supabase = createFakeSupabase();
+  const result = await completeCustomerAuthCallback(
+    baseDeps({
+      transactionCookieValue: validTransactionCookie({ state: "state-no-sub", nonce: "no-sub-nonce", codeVerifier: "verifier-no-sub" }),
+      returnedState: "state-no-sub",
+      exchangeAuthorizationCode: async () => ({ id_token: noSubIdToken, access_token: "no-sub-flow-access-token" }),
+      verifyCustomerIdToken, // the real function, not a fake
+      fetchAuthenticatedCustomerId: async ({ accessToken }) => {
+        assert.equal(accessToken, "no-sub-flow-access-token");
+        return "gid://shopify/Customer/555000888";
+      },
+      extractNumericCustomerId, // the real function
+      getSupabaseClient: async () => supabase
+    })
+  );
+
+  assert.equal(result.status, 200);
+  assert.equal(result.body.authenticated, true);
+  assert.equal(result.body.customerId, "555000888");
+  assert.equal(supabase.tables.learning_users[0].shopify_customer_id, "555000888");
+});
+
 test("regression: the exact Shopify-documented token response shape {access_token, id_token, expires_in} flows through the REAL exchangeAuthorizationCode and does not produce missing_token", async () => {
   // Uses the real lib/customer-account-token-exchange.js (not a fake) with
   // only its fetchImpl mocked, so this exercises the same
