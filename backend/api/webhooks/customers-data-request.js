@@ -7,9 +7,13 @@
 // what Learning Hub data exists for the customer so James can fulfil the
 // request manually; wiring an automatic export/email is a later
 // enhancement, not required to pass this webhook.
+//
+// This payload identifies the customer by `customer.id`, Shopify's numeric
+// Admin API customer ID -- which is exactly what learning_users is keyed
+// by, so it maps directly with no ambiguity.
 import { readRawBody } from "../../lib/read-raw-body.js";
 import { verifyWebhookHmac } from "../../lib/shopify-webhook.js";
-import { getSupabaseClient, findOrCreateLearningUser } from "../../lib/supabase.js";
+import { getSupabaseClient } from "../../lib/supabase.js";
 import { getProgress } from "../../lib/progress-service.js";
 
 export const config = { api: { bodyParser: false } };

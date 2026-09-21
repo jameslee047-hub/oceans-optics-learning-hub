@@ -5,6 +5,12 @@
 // row is the ENTIRE redaction: it holds nothing but a Shopify customer ID,
 // and ON DELETE CASCADE removes lesson_progress + knowledge_check_results
 // with it. There is no other Learning Hub data anywhere about this customer.
+//
+// This payload identifies the customer by `customer.id`, Shopify's numeric
+// Admin API customer ID -- which is exactly what learning_users is keyed by
+// (see the Phase A.2 correction: identity stays shopify_customer_id, the
+// numeric ID obtained via the Customer Account API's `customer { id }`
+// query, not the OIDC `sub`), so no mapping problem exists here.
 import { readRawBody } from "../../lib/read-raw-body.js";
 import { verifyWebhookHmac } from "../../lib/shopify-webhook.js";
 import { getSupabaseClient, deleteLearningUserByShopifyCustomerId } from "../../lib/supabase.js";

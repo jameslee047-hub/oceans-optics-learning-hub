@@ -1,18 +1,24 @@
-// Shopify App Proxy target for GET https://oceansoptics.com/apps/learning-progress/identity
+// DIAGNOSTIC ONLY as of Phase A.2 -- no longer the production identity
+// mechanism. See the Phase A.2 report: once a customer is routed through
+// New Customer Accounts' myaccount.oceansoptics.com environment, this App
+// Proxy path was found on the real store to not reliably surface
+// `logged_in_customer_id` for a logged-in customer. Production identity is
+// now GET /api/customer-auth/start + /callback (Customer Account API OAuth
+// 2.0 + PKCE, which independently obtains the same numeric
+// shopify_customer_id via an authenticated `customer { id }` query -- see
+// lib/shopify-customer-gid.js). This endpoint is kept only so the
+// known-unreliable App Proxy behavior remains directly inspectable, and is
+// left unmodified in exactly what it was already known to do: logged-out
+// returns {"authenticated":false}.
 //
-// Shopify intercepts that storefront request, checks the customer's
-// existing storefront session, and forwards it here (server-to-server) with
-// `logged_in_customer_id` (empty if logged out), `shop`, `timestamp`, and a
-// `signature` computed over every other query param -- see
-// lib/shopify-app-proxy.js for the exact algorithm. This is the ONLY place
-// in this backend that trusts a customer identity coming from Shopify; every
-// other endpoint trusts only the session token minted here.
-//
-// No CORS headers here: Shopify calls this server-to-server, not the
-// browser directly, so there is no cross-origin request to permit.
+// Deliberately no longer calls findOrCreateLearningUser or mints a session
+// token, even though (unlike the since-reverted OIDC-subject design) the
+// numeric `logged_in_customer_id` App Proxy supplies IS the same
+// shopify_customer_id learning_users is keyed by: this path is still not
+// trustworthy enough to build on (that's the whole reason the OAuth flow
+// exists), so it stays a pure, side-effect-free diagnostic rather than a
+// second, less-reliable write path into the same table.
 import { verifyAppProxyRequest } from "../../lib/shopify-app-proxy.js";
-import { mintSessionToken } from "../../lib/session-token.js";
-import { getSupabaseClient, findOrCreateLearningUser } from "../../lib/supabase.js";
 
 export default async function handler(req, res) {
   const verification = verifyAppProxyRequest(req.query, process.env.SHOPIFY_API_SECRET);
@@ -24,24 +30,5 @@ export default async function handler(req, res) {
     return;
   }
 
-  if (!verification.loggedInCustomerId) {
-    res.status(200).json({ authenticated: false });
-    return;
-  }
-
-  try {
-    const supabase = await getSupabaseClient();
-    await findOrCreateLearningUser(supabase, verification.loggedInCustomerId);
-
-    const token = mintSessionToken({
-      shopifyCustomerId: verification.loggedInCustomerId,
-      shop: verification.shop || process.env.SHOPIFY_SHOP_DOMAIN,
-      secret: process.env.SESSION_TOKEN_SECRET
-    });
-
-    res.status(200).json({ authenticated: true, token });
-  } catch (error) {
-    console.error("identity endpoint failed", error);
-    res.status(500).json({ error: "identity_lookup_failed" });
-  }
+  res.status(200).json({ authenticated: Boolean(verification.loggedInCustomerId) });
 }

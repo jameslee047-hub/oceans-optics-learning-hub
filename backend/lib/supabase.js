@@ -31,6 +31,12 @@ export async function getSupabaseClient() {
 // This is the ONLY place a shopify_customer_id is ever written -- every
 // other table is keyed by the resulting internal `learning_users.id`.
 //
+// `shopifyCustomerId` is the numeric Shopify Admin customer ID, obtained
+// from the Customer Account API's authenticated `customer { id }` query
+// (see lib/shopify-customer-gid.js for the gid://shopify/Customer/{id}
+// validation/extraction) -- never the OIDC `sub`, and never a value
+// supplied directly by browser JS.
+//
 // Uses a single atomic UPSERT (ON CONFLICT (shopify_customer_id)), not a
 // select-then-insert -- a customer opening several lesson pages at once
 // fires several concurrent identity checks, and a check-then-insert has a

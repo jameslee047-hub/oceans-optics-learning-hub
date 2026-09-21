@@ -1,0 +1,32 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "095af359420e5400dc385150e9b4c8e4"
+name = "Oceans Optics Learn Progress"
+application_url = "https://shopify.dev/apps/default-app-home"
+embedded = false
+
+[webhooks]
+api_version = "2026-07"
+
+[app_proxy]
+url = "https://oceans-optics-learning-progress.vercel.app/api/proxy"
+subpath = "learning-progress"
+prefix = "apps"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+# customer_read_customers is a Customer Account API scope (grants read
+# access to the authenticated customer's own `customer { id }` via the
+# Customer Account API token) -- NOT the Admin API `read_customers` scope,
+# which this project explicitly does not request.
+scopes = "write_app_proxy,customer_read_customers"
+optional_scopes = [ ]
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = [ ]
+
+[customer_authentication]
+redirect_uris = [
+  "https://oceans-optics-learning-progress.vercel.app/api/customer-auth/callback"
+]
