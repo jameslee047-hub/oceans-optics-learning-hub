@@ -1,0 +1,13 @@
+{
+  "name": "oceans-optics-learning-progress",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Learning Hub Phase 2 identity + progress backend (Vercel serverless functions).",
+  "scripts": {
+    "test": "node --test"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0"
+  }
+}
