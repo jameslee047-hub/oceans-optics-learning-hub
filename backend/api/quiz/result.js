@@ -14,6 +14,7 @@ import { applyCors } from "../../lib/cors.js";
 import { requireSession } from "../../lib/require-session.js";
 import { getSupabaseClient, findOrCreateLearningUser } from "../../lib/supabase.js";
 import { recordQuizResult, validateQuizResult, validateAnswerReview } from "../../lib/progress-service.js";
+import { recordLearningEventBestEffort } from "../../lib/analytics-service.js";
 
 const LESSON_ID_PATTERN = /^R\d{2}$/;
 
@@ -52,6 +53,21 @@ export default async function handler(req, res) {
     const supabase = await getSupabaseClient();
     const userId = await findOrCreateLearningUser(supabase, session.shopify_customer_id);
     const result = await recordQuizResult(supabase, userId, lessonId, { score, total, answers: answerValidation.answers });
+
+    // Each submission (including a retake) is a meaningful, deliberate
+    // action -- always recorded. lesson_completed only fires the FIRST
+    // time this lesson is completed (already_complete stays false only
+    // once), never again on a retake of an already-complete lesson.
+    await recordLearningEventBestEffort(supabase, {
+      learningUserId: userId,
+      eventType: "quiz_completed",
+      lessonId,
+      metadata: { score, total }
+    });
+    if (!result.already_complete) {
+      await recordLearningEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_completed", lessonId });
+    }
+
     res.status(200).json(result);
   } catch (error) {
     console.error("POST /api/quiz/result failed", error);

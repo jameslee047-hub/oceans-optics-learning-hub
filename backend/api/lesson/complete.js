@@ -6,6 +6,7 @@ import { applyCors } from "../../lib/cors.js";
 import { requireSession } from "../../lib/require-session.js";
 import { getSupabaseClient, findOrCreateLearningUser } from "../../lib/supabase.js";
 import { recordLessonComplete } from "../../lib/progress-service.js";
+import { recordLearningEventBestEffort } from "../../lib/analytics-service.js";
 
 const LESSON_ID_PATTERN = /^R\d{2}$/;
 
@@ -29,6 +30,11 @@ export default async function handler(req, res) {
     const supabase = await getSupabaseClient();
     const userId = await findOrCreateLearningUser(supabase, session.shopify_customer_id);
     const result = await recordLessonComplete(supabase, userId, lessonId);
+
+    if (!result.already_complete) {
+      await recordLearningEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_completed", lessonId });
+    }
+
     res.status(200).json(result);
   } catch (error) {
     console.error("POST /api/lesson/complete failed", error);

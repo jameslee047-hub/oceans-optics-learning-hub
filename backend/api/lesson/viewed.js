@@ -5,6 +5,7 @@ import { applyCors } from "../../lib/cors.js";
 import { requireSession } from "../../lib/require-session.js";
 import { getSupabaseClient, findOrCreateLearningUser } from "../../lib/supabase.js";
 import { recordLessonViewed } from "../../lib/progress-service.js";
+import { recordLearningEventBestEffort } from "../../lib/analytics-service.js";
 
 const LESSON_ID_PATTERN = /^R\d{2}$/;
 
@@ -28,6 +29,13 @@ export default async function handler(req, res) {
     const supabase = await getSupabaseClient();
     const userId = await findOrCreateLearningUser(supabase, session.shopify_customer_id);
     const result = await recordLessonViewed(supabase, userId, lessonId);
+
+    // Only on a genuinely NEW view -- reloading an already-viewed lesson
+    // must not spam the analytics log with a fresh event every time.
+    if (result.created) {
+      await recordLearningEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_viewed", lessonId });
+    }
+
     res.status(200).json(result);
   } catch (error) {
     console.error("POST /api/lesson/viewed failed", error);
