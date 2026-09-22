@@ -68,6 +68,14 @@ test("computeOverallProgress: tolerates a null/malformed progress payload", func
   });
 });
 
+test("categoryActionLabel: 0% is Start category, partial is Continue category, 100% is View category", function () {
+  assert.equal(Core.categoryActionLabel(0), "Start category");
+  assert.equal(Core.categoryActionLabel(1), "Continue category");
+  assert.equal(Core.categoryActionLabel(50), "Continue category");
+  assert.equal(Core.categoryActionLabel(99), "Continue category");
+  assert.equal(Core.categoryActionLabel(100), "View category");
+});
+
 test("computeCategoryProgress: per-category completed/total/percent, in catalogue category order", function () {
   var progress = {
     lessons: [

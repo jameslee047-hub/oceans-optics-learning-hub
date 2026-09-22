@@ -2175,16 +2175,31 @@ a.learning-inline-reference:focus-visible,
 }
 
 /* ==========================================================================
-   My Learning dashboard -- Phase B, Checkpoint 3.
+   My Learning dashboard -- Phase B, Checkpoint 3 (redesigned).
    Additive only: new classes scoped to .learning-my-learning, reusing the
    existing .learning-panel/.learning-card/.learning-grid/.learning-cta
    primitives and color tokens above rather than introducing new ones.
+
+   Hierarchy, deliberately unequal: the hero panel (overall progress + next
+   action) is the visually dominant element; category cards are secondary;
+   Knowledge Checks / Recent Learning are compact, tertiary reference
+   panels. Borders are used sparingly -- soft background tints and a little
+   shadow do most of the separating instead.
    ========================================================================== */
 
 .learning-my-learning__body {
-  display: grid;
-  gap: 2.4rem;
+  max-width: 104rem;
+  margin: 0 auto;
   padding-bottom: 4.8rem;
+}
+
+/* Each state (loading/logged-out/error/dashboard) is itself the grid: the
+   dashboard state's hero/categories/lower-grid children get real vertical
+   rhythm between them; the other states just have one child each, so
+   `display: grid` is a no-op for them visually. */
+.learning-my-learning__state {
+  display: grid;
+  gap: 3.2rem;
 }
 
 .learning-my-learning__state[hidden] {
@@ -2194,52 +2209,123 @@ a.learning-inline-reference:focus-visible,
 .learning-my-learning__signin,
 .learning-my-learning__error {
   max-width: 64rem;
-  padding: 2.4rem;
+  padding: 2.8rem;
   text-align: left;
 }
 
 .learning-my-learning__signin .learning-cta,
 .learning-my-learning__error .learning-cta {
-  margin-top: 1.2rem;
+  margin-top: 1.4rem;
 }
 
-.learning-my-learning__section {
-  display: grid;
-  gap: 1.6rem;
-}
-
-.learning-my-learning__overall {
-  padding: 2rem;
-}
-
-.learning-my-learning__overall-row {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1.2rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.2rem;
-}
-
-.learning-my-learning__percent {
+.learning-my-learning__section-title {
+  margin: 0 0 1.6rem;
   color: var(--oo-learning-blue);
-  font-size: 3.2rem;
+  font-size: 2rem;
+}
+
+/* ---- Hero: overall progress (left) + next action (right) ---- */
+
+.learning-my-learning__hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  box-shadow: 0 1.2rem 3.2rem rgba(var(--oo-learning-blue-rgb), 0.1);
+}
+
+.learning-my-learning__hero-progress {
+  padding: 3.2rem;
+  background: var(--oo-learning-soft-blue);
+}
+
+.learning-my-learning__hero-eyebrow {
+  margin: 0 0 0.8rem;
+  color: var(--oo-learning-muted);
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.learning-my-learning__hero-percent {
+  color: var(--oo-learning-blue);
+  font-size: 6.4rem;
   font-weight: 700;
   line-height: 1;
 }
 
-.learning-my-learning__count {
+.learning-my-learning__hero-count {
+  margin: 0.8rem 0 2rem;
   color: var(--oo-learning-muted);
-  font-size: 1.4rem;
+  font-size: 1.5rem;
   font-weight: 700;
 }
+
+.learning-my-learning__hero-next {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 3.2rem;
+  background: var(--oo-learning-panel);
+}
+
+.learning-my-learning__hero-next-label {
+  margin: 0;
+  color: var(--oo-learning-orange);
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.learning-my-learning__hero-next h2 {
+  margin: 0;
+  font-size: 2.4rem;
+}
+
+.learning-my-learning__hero-next .learning-cta {
+  margin-top: 0.8rem;
+}
+
+.learning-my-learning__hero-next--done .learning-my-learning__hero-next-label {
+  color: var(--oo-learning-success);
+}
+
+/* ---- Category cards ---- */
+
+.learning-my-learning__category-card {
+  min-height: 0;
+  gap: 0.8rem;
+  border-color: transparent;
+  background: var(--oo-learning-panel);
+  box-shadow: 0 0.4rem 1.6rem rgba(var(--oo-learning-blue-rgb), 0.06);
+}
+
+.learning-my-learning__category-card h3 {
+  margin: 0;
+  font-size: 1.9rem;
+}
+
+.learning-my-learning__category-card p {
+  color: var(--oo-learning-muted);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+/* ---- Progress bars ---- */
 
 .learning-progress-bar {
   width: 100%;
   height: 0.8rem;
   border-radius: 999px;
-  background: var(--oo-learning-soft-blue);
+  background: rgba(var(--oo-learning-blue-rgb), 0.12);
   overflow: hidden;
+}
+
+.learning-progress-bar--thick {
+  height: 1.4rem;
 }
 
 .learning-progress-bar__fill {
@@ -2250,68 +2336,45 @@ a.learning-inline-reference:focus-visible,
   transition: width 0.3s ease;
 }
 
-.learning-my-learning__category-card .learning-progress-bar {
-  margin-top: 0.4rem;
-}
+/* ---- Lower area: Knowledge Checks + Recent Learning, side by side ---- */
 
-.learning-my-learning__lesson-lists {
+.learning-my-learning__lower-grid {
   display: grid;
-  gap: 2rem;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem;
 }
 
-.learning-my-learning__lesson-list,
+.learning-my-learning__panel {
+  padding: 2.4rem;
+  border: 0;
+  border-radius: 0.8rem;
+  background: var(--oo-learning-panel);
+  box-shadow: 0 0.4rem 1.6rem rgba(var(--oo-learning-blue-rgb), 0.06);
+}
+
 .learning-my-learning__quiz-list,
 .learning-my-learning__activity-list {
   display: grid;
-  gap: 0.8rem;
-  margin: 1rem 0 0;
+  gap: 0.6rem;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.learning-my-learning__lesson-row,
 .learning-my-learning__quiz-row,
 .learning-my-learning__activity-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1.2rem;
-  padding: 1rem 1.4rem;
-  border: 0.1rem solid var(--oo-learning-line);
-  border-radius: 0.6rem;
-  background: var(--oo-learning-panel);
-  font-size: 1.4rem;
+  gap: 1rem;
+  padding: 0.9rem 0;
+  border-bottom: 0.1rem solid var(--oo-learning-line);
+  font-size: 1.35rem;
 }
 
-.learning-my-learning__lesson-status {
-  flex-shrink: 0;
-  padding: 0.3rem 0.8rem;
-  border-radius: 999px;
-  font-size: 1.2rem;
-  font-weight: 700;
-  text-transform: uppercase;
-}
-
-.learning-my-learning__lesson-status--completed {
-  color: var(--oo-learning-success);
-  background: rgba(var(--oo-learning-success-rgb), 0.12);
-}
-
-.learning-my-learning__lesson-status--in-progress {
-  color: var(--oo-learning-orange);
-  background: var(--oo-learning-soft-orange);
-}
-
-.learning-my-learning__not-started-note {
-  color: var(--oo-learning-muted);
-  font-size: 1.3rem;
-}
-
-.learning-my-learning__quiz-note {
-  margin: 0;
-  color: var(--oo-learning-muted);
-  font-size: 1.3rem;
+.learning-my-learning__quiz-list li:last-child,
+.learning-my-learning__activity-list li:last-child {
+  border-bottom: 0;
 }
 
 .learning-my-learning__quiz-row span:last-child {
@@ -2325,22 +2388,34 @@ a.learning-inline-reference:focus-visible,
 }
 
 .learning-my-learning__activity-label {
-  color: var(--oo-learning-muted);
+  flex-shrink: 0;
+  color: var(--oo-learning-orange);
   font-weight: 700;
 }
 
 .learning-my-learning__activity-date {
   margin-left: auto;
   color: var(--oo-learning-muted);
-  font-size: 1.3rem;
+  font-size: 1.25rem;
+}
+
+@media screen and (max-width: 989px) {
+  .learning-my-learning__hero {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media screen and (max-width: 749px) {
-  .learning-my-learning__lesson-lists {
+  .learning-my-learning__lower-grid {
     grid-template-columns: 1fr;
   }
 
-  .learning-my-learning__percent {
-    font-size: 2.6rem;
+  .learning-my-learning__hero-progress,
+  .learning-my-learning__hero-next {
+    padding: 2.4rem;
+  }
+
+  .learning-my-learning__hero-percent {
+    font-size: 4.8rem;
   }
 }

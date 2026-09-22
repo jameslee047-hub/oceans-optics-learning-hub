@@ -27,6 +27,18 @@
     authenticated: false
   };
 
+  // Tracks whether bootstrap() has already dispatched oo:learning-progress-
+  // ready. For an anonymous first-time visitor (no handoff, no stored
+  // token) that dispatch happens SYNCHRONOUSLY inside bootstrap() below --
+  // which itself runs synchronously as this script's very last statement,
+  // before any later <script defer> tag (e.g. learning-hub-my-learning.js)
+  // has even started executing. A consumer that only ever does
+  // document.addEventListener("oo:learning-progress-ready", ...) can
+  // therefore attach its listener AFTER the only dispatch already
+  // happened, and would wait forever. Exposing isReady() lets a consumer
+  // check synchronously, on load, whether that has already occurred.
+  var isReady = false;
+
   function readStoredToken() {
     try {
       return window.sessionStorage.getItem(SESSION_STORAGE_KEY);
@@ -145,6 +157,11 @@
     dispatch("oo:learning-progress-anonymous");
   }
 
+  function markReady() {
+    isReady = true;
+    dispatch("oo:learning-progress-ready", { authenticated: state.authenticated });
+  }
+
   // Builds the return_to used by authenticate(): the current relative path
   // (including query string, never a fragment) -- validated again
   // server-side by /api/customer-auth/start before it is ever trusted.
@@ -163,7 +180,7 @@
         } else {
           setAnonymous();
         }
-        dispatch("oo:learning-progress-ready", { authenticated: state.authenticated });
+        markReady();
       });
       return;
     }
@@ -171,7 +188,7 @@
     var existingToken = readStoredToken();
     if (!existingToken) {
       setAnonymous();
-      dispatch("oo:learning-progress-ready", { authenticated: false });
+      markReady();
       return;
     }
 
@@ -185,7 +202,7 @@
         // fail closed to anonymous rather than assuming it still works.
         setAnonymous();
       }
-      dispatch("oo:learning-progress-ready", { authenticated: state.authenticated });
+      markReady();
     });
   }
 
@@ -195,6 +212,14 @@
     },
     isAuthenticated: function () {
       return state.authenticated;
+    },
+    // True once bootstrap() has resolved (authenticated either way) and
+    // dispatched oo:learning-progress-ready. A consumer script that loads
+    // after this one should check this FIRST and initialize immediately
+    // if true, since the event itself may already have fired and be
+    // unrecoverable -- see the isReady comment above.
+    isReady: function () {
+      return isReady;
     },
     // Top-level navigation only -- no iframe, no popup, at this checkpoint.
     // Never called automatically; only in response to explicit user intent

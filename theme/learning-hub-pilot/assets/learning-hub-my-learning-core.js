@@ -87,6 +87,16 @@
     return Math.round((count / total) * 100);
   }
 
+  // Small derived UI helper (not a progress calculation): the category
+  // card CTA copy based purely on that category's own percent -- 0% hasn't
+  // been started, 100% is done (still linkable to review), anything in
+  // between is in progress.
+  function categoryActionLabel(percent) {
+    if (percent >= 100) return "View category";
+    if (percent > 0) return "Continue category";
+    return "Start category";
+  }
+
   function computeOverallProgress(catalogue, progress) {
     catalogue = normalizeCatalogue(catalogue);
     progress = normalizeProgress(progress);
@@ -321,6 +331,7 @@
     normalizeCatalogue: normalizeCatalogue,
     computeOverallProgress: computeOverallProgress,
     computeCategoryProgress: computeCategoryProgress,
+    categoryActionLabel: categoryActionLabel,
     pickContinueLearning: pickContinueLearning,
     summarizeLessons: summarizeLessons,
     prepareQuizResults: prepareQuizResults,

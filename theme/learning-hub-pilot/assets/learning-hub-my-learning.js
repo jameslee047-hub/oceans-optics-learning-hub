@@ -1,5 +1,6 @@
 /**
- * Learning Hub Phase B, Checkpoint 3 -- "My Learning" dashboard DOM wiring.
+ * Learning Hub Phase B, Checkpoint 3 (redesigned) -- "My Learning"
+ * dashboard DOM wiring.
  *
  * Depends on (all loaded before this file by learning-my-learning.liquid):
  *   - window.OOLearningProgress          (learning-hub-progress-auth.js)
@@ -17,11 +18,20 @@
  * learning-hub-progress-auth.js has already cleared from sessionStorage)
  * falls back to the logged-out state, not an error. Any other failure
  * (network, 5xx) shows a retry option and never throws past this file.
+ *
+ * INITIALIZATION: OOLearningProgress.isReady() may already be true by the
+ * time this script runs (an anonymous visitor's bootstrap dispatches
+ * oo:learning-progress-ready SYNCHRONOUSLY, before this later <script
+ * defer> tag even starts executing -- see the isReady comment in
+ * learning-hub-progress-auth.js). So this checks isReady() immediately
+ * AND listens for the event; whichever happens/happened first wins, and
+ * an `initialized` guard makes the other one a no-op.
  */
 (function () {
   'use strict';
 
   var STATE_IDS = ['MyLearningLoading', 'MyLearningLoggedOut', 'MyLearningError', 'MyLearningDashboard'];
+  var RECENT_ACTIVITY_LIMIT = 5;
 
   function showState(idToShow) {
     STATE_IDS.forEach(function (id) {
@@ -48,16 +58,18 @@
 
   function formatDate(atMs) {
     try {
-      return new Date(atMs).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      return new Date(atMs).toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
     } catch (error) {
       return '';
     }
   }
 
-  function progressBarHtml(percent) {
+  function progressBarHtml(percent, modifierClass) {
     var clamped = Math.max(0, Math.min(100, percent));
     return (
-      '<div class="learning-progress-bar" role="progressbar" aria-valuenow="' +
+      '<div class="learning-progress-bar' +
+      (modifierClass ? ' ' + modifierClass : '') +
+      '" role="progressbar" aria-valuenow="' +
       clamped +
       '" aria-valuemin="0" aria-valuemax="100">' +
       '<div class="learning-progress-bar__fill" style="width:' +
@@ -67,55 +79,61 @@
     );
   }
 
-  function renderOverall(overall) {
-    return [
-      '<div class="learning-panel learning-my-learning__overall">',
-      '<p class="learning-hub__eyebrow">Overall Progress</p>',
-      '<div class="learning-my-learning__overall-row">',
-      '<span class="learning-my-learning__percent">' + overall.percent + '%</span>',
-      '<span class="learning-my-learning__count">' +
+  // The single most important element on the page: overall completion on
+  // the left, the one next action on the right. Both halves of one
+  // visually dominant panel, not two separate cards of equal weight.
+  function renderHero(overall, continueLearning) {
+    var progressHtml = [
+      '<div class="learning-my-learning__hero-progress">',
+      '<p class="learning-my-learning__hero-eyebrow">Overall Progress</p>',
+      '<div class="learning-my-learning__hero-percent">' + overall.percent + '%</div>',
+      '<p class="learning-my-learning__hero-count">' +
         overall.completedCount +
         ' of ' +
         overall.totalCount +
-        ' lessons completed</span>',
-      '</div>',
-      progressBarHtml(overall.percent),
+        ' lessons completed</p>',
+      progressBarHtml(overall.percent, 'learning-progress-bar--thick'),
       '</div>'
     ].join('');
-  }
 
-  function renderContinueLearning(continueLearning) {
+    var nextHtml;
     if (!continueLearning) {
-      return [
-        '<div class="learning-panel learning-my-learning__continue">',
-        '<p class="learning-hub__eyebrow">Continue Learning</p>',
+      nextHtml = [
+        '<div class="learning-my-learning__hero-next learning-my-learning__hero-next--done">',
+        '<p class="learning-my-learning__hero-next-label">All caught up</p>',
         '<h2>You&rsquo;ve completed every published lesson</h2>',
         '<p>Nice work! Check back as new lessons are published.</p>',
         '</div>'
       ].join('');
+    } else {
+      var isResume = continueLearning.reason === 'resume';
+      var label = isResume ? 'Continue learning' : 'Up next';
+      var actionLabel = isResume ? 'Continue lesson' : 'Start lesson';
+      nextHtml = [
+        '<div class="learning-my-learning__hero-next">',
+        '<p class="learning-my-learning__hero-next-label">' + label + '</p>',
+        '<span class="learning-card__meta">' + escapeHtml(continueLearning.category_title) + '</span>',
+        '<h2>' + escapeHtml(continueLearning.title) + '</h2>',
+        '<a class="button learning-cta" href="' + lessonUrl(continueLearning.handle) + '">' + actionLabel + '</a>',
+        '</div>'
+      ].join('');
     }
 
-    var actionLabel = continueLearning.reason === 'resume' ? 'Continue lesson' : 'Start lesson';
-    return [
-      '<div class="learning-panel learning-my-learning__continue">',
-      '<p class="learning-hub__eyebrow">Continue Learning</p>',
-      '<span class="learning-card__meta">' + escapeHtml(continueLearning.category_title) + '</span>',
-      '<h2>' + escapeHtml(continueLearning.title) + '</h2>',
-      '<a class="button learning-cta" href="' + lessonUrl(continueLearning.handle) + '">' + actionLabel + '</a>',
-      '</div>'
-    ].join('');
+    return '<div class="learning-panel learning-my-learning__hero">' + progressHtml + nextHtml + '</div>';
   }
 
   function renderCategories(categories) {
     if (!categories.length) return '';
+    var Core = window.OOLearningHubMyLearningCore;
     var cards = categories
       .map(function (category) {
+        var actionLabel = Core.categoryActionLabel(category.percent);
         return [
           '<a class="learning-card learning-my-learning__category-card" href="' + categoryUrl(category.handle) + '">',
           '<h3>' + escapeHtml(category.title) + '</h3>',
-          '<p>' + category.completed + ' of ' + category.total + ' lessons (' + category.percent + '%)</p>',
+          '<p>' + category.completed + ' of ' + category.total + ' lessons &middot; ' + category.percent + '%</p>',
           progressBarHtml(category.percent),
-          '<span class="learning-card__footer">View category</span>',
+          '<span class="learning-card__footer">' + actionLabel + ' &rarr;</span>',
           '</a>'
         ].join('');
       })
@@ -123,111 +141,63 @@
 
     return [
       '<div class="learning-my-learning__section">',
-      '<div class="learning-hub__section-heading"><div><p class="learning-hub__eyebrow">Category Progress</p><h2>By category</h2></div></div>',
+      '<h2 class="learning-my-learning__section-title">Learning areas</h2>',
       '<div class="learning-grid">' + cards + '</div>',
       '</div>'
     ].join('');
   }
 
-  function renderLessonRow(lesson, statusLabel) {
-    return [
-      '<li class="learning-my-learning__lesson-row">',
-      '<a href="' + lessonUrl(lesson.handle) + '">' + escapeHtml(lesson.title) + '</a>',
-      '<span class="learning-my-learning__lesson-status learning-my-learning__lesson-status--' + statusLabel.toLowerCase().replace(/\s+/g, '-') + '">' +
-        escapeHtml(statusLabel) +
-        '</span>',
-      '</li>'
-    ].join('');
-  }
-
-  function renderLessons(lessons) {
-    var completedRows = lessons.completed.map(function (lesson) {
-      return renderLessonRow(lesson, 'Completed');
-    });
-    var inProgressRows = lessons.inProgress.map(function (lesson) {
-      return renderLessonRow(lesson, 'In progress');
-    });
-
-    var listsHtml = '';
-    if (completedRows.length) {
-      listsHtml += '<div><h3>Completed (' + completedRows.length + ')</h3><ul class="learning-my-learning__lesson-list">' + completedRows.join('') + '</ul></div>';
-    }
-    if (inProgressRows.length) {
-      listsHtml += '<div><h3>In progress (' + inProgressRows.length + ')</h3><ul class="learning-my-learning__lesson-list">' + inProgressRows.join('') + '</ul></div>';
-    }
-    if (!completedRows.length && !inProgressRows.length) {
-      listsHtml = '<p class="learning-empty">You haven&rsquo;t started a lesson yet.</p>';
-    }
-
-    var notStartedNote = lessons.notStarted.length
-      ? '<p class="learning-my-learning__not-started-note">' + lessons.notStarted.length + ' lesson' + (lessons.notStarted.length === 1 ? '' : 's') + ' not started yet.</p>'
-      : '';
-
-    return [
-      '<div class="learning-my-learning__section">',
-      '<div class="learning-hub__section-heading"><div><p class="learning-hub__eyebrow">Lesson Progress</p><h2>Your lessons</h2></div></div>',
-      '<div class="learning-my-learning__lesson-lists">' + listsHtml + '</div>',
-      notStartedNote,
-      '</div>'
-    ].join('');
-  }
-
   function renderQuizzes(quizzes) {
+    var body;
     if (!quizzes.length) {
-      return [
-        '<div class="learning-my-learning__section">',
-        '<div class="learning-hub__section-heading"><div><p class="learning-hub__eyebrow">Knowledge Check Results</p><h2>Your quiz results</h2></div></div>',
-        '<p class="learning-empty">Complete a Knowledge Check on a lesson page to see your results here.</p>',
-        '</div>'
-      ].join('');
+      body = '<p class="learning-empty">Complete a Knowledge Check on a lesson page to see your results here.</p>';
+    } else {
+      body =
+        '<ul class="learning-my-learning__quiz-list">' +
+        quizzes
+          .map(function (quiz) {
+            return [
+              '<li class="learning-my-learning__quiz-row">',
+              '<a href="' + lessonUrl(quiz.handle) + '">' + escapeHtml(quiz.title) + '</a>',
+              '<span>' + quiz.score + '/' + quiz.total + ' &middot; ' + quiz.percent + '%</span>',
+              '</li>'
+            ].join('');
+          })
+          .join('') +
+        '</ul>';
     }
 
-    var rows = quizzes
-      .map(function (quiz) {
-        return [
-          '<li class="learning-my-learning__quiz-row">',
-          '<a href="' + lessonUrl(quiz.handle) + '">' + escapeHtml(quiz.title) + '</a>',
-          '<span>' + quiz.score + ' / ' + quiz.total + ' (' + quiz.percent + '%)</span>',
-          '</li>'
-        ].join('');
-      })
-      .join('');
-
-    return [
-      '<div class="learning-my-learning__section">',
-      '<div class="learning-hub__section-heading"><div><p class="learning-hub__eyebrow">Knowledge Check Results</p><h2>Your quiz results</h2></div></div>',
-      '<p class="learning-my-learning__quiz-note">Your most recent result for each lesson.</p>',
-      '<ul class="learning-my-learning__quiz-list">' + rows + '</ul>',
-      '</div>'
-    ].join('');
+    return ['<div class="learning-my-learning__panel">', '<h2 class="learning-my-learning__section-title">Knowledge checks</h2>', body, '</div>'].join('');
   }
 
   function activityLabel(event) {
-    if (event.type === 'quiz') return 'Scored ' + event.score + '/' + event.total + ' on';
+    if (event.type === 'quiz') return 'Scored ' + event.score + '/' + event.total;
     if (event.type === 'completed') return 'Completed';
     return 'Viewed';
   }
 
   function renderRecentActivity(recentActivity) {
-    if (!recentActivity.length) return '';
-    var rows = recentActivity
-      .map(function (event) {
-        return [
-          '<li class="learning-my-learning__activity-row">',
-          '<span class="learning-my-learning__activity-label">' + activityLabel(event) + '</span>',
-          '<a href="' + lessonUrl(event.lesson_id) + '">' + escapeHtml(event.title || event.lesson_id) + '</a>',
-          '<span class="learning-my-learning__activity-date">' + formatDate(event.at) + '</span>',
-          '</li>'
-        ].join('');
-      })
-      .join('');
+    var body;
+    if (!recentActivity.length) {
+      body = '<p class="learning-empty">Your recent lesson views and completions will show up here.</p>';
+    } else {
+      body =
+        '<ul class="learning-my-learning__activity-list">' +
+        recentActivity
+          .map(function (event) {
+            return [
+              '<li class="learning-my-learning__activity-row">',
+              '<span class="learning-my-learning__activity-label">' + activityLabel(event) + '</span>',
+              '<a href="' + lessonUrl(event.lesson_id) + '">' + escapeHtml(event.title || event.lesson_id) + '</a>',
+              '<span class="learning-my-learning__activity-date">' + formatDate(event.at) + '</span>',
+              '</li>'
+            ].join('');
+          })
+          .join('') +
+        '</ul>';
+    }
 
-    return [
-      '<div class="learning-my-learning__section">',
-      '<div class="learning-hub__section-heading"><div><p class="learning-hub__eyebrow">Recent Activity</p><h2>What you&rsquo;ve been up to</h2></div></div>',
-      '<ul class="learning-my-learning__activity-list">' + rows + '</ul>',
-      '</div>'
-    ].join('');
+    return ['<div class="learning-my-learning__panel">', '<h2 class="learning-my-learning__section-title">Recent learning</h2>', body, '</div>'].join('');
   }
 
   function renderDashboard(viewModel) {
@@ -235,18 +205,18 @@
     if (!root) return;
 
     root.innerHTML = [
-      renderOverall(viewModel.overall),
-      renderContinueLearning(viewModel.continueLearning),
+      renderHero(viewModel.overall, viewModel.continueLearning),
       renderCategories(viewModel.categories),
-      renderLessons(viewModel.lessons),
+      '<div class="learning-my-learning__lower-grid">',
       renderQuizzes(viewModel.quizzes),
-      renderRecentActivity(viewModel.recentActivity)
+      renderRecentActivity(viewModel.recentActivity.slice(0, RECENT_ACTIVITY_LIMIT)),
+      '</div>'
     ].join('');
 
     showState('MyLearningDashboard');
   }
 
-  function wireRetryButtons() {
+  function wireStaticButtons() {
     var authenticateButtons = document.querySelectorAll('[data-my-learning-authenticate]');
     Array.prototype.forEach.call(authenticateButtons, function (button) {
       button.addEventListener('click', function () {
@@ -292,9 +262,29 @@
     });
   }
 
+  // Coordinates the two ways bootstrap can already have finished (see file
+  // header): calling this more than once is safe -- only the first call
+  // actually loads the dashboard.
+  function createInitializer() {
+    var initialized = false;
+    return function initOnce() {
+      if (initialized) return;
+      initialized = true;
+      loadDashboard();
+    };
+  }
+
   function init() {
-    wireRetryButtons();
-    document.addEventListener('oo:learning-progress-ready', loadDashboard);
+    wireStaticButtons();
+
+    var progressApi = window.OOLearningProgress;
+    var initOnce = createInitializer();
+
+    if (progressApi && typeof progressApi.isReady === 'function' && progressApi.isReady()) {
+      initOnce();
+    } else {
+      document.addEventListener('oo:learning-progress-ready', initOnce);
+    }
   }
 
   if (document.readyState === 'loading') {
