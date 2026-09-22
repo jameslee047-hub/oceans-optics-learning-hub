@@ -102,3 +102,23 @@ test("getProgress for one user never includes another user's rows", async () => 
   const progressB = await getProgress(supabase, USER_B);
   assert.equal(progressB.lessons[0].lesson_id, "R02");
 });
+
+test("getProgress reflects a freshly viewed (not yet completed) lesson alongside a completed quiz lesson", async () => {
+  const supabase = createFakeSupabase();
+  await recordLessonViewed(supabase, USER_A, "R05");
+  await recordQuizResult(supabase, USER_A, "R08", { score: 3, total: 4 });
+
+  const progress = await getProgress(supabase, USER_A);
+
+  const viewedLesson = progress.lessons.find((row) => row.lesson_id === "R05");
+  assert.ok(viewedLesson, "the viewed-only lesson must appear in progress");
+  assert.ok(!viewedLesson.completed_at, "a merely-viewed lesson must not be marked complete");
+
+  const completedLesson = progress.lessons.find((row) => row.lesson_id === "R08");
+  assert.ok(completedLesson.completed_at, "the quiz-completed lesson must be marked complete");
+
+  assert.equal(progress.quizzes.length, 1);
+  assert.equal(progress.quizzes[0].lesson_id, "R08");
+  assert.equal(progress.quizzes[0].score, 3);
+  assert.equal(progress.quizzes[0].total, 4);
+});

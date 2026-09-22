@@ -12,6 +12,16 @@
 <script src="{{ 'learning-hub-lesson-position.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'learning-hub-knowledge-check-data.js' | asset_url }}" defer="defer"></script>
 <script src="{{ 'learning-hub-knowledge-check.js' | asset_url }}" defer="defer"></script>
+{% comment %}
+  Phase B Checkpoint 2: authenticated lesson view / quiz result tracking.
+  Depends on window.OOLearningProgress (learning-hub-progress-auth.js,
+  loaded above) and listens for events dispatched by both that script and
+  learning-hub-knowledge-check.js above -- load order relative to those
+  doesn't matter for correctness since it only registers event listeners,
+  which are always attached before a later-dispatched event can fire.
+{% endcomment %}
+<script src="{{ 'learning-hub-lesson-id-map.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'learning-hub-progress-tracking.js' | asset_url }}" defer="defer"></script>
 
 {% liquid
   assign lesson_title = metaobject.title.value | default: 'Learning lesson'
