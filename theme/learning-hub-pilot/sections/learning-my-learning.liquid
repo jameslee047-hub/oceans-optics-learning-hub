@@ -1,0 +1,72 @@
+{{ 'learning-hub.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'learning-hub-progress-auth.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'learning-hub-catalogue-data.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'learning-hub-my-learning-core.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'learning-hub-my-learning.js' | asset_url }}" defer="defer"></script>
+
+<section class="learning-hub learning-my-learning color-{{ section.settings.color_scheme }} gradient">
+  <div class="learning-hub__band">
+    <div class="page-width learning-hub__intro">
+      <div>
+        <nav class="learning-breadcrumbs" aria-label="Breadcrumbs">
+          <a href="/pages/learn">Learning Hub</a>
+          <span aria-hidden="true">/</span>
+          <span>My Learning</span>
+        </nav>
+
+        <p class="learning-kicker">My Learning</p>
+        <h1>Your Learning Hub progress</h1>
+        <p class="learning-hub__lead">
+          Track completed lessons, Knowledge Check results, and pick up right where you left off.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-width learning-my-learning__body">
+    <div id="MyLearningLoading" class="learning-my-learning__state" role="status" aria-live="polite">
+      <p class="learning-empty">Loading your progress&hellip;</p>
+    </div>
+
+    <div id="MyLearningLoggedOut" class="learning-my-learning__state" hidden>
+      <div class="learning-panel learning-my-learning__signin">
+        <p class="learning-hub__eyebrow">Save your progress</p>
+        <h2>Log in to see your Learning Hub progress</h2>
+        <p>
+          Signing in with your Oceans Optics account saves the lessons you complete and your Knowledge Check
+          results, so you can pick up where you left off any time.
+        </p>
+        <button type="button" class="button learning-cta" data-my-learning-authenticate>Log in to view my progress</button>
+      </div>
+    </div>
+
+    <div id="MyLearningError" class="learning-my-learning__state" hidden>
+      <div class="learning-panel learning-my-learning__error">
+        <h2>We couldn&rsquo;t load your progress</h2>
+        <p>Something went wrong loading your Learning Hub progress. Your saved progress is safe -- please try again.</p>
+        <button type="button" class="button learning-cta" data-my-learning-retry>Try again</button>
+      </div>
+    </div>
+
+    <div id="MyLearningDashboard" class="learning-my-learning__state" hidden></div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "My Learning",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "My Learning"
+    }
+  ]
+}
+{% endschema %}

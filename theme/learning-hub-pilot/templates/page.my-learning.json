@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "learning-my-learning",
+      "settings": {
+        "color_scheme": "scheme-1"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
