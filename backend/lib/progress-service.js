@@ -15,6 +15,66 @@ export function validateQuizResult({ score, total }) {
   return { valid: true };
 }
 
+// Optional per-question answer-review snapshot for a Knowledge Check
+// result -- see migrations/0003_knowledge_check_answers.sql. A snapshot,
+// not a reference into current quiz content/IDs, since lesson quiz content
+// can change after a customer completes it. `undefined`/`null` is valid
+// (backward compatible: older/other callers that don't send answers still
+// work exactly as before, and the row's answers column is explicitly set
+// to null, matching "current result" semantics on a retake).
+//
+// Strict and whitelisting: any item missing/mistyping a required field, or
+// carrying extra properties, is rejected outright rather than silently
+// dropped or passed through -- this is untrusted request-body input.
+// Returns { valid, answers } where `answers` is either null or a
+// normalized (whitelisted-fields-only) copy of the input array.
+const MAX_ANSWER_ITEMS = 50;
+const MAX_ANSWER_TEXT_LENGTH = 2000;
+const MAX_QUESTION_ID_LENGTH = 64;
+
+function isNonEmptyBoundedString(value, maxLength) {
+  return typeof value === "string" && value.length > 0 && value.length <= maxLength;
+}
+
+export function validateAnswerReview(answers) {
+  if (answers === undefined || answers === null) return { valid: true, answers: null };
+  if (!Array.isArray(answers)) return { valid: false, reason: "answers_must_be_an_array" };
+  if (answers.length === 0) return { valid: false, reason: "answers_must_not_be_empty" };
+  if (answers.length > MAX_ANSWER_ITEMS) return { valid: false, reason: "answers_too_large" };
+
+  const normalized = [];
+  for (const item of answers) {
+    if (!item || typeof item !== "object" || Array.isArray(item)) {
+      return { valid: false, reason: "invalid_answer_item" };
+    }
+    if (!isNonEmptyBoundedString(item.question_id, MAX_QUESTION_ID_LENGTH)) {
+      return { valid: false, reason: "invalid_answer_question_id" };
+    }
+    if (!isNonEmptyBoundedString(item.question, MAX_ANSWER_TEXT_LENGTH)) {
+      return { valid: false, reason: "invalid_answer_question" };
+    }
+    if (!isNonEmptyBoundedString(item.selected, MAX_ANSWER_TEXT_LENGTH)) {
+      return { valid: false, reason: "invalid_answer_selected" };
+    }
+    if (!isNonEmptyBoundedString(item.correct, MAX_ANSWER_TEXT_LENGTH)) {
+      return { valid: false, reason: "invalid_answer_correct" };
+    }
+    if (typeof item.is_correct !== "boolean") {
+      return { valid: false, reason: "invalid_answer_is_correct" };
+    }
+
+    normalized.push({
+      question_id: item.question_id,
+      question: item.question,
+      selected: item.selected,
+      correct: item.correct,
+      is_correct: item.is_correct
+    });
+  }
+
+  return { valid: true, answers: normalized };
+}
+
 export async function recordLessonViewed(supabase, userId, lessonId) {
   // Insert-if-absent only: a repeat "viewed" call must never overwrite an
   // existing first_viewed_at or clear completed_at.
@@ -62,14 +122,28 @@ export async function recordLessonComplete(supabase, userId, lessonId) {
 
 // Quiz completion is lesson completion (per the approved Phase 2 decision):
 // this records the score AND marks the lesson complete in one call.
-export async function recordQuizResult(supabase, userId, lessonId, { score, total }) {
+// `answers` is optional (see validateAnswerReview) -- always written
+// explicitly (including as null when omitted), so a retake's row always
+// reflects that SAME attempt's answers, never a stale snapshot from a
+// previous attempt left behind by an upsert that only touched score/total.
+export async function recordQuizResult(supabase, userId, lessonId, { score, total, answers }) {
   const validation = validateQuizResult({ score, total });
   if (!validation.valid) throw new Error(`invalid_quiz_result:${validation.reason}`);
+
+  const answerValidation = validateAnswerReview(answers);
+  if (!answerValidation.valid) throw new Error(`invalid_quiz_result:${answerValidation.reason}`);
 
   const { error: upsertError } = await supabase
     .from("knowledge_check_results")
     .upsert(
-      { user_id: userId, lesson_id: lessonId, score, total, completed_at: new Date().toISOString() },
+      {
+        user_id: userId,
+        lesson_id: lessonId,
+        score,
+        total,
+        answers: answerValidation.answers,
+        completed_at: new Date().toISOString()
+      },
       { onConflict: "user_id,lesson_id" }
     );
   if (upsertError) throw upsertError;
@@ -80,7 +154,7 @@ export async function recordQuizResult(supabase, userId, lessonId, { score, tota
 export async function getProgress(supabase, userId) {
   const [{ data: lessons, error: lessonsError }, { data: quizzes, error: quizzesError }] = await Promise.all([
     supabase.from("lesson_progress").select("lesson_id, first_viewed_at, completed_at").eq("user_id", userId),
-    supabase.from("knowledge_check_results").select("lesson_id, score, total, completed_at").eq("user_id", userId)
+    supabase.from("knowledge_check_results").select("lesson_id, score, total, completed_at, answers").eq("user_id", userId)
   ]);
   if (lessonsError) throw lessonsError;
   if (quizzesError) throw quizzesError;

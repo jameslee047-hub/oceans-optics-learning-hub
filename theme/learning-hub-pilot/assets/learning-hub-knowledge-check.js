@@ -114,10 +114,63 @@
       if (shouldFocus) focusCurrentQuestion();
     }
 
+    // Snapshot of this attempt's answers -- captures the actual question/
+    // answer TEXT shown at completion time (not an index into `questions`,
+    // which could point to different content after a future content
+    // edit). Used both for the compact review below and for the
+    // oo:knowledge-check-completed event detail that
+    // learning-hub-progress-tracking.js forwards to the backend.
+    function buildAnswerReview() {
+      return questions.map(function (question, index) {
+        var state = questionStates[index];
+        var selectedText = state.selectedIndex >= 0 ? question.answers[state.selectedIndex] : '';
+        return {
+          question_id: 'q' + (index + 1),
+          question: question.question,
+          selected: selectedText,
+          correct: question.answers[question.correct_index],
+          is_correct: !!state.isCorrect
+        };
+      });
+    }
+
+    function renderAnswerReviewHtml(review) {
+      return (
+        '<ul class="learning-quiz__review-list">' +
+        review
+          .map(function (item) {
+            if (item.is_correct) {
+              return [
+                '<li class="learning-quiz__review-item is-correct">',
+                '<p class="learning-quiz__review-question"><span class="learning-quiz__review-icon" aria-hidden="true">&check;</span>' +
+                  '<span class="visually-hidden">Correct: </span>' +
+                  escapeHtml(item.question) +
+                  '</p>',
+                '<p class="learning-quiz__review-line">Your answer: ' + escapeHtml(item.selected) + '</p>',
+                '</li>'
+              ].join('');
+            }
+            return [
+              '<li class="learning-quiz__review-item is-incorrect">',
+              '<p class="learning-quiz__review-question"><span class="learning-quiz__review-icon" aria-hidden="true">&cross;</span>' +
+                '<span class="visually-hidden">Incorrect: </span>' +
+                escapeHtml(item.question) +
+                '</p>',
+              '<p class="learning-quiz__review-line">Your answer: ' + escapeHtml(item.selected) + '</p>',
+              '<p class="learning-quiz__review-line">Correct answer: ' + escapeHtml(item.correct) + '</p>',
+              '</li>'
+            ].join('');
+          })
+          .join('') +
+        '</ul>'
+      );
+    }
+
     function renderScore() {
       var score = questionStates.reduce(function (total, state) {
         return total + (state.checked && state.isCorrect ? 1 : 0);
       }, 0);
+      var answerReview = buildAnswerReview();
 
       card.classList.remove('is-correct', 'is-incorrect');
       stage.innerHTML = [
@@ -125,7 +178,8 @@
         '<p class="learning-quiz__progress">Your Score</p>',
         '<h3>' + score + ' / ' + questions.length + '</h3>',
         '<p>Nice work. You have finished this knowledge check and can keep reading or try it again.</p>',
-        '</div>'
+        '</div>',
+        renderAnswerReviewHtml(answerReview)
       ].join('');
       result.hidden = true;
       primaryButton.hidden = true;
@@ -136,7 +190,8 @@
       dispatch(EVENT_QUIZ_COMPLETED, {
         lessonHandle: handle,
         score: score,
-        total: questions.length
+        total: questions.length,
+        answers: answerReview
       });
     }
 

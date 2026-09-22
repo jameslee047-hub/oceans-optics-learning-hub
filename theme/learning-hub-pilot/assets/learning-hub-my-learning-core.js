@@ -229,6 +229,35 @@
     return { completed: completed, inProgress: inProgress, notStarted: notStarted };
   }
 
+  // Defends the dashboard against a missing (pre-migration row), null, or
+  // malformed `answers` value from GET /api/progress -- returns null
+  // (meaning "no review available") unless every item is well-formed, so
+  // a partially-corrupt value can never render a half-broken review
+  // instead of the clean "unavailable" state. Never claims attempt
+  // history: this is always exactly the one snapshot the schema stores
+  // for the lesson's current result.
+  function prepareAnswerReview(rawAnswers) {
+    if (!isPlainArray(rawAnswers) || rawAnswers.length === 0) return null;
+
+    var items = [];
+    for (var i = 0; i < rawAnswers.length; i += 1) {
+      var item = rawAnswers[i];
+      if (!item || typeof item !== "object") return null;
+      if (typeof item.question !== "string" || !item.question) return null;
+      if (typeof item.selected !== "string") return null;
+      if (typeof item.correct !== "string") return null;
+      items.push({
+        question_id: typeof item.question_id === "string" ? item.question_id : "q" + (i + 1),
+        question: item.question,
+        selected: item.selected,
+        correct: item.correct,
+        is_correct: item.is_correct === true
+      });
+    }
+
+    return items;
+  }
+
   // One row per lesson (the schema stores exactly one knowledge_check_results
   // row per (user, lesson) -- retaking a quiz overwrites it), so this is
   // necessarily "most recent result", never a history of attempts.
@@ -256,7 +285,8 @@
           score: score,
           total: total,
           percent: percentOf(score, total),
-          completed_at: row.completed_at || null
+          completed_at: row.completed_at || null,
+          answerReview: prepareAnswerReview(row.answers)
         };
       })
       .filter(Boolean);
@@ -334,6 +364,7 @@
     categoryActionLabel: categoryActionLabel,
     pickContinueLearning: pickContinueLearning,
     summarizeLessons: summarizeLessons,
+    prepareAnswerReview: prepareAnswerReview,
     prepareQuizResults: prepareQuizResults,
     prepareRecentActivity: prepareRecentActivity,
     buildDashboardViewModel: buildDashboardViewModel

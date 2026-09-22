@@ -147,24 +147,76 @@
     ].join('');
   }
 
+  // A correct item shows the answer once ("do not redundantly show the
+  // same answer twice"); an incorrect item shows both. Accessible text
+  // indicators (checkmark/cross + visually-hidden label), not color alone.
+  function renderAnswerReviewList(answerReview) {
+    return (
+      '<ul class="learning-my-learning__answer-review">' +
+      answerReview
+        .map(function (item) {
+          if (item.is_correct) {
+            return [
+              '<li class="learning-my-learning__answer-review-item is-correct">',
+              '<p class="learning-my-learning__answer-review-question">',
+              '<span class="learning-my-learning__answer-review-icon" aria-hidden="true">&check;</span>',
+              '<span class="visually-hidden">Correct: </span>',
+              escapeHtml(item.question),
+              '</p>',
+              '<p class="learning-my-learning__answer-review-line">Your answer: ' + escapeHtml(item.selected) + '</p>',
+              '</li>'
+            ].join('');
+          }
+          return [
+            '<li class="learning-my-learning__answer-review-item is-incorrect">',
+            '<p class="learning-my-learning__answer-review-question">',
+            '<span class="learning-my-learning__answer-review-icon" aria-hidden="true">&cross;</span>',
+            '<span class="visually-hidden">Incorrect: </span>',
+            escapeHtml(item.question),
+            '</p>',
+            '<p class="learning-my-learning__answer-review-line">Your answer: ' + escapeHtml(item.selected) + '</p>',
+            '<p class="learning-my-learning__answer-review-line">Correct answer: ' + escapeHtml(item.correct) + '</p>',
+            '</li>'
+          ].join('');
+        })
+        .join('') +
+      '</ul>'
+    );
+  }
+
+  function renderQuizRow(quiz) {
+    var head = [
+      '<div class="learning-my-learning__quiz-row-head">',
+      '<a href="' + lessonUrl(quiz.handle) + '">' + escapeHtml(quiz.title) + '</a>',
+      '<span>' + quiz.score + '/' + quiz.total + ' &middot; ' + quiz.percent + '%</span>',
+      '</div>'
+    ].join('');
+
+    if (!quiz.answerReview) {
+      // Either a genuinely new result with no answers submitted, or one
+      // that predates this feature -- either way, the cleanest UX is to
+      // just omit the review affordance rather than a disclosure that
+      // always says "unavailable".
+      return '<li class="learning-my-learning__quiz-row">' + head + '</li>';
+    }
+
+    return [
+      '<li class="learning-my-learning__quiz-row">',
+      head,
+      '<details class="learning-my-learning__quiz-details">',
+      '<summary>Review answers</summary>',
+      renderAnswerReviewList(quiz.answerReview),
+      '</details>',
+      '</li>'
+    ].join('');
+  }
+
   function renderQuizzes(quizzes) {
     var body;
     if (!quizzes.length) {
       body = '<p class="learning-empty">Complete a Knowledge Check on a lesson page to see your results here.</p>';
     } else {
-      body =
-        '<ul class="learning-my-learning__quiz-list">' +
-        quizzes
-          .map(function (quiz) {
-            return [
-              '<li class="learning-my-learning__quiz-row">',
-              '<a href="' + lessonUrl(quiz.handle) + '">' + escapeHtml(quiz.title) + '</a>',
-              '<span>' + quiz.score + '/' + quiz.total + ' &middot; ' + quiz.percent + '%</span>',
-              '</li>'
-            ].join('');
-          })
-          .join('') +
-        '</ul>';
+      body = '<ul class="learning-my-learning__quiz-list">' + quizzes.map(renderQuizRow).join('') + '</ul>';
     }
 
     return ['<div class="learning-my-learning__panel">', '<h2 class="learning-my-learning__section-title">Knowledge checks</h2>', body, '</div>'].join('');

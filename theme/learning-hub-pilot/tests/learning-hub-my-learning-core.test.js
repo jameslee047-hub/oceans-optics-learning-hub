@@ -174,6 +174,7 @@ test("prepareQuizResults: maps score/total/percent per lesson, most recent first
   // only a single completed_at per lesson, matching the one-row-per-
   // (user, lesson) schema.
   assert.deepEqual(Object.keys(result[0]).sort(), [
+    "answerReview",
     "category_handle",
     "category_title",
     "completed_at",
@@ -184,11 +185,51 @@ test("prepareQuizResults: maps score/total/percent per lesson, most recent first
     "title",
     "total"
   ]);
+  assert.equal(result[0].answerReview, null, "a result with no stored answers must expose answerReview as null");
 });
 
 test("prepareQuizResults: ignores a quiz result for a lesson not in the published catalogue", function () {
   var progress = { lessons: [], quizzes: [{ lesson_id: "R99-unpublished", score: 1, total: 1, completed_at: "2026-01-01T00:00:00Z" }] };
   assert.deepEqual(Core.prepareQuizResults(CATALOGUE, progress), []);
+});
+
+test("prepareQuizResults: exposes a valid stored answers snapshot as answerReview", function () {
+  var answers = [{ question_id: "q1", question: "Q1?", selected: "Right", correct: "Right", is_correct: true }];
+  var progress = { lessons: [], quizzes: [{ lesson_id: "R01", score: 1, total: 1, completed_at: "2026-01-01T00:00:00Z", answers: answers }] };
+  var result = Core.prepareQuizResults(CATALOGUE, progress);
+  assert.deepEqual(result[0].answerReview, answers);
+});
+
+test("prepareAnswerReview: transforms a correct answer for rendering", function () {
+  var review = Core.prepareAnswerReview([{ question_id: "q1", question: "Q1?", selected: "Right", correct: "Right", is_correct: true }]);
+  assert.deepEqual(review, [{ question_id: "q1", question: "Q1?", selected: "Right", correct: "Right", is_correct: true }]);
+});
+
+test("prepareAnswerReview: transforms an incorrect answer for rendering", function () {
+  var review = Core.prepareAnswerReview([{ question_id: "q1", question: "Q1?", selected: "Wrong", correct: "Right", is_correct: false }]);
+  assert.deepEqual(review, [{ question_id: "q1", question: "Q1?", selected: "Wrong", correct: "Right", is_correct: false }]);
+});
+
+test("prepareAnswerReview: null for a null/missing legacy result (no crash, no fabricated review)", function () {
+  assert.equal(Core.prepareAnswerReview(null), null);
+  assert.equal(Core.prepareAnswerReview(undefined), null);
+});
+
+test("prepareAnswerReview: null for an empty array", function () {
+  assert.equal(Core.prepareAnswerReview([]), null);
+});
+
+test("prepareAnswerReview: null for malformed data instead of a half-broken review", function () {
+  assert.equal(Core.prepareAnswerReview("not-an-array"), null);
+  assert.equal(Core.prepareAnswerReview([{ question: "Q1?" }]), null, "missing selected/correct");
+  assert.equal(Core.prepareAnswerReview([{ question: "Q1?", selected: "A", correct: 5, is_correct: true }]), null, "non-string correct");
+  assert.equal(Core.prepareAnswerReview([null]), null);
+  assert.equal(Core.prepareAnswerReview([{ question: "Q1?", selected: "A", correct: "A" }, "not-an-object"]), null);
+});
+
+test("prepareAnswerReview: defaults a missing question_id rather than rejecting the whole review", function () {
+  var review = Core.prepareAnswerReview([{ question: "Q1?", selected: "A", correct: "A", is_correct: true }]);
+  assert.deepEqual(review, [{ question_id: "q1", question: "Q1?", selected: "A", correct: "A", is_correct: true }]);
 });
 
 test("prepareRecentActivity: merges viewed/completed/quiz events, most recent first, respects the limit", function () {

@@ -77,11 +77,22 @@
     if (!lessonId) return;
     if (!Number.isInteger(detail.score) || !Number.isInteger(detail.total)) return;
 
-    authorizedFetch('/api/quiz/result', {
+    var body = {
       lesson_id: lessonId,
       score: detail.score,
       total: detail.total
-    });
+    };
+
+    // Optional answer-review snapshot (see learning-hub-knowledge-check.js
+    // and lib/progress-service.js's validateAnswerReview on the backend,
+    // which is the actual source of truth for what shape is accepted --
+    // this is only a cheap pre-check so an obviously-wrong payload isn't
+    // sent at all; omitting it entirely is always backward compatible).
+    if (Array.isArray(detail.answers) && detail.answers.length > 0) {
+      body.answers = detail.answers;
+    }
+
+    authorizedFetch('/api/quiz/result', body);
   }
 
   // learning-hub-progress-auth.js loads before this file and calls its own

@@ -116,3 +116,55 @@ test("rejects a negative score", async () => {
     assert.equal(res.jsonBody.error, "score_must_be_non_negative");
   });
 });
+
+test("accepts a request with no answers field at all (backward compatible)", async () => {
+  await withAuthEnv(async () => {
+    const req = bearerRequest({ token: validToken(), body: { lesson_id: "R08", score: 4, total: 5 } });
+    const res = createMockNodeResponse();
+    await handler(req, res);
+    // Reaches real Supabase (unset in tests) and fails there, not on
+    // request validation -- proves omitting `answers` never trips the
+    // answers validator.
+    assert.equal(res.statusCode, 500);
+  });
+});
+
+test("rejects a malformed answers payload (not an array) before any database work", async () => {
+  await withAuthEnv(async () => {
+    const req = bearerRequest({ token: validToken(), body: { lesson_id: "R08", score: 4, total: 5, answers: "not-an-array" } });
+    const res = createMockNodeResponse();
+    await handler(req, res);
+    assert.equal(res.statusCode, 400);
+    assert.equal(res.jsonBody.error, "answers_must_be_an_array");
+  });
+});
+
+test("rejects an oversized answers array before any database work", async () => {
+  await withAuthEnv(async () => {
+    const tooMany = Array.from({ length: 51 }, (_, i) => ({
+      question_id: "q" + i,
+      question: "Q?",
+      selected: "A",
+      correct: "A",
+      is_correct: true
+    }));
+    const req = bearerRequest({ token: validToken(), body: { lesson_id: "R08", score: 4, total: 5, answers: tooMany } });
+    const res = createMockNodeResponse();
+    await handler(req, res);
+    assert.equal(res.statusCode, 400);
+    assert.equal(res.jsonBody.error, "answers_too_large");
+  });
+});
+
+test("rejects an answers item missing a required field before any database work", async () => {
+  await withAuthEnv(async () => {
+    const req = bearerRequest({
+      token: validToken(),
+      body: { lesson_id: "R08", score: 4, total: 5, answers: [{ question: "Q?", selected: "A", correct: "A", is_correct: true }] }
+    });
+    const res = createMockNodeResponse();
+    await handler(req, res);
+    assert.equal(res.statusCode, 400);
+    assert.equal(res.jsonBody.error, "invalid_answer_question_id");
+  });
+});

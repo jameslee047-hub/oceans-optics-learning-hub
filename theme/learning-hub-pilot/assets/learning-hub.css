@@ -2006,6 +2006,52 @@ a.learning-inline-reference:focus-visible,
   margin-bottom: 0;
 }
 
+/* Compact answer review shown under the final score -- accessible text
+   indicators (checkmark/cross + visually-hidden "Correct"/"Incorrect"),
+   never color alone. A correct item shows the answer once; an incorrect
+   item also shows the correct answer. */
+.learning-quiz__review-list {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1.2rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.learning-quiz__review-item {
+  padding: 1rem 1.2rem;
+  border-radius: 0.7rem;
+  background: #fbfcfd;
+  border: 0.1rem solid rgba(2, 48, 89, 0.16);
+  font-size: 1.3rem;
+  line-height: 1.4;
+}
+
+.learning-quiz__review-question {
+  margin: 0 0 0.4rem;
+  color: var(--oo-learning-blue);
+  font-weight: 700;
+}
+
+.learning-quiz__review-line {
+  margin: 0;
+  color: var(--oo-learning-ink);
+}
+
+.learning-quiz__review-icon {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-weight: 700;
+}
+
+.learning-quiz__review-item.is-correct .learning-quiz__review-icon {
+  color: var(--oo-learning-success);
+}
+
+.learning-quiz__review-item.is-incorrect .learning-quiz__review-icon {
+  color: var(--oo-learning-danger);
+}
+
 .learning-quiz__actions {
   margin-top: 1.2rem;
   align-items: center;
@@ -2363,13 +2409,15 @@ a.learning-inline-reference:focus-visible,
 
 .learning-my-learning__quiz-row,
 .learning-my-learning__activity-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
   padding: 0.9rem 0;
   border-bottom: 0.1rem solid var(--oo-learning-line);
   font-size: 1.35rem;
+}
+
+.learning-my-learning__activity-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 }
 
 .learning-my-learning__quiz-list li:last-child,
@@ -2377,10 +2425,73 @@ a.learning-inline-reference:focus-visible,
   border-bottom: 0;
 }
 
-.learning-my-learning__quiz-row span:last-child {
+.learning-my-learning__quiz-row-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.learning-my-learning__quiz-row-head span:last-child {
   flex-shrink: 0;
   color: var(--oo-learning-blue);
   font-weight: 700;
+}
+
+.learning-my-learning__quiz-details {
+  margin-top: 0.6rem;
+}
+
+.learning-my-learning__quiz-details summary {
+  color: var(--oo-learning-orange);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.learning-my-learning__quiz-details[open] summary {
+  margin-bottom: 0.8rem;
+}
+
+.learning-my-learning__answer-review {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.learning-my-learning__answer-review-item {
+  padding: 0.8rem 1rem;
+  border-radius: 0.6rem;
+  background: var(--oo-learning-soft-blue);
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.learning-my-learning__answer-review-question {
+  margin: 0 0 0.3rem;
+  color: var(--oo-learning-blue);
+  font-weight: 700;
+}
+
+.learning-my-learning__answer-review-line {
+  margin: 0;
+  color: var(--oo-learning-muted);
+}
+
+.learning-my-learning__answer-review-icon {
+  display: inline-block;
+  margin-right: 0.4rem;
+  font-weight: 700;
+}
+
+.learning-my-learning__answer-review-item.is-correct .learning-my-learning__answer-review-icon {
+  color: var(--oo-learning-success);
+}
+
+.learning-my-learning__answer-review-item.is-incorrect .learning-my-learning__answer-review-icon {
+  color: var(--oo-learning-danger);
 }
 
 .learning-my-learning__activity-row {
@@ -2418,4 +2529,20 @@ a.learning-inline-reference:focus-visible,
   .learning-my-learning__hero-percent {
     font-size: 4.8rem;
   }
+}
+
+/* ==========================================================================
+   My Learning Progress navigation links -- homepage/category/lesson.
+   Deliberately lightweight (a plain inline link, not a button) everywhere
+   except the post-Knowledge-Check CTA, which is allowed to be a real
+   button since it is the one place this is meant to read as a stronger,
+   contextual next step rather than a secondary utility link.
+   ========================================================================== */
+
+.learning-hub__secondary-nav {
+  margin: 1rem 0 0;
+}
+
+.learning-lesson-progress-cta {
+  margin: 2.4rem 0 0;
 }
