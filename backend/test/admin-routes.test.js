@@ -32,18 +32,24 @@ function customerBearerHeader() {
 }
 
 const ROUTES = [
-  { name: "dashboard (HTML)", method: "GET", query: { path: ["dashboard"] } },
-  { name: "summary", method: "GET", query: { path: ["summary"], range: "all" } },
-  { name: "lessons", method: "GET", query: { path: ["lessons"] } },
-  { name: "questions", method: "GET", query: { path: ["questions"] } },
-  { name: "learners", method: "GET", query: { path: ["learners"] } },
-  { name: "learners/[id]", method: "GET", query: { path: ["learners", "11111111-1111-1111-1111-111111111111"] } }
+  { name: "dashboard (HTML)", method: "GET", url: "/admin", query: {} },
+  { name: "dashboard API alias (HTML)", method: "GET", url: "/api/admin", query: {} },
+  { name: "summary", method: "GET", url: "/api/admin/summary?range=all", query: { range: "all" } },
+  { name: "lessons", method: "GET", url: "/api/admin/lessons", query: {} },
+  { name: "questions", method: "GET", url: "/api/admin/questions", query: {} },
+  { name: "learners", method: "GET", url: "/api/admin/learners", query: {} },
+  {
+    name: "learners/[id]",
+    method: "GET",
+    url: "/api/admin/learners/11111111-1111-1111-1111-111111111111",
+    query: {}
+  }
 ];
 
 for (const route of ROUTES) {
   test(`${route.name}: rejects a request with no admin credentials`, async () => {
     await withAdminEnv(async () => {
-      const req = { method: route.method, headers: {}, query: route.query };
+      const req = { method: route.method, headers: {}, url: route.url, query: route.query };
       const res = createMockNodeResponse();
       await handler(req, res);
       assert.equal(res.statusCode, 401);
@@ -52,7 +58,7 @@ for (const route of ROUTES) {
 
   test(`${route.name}: rejects a customer Learning Progress bearer JWT -- it grants no admin access`, async () => {
     await withAdminEnv(async () => {
-      const req = { method: route.method, headers: { authorization: customerBearerHeader() }, query: route.query };
+      const req = { method: route.method, headers: { authorization: customerBearerHeader() }, url: route.url, query: route.query };
       const res = createMockNodeResponse();
       await handler(req, res);
       assert.equal(res.statusCode, 401);
@@ -61,7 +67,12 @@ for (const route of ROUTES) {
 
   test(`${route.name}: rejects wrong admin credentials`, async () => {
     await withAdminEnv(async () => {
-      const req = { method: route.method, headers: { authorization: basicAuthHeader(ADMIN_USERNAME, "wrong") }, query: route.query };
+      const req = {
+        method: route.method,
+        headers: { authorization: basicAuthHeader(ADMIN_USERNAME, "wrong") },
+        url: route.url,
+        query: route.query
+      };
       const res = createMockNodeResponse();
       await handler(req, res);
       assert.equal(res.statusCode, 401);
@@ -70,7 +81,12 @@ for (const route of ROUTES) {
 
   test(`${route.name}: with correct admin credentials, proceeds past auth (reaches the unset-Supabase boundary, not a 401/403)`, async () => {
     await withAdminEnv(async () => {
-      const req = { method: route.method, headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) }, query: route.query };
+      const req = {
+        method: route.method,
+        headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) },
+        url: route.url,
+        query: route.query
+      };
       const res = createMockNodeResponse();
       await handler(req, res);
       assert.notEqual(res.statusCode, 401);
@@ -82,7 +98,12 @@ for (const route of ROUTES) {
 test("summary/lessons/questions/learners/learners[id] reject non-GET methods (after auth)", async () => {
   await withAdminEnv(async () => {
     for (const route of ROUTES) {
-      const req = { method: "POST", headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) }, query: route.query };
+      const req = {
+        method: "POST",
+        headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) },
+        url: route.url,
+        query: route.query
+      };
       const res = createMockNodeResponse();
       await handler(req, res);
       assert.equal(res.statusCode, 405, `${route.name} should reject POST`);
@@ -90,17 +111,60 @@ test("summary/lessons/questions/learners/learners[id] reject non-GET methods (af
   });
 });
 
-test("dashboard route serves HTML, not JSON, once authorized", async () => {
+test("dashboard routes serve HTML, not JSON, once authorized", async () => {
+  await withAdminEnv(async () => {
+    for (const url of ["/admin", "/api/admin", "/api/admin/dashboard"]) {
+      const req = {
+        method: "GET",
+        headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) },
+        url,
+        query: {}
+      };
+      const res = createMockNodeResponse();
+      await handler(req, res);
+      assert.equal(res.statusCode, 200);
+      assert.ok(res.getHeader("Content-Type").includes("text/html"));
+    }
+  });
+});
+
+test("admin API URLs dispatch JSON handlers when Vercel does not populate query.path", async () => {
+  const routes = [
+    ["/api/admin/summary?range=all", { range: "all" }, "admin_summary_failed"],
+    ["/api/admin/lessons", {}, "admin_lessons_failed"],
+    ["/api/admin/questions", {}, "admin_questions_failed"],
+    ["/api/admin/learners", {}, "admin_learners_failed"],
+    ["/api/admin/learners/11111111-1111-1111-1111-111111111111", {}, "admin_learner_detail_failed"]
+  ];
+
+  await withAdminEnv(async () => {
+    for (const [url, query, expectedError] of routes) {
+      const req = {
+        method: "GET",
+        headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) },
+        url,
+        query
+      };
+      const res = createMockNodeResponse();
+      await handler(req, res);
+      assert.equal(res.getHeader("Content-Type"), undefined, `${url} must not serve dashboard HTML`);
+      assert.equal(res.jsonBody?.error, expectedError, `${url} should reach its JSON route handler`);
+    }
+  });
+});
+
+test("the request URL is authoritative over a transformed or conflicting catch-all query value", async () => {
   await withAdminEnv(async () => {
     const req = {
       method: "GET",
       headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) },
-      query: { path: ["dashboard"] }
+      url: "/api/admin/summary?range=all",
+      query: { path: ["dashboard"], range: "all" }
     };
     const res = createMockNodeResponse();
     await handler(req, res);
-    assert.equal(res.statusCode, 200);
-    assert.ok(res.getHeader("Content-Type").includes("text/html"));
+    assert.equal(res.jsonBody?.error, "admin_summary_failed");
+    assert.equal(res.getHeader("Content-Type"), undefined);
   });
 });
 
@@ -121,7 +185,7 @@ test("empty catch-all path also dispatches the HTML dashboard for local compatib
 test("unknown admin paths remain authenticated and return a scoped 404", async () => {
   await withAdminEnv(async () => {
     const unauthorized = createMockNodeResponse();
-    await handler({ method: "GET", headers: {}, query: { path: ["unknown"] } }, unauthorized);
+    await handler({ method: "GET", headers: {}, url: "/api/admin/unknown", query: {} }, unauthorized);
     assert.equal(unauthorized.statusCode, 401);
 
     const authorized = createMockNodeResponse();
@@ -129,7 +193,8 @@ test("unknown admin paths remain authenticated and return a scoped 404", async (
       {
         method: "GET",
         headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) },
-        query: { path: ["unknown"] }
+        url: "/api/admin/unknown?range=all",
+        query: { range: "all" }
       },
       authorized
     );

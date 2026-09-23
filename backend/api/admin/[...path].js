@@ -1,6 +1,4 @@
 // One Vercel function for the complete internal analytics dashboard.
-// Vercel supplies the catch-all `path` parameter as an array; accepting a
-// slash-delimited string as well keeps local/unit invocation predictable.
 import dashboardHandler from "../../routes/admin/index.js";
 import summaryHandler from "../../routes/admin/summary.js";
 import lessonsHandler from "../../routes/admin/lessons.js";
@@ -15,8 +13,32 @@ function pathSegments(pathValue) {
   return [];
 }
 
+function adminPathFromUrl(urlValue) {
+  if (typeof urlValue !== "string" || urlValue.length === 0) return null;
+
+  let pathname;
+  try {
+    pathname = new URL(urlValue, "http://vercel.local").pathname;
+  } catch {
+    return null;
+  }
+
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments[0] === "api" && segments[1] === "admin") return segments.slice(2);
+  if (segments[0] === "admin") return segments.slice(1);
+  return null;
+}
+
+function requestedAdminPath(req) {
+  // In Vercel's Node runtime req.query contains the URL query string; the
+  // dynamic filesystem path is not guaranteed to be copied into query.path.
+  // req.url also survives both the direct /api/admin route and /admin rewrite
+  // shapes, so prefer it whenever it identifies the admin namespace.
+  return adminPathFromUrl(req.url) ?? pathSegments(req.query?.path);
+}
+
 export default async function handler(req, res) {
-  const segments = pathSegments(req.query?.path);
+  const segments = requestedAdminPath(req);
 
   if (segments.length === 0 || (segments.length === 1 && segments[0] === "dashboard")) {
     return dashboardHandler(req, res);
