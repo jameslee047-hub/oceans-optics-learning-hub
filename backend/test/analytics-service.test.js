@@ -205,17 +205,109 @@ test("computeSummaryMetrics: counts are event-sourced, within range only", () =>
   assert.equal(summary.activeLearners, 1, "only USER_A has in-range events");
   assert.equal(summary.lessonViews, 1);
   assert.equal(summary.lessonCompletions, 1);
-  assert.equal(summary.completionRate, 100);
+  assert.equal(summary.uniqueLessonPairsViewed, 1);
+  assert.equal(summary.uniqueViewedPairsCompleted, 1);
+  assert.equal(summary.lessonConversionRate, 100);
   assert.equal(summary.quizzesCompleted, 1);
   assert.equal(summary.avgQuizPercent, 75);
   assert.equal(summary.hasEventData, true);
 });
 
-test("computeSummaryMetrics: completion rate is 0 with no views in range, not NaN/Infinity", () => {
+test("computeSummaryMetrics: lesson conversion is 0 with no viewed pairs in range, not NaN/Infinity", () => {
   const summary = computeSummaryMetrics({ users: [], events: [] }, { since: null, range: "all" });
-  assert.equal(summary.completionRate, 0);
+  assert.equal(summary.lessonConversionRate, 0);
+  assert.equal(summary.uniqueLessonPairsViewed, 0);
+  assert.equal(summary.uniqueViewedPairsCompleted, 0);
   assert.equal(summary.avgQuizPercent, null);
   assert.equal(summary.hasEventData, false);
+});
+
+// ---------------- computeSummaryMetrics: lesson conversion ----------------
+
+test("lessonConversionRate: 4 views + 1 completion of the SAME lesson by one learner is 100%, not 25%", () => {
+  // This is the exact bug scenario: raw lesson_viewed / lesson_completed
+  // EVENT COUNTS would be 1/4 = 25%, wrongly implying the learner mostly
+  // did not finish -- but they viewed ONE lesson repeatedly and completed
+  // it. The deduplicated learner+lesson pair metric must show 100%.
+  const dateRange = { since: null, range: "all" };
+  const events = [
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-01T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-02T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-03T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-04T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_completed", lesson_id: "R01", created_at: "2026-03-04T00:05:00Z" }
+  ];
+
+  const summary = computeSummaryMetrics({ users: [{ id: USER_A }], events }, dateRange);
+  assert.equal(summary.lessonViews, 4, "the raw view count is still 4 -- it is simply never used as the conversion denominator");
+  assert.equal(summary.lessonCompletions, 1);
+  assert.equal(summary.uniqueLessonPairsViewed, 1, "one distinct (learner, lesson) pair, regardless of how many times viewed");
+  assert.equal(summary.uniqueViewedPairsCompleted, 1);
+  assert.notEqual(summary.lessonConversionRate, 25, "must never be the naive raw completions/views ratio");
+  assert.equal(summary.lessonConversionRate, 100);
+});
+
+test("lessonConversionRate: different lessons for the same learner are separate learner+lesson pairs", () => {
+  const dateRange = { since: null, range: "all" };
+  const events = [
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-01T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_completed", lesson_id: "R01", created_at: "2026-03-01T00:05:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R02", created_at: "2026-03-02T00:00:00Z" }
+    // R02 viewed but never completed
+  ];
+
+  const summary = computeSummaryMetrics({ users: [{ id: USER_A }], events }, dateRange);
+  assert.equal(summary.uniqueLessonPairsViewed, 2, "R01 and R02 are two distinct pairs for the same learner");
+  assert.equal(summary.uniqueViewedPairsCompleted, 1, "only the R01 pair was also completed");
+  assert.equal(summary.lessonConversionRate, 50);
+});
+
+test("lessonConversionRate: repeated views across multiple learners do not distort the aggregate rate", () => {
+  const dateRange = { since: null, range: "all" };
+  const events = [
+    // USER_A views R01 three times and completes it.
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-01T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-02T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-03T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_completed", lesson_id: "R01", created_at: "2026-03-03T00:05:00Z" },
+    // USER_B views R01 once and never completes it.
+    { learning_user_id: USER_B, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-01T00:00:00Z" }
+  ];
+
+  const summary = computeSummaryMetrics({ users: [{ id: USER_A }, { id: USER_B }], events }, dateRange);
+  assert.equal(summary.lessonViews, 4, "raw view occurrences: 3 + 1");
+  assert.equal(summary.uniqueLessonPairsViewed, 2, "USER_A/R01 and USER_B/R01 are two distinct pairs");
+  assert.equal(summary.uniqueViewedPairsCompleted, 1, "only USER_A's pair was completed");
+  assert.equal(summary.lessonConversionRate, 50, "1 of 2 real viewer-lesson pairs converted -- not skewed by USER_A's repeat views");
+});
+
+test("lessonConversionRate: correctly filtered to the selected period -- a completion from BEFORE the period does not retroactively count a revisit", () => {
+  // Date ranges in this system are "since X, up to now" (no separate upper
+  // bound) -- so the meaningful boundary to test is the LOWER edge: a
+  // completion that happened before the period started must not count
+  // toward this period's conversion just because the learner happens to
+  // revisit (view) that same lesson again during the period.
+  const dateRange = { since: "2026-03-01T00:00:00Z", range: "7d" };
+  const events = [
+    // Viewed AND completed inside the range: counts.
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-02T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_completed", lesson_id: "R01", created_at: "2026-03-02T00:05:00Z" },
+    // USER_B completed R02 back in January and is simply revisiting
+    // (viewing) it again during the current period -- a real view in
+    // range, but no lesson_completed event falls IN this range for the
+    // pair, so it must not count as a period conversion.
+    { learning_user_id: USER_B, event_type: "lesson_completed", lesson_id: "R02", created_at: "2026-01-01T00:00:00Z" },
+    { learning_user_id: USER_B, event_type: "lesson_viewed", lesson_id: "R02", created_at: "2026-03-02T00:00:00Z" },
+    // Viewed AND completed entirely before the range: excluded from the
+    // period's denominator entirely (not viewed in range at all).
+    { learning_user_id: USER_C, event_type: "lesson_viewed", lesson_id: "R08", created_at: "2026-01-01T00:00:00Z" },
+    { learning_user_id: USER_C, event_type: "lesson_completed", lesson_id: "R08", created_at: "2026-01-01T00:05:00Z" }
+  ];
+
+  const summary = computeSummaryMetrics({ users: [{ id: USER_A }, { id: USER_B }, { id: USER_C }], events }, dateRange);
+  assert.equal(summary.uniqueLessonPairsViewed, 2, "only R01/USER_A and R02/USER_B were VIEWED in the range");
+  assert.equal(summary.uniqueViewedPairsCompleted, 1, "R02/USER_B's completion happened before the range and does not count here");
+  assert.equal(summary.lessonConversionRate, 50);
 });
 
 test("computeSummaryMetrics: a repeat view of an already-viewed lesson still counts as activity today (does not rely on first_viewed_at)", () => {

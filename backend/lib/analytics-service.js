@@ -213,6 +213,59 @@ function isWithinRange(isoTimestamp, dateRange) {
   return ms >= toMs(dateRange.since);
 }
 
+// Pair key for deduplicating (learning_user_id, lesson_id) -- exported
+// only for this file's own tests; not part of the public aggregation API.
+function pairKey(learningUserId, lessonId) {
+  return learningUserId + "::" + lessonId;
+}
+
+// Distinct (learning_user_id, lesson_id) pairs with a lesson_viewed event
+// in range, and -- among exactly those same pairs -- how many also have a
+// lesson_completed event in range. This is the metric this file calls
+// "lesson conversion", NOT "completion rate": raw lesson_viewed / raw
+// lesson_completed EVENT COUNTS must never be divided directly, because a
+// single learner can generate several lesson_viewed events for the SAME
+// lesson (revisiting it) while completing it only once -- dividing raw
+// counts would understate (or, with a different revisit pattern,
+// overstate) conversion for reasons that have nothing to do with whether
+// people actually finish lessons they view.
+//
+// Both the view and the completion are required to fall in the SAME
+// selected range (not "completed at any later time"), which is the more
+// analytically honest choice for a period-bounded metric: it is stable
+// and reproducible -- re-running the report for a closed historical
+// period later always gives the same number -- rather than a figure that
+// keeps changing after the fact as more time passes and lets more
+// completions "leak" in from after the period actually ended. The
+// tradeoff is the converse and equally well-understood limitation every
+// period-bounded conversion metric has: a lesson viewed right at the end
+// of a short window may not have had time to also be completed within
+// that same window, which understates (never overstates) conversion for
+// very recent views -- the dashboard states this explicitly rather than
+// hiding it.
+function computeLessonConversion(eventsInRange) {
+  const viewedPairs = new Set();
+  const completedPairs = new Set();
+
+  eventsInRange.forEach((event) => {
+    if (!event.learning_user_id || !event.lesson_id) return;
+    const key = pairKey(event.learning_user_id, event.lesson_id);
+    if (event.event_type === "lesson_viewed") viewedPairs.add(key);
+    else if (event.event_type === "lesson_completed") completedPairs.add(key);
+  });
+
+  let uniqueViewedPairsCompleted = 0;
+  viewedPairs.forEach((key) => {
+    if (completedPairs.has(key)) uniqueViewedPairsCompleted += 1;
+  });
+
+  return {
+    uniqueLessonPairsViewed: viewedPairs.size,
+    uniqueViewedPairsCompleted,
+    lessonConversionRate: viewedPairs.size > 0 ? percentOf(uniqueViewedPairsCompleted, viewedPairs.size) : 0
+  };
+}
+
 // Summary metrics for the selected date range. `users` is the only STATE
 // input here (for totalLearners); every behavioural number below is
 // derived EXCLUSIVELY from learning_events -- never from
@@ -225,10 +278,15 @@ function isWithinRange(isoTimestamp, dateRange) {
 // - activeLearners: distinct learning_user_id with ANY learning_events row
 //   (any of the known event types counts -- all of them are curated,
 //   meaningful learning actions by design) whose timestamp falls in range.
-// - lessonViews / lessonCompletions: COUNTS of lesson_viewed /
-//   lesson_completed EVENTS in range -- occurrences, not distinct
-//   lessons or distinct learners. completionRate is
-//   completions-in-range / views-in-range.
+// - lessonViews / lessonCompletions: raw COUNTS of lesson_viewed /
+//   lesson_completed EVENT OCCURRENCES in range -- deliberately NOT
+//   deduplicated, and deliberately never divided against each other (see
+//   computeLessonConversion above for why raw counts cannot produce a
+//   valid rate). Use these only as "how much activity happened", never as
+//   inputs to a ratio.
+// - uniqueLessonPairsViewed / uniqueViewedPairsCompleted /
+//   lessonConversionRate: see computeLessonConversion -- the correctly
+//   deduplicated "viewed -> completed" conversion metric.
 // - quizzesCompleted: count of quiz_completed EVENTS in range (each
 //   retake counts as its own occurrence, unlike the STATE table's single
 //   current row per lesson).
@@ -262,7 +320,7 @@ export function computeSummaryMetrics({ users, events }, dateRange) {
 
   const lessonViews = lessonViewEvents.length;
   const lessonCompletions = lessonCompletedEvents.length;
-  const completionRate = lessonViews > 0 ? percentOf(lessonCompletions, lessonViews) : 0;
+  const { uniqueLessonPairsViewed, uniqueViewedPairsCompleted, lessonConversionRate } = computeLessonConversion(eventsInRange);
 
   const quizzesCompleted = quizCompletedEvents.length;
   const quizPercentages = quizCompletedEvents
@@ -297,7 +355,9 @@ export function computeSummaryMetrics({ users, events }, dateRange) {
     activeLearners: activeLearnerIds.size,
     lessonViews,
     lessonCompletions,
-    completionRate,
+    uniqueLessonPairsViewed,
+    uniqueViewedPairsCompleted,
+    lessonConversionRate,
     quizzesCompleted,
     avgQuizPercent,
     returningLearners,

@@ -195,8 +195,9 @@ const HTML = `<!doctype html>
     } catch (e) { return '—'; }
   }
 
-  function metricCard(value, label, note) {
-    return '<div class="metric-card"><div class="value">' + escapeHtml(value) + '</div><div class="label">' + escapeHtml(label) + '</div>' +
+  function metricCard(value, label, note, tooltip) {
+    return '<div class="metric-card"' + (tooltip ? ' title="' + escapeHtml(tooltip) + '"' : '') + '>' +
+      '<div class="value">' + escapeHtml(value) + '</div><div class="label">' + escapeHtml(label) + '</div>' +
       (note ? '<div class="na">' + escapeHtml(note) + '</div>' : '') + '</div>';
   }
 
@@ -221,9 +222,25 @@ const HTML = `<!doctype html>
       var cards = [
         metricCard(summary.totalLearners, 'Total authenticated learners'),
         metricCard(summary.activeLearners, 'Active learners (period)'),
-        metricCard(summary.lessonViews, 'Lesson views (period)'),
+        metricCard(
+          summary.lessonViews,
+          'Lesson views (period)',
+          'Raw view events',
+          'Raw lesson_viewed event count -- a learner revisiting the same lesson counts again each time. Not deduplicated.'
+        ),
+        metricCard(
+          summary.uniqueLessonPairsViewed,
+          'Unique lessons viewed (period)',
+          'Distinct learner + lesson pairs',
+          'Distinct (learner, lesson) pairs with at least one view in this period -- deduplicated behavioural reach, unlike the raw view count above.'
+        ),
         metricCard(summary.lessonCompletions, 'Lesson completions (period)'),
-        metricCard(summary.completionRate + '%', 'Completion rate (period)'),
+        metricCard(
+          summary.lessonConversionRate + '%',
+          'Lesson conversion (period)',
+          summary.uniqueViewedPairsCompleted + ' of ' + summary.uniqueLessonPairsViewed + ' viewed pairs also completed',
+          'Viewed → completed: of the distinct learner+lesson pairs first viewed in this period, the % that were ALSO completed within this SAME period. Deduplicated by learner+lesson, never a raw completions÷views ratio (a learner revisiting a lesson without a matching completion would otherwise wrongly lower this number).'
+        ),
         metricCard(summary.quizzesCompleted, 'Knowledge Checks completed (period)'),
         metricCard(summary.avgQuizPercent === null ? '—' : summary.avgQuizPercent + '%', 'Avg Knowledge Check score (period)'),
         summary.returningLearners === null
