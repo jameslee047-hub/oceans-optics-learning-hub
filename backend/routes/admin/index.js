@@ -34,6 +34,7 @@ const HTML = `<!doctype html>
     --danger: #b91c1c;
   }
   * { box-sizing: border-box; }
+  html, body { max-width: 100%; overflow-x: hidden; }
   body {
     margin: 0;
     background: var(--bg);
@@ -43,23 +44,19 @@ const HTML = `<!doctype html>
     line-height: 1.45;
   }
   header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
     padding: 1.1rem 1.6rem;
     background: var(--blue);
     color: #fff;
-    flex-wrap: wrap;
   }
+  .header-inner { width: 100%; max-width: 80rem; margin: 0 auto; }
   header h1 { margin: 0; font-size: 1.25rem; font-weight: 900; }
   header p { margin: 0; font-size: 0.8rem; opacity: 0.75; }
-  main { max-width: 128rem; margin: 0 auto; padding: 1.6rem; display: grid; gap: 1.6rem; }
-  section { background: var(--panel); border: 1px solid var(--line); border-radius: 0.6rem; padding: 1.2rem 1.4rem; }
+  main { width: 100%; max-width: 80rem; min-width: 0; margin: 0 auto; padding: 1.5rem; display: grid; gap: 1.25rem; }
+  section { min-width: 0; background: var(--panel); border: 1px solid var(--line); border-radius: 0.5rem; padding: 1.1rem 1.25rem; }
   section h2 { margin: 0 0 0.9rem; font-size: 1.05rem; color: var(--blue); }
   .section-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 0.9rem; }
   .section-head h2 { margin: 0; }
-  .range-controls { display: flex; gap: 0.4rem; }
+  .range-controls { display: flex; gap: 0.4rem; flex-wrap: wrap; }
   .range-controls button {
     border: 1px solid var(--line);
     background: #fff;
@@ -71,19 +68,27 @@ const HTML = `<!doctype html>
     cursor: pointer;
   }
   .range-controls button.active { background: var(--orange); border-color: var(--orange); color: #fff; }
-  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 0.9rem; }
-  .metric-card { border: 1px solid var(--line); border-radius: 0.5rem; padding: 0.9rem 1rem; background: #fbfcfd; }
-  .metric-card .value { font-size: 1.9rem; font-weight: 900; color: var(--blue); line-height: 1.1; }
-  .metric-card .label { color: var(--muted); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; margin-top: 0.3rem; }
+  .metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.8rem; }
+  .metric-card { min-height: 6.75rem; border: 1px solid var(--line); border-radius: 0.4rem; padding: 0.9rem 1rem; background: #fbfcfd; }
+  .metric-card .value { font-size: 2rem; font-weight: 900; color: var(--blue); line-height: 1.1; }
+  .metric-card .label { color: var(--muted); font-size: 0.78rem; line-height: 1.35; font-weight: 700; text-transform: uppercase; margin-top: 0.4rem; }
   .metric-card .na { color: var(--muted); font-size: 0.75rem; font-style: italic; margin-top: 0.2rem; }
   .tracking-note { margin: 0 0 1rem; padding: 0.6rem 0.9rem; border-radius: 0.4rem; background: rgba(var(--blue-rgb), 0.06); color: var(--muted); font-size: 0.8rem; }
   .section-note { margin: -0.4rem 0 0.9rem; color: var(--muted); font-size: 0.8rem; }
-  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
   th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
   th { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; cursor: pointer; user-select: none; }
   th.sorted { color: var(--orange); }
   tbody tr:hover { background: #fbfcfd; }
-  .table-scroll { overflow-x: auto; }
+  .table-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
+  #lessonsBody table { min-width: 74rem; }
+  #lessonsBody th:first-child,
+  #lessonsBody td:first-child { position: sticky; left: 0; z-index: 1; min-width: 13rem; max-width: 17rem; white-space: normal; background: #fff; box-shadow: 1px 0 0 var(--line); }
+  #lessonsBody th:first-child { z-index: 2; }
+  #lessonsBody tbody tr:hover td:first-child { background: #fbfcfd; }
+  #lessonsBody th:last-child,
+  #lessonsBody td:last-child { min-width: 15rem; white-space: normal; }
+  #learnersBody table { min-width: 52rem; }
   .pill { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-weight: 700; font-size: 0.75rem; }
   .pill.good { background: rgba(21, 128, 61, 0.12); color: var(--success); }
   .pill.bad { background: rgba(185, 28, 28, 0.12); color: var(--danger); }
@@ -98,29 +103,47 @@ const HTML = `<!doctype html>
   .review-card { border: 1px solid var(--line); border-radius: 0.5rem; padding: 0.8rem 1rem; margin-bottom: 0.6rem; background: #fbfcfd; }
   .review-card .q { font-weight: 700; color: var(--blue); }
   .review-card .meta { color: var(--muted); font-size: 0.78rem; margin-top: 0.2rem; }
+  #questionsBody { width: 100%; max-width: 58rem; }
   #learnerDetail {
     position: fixed; inset: 0; background: rgba(2, 48, 89, 0.45); display: flex; align-items: flex-start; justify-content: center;
     padding: 3rem 1.5rem; z-index: 10;
   }
   #learnerDetail[hidden] { display: none; }
-  #learnerDetailPanel { background: #fff; border-radius: 0.6rem; max-width: 72rem; width: 100%; max-height: 88vh; overflow-y: auto; padding: 1.6rem; }
+  #learnerDetailPanel { background: #fff; border-radius: 0.6rem; max-width: 56rem; width: 100%; max-height: calc(100vh - 4rem); overflow-y: auto; padding: 1.4rem; }
   #learnerDetailPanel .close-row { display: flex; justify-content: flex-end; }
   .answer-list { list-style: none; margin: 0.5rem 0 0; padding: 0; display: grid; gap: 0.4rem; }
   .answer-list li { padding: 0.5rem 0.7rem; border-radius: 0.4rem; background: #fbfcfd; font-size: 0.82rem; }
   .answer-list li.correct { border-left: 3px solid var(--success); }
   .answer-list li.incorrect { border-left: 3px solid var(--danger); }
+  @media (max-width: 1100px) {
+    .metric-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+  @media (max-width: 820px) {
+    .metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
   @media (max-width: 700px) {
+    header, main { padding-left: 1rem; padding-right: 1rem; }
+    main { gap: 1rem; }
+    section { padding: 1rem; }
     table, thead, tbody, th, td, tr { display: block; }
+    #lessonsBody table, #learnersBody table { min-width: 0; }
     thead { display: none; }
     tbody tr { border-bottom: 2px solid var(--line); padding: 0.5rem 0; }
-    td { border: 0; padding: 0.25rem 0; }
+    td { border: 0; padding: 0.25rem 0; white-space: normal; }
+    #lessonsBody th:first-child, #lessonsBody td:first-child { position: static; min-width: 0; max-width: none; box-shadow: none; background: transparent; }
+    #lessonsBody tbody tr:hover td:first-child { background: transparent; }
     td::before { content: attr(data-label); display: block; color: var(--muted); font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
+    #learnerDetail { padding: 1rem; }
+    #learnerDetailPanel { max-height: calc(100vh - 2rem); padding: 1rem; }
+  }
+  @media (max-width: 560px) {
+    .metric-grid { grid-template-columns: 1fr; }
   }
 </style>
 </head>
 <body>
 <header>
-  <div>
+  <div class="header-inner">
     <h1>Learning Analytics</h1>
     <p>Internal &mdash; Oceans Optics staff only</p>
   </div>
