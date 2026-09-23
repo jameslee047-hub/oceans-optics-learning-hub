@@ -1,5 +1,6 @@
-// Route-level tests proving every /api/admin/* endpoint (including the
-// HTML dashboard shell itself) is actually gated by lib/require-admin.js,
+// Route-level tests proving every path dispatched by the consolidated
+// /api/admin/[...path] function (including the HTML dashboard shell) is
+// actually gated by lib/require-admin.js,
 // and that a customer Learning Progress bearer JWT grants it no access
 // whatsoever. Matches the same "validation layer only, real DB path
 // covered elsewhere" rationale as test/lesson-viewed.test.js and
@@ -7,12 +8,8 @@
 // Supabase-not-configured boundary, never reaching a real database.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import summaryHandler from "../api/admin/summary.js";
-import lessonsHandler from "../api/admin/lessons.js";
-import questionsHandler from "../api/admin/questions.js";
-import learnersHandler from "../api/admin/learners.js";
-import learnerDetailHandler from "../api/admin/learners/[id].js";
-import indexHandler from "../api/admin/index.js";
+import handler from "../api/admin/[...path].js";
+import learnerDetailHandler from "../routes/admin/learners/[id].js";
 import { mintSessionToken } from "../lib/session-token.js";
 import { createMockNodeResponse, withEnv } from "./cookie-test-utils.js";
 
@@ -35,12 +32,12 @@ function customerBearerHeader() {
 }
 
 const ROUTES = [
-  { name: "index (HTML dashboard)", handler: indexHandler, method: "GET", query: {} },
-  { name: "summary", handler: summaryHandler, method: "GET", query: { range: "all" } },
-  { name: "lessons", handler: lessonsHandler, method: "GET", query: {} },
-  { name: "questions", handler: questionsHandler, method: "GET", query: {} },
-  { name: "learners", handler: learnersHandler, method: "GET", query: {} },
-  { name: "learners/[id]", handler: learnerDetailHandler, method: "GET", query: { id: "11111111-1111-1111-1111-111111111111" } }
+  { name: "dashboard (HTML)", method: "GET", query: { path: ["dashboard"] } },
+  { name: "summary", method: "GET", query: { path: ["summary"], range: "all" } },
+  { name: "lessons", method: "GET", query: { path: ["lessons"] } },
+  { name: "questions", method: "GET", query: { path: ["questions"] } },
+  { name: "learners", method: "GET", query: { path: ["learners"] } },
+  { name: "learners/[id]", method: "GET", query: { path: ["learners", "11111111-1111-1111-1111-111111111111"] } }
 ];
 
 for (const route of ROUTES) {
@@ -48,7 +45,7 @@ for (const route of ROUTES) {
     await withAdminEnv(async () => {
       const req = { method: route.method, headers: {}, query: route.query };
       const res = createMockNodeResponse();
-      await route.handler(req, res);
+      await handler(req, res);
       assert.equal(res.statusCode, 401);
     });
   });
@@ -57,7 +54,7 @@ for (const route of ROUTES) {
     await withAdminEnv(async () => {
       const req = { method: route.method, headers: { authorization: customerBearerHeader() }, query: route.query };
       const res = createMockNodeResponse();
-      await route.handler(req, res);
+      await handler(req, res);
       assert.equal(res.statusCode, 401);
     });
   });
@@ -66,7 +63,7 @@ for (const route of ROUTES) {
     await withAdminEnv(async () => {
       const req = { method: route.method, headers: { authorization: basicAuthHeader(ADMIN_USERNAME, "wrong") }, query: route.query };
       const res = createMockNodeResponse();
-      await route.handler(req, res);
+      await handler(req, res);
       assert.equal(res.statusCode, 401);
     });
   });
@@ -75,7 +72,7 @@ for (const route of ROUTES) {
     await withAdminEnv(async () => {
       const req = { method: route.method, headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) }, query: route.query };
       const res = createMockNodeResponse();
-      await route.handler(req, res);
+      await handler(req, res);
       assert.notEqual(res.statusCode, 401);
       assert.notEqual(res.statusCode, 403);
     });
@@ -87,19 +84,57 @@ test("summary/lessons/questions/learners/learners[id] reject non-GET methods (af
     for (const route of ROUTES) {
       const req = { method: "POST", headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) }, query: route.query };
       const res = createMockNodeResponse();
-      await route.handler(req, res);
+      await handler(req, res);
       assert.equal(res.statusCode, 405, `${route.name} should reject POST`);
     }
   });
 });
 
-test("index route serves HTML, not JSON, once authorized", async () => {
+test("dashboard route serves HTML, not JSON, once authorized", async () => {
   await withAdminEnv(async () => {
-    const req = { method: "GET", headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) } };
+    const req = {
+      method: "GET",
+      headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) },
+      query: { path: ["dashboard"] }
+    };
     const res = createMockNodeResponse();
-    indexHandler(req, res);
+    await handler(req, res);
     assert.equal(res.statusCode, 200);
     assert.ok(res.getHeader("Content-Type").includes("text/html"));
+  });
+});
+
+test("empty catch-all path also dispatches the HTML dashboard for local compatibility", async () => {
+  await withAdminEnv(async () => {
+    const req = {
+      method: "GET",
+      headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) },
+      query: {}
+    };
+    const res = createMockNodeResponse();
+    await handler(req, res);
+    assert.equal(res.statusCode, 200);
+    assert.ok(res.getHeader("Content-Type").includes("text/html"));
+  });
+});
+
+test("unknown admin paths remain authenticated and return a scoped 404", async () => {
+  await withAdminEnv(async () => {
+    const unauthorized = createMockNodeResponse();
+    await handler({ method: "GET", headers: {}, query: { path: ["unknown"] } }, unauthorized);
+    assert.equal(unauthorized.statusCode, 401);
+
+    const authorized = createMockNodeResponse();
+    await handler(
+      {
+        method: "GET",
+        headers: { authorization: basicAuthHeader(ADMIN_USERNAME, ADMIN_PASSWORD) },
+        query: { path: ["unknown"] }
+      },
+      authorized
+    );
+    assert.equal(authorized.statusCode, 404);
+    assert.equal(authorized.jsonBody.error, "admin_route_not_found");
   });
 });
 

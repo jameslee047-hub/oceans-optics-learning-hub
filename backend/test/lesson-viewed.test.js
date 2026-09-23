@@ -1,4 +1,5 @@
-// Route-level tests for api/lesson/viewed.js. Only the request-validation
+// Route-level tests for the consolidated api/lesson/[action].js function's
+// `viewed` dispatch. Only the request-validation
 // layer is exercised here (auth guard + payload shape) -- both branches
 // return before ever calling getSupabaseClient(), so these need no real
 // database. The actual write/idempotency behaviour once a valid session
@@ -8,18 +9,19 @@
 // elsewhere in this suite.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import handler from "../api/lesson/viewed.js";
+import handler from "../api/lesson/[action].js";
 import { mintSessionToken } from "../lib/session-token.js";
 import { createMockNodeResponse, withEnv } from "./cookie-test-utils.js";
 
 const SESSION_SECRET = "test-session-secret";
 const SHOP = "a44b34.myshopify.com";
 
-function bearerRequest({ method = "POST", token, body } = {}) {
+function bearerRequest({ method = "POST", token, body, action = "viewed" } = {}) {
   return {
     method,
     headers: token ? { authorization: `Bearer ${token}` } : {},
-    body
+    body,
+    query: { action }
   };
 }
 
@@ -33,6 +35,22 @@ test("rejects non-POST methods", async () => {
   await handler(req, res);
   assert.equal(res.statusCode, 405);
   assert.equal(res.jsonBody.error, "method_not_allowed");
+});
+
+test("dispatches the complete action to its existing handler", async () => {
+  const req = bearerRequest({ method: "GET", action: "complete" });
+  const res = createMockNodeResponse();
+  await handler(req, res);
+  assert.equal(res.statusCode, 405);
+  assert.equal(res.jsonBody.error, "method_not_allowed");
+});
+
+test("rejects an unknown lesson action", async () => {
+  const req = bearerRequest({ action: "unknown" });
+  const res = createMockNodeResponse();
+  await handler(req, res);
+  assert.equal(res.statusCode, 404);
+  assert.equal(res.jsonBody.error, "lesson_route_not_found");
 });
 
 test("rejects a missing bearer token", async () => {

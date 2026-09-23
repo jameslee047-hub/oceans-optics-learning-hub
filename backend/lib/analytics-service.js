@@ -479,7 +479,7 @@ export function computeLessonPerformance(catalogue, lessonProgress, quizResults,
 // therefore represents "of learners' current/latest stored results, how
 // many got each question right" -- NOT "of all attempts ever made". A
 // learner who retook a quiz only contributes their most recent answers.
-// Dashboard copy must reflect this (see api/admin/index.js), never
+// Dashboard copy must reflect this (see routes/admin/index.js), never
 // implying full historical attempt analytics.
 export function computeQuestionAnalytics(catalogue, quizResults) {
   quizResults = asArray(quizResults);
@@ -568,7 +568,7 @@ export function questionsToReview(questionAnalytics, { minSampleSize = 1 } = {})
 }
 
 // One row per registered learner, from STATE tables (this is a
-// current-status table, not a behavioural one -- see api/admin/learners.js
+// current-status table, not a behavioural one -- see routes/admin/learners.js
 // for the corresponding event-derived activity figures shown alongside
 // it). completion_percent is against the whole published catalogue
 // (matching the customer-facing My Learning Progress dashboard's own

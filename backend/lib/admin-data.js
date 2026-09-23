@@ -1,6 +1,6 @@
 // Thin, shared Supabase reads for the internal admin dashboard routes --
 // kept separate only to avoid repeating the same four query shapes across
-// api/admin/summary.js, lessons.js, questions.js, and learners.js. No
+// routes/admin/summary.js, lessons.js, questions.js, and learners.js. No
 // aggregation logic lives here; see lib/analytics-service.js for that.
 //
 // Every select is scoped to columns this feature actually needs -- in

@@ -26,21 +26,21 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const API_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "api");
+const BACKEND_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "..");
 
-function readSource(relativePath) {
-  return fs.readFileSync(path.join(API_DIR, relativePath), "utf8");
+function readSource(root, relativePath) {
+  return fs.readFileSync(path.join(BACKEND_DIR, root, relativePath), "utf8");
 }
 
-test("api/lesson/viewed.js records lesson_viewed via the deduped recordPageViewEventBestEffort, unconditionally on every view", () => {
-  const source = readSource("lesson/viewed.js");
+test("routes/lesson/viewed.js records lesson_viewed via the deduped recordPageViewEventBestEffort, unconditionally on every view", () => {
+  const source = readSource("routes", "lesson/viewed.js");
   assert.ok(source.includes("recordPageViewEventBestEffort"), "must use the time-window-deduped recorder, not the plain one");
   assert.ok(!source.includes("if (result.created)"), "must NOT gate lesson_viewed on first-view-ever -- that would drop real repeat visits");
   assert.ok(source.includes('eventType: "lesson_viewed"'));
 });
 
 test("api/quiz/result.js always records quiz_completed but only records lesson_completed on a genuinely new completion", () => {
-  const source = readSource("quiz/result.js");
+  const source = readSource("api", "quiz/result.js");
   const quizEventIndex = source.indexOf('eventType: "quiz_completed"');
   const guardIndex = source.indexOf("if (!result.already_complete)");
   const lessonEventIndex = source.indexOf('eventType: "lesson_completed"');
@@ -52,8 +52,8 @@ test("api/quiz/result.js always records quiz_completed but only records lesson_c
   assert.ok(quizEventIndex < guardIndex, "quiz_completed must be recorded unconditionally, before the completion guard");
 });
 
-test("api/lesson/complete.js only records lesson_completed on a genuinely new completion", () => {
-  const source = readSource("lesson/complete.js");
+test("routes/lesson/complete.js only records lesson_completed on a genuinely new completion", () => {
+  const source = readSource("routes", "lesson/complete.js");
   const guardIndex = source.indexOf("if (!result.already_complete)");
   const lessonEventIndex = source.indexOf('eventType: "lesson_completed"');
   assert.ok(guardIndex !== -1);

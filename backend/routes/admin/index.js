@@ -1,4 +1,4 @@
-// GET /admin (rewritten from /api/admin -- see vercel.json) -- the
+// GET /admin (rewritten to /api/admin/dashboard -- see vercel.json) -- the
 // internal Learning Analytics dashboard shell. A single self-contained
 // HTML document (no build step, no theme dependency): this is server-only
 // tooling, entirely separate from the Shopify storefront theme.

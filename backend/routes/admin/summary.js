@@ -1,7 +1,7 @@
 // GET /api/admin/summary?range=today|7d|30d|all -- internal analytics
 // dashboard only (see lib/require-admin.js). Never reachable with a
 // customer Learning Progress bearer token; never CORS-enabled, since it is
-// only ever called same-origin by api/admin/index.js's own page.
+// only ever called same-origin by routes/admin/index.js's own page.
 import { requireAdmin } from "../../lib/require-admin.js";
 import { getSupabaseClient } from "../../lib/supabase.js";
 import { fetchAllLearningUsers, fetchAllLearningEvents } from "../../lib/admin-data.js";

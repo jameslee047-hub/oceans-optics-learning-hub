@@ -14,7 +14,7 @@ report for what's still open before this becomes the real production path.
   The original App Proxy identity check; kept only because it's still useful
   for inspecting Shopify's (known-unreliable, under New Customer Accounts)
   App Proxy behavior. No longer writes to Supabase or mints a session token.
-- `api/progress.js`, `api/lesson/viewed.js`, `api/lesson/complete.js`,
+- `api/progress.js`, `api/lesson/[action].js` (dispatching `/viewed` and `/complete`),
   `api/quiz/result.js` -- called directly by storefront JS with
   `Authorization: Bearer <session token>`.
 - `api/webhooks/*` -- the three mandatory Shopify privacy webhooks, fully
