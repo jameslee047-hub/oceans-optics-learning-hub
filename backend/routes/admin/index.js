@@ -144,8 +144,8 @@ const HTML = `<!doctype html>
     <h2>Lesson performance</h2>
     <p class="section-note">
       &ldquo;Learners started&rdquo; and completions are all-time (from saved progress, covering activity from before
-      tracking began too). &ldquo;Views&rdquo; and their unique-viewer count are event occurrences recorded since
-      activity tracking began -- see the note above.
+      tracking began too) and authenticated-only. &ldquo;Views&rdquo;, unique viewers, and Knowledge Check attempts
+      include authenticated and consented anonymous event traffic recorded since activity tracking began.
     </p>
     <div id="lessonsBody" class="loading-state">Loading lessons&hellip;</div>
   </section>
@@ -153,8 +153,8 @@ const HTML = `<!doctype html>
   <section id="questionsSection">
     <h2>Questions to review</h2>
     <p class="section-note">
-      Based on each learner's current/latest stored Knowledge Check result for that lesson -- a retake replaces their
-      previous answers, so this is not a full history of every attempt ever made.
+      Based on recorded Knowledge Check attempts from authenticated and consented anonymous visitors. Historical
+      events created before answer snapshots were added do not contribute to question-level samples.
     </p>
     <div id="questionsBody" class="loading-state">Loading questions&hellip;</div>
   </section>
@@ -216,10 +216,15 @@ const HTML = `<!doctype html>
         note.textContent = 'No activity has been tracked yet. Behavioural metrics below (active learners, views, completions, Knowledge Checks, returning learners) will populate once learners start using the Learning Hub after this feature launches. Total authenticated learners still reflects all-time signups.';
       } else {
         note.hidden = false;
-        note.textContent = 'Activity tracking since ' + formatDate(summary.trackingStartedAt) + '. Behavioural metrics below only cover activity from that point forward -- they are not a complete history for periods before it.';
+        note.textContent = 'Activity tracking since ' + formatDate(summary.trackingStartedAt) + '. Anonymous visitor tracking ' +
+          (summary.anonymousTrackingStartedAt ? 'since ' + formatDate(summary.anonymousTrackingStartedAt) : 'has not recorded data yet') +
+          '. Behavioural metrics only cover activity recorded after each tracking start; no anonymous history is inferred.';
       }
 
       var cards = [
+        metricCard(summary.visitors, 'Visitors (period)', 'Anonymous + authenticated'),
+        metricCard(summary.anonymousVisitors, 'Anonymous visitors (period)'),
+        metricCard(summary.authenticatedVisitors, 'Authenticated visitors (period)'),
         metricCard(summary.totalLearners, 'Total authenticated learners'),
         metricCard(summary.activeLearners, 'Active learners (period)'),
         metricCard(
@@ -230,22 +235,22 @@ const HTML = `<!doctype html>
         ),
         metricCard(
           summary.uniqueLessonPairsViewed,
-          'Unique lessons viewed (period)',
+          'Authenticated unique lessons viewed (period)',
           'Distinct learner + lesson pairs',
-          'Distinct (learner, lesson) pairs with at least one view in this period -- deduplicated behavioural reach, unlike the raw view count above.'
+          'Distinct authenticated (learner, lesson) pairs with at least one view in this period. Anonymous views are included in raw lesson views but not this saved-progress conversion denominator.'
         ),
-        metricCard(summary.lessonCompletions, 'Lesson completions (period)'),
+        metricCard(summary.lessonCompletions, 'Authenticated lesson completions (period)'),
         metricCard(
           summary.lessonConversionRate + '%',
-          'Lesson conversion (period)',
+          'Authenticated lesson conversion (period)',
           summary.uniqueViewedPairsCompleted + ' of ' + summary.uniqueLessonPairsViewed + ' viewed pairs also completed',
           'Viewed → completed: of the distinct learner+lesson pairs first viewed in this period, the % that were ALSO completed within this SAME period. Deduplicated by learner+lesson, never a raw completions÷views ratio (a learner revisiting a lesson without a matching completion would otherwise wrongly lower this number).'
         ),
         metricCard(summary.quizzesCompleted, 'Knowledge Checks completed (period)'),
         metricCard(summary.avgQuizPercent === null ? '—' : summary.avgQuizPercent + '%', 'Avg Knowledge Check score (period)'),
-        summary.returningLearners === null
-          ? metricCard('—', 'Returning learners', 'Not enough activity history yet')
-          : metricCard(summary.returningLearners, 'Returning learners')
+        summary.returningVisitors === null
+          ? metricCard('—', 'Returning visitors', 'Not enough activity history yet')
+          : metricCard(summary.returningVisitors, 'Returning visitors')
       ];
       body.className = '';
       body.innerHTML = '<div class="metric-grid">' + cards.join('') + '</div>';
@@ -277,8 +282,8 @@ const HTML = `<!doctype html>
     { key: 'completionRate', label: 'Completion %' },
     { key: 'viewEvents', label: 'Views' },
     { key: 'uniqueViewersFromEvents', label: 'Unique viewers' },
-    { key: 'quizCount', label: 'Knowledge Checks' },
-    { key: 'avgQuizPercent', label: 'Avg score' },
+    { key: 'quizAttempts', label: 'Quiz attempts' },
+    { key: 'avgQuizAttemptPercent', label: 'Avg attempt score' },
     { key: 'mostMissedQuestion', label: 'Most missed question' }
   ];
 
@@ -321,8 +326,8 @@ const HTML = `<!doctype html>
         '<td data-label="Completion %">' + lesson.completionRate + '%</td>' +
         '<td data-label="Views">' + lesson.viewEvents + '</td>' +
         '<td data-label="Unique viewers">' + lesson.uniqueViewersFromEvents + '</td>' +
-        '<td data-label="Knowledge Checks">' + lesson.quizCount + '</td>' +
-        '<td data-label="Avg score">' + (lesson.avgQuizPercent === null ? '—' : lesson.avgQuizPercent + '%') + '</td>' +
+        '<td data-label="Quiz attempts">' + lesson.quizAttempts + '</td>' +
+        '<td data-label="Avg attempt score">' + (lesson.avgQuizAttemptPercent === null ? '—' : lesson.avgQuizAttemptPercent + '%') + '</td>' +
         '<td data-label="Most missed question">' + missed + '</td>' +
         '</tr>';
     }).join('');

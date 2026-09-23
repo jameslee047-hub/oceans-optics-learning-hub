@@ -82,6 +82,9 @@ export function createFakeSupabase() {
               tables[child] = tables[child].filter((row) => !deletedIds.has(row.user_id));
             }
           }
+          if (tables.learning_events) {
+            tables.learning_events = tables.learning_events.filter((row) => !deletedIds.has(row.learning_user_id));
+          }
         }
 
         return { data: null, error: null };

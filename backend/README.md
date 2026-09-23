@@ -17,6 +17,9 @@ report for what's still open before this becomes the real production path.
 - `api/progress.js`, `api/lesson/[action].js` (dispatching `/viewed` and `/complete`),
   `api/quiz/result.js` -- called directly by storefront JS with
   `Authorization: Bearer <session token>`.
+- `api/learning-event.js` -- records authenticated page analytics and
+  consented anonymous Learning Hub views/quiz attempts. Anonymous callers
+  use a random first-party UUID, never a customer identifier or fingerprint.
 - `api/webhooks/*` -- the three mandatory Shopify privacy webhooks, fully
   functional: `customer.id` in the webhook payload is the same numeric
   Shopify Admin customer ID `learning_users` is keyed by, so
@@ -92,8 +95,9 @@ this shop's permanent internal identity.
    deployed project -- including `SHOPIFY_SHOP_DOMAIN`, which is not
    currently configured in Vercel but is required (see the table above for
    why).
-3. Run `migrations/0001_init.sql` against the Supabase project (if not
-   already applied).
+3. Run unapplied migrations in numeric order against the Supabase project.
+   `0005_anonymous_learning_events.sql` is required before deploying the
+   anonymous storefront tracking code.
 4. Redeploy to Vercel with the environment variables above set.
 5. In `shopify-app/shopify.app.toml`, the `[customer_authentication]` block's
    `redirect_uris` must exactly match the deployed callback URL, and

@@ -1,10 +1,10 @@
-// GET /api/admin/questions -- per-question Knowledge Check analytics and a
-// "questions to review" shortlist, built only from stored answer
-// snapshots (migrations/0003_knowledge_check_answers.sql). Legacy rows
-// with no snapshot never contribute a fabricated statistic.
+// GET /api/admin/questions -- attempt-based question analytics across
+// authenticated and anonymous quiz_completed events. Historical events
+// without answer snapshots are skipped, never fabricated or mixed with
+// current/latest authenticated state rows.
 import { requireAdmin } from "../../lib/require-admin.js";
 import { getSupabaseClient } from "../../lib/supabase.js";
-import { fetchAllQuizResults } from "../../lib/admin-data.js";
+import { fetchAllLearningEvents } from "../../lib/admin-data.js";
 import { computeQuestionAnalytics, questionsToReview, LEARNING_CATALOGUE } from "../../lib/analytics-service.js";
 
 export default async function handler(req, res) {
@@ -16,9 +16,12 @@ export default async function handler(req, res) {
 
   try {
     const supabase = await getSupabaseClient();
-    const quizResults = await fetchAllQuizResults(supabase);
+    const events = await fetchAllLearningEvents(supabase);
 
-    const questions = computeQuestionAnalytics(LEARNING_CATALOGUE, quizResults);
+    const questions = computeQuestionAnalytics(
+      LEARNING_CATALOGUE,
+      events.filter((event) => event.event_type === "quiz_completed")
+    );
     const toReview = questionsToReview(questions);
     res.status(200).json({ questions, questionsToReview: toReview });
   } catch (error) {

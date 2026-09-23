@@ -62,7 +62,7 @@ export default async function handler(req, res) {
       learningUserId: userId,
       eventType: "quiz_completed",
       lessonId,
-      metadata: { score, total }
+      metadata: { score, total, answers: answerValidation.answers }
     });
     if (!result.already_complete) {
       await recordLearningEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_completed", lessonId });

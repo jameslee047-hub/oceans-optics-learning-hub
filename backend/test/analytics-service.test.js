@@ -17,7 +17,9 @@ import {
   computeLearnerDetail,
   KNOWN_EVENT_TYPES,
   CLIENT_REPORTABLE_EVENT_TYPES,
-  isClientReportableEventType
+  ANONYMOUS_CLIENT_REPORTABLE_EVENT_TYPES,
+  isClientReportableEventType,
+  isAnonymousClientReportableEventType
 } from "../lib/analytics-service.js";
 
 const CATALOGUE = {
@@ -35,6 +37,8 @@ const CATALOGUE = {
 const USER_A = "11111111-1111-1111-1111-111111111111";
 const USER_B = "22222222-2222-2222-2222-222222222222";
 const USER_C = "33333333-3333-3333-3333-333333333333";
+const ANON_A = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+const ANON_B = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
 
 // ---------------- recordLearningEvent ----------------
 
@@ -44,6 +48,25 @@ test("recordLearningEvent inserts a known event type", async () => {
   assert.equal(supabase.tables.learning_events.length, 1);
   assert.equal(supabase.tables.learning_events[0].event_type, "lesson_viewed");
   assert.equal(supabase.tables.learning_events[0].learning_user_id, USER_A);
+});
+
+test("recordLearningEvent stores anonymous identity without creating learner/progress state", async () => {
+  const supabase = createFakeSupabase();
+  await recordLearningEvent(supabase, { anonymousVisitorId: ANON_A, eventType: "quiz_completed", lessonId: "R01", metadata: { score: 1, total: 2 } });
+  assert.equal(supabase.tables.learning_events[0].anonymous_visitor_id, ANON_A);
+  assert.equal(supabase.tables.learning_events[0].learning_user_id, null);
+  assert.equal(supabase.tables.learning_users, undefined);
+  assert.equal(supabase.tables.lesson_progress, undefined);
+  assert.equal(supabase.tables.knowledge_check_results, undefined);
+});
+
+test("recordLearningEvent requires exactly one authenticated or anonymous identity", async () => {
+  const supabase = createFakeSupabase();
+  await assert.rejects(() => recordLearningEvent(supabase, { eventType: "learning_hub_viewed" }), /exactly_one_identity/);
+  await assert.rejects(
+    () => recordLearningEvent(supabase, { learningUserId: USER_A, anonymousVisitorId: ANON_A, eventType: "learning_hub_viewed" }),
+    /exactly_one_identity/
+  );
 });
 
 test("recordLearningEvent rejects an unknown event type before writing anything", async () => {
@@ -79,6 +102,15 @@ test("CLIENT_REPORTABLE_EVENT_TYPES excludes lesson_viewed/lesson_completed/quiz
   assert.equal(isClientReportableEventType("category_viewed"), true);
 });
 
+test("anonymous client event types include public views and quiz attempts but not saved progress activity", () => {
+  assert.deepEqual(
+    [...ANONYMOUS_CLIENT_REPORTABLE_EVENT_TYPES].sort(),
+    ["category_viewed", "learning_hub_viewed", "lesson_viewed", "quiz_completed"].sort()
+  );
+  assert.equal(isAnonymousClientReportableEventType("progress_dashboard_viewed"), false);
+  assert.equal(isAnonymousClientReportableEventType("lesson_completed"), false);
+});
+
 // ---------------- recordPageViewEvent (dedup) ----------------
 
 test("recordPageViewEvent: never invents an identity for an anonymous visitor", async () => {
@@ -98,6 +130,28 @@ test("recordPageViewEvent: a rapid duplicate view within the dedupe window is no
   await recordPageViewEvent(supabase, { learningUserId: USER_A, eventType: "lesson_viewed", lessonId: "R01", now });
 
   assert.equal(supabase.tables.learning_events.length, 1, "the second, rapid view must be deduped, not recorded as a second event");
+});
+
+test("recordPageViewEvent: rapid anonymous duplicates are keyed by visitor + event + resource", async () => {
+  const supabase = createFakeSupabase();
+  let clock = 0;
+  const now = () => clock;
+  await recordPageViewEvent(supabase, { anonymousVisitorId: ANON_A, eventType: "lesson_viewed", lessonId: "R01", now });
+  clock += PAGE_VIEW_DEDUPE_WINDOW_MS - 1;
+  await recordPageViewEvent(supabase, { anonymousVisitorId: ANON_A, eventType: "lesson_viewed", lessonId: "R01", now });
+  await recordPageViewEvent(supabase, { anonymousVisitorId: ANON_A, eventType: "lesson_viewed", lessonId: "R02", now });
+  await recordPageViewEvent(supabase, { anonymousVisitorId: ANON_B, eventType: "lesson_viewed", lessonId: "R01", now });
+  assert.equal(supabase.tables.learning_events.length, 3);
+});
+
+test("recordPageViewEvent: an anonymous revisit after the dedupe window is retained", async () => {
+  const supabase = createFakeSupabase();
+  let clock = 0;
+  const now = () => clock;
+  await recordPageViewEvent(supabase, { anonymousVisitorId: ANON_A, eventType: "learning_hub_viewed", now });
+  clock += PAGE_VIEW_DEDUPE_WINDOW_MS + 1;
+  await recordPageViewEvent(supabase, { anonymousVisitorId: ANON_A, eventType: "learning_hub_viewed", now });
+  assert.equal(supabase.tables.learning_events.length, 2);
 });
 
 test("recordPageViewEvent: a genuine visit after the dedupe window elapses is recorded as a new event", async () => {
@@ -211,6 +265,40 @@ test("computeSummaryMetrics: counts are event-sourced, within range only", () =>
   assert.equal(summary.quizzesCompleted, 1);
   assert.equal(summary.avgQuizPercent, 75);
   assert.equal(summary.hasEventData, true);
+});
+
+test("computeSummaryMetrics: distinguishes anonymous visitors, authenticated visitors, and registered learners", () => {
+  const events = [
+    { anonymous_visitor_id: ANON_A, event_type: "learning_hub_viewed", created_at: "2026-03-02T00:00:00Z" },
+    { anonymous_visitor_id: ANON_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-02T01:00:00Z" },
+    { anonymous_visitor_id: ANON_B, event_type: "lesson_viewed", lesson_id: "R02", created_at: "2026-03-02T02:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-02T03:00:00Z" }
+  ];
+  const summary = computeSummaryMetrics(
+    { users: [{ id: USER_A }, { id: USER_B }], events },
+    { since: "2026-03-01T00:00:00Z", range: "7d" }
+  );
+  assert.equal(summary.visitors, 3);
+  assert.equal(summary.anonymousVisitors, 2);
+  assert.equal(summary.authenticatedVisitors, 1);
+  assert.equal(summary.totalLearners, 2);
+  assert.equal(summary.lessonViews, 3);
+});
+
+test("computeSummaryMetrics: returning visitors include anonymous and authenticated identities without merging them", () => {
+  const events = [
+    { anonymous_visitor_id: ANON_A, event_type: "learning_hub_viewed", created_at: "2026-02-01T00:00:00Z" },
+    { anonymous_visitor_id: ANON_A, event_type: "learning_hub_viewed", created_at: "2026-03-02T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-02-01T00:00:00Z" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-02T00:00:00Z" },
+    { anonymous_visitor_id: ANON_B, event_type: "learning_hub_viewed", created_at: "2026-03-02T00:00:00Z" }
+  ];
+  const summary = computeSummaryMetrics(
+    { users: [{ id: USER_A }], events },
+    { since: "2026-03-01T00:00:00Z", range: "7d" }
+  );
+  assert.equal(summary.returningVisitors, 2);
+  assert.equal(summary.returningLearners, 1);
 });
 
 test("computeSummaryMetrics: lesson conversion is 0 with no viewed pairs in range, not NaN/Infinity", () => {
@@ -400,15 +488,32 @@ test("computeLessonPerformance: state-based learnersStarted/completions/rate, ev
   assert.equal(r01.completionRate, 50);
   assert.equal(r01.viewEvents, 3, "EVENTS: total view occurrences, can exceed learnersStarted");
   assert.equal(r01.uniqueViewersFromEvents, 2, "EVENTS: distinct learners with a view event (USER_A, USER_C)");
-  assert.equal(r01.quizCount, 1);
-  assert.equal(r01.avgQuizPercent, 80);
+  assert.equal(r01.authenticatedLatestQuizResults, 1);
+  assert.equal(r01.quizAttempts, 0);
+  assert.equal(r01.avgQuizAttemptPercent, null);
 
   const r02 = performance.find((l) => l.lesson_id === "R02");
   assert.equal(r02.learnersStarted, 0);
   assert.equal(r02.completionRate, 0);
   assert.equal(r02.viewEvents, 0);
   assert.equal(r02.uniqueViewersFromEvents, 0);
-  assert.equal(r02.avgQuizPercent, null);
+  assert.equal(r02.avgQuizAttemptPercent, null);
+});
+
+test("computeLessonPerformance: event traffic and quiz attempts include anonymous plus authenticated visitors", () => {
+  const answers = [{ question_id: "q1", question: "Q?", selected: "A", correct: "B", is_correct: false }];
+  const events = [
+    { anonymous_visitor_id: ANON_A, event_type: "lesson_viewed", lesson_id: "R01" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01" },
+    { anonymous_visitor_id: ANON_A, event_type: "quiz_completed", lesson_id: "R01", metadata: { score: 0, total: 1, answers } },
+    { learning_user_id: USER_A, event_type: "quiz_completed", lesson_id: "R01", metadata: { score: 1, total: 1, answers: [{ ...answers[0], selected: "B", is_correct: true }] } }
+  ];
+  const r01 = computeLessonPerformance(CATALOGUE, [], [], events).find((lesson) => lesson.lesson_id === "R01");
+  assert.equal(r01.viewEvents, 2);
+  assert.equal(r01.uniqueViewersFromEvents, 2);
+  assert.equal(r01.quizAttempts, 2);
+  assert.equal(r01.avgQuizAttemptPercent, 50);
+  assert.equal(r01.mostMissedQuestion.sampleSize, 2);
 });
 
 test("computeLessonPerformance: learnersStarted/completions remain accurate even with zero events (pre-tracking history)", () => {
@@ -423,7 +528,8 @@ test("computeLessonPerformance: learnersStarted/completions remain accurate even
 
 test("computeLessonPerformance: mostMissedQuestion is null when no quiz row has an answers snapshot", () => {
   const quizResults = [{ user_id: USER_A, lesson_id: "R01", score: 1, total: 1, completed_at: "2026-01-01T00:00:00Z" }];
-  const performance = computeLessonPerformance(CATALOGUE, [], quizResults);
+  const quizEvents = quizResults.map((row) => ({ event_type: "quiz_completed", lesson_id: row.lesson_id, metadata: row }));
+  const performance = computeLessonPerformance(CATALOGUE, [], quizResults, quizEvents);
   assert.equal(performance.find((l) => l.lesson_id === "R01").mostMissedQuestion, null);
 });
 
@@ -450,7 +556,8 @@ test("computeLessonPerformance: mostMissedQuestion identifies the question with 
       ]
     }
   ];
-  const performance = computeLessonPerformance(CATALOGUE, [], quizResults);
+  const quizEvents = quizResults.map((row) => ({ event_type: "quiz_completed", lesson_id: row.lesson_id, metadata: row }));
+  const performance = computeLessonPerformance(CATALOGUE, [], quizResults, quizEvents);
   const missed = performance.find((l) => l.lesson_id === "R01").mostMissedQuestion;
   assert.equal(missed.question_id, "q1");
   assert.equal(missed.incorrectCount, 2);
@@ -497,6 +604,17 @@ test("computeQuestionAnalytics: ignores answers for a lesson not in the publishe
   assert.deepEqual(computeQuestionAnalytics(CATALOGUE, quizResults), []);
 });
 
+test("computeQuestionAnalytics: combines authenticated and anonymous event attempts exactly once", () => {
+  const answer = { question_id: "q1", question: "Q?", selected: "A", correct: "B", is_correct: false };
+  const events = [
+    { learning_user_id: USER_A, lesson_id: "R01", metadata: { answers: [answer] } },
+    { anonymous_visitor_id: ANON_A, lesson_id: "R01", metadata: { answers: [{ ...answer, selected: "B", is_correct: true }] } }
+  ];
+  const questions = computeQuestionAnalytics(CATALOGUE, events);
+  assert.equal(questions[0].answeredCount, 2);
+  assert.equal(questions[0].percentCorrect, 50);
+});
+
 test("questionsToReview: only includes questions with at least one incorrect answer, sorted worst-first", () => {
   const questions = [
     { question_id: "q1", percentIncorrect: 0, answeredCount: 5 },
@@ -534,6 +652,17 @@ test("computeLearnerTable: a learner with no activity has null last_activity_at 
   assert.equal(table[0].last_activity_at, null);
   assert.equal(table[0].avg_quiz_percent, null);
   assert.equal(table[0].completion_percent, 0);
+});
+
+test("computeLearnerTable: anonymous visitor IDs never appear as learner rows", () => {
+  const table = computeLearnerTable(
+    CATALOGUE,
+    [{ id: USER_A, shopify_customer_id: "555000111" }],
+    [],
+    []
+  );
+  assert.equal(table.length, 1);
+  assert.equal(JSON.stringify(table).includes(ANON_A), false);
 });
 
 // ---------------- computeLearnerDetail ----------------

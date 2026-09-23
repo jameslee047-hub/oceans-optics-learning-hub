@@ -1,40 +1,19 @@
 /**
- * Learning Hub Phase B -- authenticated lesson view / quiz result / page
- * view tracking.
- *
- * Loaded on all four Learning Hub page types (homepage, category, lesson,
- * My Learning Progress). Purely additive: listens for events already
- * dispatched by learning-hub-progress-auth.js (oo:learning-progress-ready)
- * and learning-hub-knowledge-check.js (oo:knowledge-check-completed) and,
- * ONLY when a Learning Progress session is authenticated, POSTs to the
- * existing /api/lesson/viewed and /api/quiz/result endpoints, plus the
- * shared /api/learning-event endpoint for page-view-style analytics
- * (learning_hub_viewed, category_viewed, progress_dashboard_viewed --
- * lesson_viewed goes through /api/lesson/viewed instead, since that
- * endpoint already records it as part of verifying the lesson exists).
- *
- * Anonymous visitors are completely unaffected -- every code path here is
- * gated on OOLearningProgress.isAuthenticated(), and no identity is
- * invented for one (no cookie, no fingerprint, added solely to track an
- * anonymous visitor). Every request is fire-and-forget: a failure here
- * never touches the Knowledge Check UI or the current page, and never
- * prevents the visitor from seeing their quiz result
- * (learning-hub-knowledge-check.js already rendered the score before this
- * file's listener even runs).
- *
- * Never sends a shopify_customer_id or any other customer identifier --
- * the backend derives identity itself from the bearer token
- * (OOLearningProgress.getToken()). Only ever sends the internal lesson_id
- * (via learning-hub-lesson-id-map.js) or a category's own public handle
- * (already visible in that page's own URL), never anything else about the
- * visitor.
+ * Learning Hub activity tracking for authenticated learners and consented
+ * anonymous visitors. Anonymous identity is a random first-party UUID in
+ * localStorage; it is never derived from customer, network, browser, or
+ * device data and is removed whenever analytics processing is denied.
  */
 (function () {
   'use strict';
 
   var API_ORIGIN = 'https://oceans-optics-learning-progress.vercel.app';
+  var ANONYMOUS_STORAGE_KEY = 'oo_learning_analytics_visitor_v1';
+  var UUID_V4_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   var lessonViewedSent = false;
   var pageViewEventSent = false;
+  var privacyLoadStarted = false;
+  var privacyCallbacks = [];
 
   function getCurrentLessonHandle() {
     var article = document.querySelector('.learning-lesson[data-lesson-handle]');
@@ -46,13 +25,6 @@
     return (handle && map[handle]) || null;
   }
 
-  // Pure: derives which page-view event (if any) applies from the URL
-  // alone -- no DOM markers needed on any of the four page templates,
-  // since each already has a distinct, stable path
-  // (/pages/learn, /pages/learn-category/<handle>, /pages/my-learning).
-  // Lesson pages (/pages/learn/<handle>) intentionally return null here --
-  // their view is tracked via sendLessonViewedIfApplicable() below
-  // instead, through /api/lesson/viewed.
   function detectPageViewContext(pathname) {
     var path = String(pathname || '').replace(/\/+$/, '');
     if (path === '/pages/learn') return { eventType: 'learning_hub_viewed' };
@@ -61,7 +33,6 @@
     if (categoryMatch) return { eventType: 'category_viewed', categoryHandle: categoryMatch[1] };
 
     if (path === '/pages/my-learning') return { eventType: 'progress_dashboard_viewed' };
-
     return null;
   }
 
@@ -69,73 +40,157 @@
     return !!(window.OOLearningProgress && window.OOLearningProgress.isAuthenticated());
   }
 
-  function authorizedFetch(path, body) {
-    var token = window.OOLearningProgress && window.OOLearningProgress.getToken();
-    if (!token) return;
-
-    // Fire-and-forget: no caller waits on this, no UI depends on its
-    // outcome, and any failure (network, 401, 500, etc.) is swallowed here
-    // rather than surfaced anywhere a visitor would notice.
+  function postJson(path, body, token) {
+    var headers = { 'Content-Type': 'application/json' };
+    if (token) headers.Authorization = 'Bearer ' + token;
     fetch(API_ORIGIN + path, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token
-      },
+      headers: headers,
       body: JSON.stringify(body)
     }).catch(function () {
-      // Best-effort only -- see file header.
+      // Analytics and progress writes remain best-effort from the UI.
+    });
+  }
+
+  function authorizedFetch(path, body) {
+    var token = window.OOLearningProgress && window.OOLearningProgress.getToken();
+    if (token) postJson(path, body, token);
+  }
+
+  function finishPrivacyLoad(api) {
+    var callbacks = privacyCallbacks.slice();
+    privacyCallbacks = [];
+    callbacks.forEach(function (callback) { callback(api); });
+  }
+
+  function withCustomerPrivacy(callback) {
+    var shopify = window.Shopify;
+    if (shopify && shopify.customerPrivacy) {
+      callback(shopify.customerPrivacy);
+      return;
+    }
+    privacyCallbacks.push(callback);
+    if (privacyLoadStarted) return;
+    privacyLoadStarted = true;
+    if (!shopify || typeof shopify.loadFeatures !== 'function') {
+      finishPrivacyLoad(null);
+      return;
+    }
+    shopify.loadFeatures([{ name: 'consent-tracking-api', version: '0.1' }], function (error) {
+      finishPrivacyLoad(error || !shopify.customerPrivacy ? null : shopify.customerPrivacy);
+    });
+  }
+
+  function clearAnonymousVisitorId() {
+    try {
+      window.localStorage.removeItem(ANONYMOUS_STORAGE_KEY);
+    } catch (error) {
+      // Storage can be unavailable; absence is already the privacy-safe state.
+    }
+  }
+
+  function createUuid() {
+    var cryptoApi = window.crypto;
+    if (!cryptoApi) return null;
+    if (typeof cryptoApi.randomUUID === 'function') return cryptoApi.randomUUID();
+    if (typeof cryptoApi.getRandomValues !== 'function') return null;
+    var bytes = new Uint8Array(16);
+    cryptoApi.getRandomValues(bytes);
+    bytes[6] = (bytes[6] & 15) | 64;
+    bytes[8] = (bytes[8] & 63) | 128;
+    return Array.prototype.map.call(bytes, function (byte, index) {
+      return (index === 4 || index === 6 || index === 8 || index === 10 ? '-' : '') + byte.toString(16).padStart(2, '0');
+    }).join('');
+  }
+
+  function withAnonymousVisitor(callback) {
+    withCustomerPrivacy(function (privacy) {
+      if (!privacy || typeof privacy.analyticsProcessingAllowed !== 'function' || privacy.analyticsProcessingAllowed() !== true) {
+        clearAnonymousVisitorId();
+        return;
+      }
+      var visitorId = null;
+      try {
+        visitorId = window.localStorage.getItem(ANONYMOUS_STORAGE_KEY);
+        if (visitorId && !UUID_V4_PATTERN.test(visitorId)) {
+          window.localStorage.removeItem(ANONYMOUS_STORAGE_KEY);
+          visitorId = null;
+        }
+        if (!visitorId) {
+          visitorId = createUuid();
+          if (!visitorId) return;
+          window.localStorage.setItem(ANONYMOUS_STORAGE_KEY, visitorId);
+        }
+      } catch (error) {
+        return;
+      }
+      callback(visitorId);
+    });
+  }
+
+  function anonymousFetch(body) {
+    withAnonymousVisitor(function (visitorId) {
+      body.anonymous_visitor_id = visitorId;
+      postJson('/api/learning-event', body, null);
     });
   }
 
   function sendLessonViewedIfApplicable() {
     if (lessonViewedSent) return;
-    if (!isAuthenticated()) return;
-
     var lessonId = lessonIdForHandle(getCurrentLessonHandle());
     if (!lessonId) return;
 
-    lessonViewedSent = true;
-    authorizedFetch('/api/lesson/viewed', { lesson_id: lessonId });
+    if (isAuthenticated()) {
+      lessonViewedSent = true;
+      authorizedFetch('/api/lesson/viewed', { lesson_id: lessonId });
+      return;
+    }
+    withAnonymousVisitor(function (visitorId) {
+      if (lessonViewedSent || isAuthenticated()) return;
+      lessonViewedSent = true;
+      postJson('/api/learning-event', {
+        event_type: 'lesson_viewed',
+        lesson_id: lessonId,
+        anonymous_visitor_id: visitorId
+      }, null);
+    });
   }
 
   function sendPageViewEventIfApplicable() {
     if (pageViewEventSent) return;
-    if (!isAuthenticated()) return;
-
     var context = detectPageViewContext(window.location.pathname);
     if (!context) return;
 
-    pageViewEventSent = true;
     var body = { event_type: context.eventType };
     if (context.categoryHandle) body.category_handle = context.categoryHandle;
-    authorizedFetch('/api/learning-event', body);
+    if (isAuthenticated()) {
+      pageViewEventSent = true;
+      authorizedFetch('/api/learning-event', body);
+      return;
+    }
+    if (context.eventType === 'progress_dashboard_viewed') return;
+    withAnonymousVisitor(function (visitorId) {
+      if (pageViewEventSent || isAuthenticated()) return;
+      pageViewEventSent = true;
+      body.anonymous_visitor_id = visitorId;
+      postJson('/api/learning-event', body, null);
+    });
   }
 
   function onKnowledgeCheckCompleted(event) {
-    if (!isAuthenticated()) return;
-
     var detail = event.detail || {};
     var lessonId = lessonIdForHandle(detail.lessonHandle);
-    if (!lessonId) return;
-    if (!Number.isInteger(detail.score) || !Number.isInteger(detail.total)) return;
+    if (!lessonId || !Number.isInteger(detail.score) || !Number.isInteger(detail.total)) return;
 
-    var body = {
-      lesson_id: lessonId,
-      score: detail.score,
-      total: detail.total
-    };
+    var body = { lesson_id: lessonId, score: detail.score, total: detail.total };
+    if (Array.isArray(detail.answers) && detail.answers.length > 0) body.answers = detail.answers;
 
-    // Optional answer-review snapshot (see learning-hub-knowledge-check.js
-    // and lib/progress-service.js's validateAnswerReview on the backend,
-    // which is the actual source of truth for what shape is accepted --
-    // this is only a cheap pre-check so an obviously-wrong payload isn't
-    // sent at all; omitting it entirely is always backward compatible).
-    if (Array.isArray(detail.answers) && detail.answers.length > 0) {
-      body.answers = detail.answers;
+    if (isAuthenticated()) {
+      authorizedFetch('/api/quiz/result', body);
+      return;
     }
-
-    authorizedFetch('/api/quiz/result', body);
+    body.event_type = 'quiz_completed';
+    anonymousFetch(body);
   }
 
   function onLearningProgressReady() {
@@ -143,16 +198,17 @@
     sendPageViewEventIfApplicable();
   }
 
-  // learning-hub-progress-auth.js loads before this file and calls its own
-  // bootstrap() synchronously. For an AUTHENTICATED visitor that bootstrap
-  // always finishes asynchronously (a real fetch, either exchanging a
-  // handoff or re-validating a stored token), so this listener is always
-  // attached in time to catch oo:learning-progress-ready. For an
-  // ANONYMOUS visitor bootstrap can finish (and dispatch that event)
-  // synchronously before this file even runs -- but every function above
-  // is gated on isAuthenticated() anyway, so a missed event there is
-  // still correctly a no-op, not a bug (unlike a UI that needs to render
-  // something for the anonymous case too, e.g. learning-hub-my-learning.js).
+  document.addEventListener('visitorConsentCollected', function (event) {
+    if (!event.detail || event.detail.analyticsAllowed !== true) {
+      clearAnonymousVisitorId();
+      return;
+    }
+    if (!isAuthenticated()) onLearningProgressReady();
+  });
   document.addEventListener('oo:learning-progress-ready', onLearningProgressReady);
   document.addEventListener('oo:knowledge-check-completed', onKnowledgeCheckCompleted);
+
+  if (window.OOLearningProgress && typeof window.OOLearningProgress.isReady === 'function' && window.OOLearningProgress.isReady()) {
+    onLearningProgressReady();
+  }
 })();

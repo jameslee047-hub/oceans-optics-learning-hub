@@ -34,7 +34,7 @@ export async function fetchAllQuizResults(supabase) {
 export async function fetchAllLearningEvents(supabase) {
   const { data, error } = await supabase
     .from("learning_events")
-    .select("id, learning_user_id, event_type, lesson_id, created_at, metadata");
+    .select("id, learning_user_id, anonymous_visitor_id, event_type, lesson_id, created_at, metadata");
   if (error) throw error;
   return data || [];
 }

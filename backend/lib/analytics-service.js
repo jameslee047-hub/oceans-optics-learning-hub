@@ -56,8 +56,15 @@ const KNOWN_EVENT_TYPE_SET = new Set(KNOWN_EVENT_TYPES);
 export const CLIENT_REPORTABLE_EVENT_TYPES = ["learning_hub_viewed", "category_viewed", "progress_dashboard_viewed"];
 const CLIENT_REPORTABLE_EVENT_TYPE_SET = new Set(CLIENT_REPORTABLE_EVENT_TYPES);
 
+export const ANONYMOUS_CLIENT_REPORTABLE_EVENT_TYPES = ["learning_hub_viewed", "category_viewed", "lesson_viewed", "quiz_completed"];
+const ANONYMOUS_CLIENT_REPORTABLE_EVENT_TYPE_SET = new Set(ANONYMOUS_CLIENT_REPORTABLE_EVENT_TYPES);
+
 export function isClientReportableEventType(eventType) {
   return CLIENT_REPORTABLE_EVENT_TYPE_SET.has(eventType);
+}
+
+export function isAnonymousClientReportableEventType(eventType) {
+  return ANONYMOUS_CLIENT_REPORTABLE_EVENT_TYPE_SET.has(eventType);
 }
 
 function asArray(value) {
@@ -81,9 +88,15 @@ function toMs(isoTimestamp) {
 // meaningful learning events rather than arbitrary clicks"). Callers
 // (route handlers) are responsible for treating a failure here as
 // non-fatal to the actual progress write it accompanies.
-export async function recordLearningEvent(supabase, { learningUserId = null, eventType, lessonId = null, metadata = null, now = Date.now }) {
+export async function recordLearningEvent(
+  supabase,
+  { learningUserId = null, anonymousVisitorId = null, eventType, lessonId = null, metadata = null, now = Date.now }
+) {
   if (!KNOWN_EVENT_TYPE_SET.has(eventType)) {
     throw new Error(`unknown_event_type:${eventType}`);
+  }
+  if (Boolean(learningUserId) === Boolean(anonymousVisitorId)) {
+    throw new Error("event_requires_exactly_one_identity");
   }
 
   // created_at is stamped explicitly (rather than relying solely on the
@@ -94,6 +107,7 @@ export async function recordLearningEvent(supabase, { learningUserId = null, eve
   // consistent, verifiable timestamps.
   const { error } = await supabase.from("learning_events").insert({
     learning_user_id: learningUserId,
+    anonymous_visitor_id: anonymousVisitorId,
     event_type: eventType,
     lesson_id: lessonId,
     metadata: metadata,
@@ -114,7 +128,7 @@ export async function recordLearningEventBestEffort(supabase, params) {
   }
 }
 
-// How long a repeat of the SAME page-view-style event (same learner, same
+// How long a repeat of the SAME page-view-style event (same visitor, same
 // event_type, same resource) is treated as one continuous visit rather
 // than a new one -- long enough to absorb a page refresh or a few minutes
 // of re-reading, short enough that a genuine return visit hours or days
@@ -124,28 +138,42 @@ export const PAGE_VIEW_DEDUPE_WINDOW_MS = 30 * 60 * 1000;
 
 // Records a page-view-style event (learning_hub_viewed, category_viewed,
 // lesson_viewed, progress_dashboard_viewed) with short-window
-// deduplication: if this learner already has an event of the SAME type
+// deduplication: if this authenticated learner or anonymous visitor already
+// has an event of the SAME type
 // for the SAME resource within the last PAGE_VIEW_DEDUPE_WINDOW_MS, this
 // is a no-op. "Resource" is `lessonId` when given, else
 // `metadata.category_handle` when given, else there is no
 // resource-level distinction (learning_hub_viewed/progress_dashboard_viewed
 // only ever have one "resource": the page itself).
 //
-// Never invents an identity for an anonymous visitor: a null/missing
-// learningUserId is a no-op, not an error -- anonymous page views are
-// simply not recorded (see the project report for why: only authenticated
-// Learning Progress users need to appear in learner analytics, and no
-// cookie/fingerprint is ever added solely to identify an anonymous one).
-export async function recordPageViewEvent(supabase, { learningUserId, eventType, lessonId = null, metadata = null, now = Date.now, windowMs = PAGE_VIEW_DEDUPE_WINDOW_MS }) {
-  if (!learningUserId) return;
+// Identity must be either a verified learningUserId or a consent-gated,
+// random anonymousVisitorId. With neither it remains a no-op; with both it
+// fails rather than merging identities.
+export async function recordPageViewEvent(
+  supabase,
+  {
+    learningUserId = null,
+    anonymousVisitorId = null,
+    eventType,
+    lessonId = null,
+    metadata = null,
+    now = Date.now,
+    windowMs = PAGE_VIEW_DEDUPE_WINDOW_MS
+  }
+) {
+  if (!learningUserId && !anonymousVisitorId) return;
+  if (learningUserId && anonymousVisitorId) throw new Error("event_requires_exactly_one_identity");
 
   const windowStartIso = new Date(now() - windowMs).toISOString();
-  const { data: recentEvents, error: selectError } = await supabase
+  let recentQuery = supabase
     .from("learning_events")
     .select("id, lesson_id, metadata")
-    .eq("learning_user_id", learningUserId)
     .eq("event_type", eventType)
     .gte("created_at", windowStartIso);
+  recentQuery = learningUserId
+    ? recentQuery.eq("learning_user_id", learningUserId)
+    : recentQuery.eq("anonymous_visitor_id", anonymousVisitorId);
+  const { data: recentEvents, error: selectError } = await recentQuery;
   if (selectError) throw selectError;
 
   const categoryHandle = metadata && typeof metadata.category_handle === "string" ? metadata.category_handle : null;
@@ -157,7 +185,7 @@ export async function recordPageViewEvent(supabase, { learningUserId, eventType,
   });
   if (isDuplicate) return;
 
-  await recordLearningEvent(supabase, { learningUserId, eventType, lessonId, metadata, now });
+  await recordLearningEvent(supabase, { learningUserId, anonymousVisitorId, eventType, lessonId, metadata, now });
 }
 
 // Same as recordPageViewEvent, but never throws -- see
@@ -215,8 +243,14 @@ function isWithinRange(isoTimestamp, dateRange) {
 
 // Pair key for deduplicating (learning_user_id, lesson_id) -- exported
 // only for this file's own tests; not part of the public aggregation API.
-function pairKey(learningUserId, lessonId) {
-  return learningUserId + "::" + lessonId;
+function eventIdentity(event) {
+  if (event && event.learning_user_id) return "authenticated:" + event.learning_user_id;
+  if (event && event.anonymous_visitor_id) return "anonymous:" + event.anonymous_visitor_id;
+  return null;
+}
+
+function pairKey(identity, lessonId) {
+  return identity + "::" + lessonId;
 }
 
 // Distinct (learning_user_id, lesson_id) pairs with a lesson_viewed event
@@ -249,7 +283,7 @@ function computeLessonConversion(eventsInRange) {
 
   eventsInRange.forEach((event) => {
     if (!event.learning_user_id || !event.lesson_id) return;
-    const key = pairKey(event.learning_user_id, event.lesson_id);
+    const key = pairKey("authenticated:" + event.learning_user_id, event.lesson_id);
     if (event.event_type === "lesson_viewed") viewedPairs.add(key);
     else if (event.event_type === "lesson_completed") completedPairs.add(key);
   });
@@ -310,8 +344,13 @@ export function computeSummaryMetrics({ users, events }, dateRange) {
   const eventsInRange = events.filter((event) => isWithinRange(event.created_at, dateRange));
 
   const activeLearnerIds = new Set();
+  const anonymousVisitorIds = new Set();
+  const visitorIdentities = new Set();
   eventsInRange.forEach((event) => {
     if (event.learning_user_id) activeLearnerIds.add(event.learning_user_id);
+    if (event.anonymous_visitor_id) anonymousVisitorIds.add(event.anonymous_visitor_id);
+    const identity = eventIdentity(event);
+    if (identity) visitorIdentities.add(identity);
   });
 
   const lessonViewEvents = eventsInRange.filter((event) => event.event_type === "lesson_viewed");
@@ -334,6 +373,7 @@ export function computeSummaryMetrics({ users, events }, dateRange) {
     quizPercentages.length > 0 ? Math.round(quizPercentages.reduce((sum, percent) => sum + percent, 0) / quizPercentages.length) : null;
 
   let returningLearners = null;
+  let returningVisitors = null;
   if (events.length > 0 && dateRange.since) {
     const sinceMs = toMs(dateRange.since);
     const priorActivityUserIds = new Set();
@@ -347,12 +387,26 @@ export function computeSummaryMetrics({ users, events }, dateRange) {
     activeLearnerIds.forEach((userId) => {
       if (priorActivityUserIds.has(userId)) returningLearners += 1;
     });
+
+    const priorVisitorIdentities = new Set();
+    events.forEach((event) => {
+      const ms = toMs(event.created_at);
+      const identity = eventIdentity(event);
+      if (identity && ms !== null && ms < sinceMs) priorVisitorIdentities.add(identity);
+    });
+    returningVisitors = 0;
+    visitorIdentities.forEach((identity) => {
+      if (priorVisitorIdentities.has(identity)) returningVisitors += 1;
+    });
   }
 
   return {
     range: dateRange.range,
     totalLearners,
     activeLearners: activeLearnerIds.size,
+    visitors: visitorIdentities.size,
+    anonymousVisitors: anonymousVisitorIds.size,
+    authenticatedVisitors: activeLearnerIds.size,
     lessonViews,
     lessonCompletions,
     uniqueLessonPairsViewed,
@@ -361,7 +415,9 @@ export function computeSummaryMetrics({ users, events }, dateRange) {
     quizzesCompleted,
     avgQuizPercent,
     returningLearners,
+    returningVisitors,
     trackingStartedAt: computeTrackingStartedAt(events),
+    anonymousTrackingStartedAt: computeTrackingStartedAt(events.filter((event) => event.anonymous_visitor_id)),
     hasEventData: events.length > 0
   };
 }
@@ -415,10 +471,10 @@ function computeMostMissedQuestion(quizRowsForLesson) {
 //     undercount learnersStarted for any lesson whose only views happened
 //     before event tracking launched, by design (see
 //     computeTrackingStartedAt).
-//   - quizCount / avgQuizPercent (STATE, knowledge_check_results,
-//     current/latest result per learner) and mostMissedQuestion (from
-//     stored answer snapshots) are unchanged -- see that function's own
-//     comment for why these are current/latest, not attempt history.
+//   - quizAttempts / avgQuizAttemptPercent / mostMissedQuestion are based
+//     on quiz_completed EVENTS from both populations. This is attempt
+//     analytics; authenticated current/latest state remains in
+//     knowledge_check_results and is used only by learner-specific views.
 export function computeLessonPerformance(catalogue, lessonProgress, quizResults, events) {
   lessonProgress = asArray(lessonProgress);
   quizResults = asArray(quizResults);
@@ -443,12 +499,23 @@ export function computeLessonPerformance(catalogue, lessonProgress, quizResults,
 
     const uniqueViewerIdsFromEvents = new Set();
     viewEventsForLesson.forEach((event) => {
-      if (event.learning_user_id) uniqueViewerIdsFromEvents.add(event.learning_user_id);
+      const identity = eventIdentity(event);
+      if (identity) uniqueViewerIdsFromEvents.add(identity);
     });
 
-    const quizCount = quizRows.length;
-    const avgQuizPercent =
-      quizCount > 0 ? Math.round(quizRows.reduce((sum, row) => sum + percentOf(row.score, row.total), 0) / quizCount) : null;
+    const quizAttemptEvents = events.filter((event) => event.event_type === "quiz_completed" && event.lesson_id === lesson.lesson_id);
+    const quizAttemptPercentages = quizAttemptEvents
+      .map((event) =>
+        event.metadata && typeof event.metadata.score === "number" && typeof event.metadata.total === "number"
+          ? percentOf(event.metadata.score, event.metadata.total)
+          : null
+      )
+      .filter((value) => value !== null);
+    const quizAttempts = quizAttemptEvents.length;
+    const avgQuizAttemptPercent =
+      quizAttemptPercentages.length > 0
+        ? Math.round(quizAttemptPercentages.reduce((sum, value) => sum + value, 0) / quizAttemptPercentages.length)
+        : null;
 
     return {
       lesson_id: lesson.lesson_id,
@@ -461,9 +528,10 @@ export function computeLessonPerformance(catalogue, lessonProgress, quizResults,
       completionRate,
       viewEvents: viewEventsForLesson.length,
       uniqueViewersFromEvents: uniqueViewerIdsFromEvents.size,
-      quizCount,
-      avgQuizPercent,
-      mostMissedQuestion: computeMostMissedQuestion(quizRows)
+      authenticatedLatestQuizResults: quizRows.length,
+      quizAttempts,
+      avgQuizAttemptPercent,
+      mostMissedQuestion: computeMostMissedQuestion(quizAttemptEvents.map((event) => event.metadata || {}))
     };
   });
 }
@@ -474,13 +542,10 @@ export function computeLessonPerformance(catalogue, lessonProgress, quizResults,
 // that omitted it), are skipped entirely -- never counted toward sample
 // size or percentages.
 //
-// IMPORTANT: knowledge_check_results stores each learner's CURRENT/LATEST
-// result per lesson (a retake replaces it), not an attempt history. This
-// therefore represents "of learners' current/latest stored results, how
-// many got each question right" -- NOT "of all attempts ever made". A
-// learner who retook a quiz only contributes their most recent answers.
-// Dashboard copy must reflect this (see routes/admin/index.js), never
-// implying full historical attempt analytics.
+// Accepts quiz_completed event rows (answers nested in metadata) as well
+// as the earlier direct-row shape for backward-compatible pure tests.
+// Dashboard aggregate question analytics passes event rows only, avoiding
+// double-counting authenticated attempts against current/latest state.
 export function computeQuestionAnalytics(catalogue, quizResults) {
   quizResults = asArray(quizResults);
   const categoryTitleByHandle = {};
@@ -495,14 +560,15 @@ export function computeQuestionAnalytics(catalogue, quizResults) {
   const byLessonThenQuestion = {};
 
   quizResults.forEach((row) => {
-    if (!Array.isArray(row.answers)) return;
+    const answers = Array.isArray(row.answers) ? row.answers : row.metadata?.answers;
+    if (!Array.isArray(answers)) return;
     const lesson = lessonById[row.lesson_id];
     if (!lesson) return;
 
     if (!byLessonThenQuestion[row.lesson_id]) byLessonThenQuestion[row.lesson_id] = {};
     const questionsForLesson = byLessonThenQuestion[row.lesson_id];
 
-    row.answers.forEach((item) => {
+    answers.forEach((item) => {
       if (!item || typeof item.question_id !== "string") return;
 
       if (!questionsForLesson[item.question_id]) {
