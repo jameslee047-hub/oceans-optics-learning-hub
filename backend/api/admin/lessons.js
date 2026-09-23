@@ -4,8 +4,8 @@
 // pagination needed at this scale).
 import { requireAdmin } from "../../lib/require-admin.js";
 import { getSupabaseClient } from "../../lib/supabase.js";
-import { fetchAllLessonProgress, fetchAllQuizResults } from "../../lib/admin-data.js";
-import { computeLessonPerformance, LEARNING_CATALOGUE } from "../../lib/analytics-service.js";
+import { fetchAllLessonProgress, fetchAllQuizResults, fetchAllLearningEvents } from "../../lib/admin-data.js";
+import { computeLessonPerformance, computeTrackingStartedAt, LEARNING_CATALOGUE } from "../../lib/analytics-service.js";
 
 export default async function handler(req, res) {
   if (!requireAdmin(req, res)) return;
@@ -16,10 +16,14 @@ export default async function handler(req, res) {
 
   try {
     const supabase = await getSupabaseClient();
-    const [lessonProgress, quizResults] = await Promise.all([fetchAllLessonProgress(supabase), fetchAllQuizResults(supabase)]);
+    const [lessonProgress, quizResults, events] = await Promise.all([
+      fetchAllLessonProgress(supabase),
+      fetchAllQuizResults(supabase),
+      fetchAllLearningEvents(supabase)
+    ]);
 
-    const lessons = computeLessonPerformance(LEARNING_CATALOGUE, lessonProgress, quizResults);
-    res.status(200).json({ lessons });
+    const lessons = computeLessonPerformance(LEARNING_CATALOGUE, lessonProgress, quizResults, events);
+    res.status(200).json({ lessons, trackingStartedAt: computeTrackingStartedAt(events) });
   } catch (error) {
     console.error("GET /api/admin/lessons failed", error);
     res.status(500).json({ error: "admin_lessons_failed" });

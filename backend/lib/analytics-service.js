@@ -2,11 +2,30 @@
 // (api/admin/*). Kept separate from route handlers so it can be unit
 // tested against plain fixture arrays -- no real Supabase connection.
 //
-// learning_events (migrations/0004_learning_events.sql) is history/
-// analytics only. lesson_progress and knowledge_check_results remain the
-// source of truth for current state -- every function here that reports
-// "is this lesson complete" or "what was the score" reads those tables,
-// never learning_events.
+// STATE vs ACTIVITY, precisely:
+//   - lesson_progress / knowledge_check_results are STATE: "is this lesson
+//     complete right now", "what is this learner's current/latest quiz
+//     result". They stay the source of truth for a learner's overall
+//     progress, lessons-ever-completed, and current/latest answer review
+//     -- and they still cover time periods that predate event tracking,
+//     since state itself has no "since when" concept.
+//   - learning_events (migrations/0004_learning_events.sql) is the
+//     AUTHORITATIVE source for BEHAVIOURAL/activity metrics: active
+//     learners, lesson views, lesson completions (as occurrences),
+//     Knowledge Checks completed (as occurrences), and returning
+//     learners. lesson_progress.first_viewed_at is NOT a substitute for
+//     this -- it only records the FIRST view ever, so a learner
+//     revisiting an already-viewed lesson produces no change to it at
+//     all, which would silently undercount real repeat activity if used
+//     for period-based activity metrics. Likewise a quiz retake replaces
+//     knowledge_check_results' single row, so it cannot represent
+//     "how many times was this quiz completed" -- only "what is the
+//     latest result".
+//   - Because of this, activity metrics are only ever as complete as
+//     learning_events itself: see computeTrackingStartedAt() and the
+//     `trackingStartedAt`/`hasEventData` fields computeSummaryMetrics()
+//     returns, which the dashboard uses to make this limitation explicit
+//     rather than presenting pre-tracking silence as "zero activity".
 //
 // Every function defends against missing/malformed input (null, wrong
 // shape) by normalizing to empty arrays/zero results rather than
@@ -14,6 +33,7 @@
 // theme/learning-hub-pilot/assets/learning-hub-my-learning-core.js.
 import { LEARNING_CATALOGUE } from "./lesson-catalogue.js";
 
+// Every event type the learning_events table's CHECK constraint allows.
 export const KNOWN_EVENT_TYPES = [
   "learning_hub_viewed",
   "category_viewed",
@@ -23,6 +43,22 @@ export const KNOWN_EVENT_TYPES = [
   "progress_dashboard_viewed"
 ];
 const KNOWN_EVENT_TYPE_SET = new Set(KNOWN_EVENT_TYPES);
+
+// The subset of KNOWN_EVENT_TYPES a client is allowed to self-report via
+// POST /api/learning-event (api/learning-event.js). lesson_viewed,
+// lesson_completed, and quiz_completed are deliberately EXCLUDED here --
+// they are already recorded server-side, exactly once per meaningful
+// occurrence, as part of the existing authenticated write endpoints
+// (/api/lesson/viewed, /api/lesson/complete, /api/quiz/result) that
+// already verify the underlying state change. Letting a client also
+// self-report those through the generic endpoint would risk double
+// counting the same occurrence.
+export const CLIENT_REPORTABLE_EVENT_TYPES = ["learning_hub_viewed", "category_viewed", "progress_dashboard_viewed"];
+const CLIENT_REPORTABLE_EVENT_TYPE_SET = new Set(CLIENT_REPORTABLE_EVENT_TYPES);
+
+export function isClientReportableEventType(eventType) {
+  return CLIENT_REPORTABLE_EVENT_TYPE_SET.has(eventType);
+}
 
 function asArray(value) {
   return Array.isArray(value) ? value : [];
@@ -45,16 +81,23 @@ function toMs(isoTimestamp) {
 // meaningful learning events rather than arbitrary clicks"). Callers
 // (route handlers) are responsible for treating a failure here as
 // non-fatal to the actual progress write it accompanies.
-export async function recordLearningEvent(supabase, { learningUserId = null, eventType, lessonId = null, metadata = null }) {
+export async function recordLearningEvent(supabase, { learningUserId = null, eventType, lessonId = null, metadata = null, now = Date.now }) {
   if (!KNOWN_EVENT_TYPE_SET.has(eventType)) {
     throw new Error(`unknown_event_type:${eventType}`);
   }
 
+  // created_at is stamped explicitly (rather than relying solely on the
+  // column's `default now()`) so this function's notion of "when" is
+  // exactly the same clock recordPageViewEvent's dedupe window check
+  // already takes as an injectable `now` -- both real callers (using the
+  // real Date.now) and tests (using a fixed/advancing clock) get
+  // consistent, verifiable timestamps.
   const { error } = await supabase.from("learning_events").insert({
     learning_user_id: learningUserId,
     event_type: eventType,
     lesson_id: lessonId,
-    metadata: metadata
+    metadata: metadata,
+    created_at: new Date(now()).toISOString()
   });
   if (error) throw error;
 }
@@ -69,6 +112,78 @@ export async function recordLearningEventBestEffort(supabase, params) {
   } catch (error) {
     console.error("recordLearningEvent failed (non-fatal)", params && params.eventType, error && error.message ? error.message : error);
   }
+}
+
+// How long a repeat of the SAME page-view-style event (same learner, same
+// event_type, same resource) is treated as one continuous visit rather
+// than a new one -- long enough to absorb a page refresh or a few minutes
+// of re-reading, short enough that a genuine return visit hours or days
+// later is never collapsed into it. Exported so tests can reason about
+// the exact boundary rather than guessing it.
+export const PAGE_VIEW_DEDUPE_WINDOW_MS = 30 * 60 * 1000;
+
+// Records a page-view-style event (learning_hub_viewed, category_viewed,
+// lesson_viewed, progress_dashboard_viewed) with short-window
+// deduplication: if this learner already has an event of the SAME type
+// for the SAME resource within the last PAGE_VIEW_DEDUPE_WINDOW_MS, this
+// is a no-op. "Resource" is `lessonId` when given, else
+// `metadata.category_handle` when given, else there is no
+// resource-level distinction (learning_hub_viewed/progress_dashboard_viewed
+// only ever have one "resource": the page itself).
+//
+// Never invents an identity for an anonymous visitor: a null/missing
+// learningUserId is a no-op, not an error -- anonymous page views are
+// simply not recorded (see the project report for why: only authenticated
+// Learning Progress users need to appear in learner analytics, and no
+// cookie/fingerprint is ever added solely to identify an anonymous one).
+export async function recordPageViewEvent(supabase, { learningUserId, eventType, lessonId = null, metadata = null, now = Date.now, windowMs = PAGE_VIEW_DEDUPE_WINDOW_MS }) {
+  if (!learningUserId) return;
+
+  const windowStartIso = new Date(now() - windowMs).toISOString();
+  const { data: recentEvents, error: selectError } = await supabase
+    .from("learning_events")
+    .select("id, lesson_id, metadata")
+    .eq("learning_user_id", learningUserId)
+    .eq("event_type", eventType)
+    .gte("created_at", windowStartIso);
+  if (selectError) throw selectError;
+
+  const categoryHandle = metadata && typeof metadata.category_handle === "string" ? metadata.category_handle : null;
+
+  const isDuplicate = (recentEvents || []).some((event) => {
+    if (lessonId !== null) return event.lesson_id === lessonId;
+    if (categoryHandle !== null) return !!(event.metadata && event.metadata.category_handle === categoryHandle);
+    return true; // no distinguishing resource -- any recent occurrence of this type is a duplicate
+  });
+  if (isDuplicate) return;
+
+  await recordLearningEvent(supabase, { learningUserId, eventType, lessonId, metadata, now });
+}
+
+// Same as recordPageViewEvent, but never throws -- see
+// recordLearningEventBestEffort for why.
+export async function recordPageViewEventBestEffort(supabase, params) {
+  try {
+    await recordPageViewEvent(supabase, params);
+  } catch (error) {
+    console.error("recordPageViewEvent failed (non-fatal)", params && params.eventType, error && error.message ? error.message : error);
+  }
+}
+
+// The earliest learning_events.created_at across all recorded events, or
+// null if none exist yet. The dashboard uses this to show "Activity
+// tracking since <date>" (or an explicit "no activity tracked yet" state)
+// next to behavioural metrics, so pre-tracking silence is never presented
+// as if it were complete event analytics.
+export function computeTrackingStartedAt(events) {
+  events = asArray(events);
+  let earliestMs = null;
+  events.forEach((event) => {
+    const ms = toMs(event.created_at);
+    if (ms === null) return;
+    if (earliestMs === null || ms < earliestMs) earliestMs = ms;
+  });
+  return earliestMs === null ? null : new Date(earliestMs).toISOString();
 }
 
 const RANGE_MS = {
@@ -98,49 +213,67 @@ function isWithinRange(isoTimestamp, dateRange) {
   return ms >= toMs(dateRange.since);
 }
 
-// Summary metrics for the selected date range.
+// Summary metrics for the selected date range. `users` is the only STATE
+// input here (for totalLearners); every behavioural number below is
+// derived EXCLUSIVELY from learning_events -- never from
+// lesson_progress.first_viewed_at or knowledge_check_results.completed_at,
+// which cannot represent repeat activity (see this file's header comment).
 //
 // - totalLearners: ALWAYS all-time (a running total of registered
-//   learners), regardless of the selected range.
-// - activeLearners: distinct learners with a lesson view, lesson
-//   completion, or quiz completion whose timestamp falls in the range --
-//   derived from lesson_progress/knowledge_check_results (the source of
-//   truth), not learning_events, so this works even for periods before
-//   event logging existed.
-// - lessonStarts/lessonCompletions/completionRate: completionRate is
-//   completions-in-range / starts-in-range, i.e. "of the lessons started
-//   in this period, what fraction were also completed" -- not a ratio
-//   against the whole catalogue.
-// - returningLearners: null (not just 0) when learning_events has no
-//   rows at all, or the range is "all time" -- there is no meaningful
-//   "were they active before this period" signal in either case, and a
-//   metric must not be shown as if it were a real zero.
-export function computeSummaryMetrics({ users, lessonProgress, quizResults, events }, dateRange) {
+//   learners), regardless of the selected range. The one STATE-derived
+//   number here.
+// - activeLearners: distinct learning_user_id with ANY learning_events row
+//   (any of the known event types counts -- all of them are curated,
+//   meaningful learning actions by design) whose timestamp falls in range.
+// - lessonViews / lessonCompletions: COUNTS of lesson_viewed /
+//   lesson_completed EVENTS in range -- occurrences, not distinct
+//   lessons or distinct learners. completionRate is
+//   completions-in-range / views-in-range.
+// - quizzesCompleted: count of quiz_completed EVENTS in range (each
+//   retake counts as its own occurrence, unlike the STATE table's single
+//   current row per lesson).
+// - avgQuizPercent: averaged over the SAME quiz_completed events (using
+//   the score/total captured in each event's metadata at the time), so it
+//   never mixes an events-sourced count with a state-sourced average.
+// - returningLearners: a learner counted in activeLearners who ALSO has
+//   an event strictly before the range's start. null (not 0) when
+//   learning_events has no rows at all, or the range is "all time" (no
+//   "before" boundary exists to compare against) -- a metric must never
+//   be shown as a real zero when there is no signal either way.
+// - trackingStartedAt / hasEventData: see computeTrackingStartedAt --
+//   lets the dashboard state plainly that behavioural metrics only cover
+//   activity since this timestamp, never implying they are complete
+//   historical analytics.
+export function computeSummaryMetrics({ users, events }, dateRange) {
   users = asArray(users);
-  lessonProgress = asArray(lessonProgress);
-  quizResults = asArray(quizResults);
   events = asArray(events);
 
   const totalLearners = users.length;
-
-  const startsInRange = lessonProgress.filter((row) => isWithinRange(row.first_viewed_at, dateRange));
-  const completionsInRange = lessonProgress.filter((row) => isWithinRange(row.completed_at, dateRange));
-  const quizzesInRange = quizResults.filter((row) => isWithinRange(row.completed_at, dateRange));
+  const eventsInRange = events.filter((event) => isWithinRange(event.created_at, dateRange));
 
   const activeLearnerIds = new Set();
-  startsInRange.forEach((row) => activeLearnerIds.add(row.user_id));
-  completionsInRange.forEach((row) => activeLearnerIds.add(row.user_id));
-  quizzesInRange.forEach((row) => activeLearnerIds.add(row.user_id));
+  eventsInRange.forEach((event) => {
+    if (event.learning_user_id) activeLearnerIds.add(event.learning_user_id);
+  });
 
-  const lessonStarts = startsInRange.length;
-  const lessonCompletions = completionsInRange.length;
-  const completionRate = lessonStarts > 0 ? percentOf(lessonCompletions, lessonStarts) : 0;
+  const lessonViewEvents = eventsInRange.filter((event) => event.event_type === "lesson_viewed");
+  const lessonCompletedEvents = eventsInRange.filter((event) => event.event_type === "lesson_completed");
+  const quizCompletedEvents = eventsInRange.filter((event) => event.event_type === "quiz_completed");
 
-  const quizzesCompleted = quizzesInRange.length;
+  const lessonViews = lessonViewEvents.length;
+  const lessonCompletions = lessonCompletedEvents.length;
+  const completionRate = lessonViews > 0 ? percentOf(lessonCompletions, lessonViews) : 0;
+
+  const quizzesCompleted = quizCompletedEvents.length;
+  const quizPercentages = quizCompletedEvents
+    .map((event) =>
+      event.metadata && typeof event.metadata.score === "number" && typeof event.metadata.total === "number"
+        ? percentOf(event.metadata.score, event.metadata.total)
+        : null
+    )
+    .filter((percent) => percent !== null);
   const avgQuizPercent =
-    quizzesCompleted > 0
-      ? Math.round(quizzesInRange.reduce((sum, row) => sum + percentOf(row.score, row.total), 0) / quizzesCompleted)
-      : null;
+    quizPercentages.length > 0 ? Math.round(quizPercentages.reduce((sum, percent) => sum + percent, 0) / quizPercentages.length) : null;
 
   let returningLearners = null;
   if (events.length > 0 && dateRange.since) {
@@ -162,12 +295,14 @@ export function computeSummaryMetrics({ users, lessonProgress, quizResults, even
     range: dateRange.range,
     totalLearners,
     activeLearners: activeLearnerIds.size,
-    lessonStarts,
+    lessonViews,
     lessonCompletions,
     completionRate,
     quizzesCompleted,
     avgQuizPercent,
-    returningLearners
+    returningLearners,
+    trackingStartedAt: computeTrackingStartedAt(events),
+    hasEventData: events.length > 0
   };
 }
 
@@ -202,11 +337,32 @@ function computeMostMissedQuestion(quizRowsForLesson) {
   return worst;
 }
 
-// One row per published lesson -- traffic, completion, quiz performance,
-// and (when answer snapshots exist) the single most-missed question.
-export function computeLessonPerformance(catalogue, lessonProgress, quizResults) {
+// One row per published lesson, deliberately mixing STATE and EVENT
+// numbers with precise, distinct names for each -- never calling a
+// state-derived count a "view":
+//
+//   - learnersStarted (STATE, lesson_progress): distinct learners who
+//     have ever viewed this lesson, all-time, including before event
+//     tracking existed. This is "has ever started", not "views".
+//   - completions / completionRate (STATE, lesson_progress): all-time,
+//     against learnersStarted -- unaffected by whether event tracking has
+//     even begun, since completion is itself a permanent state fact.
+//   - viewEvents (EVENTS, lesson_viewed): total view OCCURRENCES recorded
+//     since tracking began -- can exceed learnersStarted if learners
+//     revisit.
+//   - uniqueViewersFromEvents (EVENTS, lesson_viewed): distinct learners
+//     with at least one view event, since tracking began -- will
+//     undercount learnersStarted for any lesson whose only views happened
+//     before event tracking launched, by design (see
+//     computeTrackingStartedAt).
+//   - quizCount / avgQuizPercent (STATE, knowledge_check_results,
+//     current/latest result per learner) and mostMissedQuestion (from
+//     stored answer snapshots) are unchanged -- see that function's own
+//     comment for why these are current/latest, not attempt history.
+export function computeLessonPerformance(catalogue, lessonProgress, quizResults, events) {
   lessonProgress = asArray(lessonProgress);
   quizResults = asArray(quizResults);
+  events = asArray(events);
   const categoryTitleByHandle = {};
   catalogue.categories.forEach((category) => {
     categoryTitleByHandle[category.handle] = category.title;
@@ -214,14 +370,21 @@ export function computeLessonPerformance(catalogue, lessonProgress, quizResults)
 
   return catalogue.lessons.map((lesson) => {
     // lesson_progress's primary key is (user_id, lesson_id), so each user
-    // contributes at most one row per lesson -- row count IS unique
-    // viewers, no separate de-duplication needed.
+    // contributes at most one row per lesson -- row count directly gives
+    // the distinct-learners-ever-started figure, no separate
+    // de-duplication needed.
     const progressRows = lessonProgress.filter((row) => row.lesson_id === lesson.lesson_id);
     const quizRows = quizResults.filter((row) => row.lesson_id === lesson.lesson_id);
+    const viewEventsForLesson = events.filter((event) => event.event_type === "lesson_viewed" && event.lesson_id === lesson.lesson_id);
 
-    const uniqueViewers = progressRows.length;
+    const learnersStarted = progressRows.length;
     const completions = progressRows.filter((row) => row.completed_at).length;
-    const completionRate = percentOf(completions, uniqueViewers);
+    const completionRate = percentOf(completions, learnersStarted);
+
+    const uniqueViewerIdsFromEvents = new Set();
+    viewEventsForLesson.forEach((event) => {
+      if (event.learning_user_id) uniqueViewerIdsFromEvents.add(event.learning_user_id);
+    });
 
     const quizCount = quizRows.length;
     const avgQuizPercent =
@@ -233,9 +396,11 @@ export function computeLessonPerformance(catalogue, lessonProgress, quizResults)
       title: lesson.title,
       category_handle: lesson.category_handle,
       category_title: categoryTitleByHandle[lesson.category_handle] || "",
-      uniqueViewers,
+      learnersStarted,
       completions,
       completionRate,
+      viewEvents: viewEventsForLesson.length,
+      uniqueViewersFromEvents: uniqueViewerIdsFromEvents.size,
       quizCount,
       avgQuizPercent,
       mostMissedQuestion: computeMostMissedQuestion(quizRows)
@@ -248,6 +413,14 @@ export function computeLessonPerformance(catalogue, lessonProgress, quizResults)
 // `answers` snapshot at all (legacy pre-migration rows, or a submission
 // that omitted it), are skipped entirely -- never counted toward sample
 // size or percentages.
+//
+// IMPORTANT: knowledge_check_results stores each learner's CURRENT/LATEST
+// result per lesson (a retake replaces it), not an attempt history. This
+// therefore represents "of learners' current/latest stored results, how
+// many got each question right" -- NOT "of all attempts ever made". A
+// learner who retook a quiz only contributes their most recent answers.
+// Dashboard copy must reflect this (see api/admin/index.js), never
+// implying full historical attempt analytics.
 export function computeQuestionAnalytics(catalogue, quizResults) {
   quizResults = asArray(quizResults);
   const categoryTitleByHandle = {};
@@ -334,10 +507,16 @@ export function questionsToReview(questionAnalytics, { minSampleSize = 1 } = {})
   return asArray(questionAnalytics).filter((question) => question.answeredCount >= minSampleSize && question.percentIncorrect > 0);
 }
 
-// One row per registered learner. completion_percent is against the whole
-// published catalogue (matching the customer-facing My Learning Progress
-// dashboard's own definition), not against only the lessons they've
-// started.
+// One row per registered learner, from STATE tables (this is a
+// current-status table, not a behavioural one -- see api/admin/learners.js
+// for the corresponding event-derived activity figures shown alongside
+// it). completion_percent is against the whole published catalogue
+// (matching the customer-facing My Learning Progress dashboard's own
+// definition), not against only the lessons they've started.
+// `lessons_started` (not "viewed") because it is derived from
+// lesson_progress -- see this file's header comment for why that is a
+// STATE fact ("has this learner ever started this lesson"), not a count
+// of view occurrences.
 export function computeLearnerTable(catalogue, users, lessonProgress, quizResults) {
   users = asArray(users);
   lessonProgress = asArray(lessonProgress);
@@ -371,7 +550,7 @@ export function computeLearnerTable(catalogue, users, lessonProgress, quizResult
       learning_user_id: user.id,
       shopify_customer_id: user.shopify_customer_id,
       last_activity_at: lastActivityAt,
-      lessons_viewed: progressRows.length,
+      lessons_started: progressRows.length,
       lessons_completed: lessonsCompleted,
       completion_percent: percentOf(lessonsCompleted, totalLessons),
       quizzes_completed: quizzesCompleted,

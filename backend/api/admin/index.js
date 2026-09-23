@@ -76,6 +76,8 @@ const HTML = `<!doctype html>
   .metric-card .value { font-size: 1.9rem; font-weight: 900; color: var(--blue); line-height: 1.1; }
   .metric-card .label { color: var(--muted); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; margin-top: 0.3rem; }
   .metric-card .na { color: var(--muted); font-size: 0.75rem; font-style: italic; margin-top: 0.2rem; }
+  .tracking-note { margin: 0 0 1rem; padding: 0.6rem 0.9rem; border-radius: 0.4rem; background: rgba(var(--blue-rgb), 0.06); color: var(--muted); font-size: 0.8rem; }
+  .section-note { margin: -0.4rem 0 0.9rem; color: var(--muted); font-size: 0.8rem; }
   table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
   th, td { text-align: left; padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--line); white-space: nowrap; }
   th { color: var(--muted); font-size: 0.72rem; text-transform: uppercase; cursor: pointer; user-select: none; }
@@ -134,16 +136,26 @@ const HTML = `<!doctype html>
         <button data-range="all" class="active">All time</button>
       </div>
     </div>
+    <p id="trackingNote" class="tracking-note" hidden></p>
     <div id="summaryBody" class="loading-state">Loading summary&hellip;</div>
   </section>
 
   <section id="lessonsSection">
     <h2>Lesson performance</h2>
+    <p class="section-note">
+      &ldquo;Learners started&rdquo; and completions are all-time (from saved progress, covering activity from before
+      tracking began too). &ldquo;Views&rdquo; and their unique-viewer count are event occurrences recorded since
+      activity tracking began -- see the note above.
+    </p>
     <div id="lessonsBody" class="loading-state">Loading lessons&hellip;</div>
   </section>
 
   <section id="questionsSection">
     <h2>Questions to review</h2>
+    <p class="section-note">
+      Based on each learner's current/latest stored Knowledge Check result for that lesson -- a retake replaces their
+      previous answers, so this is not a full history of every attempt ever made.
+    </p>
     <div id="questionsBody" class="loading-state">Loading questions&hellip;</div>
   </section>
 
@@ -197,14 +209,23 @@ const HTML = `<!doctype html>
     body.textContent = 'Loading summary…';
 
     fetchJson('/api/admin/summary?range=' + encodeURIComponent(currentRange)).then(function (summary) {
+      var note = document.getElementById('trackingNote');
+      if (!summary.hasEventData) {
+        note.hidden = false;
+        note.textContent = 'No activity has been tracked yet. Behavioural metrics below (active learners, views, completions, Knowledge Checks, returning learners) will populate once learners start using the Learning Hub after this feature launches. Total authenticated learners still reflects all-time signups.';
+      } else {
+        note.hidden = false;
+        note.textContent = 'Activity tracking since ' + formatDate(summary.trackingStartedAt) + '. Behavioural metrics below only cover activity from that point forward -- they are not a complete history for periods before it.';
+      }
+
       var cards = [
         metricCard(summary.totalLearners, 'Total authenticated learners'),
         metricCard(summary.activeLearners, 'Active learners (period)'),
-        metricCard(summary.lessonStarts, 'Lesson starts (period)'),
+        metricCard(summary.lessonViews, 'Lesson views (period)'),
         metricCard(summary.lessonCompletions, 'Lesson completions (period)'),
         metricCard(summary.completionRate + '%', 'Completion rate (period)'),
         metricCard(summary.quizzesCompleted, 'Knowledge Checks completed (period)'),
-        metricCard(summary.avgQuizPercent === null ? '—' : summary.avgQuizPercent + '%', 'Avg Knowledge Check score'),
+        metricCard(summary.avgQuizPercent === null ? '—' : summary.avgQuizPercent + '%', 'Avg Knowledge Check score (period)'),
         summary.returningLearners === null
           ? metricCard('—', 'Returning learners', 'Not enough activity history yet')
           : metricCard(summary.returningLearners, 'Returning learners')
@@ -229,14 +250,16 @@ const HTML = `<!doctype html>
 
   // ---------------- Lessons ----------------
   var lessonsData = [];
-  var lessonSort = { key: 'uniqueViewers', dir: -1 };
+  var lessonSort = { key: 'learnersStarted', dir: -1 };
 
   var LESSON_COLUMNS = [
     { key: 'title', label: 'Lesson' },
     { key: 'category_title', label: 'Category' },
-    { key: 'uniqueViewers', label: 'Viewers' },
+    { key: 'learnersStarted', label: 'Learners started' },
     { key: 'completions', label: 'Completions' },
     { key: 'completionRate', label: 'Completion %' },
+    { key: 'viewEvents', label: 'Views' },
+    { key: 'uniqueViewersFromEvents', label: 'Unique viewers' },
     { key: 'quizCount', label: 'Knowledge Checks' },
     { key: 'avgQuizPercent', label: 'Avg score' },
     { key: 'mostMissedQuestion', label: 'Most missed question' }
@@ -276,9 +299,11 @@ const HTML = `<!doctype html>
       return '<tr>' +
         '<td data-label="Lesson">' + escapeHtml(lesson.title) + '</td>' +
         '<td data-label="Category">' + escapeHtml(lesson.category_title) + '</td>' +
-        '<td data-label="Viewers">' + lesson.uniqueViewers + '</td>' +
+        '<td data-label="Learners started">' + lesson.learnersStarted + '</td>' +
         '<td data-label="Completions">' + lesson.completions + '</td>' +
         '<td data-label="Completion %">' + lesson.completionRate + '%</td>' +
+        '<td data-label="Views">' + lesson.viewEvents + '</td>' +
+        '<td data-label="Unique viewers">' + lesson.uniqueViewersFromEvents + '</td>' +
         '<td data-label="Knowledge Checks">' + lesson.quizCount + '</td>' +
         '<td data-label="Avg score">' + (lesson.avgQuizPercent === null ? '—' : lesson.avgQuizPercent + '%') + '</td>' +
         '<td data-label="Most missed question">' + missed + '</td>' +
@@ -349,7 +374,7 @@ const HTML = `<!doctype html>
       return '<tr data-id="' + escapeHtml(learner.learning_user_id) + '">' +
         '<td data-label="Customer ID">' + escapeHtml(learner.shopify_customer_id) + '</td>' +
         '<td data-label="Last activity">' + formatDate(learner.last_activity_at) + '</td>' +
-        '<td data-label="Lessons viewed">' + learner.lessons_viewed + '</td>' +
+        '<td data-label="Lessons started">' + learner.lessons_started + '</td>' +
         '<td data-label="Lessons completed">' + learner.lessons_completed + '</td>' +
         '<td data-label="Completion %">' + learner.completion_percent + '%</td>' +
         '<td data-label="Knowledge Checks">' + learner.quizzes_completed + '</td>' +
@@ -360,7 +385,7 @@ const HTML = `<!doctype html>
 
     body.className = 'table-scroll';
     body.innerHTML = '<table><thead><tr>' +
-      '<th>Customer ID</th><th>Last activity</th><th>Viewed</th><th>Completed</th><th>Completion %</th><th>Knowledge Checks</th><th>Avg score</th><th></th>' +
+      '<th>Customer ID</th><th>Last activity</th><th>Started</th><th>Completed</th><th>Completion %</th><th>Knowledge Checks</th><th>Avg score</th><th></th>' +
       '</tr></thead><tbody>' + rows + '</tbody></table>';
 
     Array.prototype.forEach.call(body.querySelectorAll('[data-view]'), function (btn) {

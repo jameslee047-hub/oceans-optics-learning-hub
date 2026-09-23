@@ -5,7 +5,7 @@ import { applyCors } from "../../lib/cors.js";
 import { requireSession } from "../../lib/require-session.js";
 import { getSupabaseClient, findOrCreateLearningUser } from "../../lib/supabase.js";
 import { recordLessonViewed } from "../../lib/progress-service.js";
-import { recordLearningEventBestEffort } from "../../lib/analytics-service.js";
+import { recordPageViewEventBestEffort } from "../../lib/analytics-service.js";
 
 const LESSON_ID_PATTERN = /^R\d{2}$/;
 
@@ -30,11 +30,14 @@ export default async function handler(req, res) {
     const userId = await findOrCreateLearningUser(supabase, session.shopify_customer_id);
     const result = await recordLessonViewed(supabase, userId, lessonId);
 
-    // Only on a genuinely NEW view -- reloading an already-viewed lesson
-    // must not spam the analytics log with a fresh event every time.
-    if (result.created) {
-      await recordLearningEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_viewed", lessonId });
-    }
+    // Recorded on EVERY genuine view, not gated on result.created --
+    // lesson_progress.first_viewed_at only ever records the FIRST view,
+    // so gating on it would silently drop every real repeat visit from
+    // activity analytics. recordPageViewEventBestEffort itself absorbs a
+    // page refresh/rapid reload via its own short time-window dedupe (see
+    // lib/analytics-service.js), which is the correct place to prevent
+    // spam without also discarding a genuine visit hours or days later.
+    await recordPageViewEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_viewed", lessonId });
 
     res.status(200).json(result);
   } catch (error) {

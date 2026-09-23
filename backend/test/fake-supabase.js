@@ -15,7 +15,10 @@ export function createFakeSupabase() {
   }
 
   function matchesFilters(row, filters) {
-    return filters.every(([col, val]) => row[col] === val);
+    return filters.every(([op, col, val]) => {
+      if (op === "gte") return row[col] >= val;
+      return row[col] === val;
+    });
   }
 
   function from(tableName) {
@@ -116,7 +119,11 @@ export function createFakeSupabase() {
         return builder;
       },
       eq(column, value) {
-        filters.push([column, value]);
+        filters.push(["eq", column, value]);
+        return builder;
+      },
+      gte(column, value) {
+        filters.push(["gte", column, value]);
         return builder;
       },
       neq() {

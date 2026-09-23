@@ -1,5 +1,6 @@
 {{ 'learning-hub.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'learning-hub-progress-auth.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'learning-hub-progress-tracking.js' | asset_url }}" defer="defer"></script>
 
 {% liquid
   assign step_blocks = section.blocks | where: 'type', 'pathway_step'

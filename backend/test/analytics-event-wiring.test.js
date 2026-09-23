@@ -1,17 +1,25 @@
-// Proves the "avoid duplicate event spam from reloads" requirement is
-// actually wired up where it matters: the route handlers that call
-// recordLearningEventBestEffort must gate lesson_viewed/lesson_completed
-// behind the exact idempotency signal lib/progress-service.js already
-// returns (`created`/`already_complete`), not fire unconditionally.
+// Proves the deduplication strategy is wired up correctly and DISTINCTLY
+// per event type, per the corrected architecture:
+//   - lesson_viewed: recorded on EVERY genuine view via
+//     recordPageViewEventBestEffort (short time-window dedupe inside that
+//     function absorbs refresh/reload spam) -- deliberately NOT gated on
+//     result.created, since lesson_progress.first_viewed_at only ever
+//     records the FIRST view ever and would silently drop every real
+//     repeat visit from activity analytics if used as a gate here.
+//   - lesson_completed / quiz_completed: still gated on the existing
+//     state-table idempotency signals (`already_complete`), since
+//     "lesson completed" is a one-time state milestone per lesson, and
+//     "quiz completed" already correctly fires on every retake via the
+//     plain (non-deduped) recordLearningEventBestEffort.
 //
 // This is a source-inspection test (reads the real, unmodified route
 // files' own text), the same technique this suite already uses in
-// test/customer-auth-callback-cookie-clearing.test.js to prove an
-// "unconditional" call's position without needing a full database mock --
-// appropriate here too, since actually exercising the real Supabase
-// success path through these route handlers would require either module-
-// mocking (avoided throughout this codebase) or restructuring them with
-// dependency injection, which is a bigger change than this check needs.
+// test/customer-auth-callback-cookie-clearing.test.js to prove a call's
+// position without needing a full database mock -- appropriate here too,
+// since actually exercising the real Supabase success path through these
+// route handlers would require either module-mocking (avoided throughout
+// this codebase) or restructuring them with dependency injection, which
+// is a bigger change than this check needs.
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
@@ -24,13 +32,11 @@ function readSource(relativePath) {
   return fs.readFileSync(path.join(API_DIR, relativePath), "utf8");
 }
 
-test("api/lesson/viewed.js only records lesson_viewed inside the result.created branch", () => {
+test("api/lesson/viewed.js records lesson_viewed via the deduped recordPageViewEventBestEffort, unconditionally on every view", () => {
   const source = readSource("lesson/viewed.js");
-  const ifIndex = source.indexOf("if (result.created)");
-  const eventCallIndex = source.indexOf('eventType: "lesson_viewed"');
-  assert.ok(ifIndex !== -1, "must gate on result.created");
-  assert.ok(eventCallIndex !== -1, "must record a lesson_viewed event");
-  assert.ok(ifIndex < eventCallIndex, "the lesson_viewed event call must be inside the result.created guard");
+  assert.ok(source.includes("recordPageViewEventBestEffort"), "must use the time-window-deduped recorder, not the plain one");
+  assert.ok(!source.includes("if (result.created)"), "must NOT gate lesson_viewed on first-view-ever -- that would drop real repeat visits");
+  assert.ok(source.includes('eventType: "lesson_viewed"'));
 });
 
 test("api/quiz/result.js always records quiz_completed but only records lesson_completed on a genuinely new completion", () => {
