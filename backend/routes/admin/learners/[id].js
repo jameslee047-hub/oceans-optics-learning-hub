@@ -8,6 +8,8 @@
 import { requireAdmin } from "../../../lib/require-admin.js";
 import { getSupabaseClient } from "../../../lib/supabase.js";
 import { computeLearnerDetail, LEARNING_CATALOGUE } from "../../../lib/analytics-service.js";
+import { resolveShopifyIdentities, buildLearnerIdentity } from "../../../lib/learner-identity.js";
+import { getShopifyAdminConfig } from "../../../lib/shopify-admin-client.js";
 
 export default async function handler(req, res) {
   if (!requireAdmin(req, res)) return;
@@ -46,7 +48,23 @@ export default async function handler(req, res) {
     if (eventsError) throw eventsError;
 
     const detail = computeLearnerDetail(LEARNING_CATALOGUE, user, lessonProgress || [], quizResults || [], events || []);
-    res.status(200).json(detail);
+
+    const shopDomain = getShopifyAdminConfig().shopDomain;
+    let resolved = new Map();
+    try {
+      resolved = await resolveShopifyIdentities([detail.shopify_customer_id]);
+    } catch (error) {
+      console.error("GET /api/admin/learners/[id]: identity resolution failed unexpectedly, falling back to customer ID only", error.message);
+    }
+    const identity = buildLearnerIdentity(detail.shopify_customer_id, resolved, shopDomain);
+
+    res.status(200).json({
+      ...detail,
+      display_name: identity.display_name,
+      email: identity.email,
+      shopify_admin_url: identity.shopify_admin_url,
+      fallback_label: identity.fallback_label
+    });
   } catch (error) {
     console.error("GET /api/admin/learners/[id] failed", error);
     res.status(500).json({ error: "admin_learner_detail_failed" });

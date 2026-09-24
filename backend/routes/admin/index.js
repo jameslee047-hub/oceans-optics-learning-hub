@@ -88,7 +88,7 @@ const HTML = `<!doctype html>
   #lessonsBody tbody tr:hover td:first-child { background: #fbfcfd; }
   #lessonsBody th:last-child,
   #lessonsBody td:last-child { min-width: 15rem; white-space: normal; }
-  #learnersBody table { min-width: 52rem; }
+  #learnersBody table { min-width: 60rem; }
   .pill { display: inline-block; padding: 0.15rem 0.55rem; border-radius: 999px; font-weight: 700; font-size: 0.75rem; }
   .pill.good { background: rgba(21, 128, 61, 0.12); color: var(--success); }
   .pill.bad { background: rgba(185, 28, 28, 0.12); color: var(--danger); }
@@ -252,6 +252,10 @@ const HTML = `<!doctype html>
 
   <section id="learnersSection">
     <h2>Learners</h2>
+    <p class="section-note">
+      Names are looked up from Shopify on demand for this page only and are never stored outside Shopify &mdash; if a
+      lookup is unavailable, the customer ID is shown instead. Anonymous visitors are never listed here.
+    </p>
     <div id="learnersBody" class="loading-state">Loading learners&hellip;</div>
   </section>
 </main>
@@ -715,6 +719,7 @@ const HTML = `<!doctype html>
 
     var rows = learners.map(function (learner) {
       return '<tr data-id="' + escapeHtml(learner.learning_user_id) + '">' +
+        '<td data-label="Customer">' + escapeHtml(learner.display_name || learner.fallback_label) + '</td>' +
         '<td data-label="Customer ID">' + escapeHtml(learner.shopify_customer_id) + '</td>' +
         '<td data-label="Last activity">' + formatDate(learner.last_activity_at) + '</td>' +
         '<td data-label="Lessons started">' + learner.lessons_started + '</td>' +
@@ -728,7 +733,7 @@ const HTML = `<!doctype html>
 
     body.className = 'table-scroll';
     body.innerHTML = '<table><thead><tr>' +
-      '<th>Customer ID</th><th>Last activity</th><th>Started</th><th>Completed</th><th>Completion %</th><th>Knowledge Checks</th><th>Avg score</th><th></th>' +
+      '<th>Customer</th><th>Customer ID</th><th>Last activity</th><th>Started</th><th>Completed</th><th>Completion %</th><th>Knowledge Checks</th><th>Avg score</th><th></th>' +
       '</tr></thead><tbody>' + rows + '</tbody></table>';
 
     Array.prototype.forEach.call(body.querySelectorAll('[data-view]'), function (btn) {
@@ -780,8 +785,15 @@ const HTML = `<!doctype html>
         return '<li>' + escapeHtml(e.event_type) + (e.lesson_id ? ' &middot; ' + escapeHtml(e.lesson_id) : '') + ' <span class="sample-size">' + formatDate(e.created_at) + '</span></li>';
       }).join('') || '<li class="sample-size">No recorded activity events.</li>';
 
+      var identityLines = '<p class="sample-size">' +
+        'Customer ID: ' + escapeHtml(detail.shopify_customer_id) +
+        (detail.email ? ' &middot; ' + escapeHtml(detail.email) : '') +
+        (detail.shopify_admin_url ? ' &middot; <a href="' + escapeHtml(detail.shopify_admin_url) + '" target="_blank" rel="noopener noreferrer">View in Shopify</a>' : '') +
+        '</p>';
+
       body.innerHTML =
-        '<h2>Learner ' + escapeHtml(detail.shopify_customer_id) + '</h2>' +
+        '<h2>' + escapeHtml(detail.display_name || detail.fallback_label) + '</h2>' +
+        identityLines +
         '<p><strong>' + detail.overall.percent + '%</strong> complete (' + detail.overall.completedCount + ' of ' + detail.overall.totalCount + ' lessons)</p>' +
         '<h3>Completed lessons</h3><ul>' + completed + '</ul>' +
         '<h3>In progress / viewed</h3><ul>' + inProgress + '</ul>' +

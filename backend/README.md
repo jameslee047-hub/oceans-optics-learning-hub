@@ -80,12 +80,34 @@ API's own authenticated response).
 | `SESSION_TOKEN_SECRET` | (random secret) | Signs/verifies this backend's own Learning Progress session token and the OAuth transaction cookie |
 | `SHOPIFY_CLIENT_ID` | `095af359420e5400dc385150e9b4c8e4` | The app's public OAuth client_id, used in the authorization request and token exchange |
 | `SHOP_STOREFRONT_DOMAIN` | `oceansoptics.com` | The storefront custom domain used for **Customer Account API / OIDC discovery** (`.well-known/openid-configuration`, `.well-known/customer-account-api`) |
-| `SHOPIFY_SHOP_DOMAIN` | `a44b34.myshopify.com` | The shop's canonical `.myshopify.com` identity, used for **internal session shop-binding** (rejecting a session token minted for a different shop) and **compliance webhook verification** (`shop/redact`'s `shop_domain` check) |
+| `SHOPIFY_SHOP_DOMAIN` | `a44b34.myshopify.com` | The shop's canonical `.myshopify.com` identity, used for **internal session shop-binding** (rejecting a session token minted for a different shop), **compliance webhook verification** (`shop/redact`'s `shop_domain` check), and as the Admin API host for the learner-identity lookup below |
+| `SHOPIFY_ADMIN_API_ACCESS_TOKEN` | (unset) | OPTIONAL. Static Admin API token alternative to the `SHOPIFY_CLIENT_ID`/`SHOPIFY_API_SECRET` client_credentials grant, for `lib/shopify-admin-client.js`'s internal admin dashboard learner-identity lookup only. Requires the issuing app's `read_customers` Admin scope, which no app in this project currently has -- see "Shopify Admin customer identity lookup" below |
+| `SHOPIFY_ADMIN_API_VERSION` | (unset) | OPTIONAL. Overrides the Admin API version used for that same lookup; defaults to the version in `shopify-app/shopify.app.toml`'s `[webhooks] api_version` |
 
 `SHOP_STOREFRONT_DOMAIN` and `SHOPIFY_SHOP_DOMAIN` are two different domains
 for two different purposes and must not be confused or merged: one is where
 Shopify serves the OAuth/Customer-Account discovery documents, the other is
 this shop's permanent internal identity.
+
+## Shopify Admin customer identity lookup
+
+`lib/shopify-admin-client.js` + `lib/learner-identity.js` resolve a
+`shopify_customer_id` into a display name/email for the internal `/admin`
+dashboard's Learners table only, on demand, per request -- **never persisted
+to Supabase**, which continues to store only the numeric ID. Batched via
+Admin GraphQL `nodes(ids: [...])` (bounded to 50 ids per request); any
+failure (not configured, auth failure, network error, rate limiting, or a
+missing-scope GraphQL error) degrades silently to showing `Customer #<id>`,
+never a broken dashboard or a 500.
+
+This currently does nothing in production: this app's Admin API scopes are
+`write_app_proxy` only (see `shopify-app/shopify.app.toml`) --
+`customer_read_customers` is an unrelated **Customer Account API** scope,
+not the Admin API `read_customers` this lookup needs. Enabling it for real
+requires adding `read_customers` to `[access_scopes]`, running
+`shopify app deploy` to publish that config version, and the store
+re-approving the expanded scope grant -- a deliberate, separate
+authorization step this codebase never performs on its own.
 
 ## Setup
 
