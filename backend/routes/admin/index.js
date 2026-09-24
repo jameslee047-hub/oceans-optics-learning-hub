@@ -770,7 +770,7 @@ const HTML = `<!doctype html>
     body.innerHTML = '<p class="loading-state">Loading learner…</p>';
     overlay.hidden = false;
 
-    fetchJson('/api/admin/learners/' + encodeURIComponent(id)).then(function (detail) {
+    fetchJson('/api/admin/learners?id=' + encodeURIComponent(id)).then(function (detail) {
       var completed = detail.completedLessons.map(function (l) {
         return '<li>' + escapeHtml(l.title) + ' <span class="sample-size">(' + formatDate(l.completed_at) + ')</span></li>';
       }).join('') || '<li class="sample-size">None yet</li>';

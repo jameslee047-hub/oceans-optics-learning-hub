@@ -9,6 +9,14 @@ import funnelHandler from "../../routes/admin/funnel.js";
 import categoriesHandler from "../../routes/admin/categories.js";
 import { requireAdmin } from "../../lib/require-admin.js";
 
+// A query param can arrive as an array when the client repeats it
+// (?id=a&id=b) -- take the first value in that case rather than letting a
+// downstream `typeof x === "string"` check silently treat it as absent.
+export function singleQueryValue(value) {
+  if (Array.isArray(value)) return value.length > 0 ? String(value[0]) : undefined;
+  return value;
+}
+
 export function pathSegments(pathValue) {
   if (Array.isArray(pathValue)) return pathValue.map(String).filter(Boolean);
   if (typeof pathValue === "string") return pathValue.split("/").filter(Boolean);
@@ -88,7 +96,23 @@ export default async function handler(req, res) {
   if (segments.length === 1 && segments[0] === "summary") return summaryHandler(req, res);
   if (segments.length === 1 && segments[0] === "lessons") return lessonsHandler(req, res);
   if (segments.length === 1 && segments[0] === "questions") return questionsHandler(req, res);
-  if (segments.length === 1 && segments[0] === "learners") return learnersHandler(req, res);
+  if (segments.length === 1 && segments[0] === "learners") {
+    // The dashboard frontend requests learner detail as
+    // /api/admin/learners?id=<uuid> -- a query string on an otherwise
+    // known, single-segment path -- specifically to avoid a nested
+    // /api/admin/learners/<uuid> nested Vercel URL that live invocation
+    // logs proved never reached this function at all (see the project
+    // report). A present, non-empty `id` query param means "detail"; its
+    // absence means "list". The two-segment learners/:id shape below is
+    // kept working for any caller that still uses it, but the frontend no
+    // longer depends on it.
+    const learnerId = singleQueryValue(req.query?.id);
+    if (typeof learnerId === "string" && learnerId.length > 0) {
+      const routedRequest = { ...req, query: { ...req.query, id: learnerId } };
+      return learnerDetailHandler(routedRequest, res);
+    }
+    return learnersHandler(req, res);
+  }
   if (segments.length === 1 && segments[0] === "funnel") return funnelHandler(req, res);
   if (segments.length === 1 && segments[0] === "categories") return categoriesHandler(req, res);
   if (segments.length === 2 && segments[0] === "learners") {

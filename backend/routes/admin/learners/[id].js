@@ -11,7 +11,27 @@ import { computeLearnerDetail, LEARNING_CATALOGUE } from "../../../lib/analytics
 import { resolveShopifyIdentities, buildLearnerIdentity } from "../../../lib/learner-identity.js";
 import { getShopifyAdminConfig } from "../../../lib/shopify-admin-client.js";
 
-export default async function handler(req, res) {
+// learning_users.id is a Postgres `uuid` column (see migrations/0001_init.sql).
+// Postgres's uuid type accepts any syntactically valid UUID (any version/
+// variant), not specifically version 4 -- this intentionally checks only
+// that general 8-4-4-4-12 hex shape (unlike api/learning-event.js's
+// UUID_V4_PATTERN, which validates a CLIENT-GENERATED anonymous_visitor_id
+// that must itself be crypto.randomUUID()'s v4 output; here we're just
+// pre-validating a value about to be compared against the uuid column, so
+// anything Postgres itself would accept should pass). Rejecting anything
+// that doesn't fit means a malformed id never reaches the database query
+// below -- Postgres would otherwise reject a non-UUID string there as a
+// query ERROR, surfacing as an opaque 500 rather than a clean 400.
+const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// Factory form so tests can inject a fake Supabase client (see
+// test/admin-learners-query-id-routing.test.js's "unknown valid learner"
+// case) without needing real SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY --
+// mirrors the same pattern already used by api/learning-event.js's
+// createLearningEventHandler. The default export below is the real,
+// unchanged production handler.
+export function createLearnerDetailHandler({ getClient = getSupabaseClient } = {}) {
+  return async function handler(req, res) {
   if (!requireAdmin(req, res)) return;
   if (req.method !== "GET") {
     res.status(405).json({ error: "method_not_allowed" });
@@ -19,13 +39,13 @@ export default async function handler(req, res) {
   }
 
   const learnerId = req.query?.id;
-  if (typeof learnerId !== "string" || learnerId.length === 0) {
+  if (typeof learnerId !== "string" || learnerId.length === 0 || !UUID_PATTERN.test(learnerId)) {
     res.status(400).json({ error: "invalid_learner_id" });
     return;
   }
 
   try {
-    const supabase = await getSupabaseClient();
+    const supabase = await getClient();
     const { data: user, error: userError } = await supabase
       .from("learning_users")
       .select("id, shopify_customer_id, created_at, last_seen_at")
@@ -69,4 +89,7 @@ export default async function handler(req, res) {
     console.error("GET /api/admin/learners/[id] failed", error);
     res.status(500).json({ error: "admin_learner_detail_failed" });
   }
+  };
 }
+
+export default createLearnerDetailHandler();

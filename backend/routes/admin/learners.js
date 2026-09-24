@@ -1,10 +1,20 @@
-// GET /api/admin/learners -- one row per registered learner for the
-// internal analytics dashboard. Identity is the numeric shopify_customer_id
-// already stored in learning_users; display_name/shopify_admin_url are
-// resolved from Shopify on demand for this response only (never persisted
-// -- see lib/learner-identity.js) and fall back to the numeric ID alone if
-// unavailable. Email is deliberately omitted from this list view -- see
-// routes/admin/learners/[id].js for the detail view, which includes it.
+// GET /api/admin/learners (no `id` query param) -- one row per registered
+// learner for the internal analytics dashboard. Identity is the numeric
+// shopify_customer_id already stored in learning_users; display_name/
+// shopify_admin_url are resolved from Shopify on demand for this response
+// only (never persisted -- see lib/learner-identity.js) and fall back to
+// the numeric ID alone if unavailable. Email is deliberately omitted from
+// this list view -- see routes/admin/learners/[id].js for the detail view,
+// which includes it.
+//
+// This same URL, WITH a non-empty `id` query param
+// (/api/admin/learners?id=<learning_user_id>), dispatches to that detail
+// handler instead -- see api/admin/[...path].js. That query-string form is
+// what the dashboard frontend uses, specifically to avoid a nested
+// /api/admin/learners/<id> URL that live Vercel invocation logs proved
+// never reached this function at all (see the project report). The
+// original nested-path shape is still supported by the dispatcher for any
+// other caller, but the frontend no longer depends on it.
 import { requireAdmin } from "../../lib/require-admin.js";
 import { getSupabaseClient } from "../../lib/supabase.js";
 import { fetchAllLearningUsers, fetchAllLessonProgress, fetchAllQuizResults } from "../../lib/admin-data.js";
