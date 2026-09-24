@@ -734,7 +734,17 @@ export function computeLearnerTable(catalogue, users, lessonProgress, quizResult
 
     return {
       learning_user_id: user.id,
-      shopify_customer_id: user.shopify_customer_id,
+      // learning_users.shopify_customer_id is a Postgres `bigint` column
+      // (migrations/0001_init.sql); PostgREST/supabase-js returns bigint as
+      // a JSON NUMBER, not a string, so `user.shopify_customer_id` here is
+      // a JS number straight off the wire -- coerced to a string exactly
+      // once, right here, so every downstream consumer (Shopify identity
+      // lookup keying/filtering, JSON response, dashboard rendering) works
+      // with one consistent, precision-safe type. String() on a value
+      // that's already a JS number adds no further precision loss beyond
+      // whatever the JSON round-trip already fixed; today's Shopify
+      // customer ids are well under Number.MAX_SAFE_INTEGER regardless.
+      shopify_customer_id: String(user.shopify_customer_id),
       last_activity_at: lastActivityAt,
       lessons_started: progressRows.length,
       lessons_completed: lessonsCompleted,
@@ -801,7 +811,8 @@ export function computeLearnerDetail(catalogue, user, lessonProgress, quizResult
 
   return {
     learning_user_id: user.id,
-    shopify_customer_id: user.shopify_customer_id,
+    // See the identical coercion (and why) in computeLearnerTable above.
+    shopify_customer_id: String(user.shopify_customer_id),
     overall: {
       completedCount: completedLessons.length,
       totalCount: catalogue.lessons.length,

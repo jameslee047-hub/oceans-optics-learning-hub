@@ -28,7 +28,21 @@ function chunk(array, size) {
 // -- callers fall back to the numeric ID for those (see
 // buildLearnerIdentity below).
 export async function resolveShopifyIdentities(numericCustomerIds, { getConfig = getShopifyAdminConfig, fetchImpl = fetch } = {}) {
-  const uniqueIds = Array.from(new Set((numericCustomerIds || []).filter((id) => typeof id === "string" && id.length > 0)));
+  // Callers are expected to already pass strings (see
+  // lib/analytics-service.js, which coerces Supabase's raw bigint-as-number
+  // rows once, at the source). This still tolerates a bare JS number here
+  // too, converting via String() rather than silently dropping it -- a
+  // defense-in-depth backstop, not a license to skip fixing the source.
+  // String() never loses additional precision versus what the value
+  // already had as a number; only Number()/parseInt() on a string would
+  // risk that, which is why this never goes that direction.
+  const uniqueIds = Array.from(
+    new Set(
+      (numericCustomerIds || [])
+        .filter((id) => (typeof id === "string" && id.length > 0) || (typeof id === "number" && Number.isFinite(id)))
+        .map((id) => String(id))
+    )
+  );
   const result = new Map();
   if (uniqueIds.length === 0) return result;
 

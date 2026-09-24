@@ -22,7 +22,14 @@ import { computeLearnerTable, LEARNING_CATALOGUE } from "../../lib/analytics-ser
 import { resolveShopifyIdentities, buildLearnerIdentity } from "../../lib/learner-identity.js";
 import { getShopifyAdminConfig } from "../../lib/shopify-admin-client.js";
 
-export default async function handler(req, res) {
+// Factory form so tests can inject a fake Supabase client and a fake
+// Shopify fetchImpl/config, exercising this exact route's real composition
+// (computeLearnerTable -> resolveShopifyIdentities -> buildLearnerIdentity)
+// end to end -- mirrors routes/admin/learners/[id].js's
+// createLearnerDetailHandler. The default export below is the real,
+// unchanged production handler.
+export function createLearnersListHandler({ getClient = getSupabaseClient, getConfig = getShopifyAdminConfig, fetchImpl = fetch } = {}) {
+  return async function handler(req, res) {
   if (!requireAdmin(req, res)) return;
   if (req.method !== "GET") {
     res.status(405).json({ error: "method_not_allowed" });
@@ -30,7 +37,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const supabase = await getSupabaseClient();
+    const supabase = await getClient();
     const [users, lessonProgress, quizResults] = await Promise.all([
       fetchAllLearningUsers(supabase),
       fetchAllLessonProgress(supabase),
@@ -39,10 +46,13 @@ export default async function handler(req, res) {
 
     const learners = computeLearnerTable(LEARNING_CATALOGUE, users, lessonProgress, quizResults);
 
-    const shopDomain = getShopifyAdminConfig().shopDomain;
+    const shopDomain = getConfig().shopDomain;
     let resolved = new Map();
     try {
-      resolved = await resolveShopifyIdentities(learners.map((learner) => learner.shopify_customer_id));
+      resolved = await resolveShopifyIdentities(
+        learners.map((learner) => learner.shopify_customer_id),
+        { getConfig, fetchImpl }
+      );
     } catch (error) {
       // resolveShopifyIdentities is designed to never throw; this is
       // belt-and-braces so a Shopify identity lookup problem can never turn
@@ -64,4 +74,7 @@ export default async function handler(req, res) {
     console.error("GET /api/admin/learners failed", error);
     res.status(500).json({ error: "admin_learners_failed" });
   }
+  };
 }
+
+export default createLearnersListHandler();

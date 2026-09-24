@@ -26,11 +26,13 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{
 
 // Factory form so tests can inject a fake Supabase client (see
 // test/admin-learners-query-id-routing.test.js's "unknown valid learner"
-// case) without needing real SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY --
+// case) and a fake Shopify config/fetchImpl (see
+// test/admin-learner-shopify-identity-integration.test.js), without needing
+// real SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY or live Shopify credentials --
 // mirrors the same pattern already used by api/learning-event.js's
 // createLearningEventHandler. The default export below is the real,
 // unchanged production handler.
-export function createLearnerDetailHandler({ getClient = getSupabaseClient } = {}) {
+export function createLearnerDetailHandler({ getClient = getSupabaseClient, getConfig = getShopifyAdminConfig, fetchImpl = fetch } = {}) {
   return async function handler(req, res) {
   if (!requireAdmin(req, res)) return;
   if (req.method !== "GET") {
@@ -69,10 +71,10 @@ export function createLearnerDetailHandler({ getClient = getSupabaseClient } = {
 
     const detail = computeLearnerDetail(LEARNING_CATALOGUE, user, lessonProgress || [], quizResults || [], events || []);
 
-    const shopDomain = getShopifyAdminConfig().shopDomain;
+    const shopDomain = getConfig().shopDomain;
     let resolved = new Map();
     try {
-      resolved = await resolveShopifyIdentities([detail.shopify_customer_id]);
+      resolved = await resolveShopifyIdentities([detail.shopify_customer_id], { getConfig, fetchImpl });
     } catch (error) {
       console.error("GET /api/admin/learners/[id]: identity resolution failed unexpectedly, falling back to customer ID only", error.message);
     }

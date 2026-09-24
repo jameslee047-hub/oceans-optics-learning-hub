@@ -66,6 +66,20 @@ test("resolveShopifyIdentities: resolves a single batch successfully", async () 
   assert.deepEqual(result.get("222"), { displayName: "Name 222", email: "222@example.com" });
 });
 
+test("resolveShopifyIdentities: tolerates a bare JS number id (defense-in-depth against a Postgres bigint returned unconverted) instead of silently dropping it", async () => {
+  // The real bug this guards: learning_users.shopify_customer_id is a
+  // Postgres bigint, which PostgREST/supabase-js returns as a JS number,
+  // not a string. The primary fix coerces it once at the source (see
+  // lib/analytics-service.js), but this function must not silently drop a
+  // number that reaches it anyway.
+  const { fetchImpl, graphqlCalls } = fakeShopifyFetch({
+    customersByBatch: (ids) => ({ nodes: ids.map((id) => customerNode(id, `Name ${id}`, `${id}@example.com`)) })
+  });
+  const result = await resolveShopifyIdentities([7662557626701], { getConfig: () => CONFIGURED, fetchImpl });
+  assert.deepEqual(graphqlCalls, [["7662557626701"]], "the exact numeric value, converted losslessly to a string, not silently dropped");
+  assert.deepEqual(result.get("7662557626701"), { displayName: "Name 7662557626701", email: "7662557626701@example.com" });
+});
+
 test("resolveShopifyIdentities: deduplicates repeated ids before looking them up", async () => {
   const { fetchImpl, graphqlCalls } = fakeShopifyFetch({
     customersByBatch: (ids) => ({ nodes: ids.map((id) => customerNode(id, `Name ${id}`, null)) })

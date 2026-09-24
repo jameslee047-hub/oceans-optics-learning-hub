@@ -749,6 +749,19 @@ test("computeLearnerTable: anonymous visitor IDs never appear as learner rows", 
   assert.equal(JSON.stringify(table).includes(ANON_A), false);
 });
 
+test("computeLearnerTable: shopify_customer_id is always returned as a string, even when Supabase returns it as a JS number (Postgres bigint -> PostgREST JSON)", () => {
+  // learning_users.shopify_customer_id is a Postgres bigint column;
+  // PostgREST/supabase-js serializes bigint as a JSON number, not a
+  // string -- this exact type mismatch previously made
+  // lib/learner-identity.js's resolveShopifyIdentities silently drop the
+  // id (its filter required typeof === "string"), so the Shopify lookup
+  // was never even attempted. See the project report.
+  const users = [{ id: USER_A, shopify_customer_id: 7662557626701 }];
+  const table = computeLearnerTable(CATALOGUE, users, [], []);
+  assert.equal(table[0].shopify_customer_id, "7662557626701");
+  assert.equal(typeof table[0].shopify_customer_id, "string");
+});
+
 // ---------------- computeLearnerDetail ----------------
 
 test("computeLearnerDetail: separates completed vs in-progress lessons and includes answer review", () => {
@@ -789,4 +802,11 @@ test("computeLearnerDetail: timeline includes only this learner's events, most r
   assert.equal(detail.timeline.length, 2);
   assert.equal(detail.timeline[0].event_type, "lesson_completed");
   assert.equal(JSON.stringify(detail).toLowerCase().includes("token"), false);
+});
+
+test("computeLearnerDetail: shopify_customer_id is always returned as a string, even when Supabase returns it as a JS number", () => {
+  const user = { id: USER_A, shopify_customer_id: 7662557626701 };
+  const detail = computeLearnerDetail(CATALOGUE, user, [], [], []);
+  assert.equal(detail.shopify_customer_id, "7662557626701");
+  assert.equal(typeof detail.shopify_customer_id, "string");
 });
