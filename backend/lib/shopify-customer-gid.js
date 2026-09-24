@@ -23,3 +23,19 @@ export function extractNumericCustomerId(gid) {
 
   return match[1];
 }
+
+// The inverse of extractNumericCustomerId -- builds the Admin GraphQL
+// global ID for a numeric shopify_customer_id (e.g. "7662557626701" ->
+// "gid://shopify/Customer/7662557626701"), used by
+// lib/shopify-admin-client.js's nodes(ids:...) lookup. Throws for anything
+// that isn't a non-empty numeric-digit string, so a malformed id can never
+// silently produce a malformed GID sent to Shopify.
+const NUMERIC_ID_PATTERN = /^[0-9]+$/;
+
+export function buildCustomerGid(numericCustomerId) {
+  const value = typeof numericCustomerId === "number" ? String(numericCustomerId) : numericCustomerId;
+  if (typeof value !== "string" || !NUMERIC_ID_PATTERN.test(value)) {
+    throw new Error("invalid_numeric_customer_id: expected a non-empty digit string");
+  }
+  return `gid://shopify/Customer/${value}`;
+}

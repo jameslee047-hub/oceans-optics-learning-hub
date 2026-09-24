@@ -7,6 +7,7 @@ import learnersHandler from "../../routes/admin/learners.js";
 import learnerDetailHandler from "../../routes/admin/learners/[id].js";
 import funnelHandler from "../../routes/admin/funnel.js";
 import categoriesHandler from "../../routes/admin/categories.js";
+import identityDiagnosticsHandler from "../../routes/admin/identity-diagnostics.js";
 import { requireAdmin } from "../../lib/require-admin.js";
 
 // A query param can arrive as an array when the client repeats it
@@ -28,7 +29,16 @@ export function pathSegments(pathValue) {
 // /admin) mount prefix stripped off before this function ever saw it (see
 // the third branch in adminPathFromUrl below). Keep in sync with the
 // dispatch table in handler() itself.
-const KNOWN_TOP_LEVEL_SEGMENTS = new Set(["dashboard", "summary", "lessons", "questions", "learners", "funnel", "categories"]);
+const KNOWN_TOP_LEVEL_SEGMENTS = new Set([
+  "dashboard",
+  "summary",
+  "lessons",
+  "questions",
+  "learners",
+  "funnel",
+  "categories",
+  "identity-diagnostics"
+]);
 
 export function adminPathFromUrl(urlValue) {
   if (typeof urlValue !== "string" || urlValue.length === 0) return null;
@@ -124,6 +134,7 @@ export default async function handler(req, res) {
   }
   if (segments.length === 1 && segments[0] === "funnel") return funnelHandler(req, res);
   if (segments.length === 1 && segments[0] === "categories") return categoriesHandler(req, res);
+  if (segments.length === 1 && segments[0] === "identity-diagnostics") return identityDiagnosticsHandler(req, res);
   if (segments.length === 2 && segments[0] === "learners") {
     // Legacy nested-path shape, kept for any caller other than this
     // dashboard's own frontend (see the comment above) -- the id here only

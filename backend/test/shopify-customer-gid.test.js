@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { extractNumericCustomerId } from "../lib/shopify-customer-gid.js";
+import { extractNumericCustomerId, buildCustomerGid } from "../lib/shopify-customer-gid.js";
 
 test("extracts the numeric suffix from a valid Customer GID", () => {
   assert.equal(extractNumericCustomerId("gid://shopify/Customer/555000111"), "555000111");
@@ -38,4 +38,34 @@ test("rejects null/undefined/non-string input", () => {
 
 test("rejects an empty string", () => {
   assert.throws(() => extractNumericCustomerId(""), /invalid_customer_gid/);
+});
+
+// ---------------- buildCustomerGid ----------------
+
+test("buildCustomerGid: converts the exact numeric id from the live incident into the expected Admin GraphQL Customer GID", () => {
+  assert.equal(buildCustomerGid("7662557626701"), "gid://shopify/Customer/7662557626701");
+});
+
+test("buildCustomerGid: round-trips through extractNumericCustomerId for a variety of ids", () => {
+  for (const id of ["1", "555000111", "9007199254740993", "7662557626701"]) {
+    assert.equal(extractNumericCustomerId(buildCustomerGid(id)), id);
+  }
+});
+
+test("buildCustomerGid: accepts a JS number and converts it to the equivalent string-based GID", () => {
+  assert.equal(buildCustomerGid(7662557626701), "gid://shopify/Customer/7662557626701");
+});
+
+test("buildCustomerGid: rejects a non-numeric string", () => {
+  assert.throws(() => buildCustomerGid("abc123"), /invalid_numeric_customer_id/);
+});
+
+test("buildCustomerGid: rejects an empty string, null, and undefined", () => {
+  assert.throws(() => buildCustomerGid(""), /invalid_numeric_customer_id/);
+  assert.throws(() => buildCustomerGid(null), /invalid_numeric_customer_id/);
+  assert.throws(() => buildCustomerGid(undefined), /invalid_numeric_customer_id/);
+});
+
+test("buildCustomerGid: rejects a value that is already a GID (would double-wrap it)", () => {
+  assert.throws(() => buildCustomerGid("gid://shopify/Customer/555000111"), /invalid_numeric_customer_id/);
 });

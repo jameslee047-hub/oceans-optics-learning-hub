@@ -40,6 +40,7 @@ const ROUTES = [
   { name: "learners", method: "GET", url: "/api/admin/learners", query: {} },
   { name: "funnel", method: "GET", url: "/api/admin/funnel?range=all", query: { range: "all" } },
   { name: "categories", method: "GET", url: "/api/admin/categories?range=all", query: { range: "all" } },
+  { name: "identity-diagnostics", method: "GET", url: "/api/admin/identity-diagnostics", query: {} },
   {
     name: "learners/[id]",
     method: "GET",

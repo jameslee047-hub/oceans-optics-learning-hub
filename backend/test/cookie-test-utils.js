@@ -67,3 +67,20 @@ export async function withEnv(vars, fn) {
     }
   }
 }
+
+// Temporarily replaces console.error to capture every call made during
+// `fn()`, restoring the original afterward (even if `fn` throws). Returns
+// { result, logs } where `logs` is every call's arguments joined into one
+// string per call -- tests assert a secret/PII value never appears
+// anywhere in it, and/or that an expected safe message/field does.
+export async function withCapturedConsoleError(fn) {
+  const originalConsoleError = console.error;
+  const logs = [];
+  console.error = (...args) => logs.push(args.map((arg) => String(arg)).join(" "));
+  try {
+    const result = await fn();
+    return { result, logs };
+  } finally {
+    console.error = originalConsoleError;
+  }
+}
