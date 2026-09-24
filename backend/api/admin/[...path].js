@@ -108,16 +108,32 @@ export default async function handler(req, res) {
     // longer depends on it.
     const learnerId = singleQueryValue(req.query?.id);
     if (typeof learnerId === "string" && learnerId.length > 0) {
-      const routedRequest = { ...req, query: { ...req.query, id: learnerId } };
-      return learnerDetailHandler(routedRequest, res);
+      // req.query.id is already exactly this value in the real Vercel
+      // runtime (it came straight from the URL's own query string, the
+      // same native parsing that already reliably populates ...path=learners
+      // -- see the project report), so the real req/res are passed straight
+      // through untouched. Do NOT rebuild req via `{ ...req, ... }` here: a
+      // real Vercel req is not a plain object, and spreading it has been
+      // proven live to silently drop req.headers (a TypeError reading
+      // `.authorization` off undefined inside requireAdmin), even though it
+      // looks correct against the plain-object req used in unit tests.
+      if (learnerId !== req.query.id) req.query.id = learnerId;
+      return learnerDetailHandler(req, res);
     }
     return learnersHandler(req, res);
   }
   if (segments.length === 1 && segments[0] === "funnel") return funnelHandler(req, res);
   if (segments.length === 1 && segments[0] === "categories") return categoriesHandler(req, res);
   if (segments.length === 2 && segments[0] === "learners") {
-    const routedRequest = { ...req, query: { ...req.query, id: segments[1] } };
-    return learnerDetailHandler(routedRequest, res);
+    // Legacy nested-path shape, kept for any caller other than this
+    // dashboard's own frontend (see the comment above) -- the id here only
+    // ever comes from manually parsed URL segments, never req.query, so it
+    // must still be attached. Mutate the real req.query in place instead of
+    // spreading req itself, for the same reason as above: only req.query
+    // (a genuine plain object Vercel already parsed) is touched, never req.
+    if (!req.query) req.query = {};
+    req.query.id = segments[1];
+    return learnerDetailHandler(req, res);
   }
 
   // Keep even unknown paths under the private admin namespace behind the
