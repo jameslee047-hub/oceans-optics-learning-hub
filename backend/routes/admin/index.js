@@ -81,7 +81,7 @@ const HTML = `<!doctype html>
   th.sorted { color: var(--orange); }
   tbody tr:hover { background: #fbfcfd; }
   .table-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; }
-  #lessonsBody table { min-width: 74rem; }
+  #lessonsBody table { min-width: 92rem; }
   #lessonsBody th:first-child,
   #lessonsBody td:first-child { position: sticky; left: 0; z-index: 1; min-width: 13rem; max-width: 17rem; white-space: normal; background: #fff; box-shadow: 1px 0 0 var(--line); }
   #lessonsBody th:first-child { z-index: 2; }
@@ -115,6 +115,19 @@ const HTML = `<!doctype html>
   .answer-list li { padding: 0.5rem 0.7rem; border-radius: 0.4rem; background: #fbfcfd; font-size: 0.82rem; }
   .answer-list li.correct { border-left: 3px solid var(--success); }
   .answer-list li.incorrect { border-left: 3px solid var(--danger); }
+  .subsection-title { margin: 1.3rem 0 0.5rem; font-size: 0.78rem; font-weight: 900; color: var(--blue); text-transform: uppercase; letter-spacing: 0.03em; }
+  .funnel-cohort-note { color: var(--muted); font-size: 0.8rem; margin-bottom: 0.9rem; }
+  .funnel-row { display: grid; grid-template-columns: 13rem 1fr 18rem; gap: 0.9rem; align-items: center; padding: 0.5rem 0; min-width: 0; }
+  .funnel-row-label { font-weight: 700; color: var(--blue); font-size: 0.85rem; }
+  .funnel-row-bar-track { background: rgba(var(--blue-rgb), 0.08); border-radius: 999px; height: 1rem; overflow: hidden; min-width: 0; }
+  .funnel-row-bar { background: var(--orange); height: 100%; border-radius: 999px; }
+  .funnel-row-figures { font-size: 0.78rem; color: var(--muted); }
+  #categoriesBody table { min-width: 56rem; }
+  .flag-card { border-left: 3px solid var(--orange); border-radius: 0.4rem; padding: 0.65rem 0.9rem; margin-bottom: 0.5rem; background: #fbfcfd; font-size: 0.85rem; }
+  .flag-card .flag-title { font-weight: 700; color: var(--blue); }
+  .flag-card .flag-metric { color: var(--muted); font-size: 0.78rem; margin-top: 0.15rem; }
+  .questions-toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 0.8rem; }
+  .questions-toolbar .section-note { margin: 0; }
   @media (max-width: 1100px) {
     .metric-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   }
@@ -135,6 +148,8 @@ const HTML = `<!doctype html>
     td::before { content: attr(data-label); display: block; color: var(--muted); font-size: 0.7rem; text-transform: uppercase; font-weight: 700; }
     #learnerDetail { padding: 1rem; }
     #learnerDetailPanel { max-height: calc(100vh - 2rem); padding: 1rem; }
+    .funnel-row { grid-template-columns: 1fr; gap: 0.3rem; }
+    #categoriesBody table { min-width: 0; }
   }
   @media (max-width: 560px) {
     .metric-grid { grid-template-columns: 1fr; }
@@ -163,12 +178,55 @@ const HTML = `<!doctype html>
     <div id="summaryBody" class="loading-state">Loading summary&hellip;</div>
   </section>
 
+  <section id="funnelSection">
+    <h2>Learning Hub funnel</h2>
+    <p class="section-note">
+      Ordered, hub-first journey for the selected period: a visitor advances to the next stage only via an event that
+      happened at or after they reached the stage before it &mdash; this is not independent event counts. Visitors who
+      reach a category, lesson, or Knowledge Check without first viewing the Learning Hub in this period (search,
+      email, a direct link, or a hub visit outside this window) are never counted as funnel drop-off &mdash; see
+      &ldquo;Direct entrants&rdquo; below instead.
+    </p>
+    <div id="funnelBody" class="loading-state">Loading funnel&hellip;</div>
+
+    <div class="subsection-title">Direct entrants (skipped the Learning Hub)</div>
+    <div id="directEntrantsBody" class="loading-state">Loading&hellip;</div>
+
+    <div class="subsection-title">Continuing to another lesson</div>
+    <p class="section-note">
+      &ldquo;Another lesson&rdquo; always means a different lesson than the one already viewed &mdash; repeat views of
+      the same lesson are never counted as progression. Covers every visitor, including direct entrants.
+    </p>
+    <div id="continueLearningBody" class="loading-state">Loading&hellip;</div>
+
+    <div class="subsection-title">Repeat visits within this period</div>
+    <p class="section-note">
+      Multiple inferred visit sessions (a 30+ minute gap starts a new session), or activity on 2+ distinct calendar
+      days, using only events inside the selected date range. For visitors already active before this period began,
+      see &ldquo;Returning visitors&rdquo; in Summary instead.
+    </p>
+    <div id="returningDetailBody" class="loading-state">Loading&hellip;</div>
+  </section>
+
+  <section id="categoriesSection">
+    <h2>Category performance</h2>
+    <p class="section-note">
+      Category page views, unique lesson viewers, and Knowledge Checks completed for the selected period, using the
+      published catalogue&rsquo;s real categories and lesson counts. &ldquo;Visitor &rarr; lesson&rdquo; only counts a
+      lesson view that happened at or after the category page view (ordered progression, not an independent count).
+    </p>
+    <div id="categoriesBody" class="loading-state">Loading categories&hellip;</div>
+  </section>
+
   <section id="lessonsSection">
     <h2>Lesson performance</h2>
     <p class="section-note">
       &ldquo;Learners started&rdquo; and completions are all-time (from saved progress, covering activity from before
-      tracking began too) and authenticated-only. &ldquo;Views&rdquo;, unique viewers, and Knowledge Check attempts
-      include authenticated and consented anonymous event traffic recorded since activity tracking began.
+      tracking began too) and authenticated-only. Views, unique viewers, viewer&rarr;quiz rate, incorrect-answer rate,
+      and follow-on rate include authenticated and consented anonymous event traffic for the selected period.
+      Viewer&rarr;quiz is the share of unique viewers who also attempted the Knowledge Check &mdash; not an
+      authenticated-only completion rate. Avg incorrect % is a difficulty indicator across every recorded answer, not
+      a quality score. Follow-on % is the share of viewers who went on to view a different lesson afterward.
     </p>
     <div id="lessonsBody" class="loading-state">Loading lessons&hellip;</div>
   </section>
@@ -176,10 +234,20 @@ const HTML = `<!doctype html>
   <section id="questionsSection">
     <h2>Questions to review</h2>
     <p class="section-note">
-      Based on recorded Knowledge Check attempts from authenticated and consented anonymous visitors. Historical
-      events created before answer snapshots were added do not contribute to question-level samples.
+      Based on recorded Knowledge Check attempts from authenticated and consented anonymous visitors, ranked by
+      highest incorrect % (ties broken by larger sample size). Historical events created before answer snapshots were
+      added do not contribute to question-level samples.
     </p>
     <div id="questionsBody" class="loading-state">Loading questions&hellip;</div>
+  </section>
+
+  <section id="improvementSection">
+    <h2>Potential improvement areas</h2>
+    <p class="section-note">
+      Transparent, rule-based flags computed only from the metrics above &mdash; never a quality judgement or a
+      causal claim. Each flag names the exact metric and sample size behind it.
+    </p>
+    <div id="improvementBody" class="empty-state">Waiting for lesson and category data&hellip;</div>
   </section>
 
   <section id="learnersSection">
@@ -290,8 +358,206 @@ const HTML = `<!doctype html>
       Array.prototype.forEach.call(document.querySelectorAll('#rangeControls button'), function (b) { b.classList.remove('active'); });
       button.classList.add('active');
       loadSummary();
+      loadFunnel();
+      loadCategories();
+      loadLessons();
     });
   });
+
+  // ---------------- Learning Hub funnel / journey ----------------
+  function renderFunnel(funnel) {
+    var body = document.getElementById('funnelBody');
+    if (!funnel || !funnel.cohortSize) {
+      body.className = 'empty-state';
+      body.textContent = 'No Learning Hub visits recorded yet for this period.';
+      return;
+    }
+    var maxVisitors = funnel.cohortSize;
+    body.className = '';
+    body.innerHTML = '<div class="funnel-cohort-note">Cohort: ' + funnel.cohortSize + ' visitor' + (funnel.cohortSize === 1 ? '' : 's') +
+      ' who viewed the Learning Hub in this period.</div>' +
+      funnel.stages.map(function (stage) {
+        var widthPct = maxVisitors > 0 ? Math.round((stage.visitors / maxVisitors) * 100) : 0;
+        var figures = stage.visitors + ' visitor' + (stage.visitors === 1 ? '' : 's') + ' &middot; ' + stage.percentOfCohort + '% of cohort' +
+          (stage.key === 'hub_viewed' ? '' : ' &middot; ' + stage.conversionFromPrevious + '% from previous stage (' + stage.dropOffFromPrevious + '% drop-off)');
+        return '<div class="funnel-row">' +
+          '<div class="funnel-row-label">' + escapeHtml(stage.label) + '</div>' +
+          '<div class="funnel-row-bar-track"><div class="funnel-row-bar" style="width:' + widthPct + '%"></div></div>' +
+          '<div class="funnel-row-figures">' + figures + '</div>' +
+          '</div>';
+      }).join('');
+  }
+
+  function renderDirectEntrants(direct) {
+    var body = document.getElementById('directEntrantsBody');
+    body.className = 'metric-grid';
+    body.innerHTML = [
+      metricCard(
+        direct.directCategoryEntrants,
+        'Direct category entrants',
+        direct.totalCategoryViewers + ' total category viewers',
+        'Visitors whose first category page view in this period happened before (or without) any Learning Hub view.'
+      ),
+      metricCard(
+        direct.directLessonEntrants,
+        'Direct lesson entrants',
+        direct.totalLessonViewers + ' total lesson viewers',
+        'Visitors whose first lesson view in this period happened before (or without) any Learning Hub view.'
+      ),
+      metricCard(direct.totalQuizCompleters, 'Knowledge Checks completed', 'All entry paths, hub-first and direct combined')
+    ].join('');
+  }
+
+  function renderContinueLearning(cl) {
+    var body = document.getElementById('continueLearningBody');
+    body.className = 'metric-grid';
+    body.innerHTML = [
+      metricCard(cl.viewedAnotherLessonAfterFirstRate + '%', 'Viewed another lesson after first', cl.viewedAnotherLessonAfterFirst + ' of ' + cl.lessonViewers + ' lesson viewers'),
+      metricCard(cl.viewedAnotherLessonAfterQuizRate + '%', 'Viewed another lesson after a Knowledge Check', cl.viewedAnotherLessonAfterQuiz + ' of ' + cl.quizCompleters + ' quiz completers'),
+      metricCard(cl.viewedTwoPlusDistinctLessonsRate + '%', '2+ distinct lessons viewed', cl.viewedTwoPlusDistinctLessons + ' of ' + cl.lessonViewers),
+      metricCard(cl.viewedThreePlusDistinctLessonsRate + '%', '3+ distinct lessons viewed', cl.viewedThreePlusDistinctLessons + ' of ' + cl.lessonViewers),
+      metricCard(cl.continuedSameSession, 'Continued in the same session', 'Inferred from a 30-minute inactivity gap'),
+      metricCard(cl.continuedLaterSession, 'Continued in a later session')
+    ].join('');
+  }
+
+  function renderReturningDetail(rd) {
+    var body = document.getElementById('returningDetailBody');
+    body.className = 'metric-grid';
+    body.innerHTML = [
+      metricCard(rd.multipleSessionsRate + '%', 'Multiple sessions in period', rd.visitorsWithMultipleSessions + ' of ' + rd.totalVisitors + ' visitors'),
+      metricCard(rd.returnedOnLaterDayRate + '%', 'Active on 2+ distinct days', rd.visitorsReturnedOnLaterDay + ' of ' + rd.totalVisitors + ' visitors')
+    ].join('');
+  }
+
+  function loadFunnel() {
+    var funnelBody = document.getElementById('funnelBody');
+    fetchJson('/api/admin/funnel?range=' + encodeURIComponent(currentRange)).then(function (data) {
+      renderFunnel(data.funnel);
+      renderDirectEntrants(data.directEntrants);
+      renderContinueLearning(data.continueLearning);
+      renderReturningDetail(data.returningDetail);
+    }).catch(function () {
+      funnelBody.className = 'error-state';
+      funnelBody.innerHTML = 'Could not load the Learning Hub funnel. <button class="link-button">Retry</button>';
+      funnelBody.querySelector('button').addEventListener('click', loadFunnel);
+      ['directEntrantsBody', 'continueLearningBody', 'returningDetailBody'].forEach(function (id) {
+        var body = document.getElementById(id);
+        body.className = 'error-state';
+        body.textContent = 'Could not load this section.';
+      });
+    });
+  }
+
+  // ---------------- Category performance ----------------
+  var categoriesData = [];
+
+  function renderCategories() {
+    var body = document.getElementById('categoriesBody');
+    if (!categoriesData.length) {
+      body.className = 'empty-state';
+      body.textContent = 'No category activity recorded yet.';
+      return;
+    }
+    var rows = categoriesData.map(function (category) {
+      return '<tr>' +
+        '<td data-label="Category">' + escapeHtml(category.title) + '</td>' +
+        '<td data-label="Unique visitors">' + category.uniqueVisitors + '</td>' +
+        '<td data-label="Category views">' + category.categoryPageViews + '</td>' +
+        '<td data-label="Unique lesson viewers">' + category.uniqueLessonViewers + '</td>' +
+        '<td data-label="Lessons viewed">' + category.distinctLessonsViewed + ' of ' + category.lessonCount + '</td>' +
+        '<td data-label="Knowledge Checks completed">' + category.knowledgeChecksCompleted + '</td>' +
+        '<td data-label="Avg quiz score">' + (category.avgQuizPercent === null ? '—' : category.avgQuizPercent + '%') + '</td>' +
+        '<td data-label="Visitor → lesson">' + category.visitorToLessonRate + '%</td>' +
+        '</tr>';
+    }).join('');
+    body.className = 'table-scroll';
+    body.innerHTML = '<table><thead><tr>' +
+      '<th>Category</th><th>Unique visitors</th><th>Category views</th><th>Unique lesson viewers</th><th>Lessons viewed</th><th>Knowledge Checks completed</th><th>Avg quiz score</th><th>Visitor &rarr; lesson</th>' +
+      '</tr></thead><tbody>' + rows + '</tbody></table>';
+  }
+
+  function loadCategories() {
+    var body = document.getElementById('categoriesBody');
+    fetchJson('/api/admin/categories?range=' + encodeURIComponent(currentRange)).then(function (data) {
+      categoriesData = data.categories || [];
+      renderCategories();
+      renderImprovementFlags();
+    }).catch(function () {
+      body.className = 'error-state';
+      body.innerHTML = 'Could not load category performance. <button class="link-button">Retry</button>';
+      body.querySelector('button').addEventListener('click', loadCategories);
+    });
+  }
+
+  // ---------------- Potential improvement areas ----------------
+  // Thresholds are deliberately simple, fixed, and disclosed here -- these
+  // are transparent rule-based flags, never a fabricated "quality score".
+  // Minimum sample sizes exist only to avoid overreacting to a handful of
+  // visitors; every flag also prints the exact counts behind it.
+  var IMPROVEMENT_THRESHOLDS = {
+    minLessonViewers: 5,
+    lowViewerToQuizRate: 50,
+    highIncorrectRate: 30,
+    minAnswerSample: 5,
+    lowFollowOnRate: 20,
+    minCategoryVisitors: 5,
+    lowVisitorToLessonRate: 40
+  };
+
+  function computeImprovementFlags() {
+    var flags = [];
+    lessonsData.forEach(function (lesson) {
+      if (lesson.uniqueViewersFromEvents >= IMPROVEMENT_THRESHOLDS.minLessonViewers && lesson.viewerToQuizRate < IMPROVEMENT_THRESHOLDS.lowViewerToQuizRate) {
+        flags.push({
+          title: lesson.title,
+          label: 'High traffic, low quiz engagement',
+          metric: 'Viewer → quiz: ' + lesson.viewerToQuizRate + '% (' + lesson.uniqueQuizAttemptVisitors + ' of ' + lesson.uniqueViewersFromEvents + ' visitors)'
+        });
+      }
+      if (lesson.questionAnswerSampleSize >= IMPROVEMENT_THRESHOLDS.minAnswerSample && lesson.avgQuestionIncorrectPercent !== null && lesson.avgQuestionIncorrectPercent >= IMPROVEMENT_THRESHOLDS.highIncorrectRate) {
+        flags.push({
+          title: lesson.title,
+          label: 'High incorrect-answer rate',
+          metric: lesson.avgQuestionIncorrectPercent + '% of answers incorrect (n=' + lesson.questionAnswerSampleSize + ')'
+        });
+      }
+      if (lesson.uniqueViewersFromEvents >= IMPROVEMENT_THRESHOLDS.minLessonViewers && lesson.followOnRate < IMPROVEMENT_THRESHOLDS.lowFollowOnRate) {
+        flags.push({
+          title: lesson.title,
+          label: 'Low next-lesson continuation',
+          metric: 'Follow-on: ' + lesson.followOnRate + '% (' + lesson.followOnVisitors + ' of ' + lesson.uniqueViewersFromEvents + ' visitors)'
+        });
+      }
+    });
+    categoriesData.forEach(function (category) {
+      if (category.uniqueVisitors >= IMPROVEMENT_THRESHOLDS.minCategoryVisitors && category.visitorToLessonRate < IMPROVEMENT_THRESHOLDS.lowVisitorToLessonRate) {
+        flags.push({
+          title: category.title,
+          label: 'Category attracts visitors but few move to a lesson',
+          metric: 'Visitor → lesson: ' + category.visitorToLessonRate + '% (' + category.progressedToLessonVisitors + ' of ' + category.uniqueVisitors + ' visitors)'
+        });
+      }
+    });
+    return flags;
+  }
+
+  function renderImprovementFlags() {
+    var body = document.getElementById('improvementBody');
+    var flags = computeImprovementFlags();
+    if (!flags.length) {
+      body.className = 'empty-state';
+      body.textContent = (lessonsData.length || categoriesData.length)
+        ? 'No flags for the selected period and thresholds.'
+        : 'Waiting for lesson and category data…';
+      return;
+    }
+    body.className = '';
+    body.innerHTML = flags.map(function (flag) {
+      return '<div class="flag-card"><div class="flag-title">' + escapeHtml(flag.title) + ' &mdash; ' + escapeHtml(flag.label) + '</div>' +
+        '<div class="flag-metric">' + escapeHtml(flag.metric) + '</div></div>';
+    }).join('');
+  }
 
   // ---------------- Lessons ----------------
   var lessonsData = [];
@@ -307,6 +573,9 @@ const HTML = `<!doctype html>
     { key: 'uniqueViewersFromEvents', label: 'Unique viewers' },
     { key: 'quizAttempts', label: 'Quiz attempts' },
     { key: 'avgQuizAttemptPercent', label: 'Avg attempt score' },
+    { key: 'viewerToQuizRate', label: 'Viewer → quiz %' },
+    { key: 'avgQuestionIncorrectPercent', label: 'Avg incorrect %' },
+    { key: 'followOnRate', label: 'Follow-on %' },
     { key: 'mostMissedQuestion', label: 'Most missed question' }
   ];
 
@@ -351,6 +620,9 @@ const HTML = `<!doctype html>
         '<td data-label="Unique viewers">' + lesson.uniqueViewersFromEvents + '</td>' +
         '<td data-label="Quiz attempts">' + lesson.quizAttempts + '</td>' +
         '<td data-label="Avg attempt score">' + (lesson.avgQuizAttemptPercent === null ? '—' : lesson.avgQuizAttemptPercent + '%') + '</td>' +
+        '<td data-label="Viewer → quiz %" title="' + lesson.uniqueQuizAttemptVisitors + ' of ' + lesson.uniqueViewersFromEvents + ' visitors">' + lesson.viewerToQuizRate + '%</td>' +
+        '<td data-label="Avg incorrect %">' + (lesson.avgQuestionIncorrectPercent === null ? '—' : lesson.avgQuestionIncorrectPercent + '% <span class="sample-size">(n=' + lesson.questionAnswerSampleSize + ')</span>') + '</td>' +
+        '<td data-label="Follow-on %" title="' + lesson.followOnVisitors + ' of ' + lesson.uniqueViewersFromEvents + ' visitors">' + lesson.followOnRate + '%</td>' +
         '<td data-label="Most missed question">' + missed + '</td>' +
         '</tr>';
     }).join('');
@@ -370,9 +642,10 @@ const HTML = `<!doctype html>
 
   function loadLessons() {
     var body = document.getElementById('lessonsBody');
-    fetchJson('/api/admin/lessons').then(function (data) {
+    fetchJson('/api/admin/lessons?range=' + encodeURIComponent(currentRange)).then(function (data) {
       lessonsData = data.lessons || [];
       renderLessons();
+      renderImprovementFlags();
     }).catch(function () {
       body.className = 'error-state';
       body.innerHTML = 'Could not load lesson performance. <button class="link-button">Retry</button>';
@@ -381,24 +654,49 @@ const HTML = `<!doctype html>
   }
 
   // ---------------- Questions to review ----------------
+  var questionsData = null;
+  var questionsShowAll = false;
+
+  function questionCard(q) {
+    return '<div class="review-card">' +
+      '<div class="q">' + escapeHtml(q.question) + '</div>' +
+      '<div class="meta">' + escapeHtml(q.lesson_title) + ' &middot; ' + q.percentIncorrect + '% incorrect' +
+      ' <span class="sample-size">(n=' + q.answeredCount + ')</span>' +
+      (q.mostCommonIncorrectAnswer ? ' &middot; Most common wrong answer: ' + escapeHtml(q.mostCommonIncorrectAnswer) : '') +
+      '</div></div>';
+  }
+
+  function renderQuestions() {
+    var body = document.getElementById('questionsBody');
+    if (!questionsData) return;
+    var list = questionsShowAll
+      ? (questionsData.questions || []).filter(function (q) { return q.percentIncorrect > 0; })
+      : (questionsData.questionsToReview || []);
+
+    var toolbar = '<div class="questions-toolbar">' +
+      '<p class="section-note">' + (questionsShowAll
+        ? 'Showing every question with at least one incorrect answer, any sample size.'
+        : 'Showing questions with at least ' + questionsData.minSampleSize + ' recorded attempts (avoids overreacting to a single response).') +
+      '</p>' +
+      '<button class="link-button" id="toggleQuestionsSample">' + (questionsShowAll ? 'Show reviewable only' : 'Show all (including small samples)') + '</button>' +
+      '</div>';
+
+    body.className = '';
+    body.innerHTML = toolbar + (list.length
+      ? list.slice(0, 20).map(questionCard).join('')
+      : '<p class="empty-state">No questions with incorrect answers yet (or no answer data recorded).</p>');
+
+    document.getElementById('toggleQuestionsSample').addEventListener('click', function () {
+      questionsShowAll = !questionsShowAll;
+      renderQuestions();
+    });
+  }
+
   function loadQuestions() {
     var body = document.getElementById('questionsBody');
     fetchJson('/api/admin/questions').then(function (data) {
-      var list = data.questionsToReview || [];
-      if (!list.length) {
-        body.className = 'empty-state';
-        body.textContent = 'No questions with incorrect answers yet (or no answer data recorded).';
-        return;
-      }
-      body.className = '';
-      body.innerHTML = list.slice(0, 20).map(function (q) {
-        return '<div class="review-card">' +
-          '<div class="q">' + escapeHtml(q.question) + '</div>' +
-          '<div class="meta">' + escapeHtml(q.lesson_title) + ' &middot; ' + q.percentIncorrect + '% incorrect' +
-          ' <span class="sample-size">(n=' + q.answeredCount + ')</span>' +
-          (q.mostCommonIncorrectAnswer ? ' &middot; Most common wrong answer: ' + escapeHtml(q.mostCommonIncorrectAnswer) : '') +
-          '</div></div>';
-      }).join('');
+      questionsData = data;
+      renderQuestions();
     }).catch(function () {
       body.className = 'error-state';
       body.innerHTML = 'Could not load question analytics. <button class="link-button">Retry</button>';
@@ -499,6 +797,8 @@ const HTML = `<!doctype html>
   });
 
   loadSummary();
+  loadFunnel();
+  loadCategories();
   loadLessons();
   loadQuestions();
   loadLearners();

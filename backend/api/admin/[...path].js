@@ -5,6 +5,8 @@ import lessonsHandler from "../../routes/admin/lessons.js";
 import questionsHandler from "../../routes/admin/questions.js";
 import learnersHandler from "../../routes/admin/learners.js";
 import learnerDetailHandler from "../../routes/admin/learners/[id].js";
+import funnelHandler from "../../routes/admin/funnel.js";
+import categoriesHandler from "../../routes/admin/categories.js";
 import { requireAdmin } from "../../lib/require-admin.js";
 
 function pathSegments(pathValue) {
@@ -47,6 +49,8 @@ export default async function handler(req, res) {
   if (segments.length === 1 && segments[0] === "lessons") return lessonsHandler(req, res);
   if (segments.length === 1 && segments[0] === "questions") return questionsHandler(req, res);
   if (segments.length === 1 && segments[0] === "learners") return learnersHandler(req, res);
+  if (segments.length === 1 && segments[0] === "funnel") return funnelHandler(req, res);
+  if (segments.length === 1 && segments[0] === "categories") return categoriesHandler(req, res);
   if (segments.length === 2 && segments[0] === "learners") {
     const routedRequest = { ...req, query: { ...req.query, id: segments[1] } };
     return learnerDetailHandler(routedRequest, res);

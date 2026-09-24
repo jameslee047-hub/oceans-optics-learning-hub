@@ -516,6 +516,90 @@ test("computeLessonPerformance: event traffic and quiz attempts include anonymou
   assert.equal(r01.mostMissedQuestion.sampleSize, 2);
 });
 
+test("computeLessonPerformance: viewerToQuizRate is the share of distinct EVENT viewers who also attempted the quiz, not a state-based completion rate", () => {
+  const events = [
+    { anonymous_visitor_id: ANON_A, event_type: "lesson_viewed", lesson_id: "R01" },
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01" },
+    { learning_user_id: USER_B, event_type: "lesson_viewed", lesson_id: "R01" },
+    { learning_user_id: USER_A, event_type: "quiz_completed", lesson_id: "R01", metadata: { score: 1, total: 1 } }
+  ];
+  const r01 = computeLessonPerformance(CATALOGUE, [], [], events).find((lesson) => lesson.lesson_id === "R01");
+  assert.equal(r01.uniqueViewersFromEvents, 3);
+  assert.equal(r01.viewerToQuizRate, 33, "1 of 3 viewers attempted the quiz");
+});
+
+test("computeLessonPerformance: avgQuestionIncorrectPercent tallies incorrect answers across all in-range attempts as a difficulty indicator", () => {
+  const events = [
+    {
+      learning_user_id: USER_A,
+      event_type: "quiz_completed",
+      lesson_id: "R01",
+      metadata: {
+        score: 1,
+        total: 2,
+        answers: [
+          { question_id: "q1", question: "Q1?", is_correct: false },
+          { question_id: "q2", question: "Q2?", is_correct: true }
+        ]
+      }
+    },
+    {
+      learning_user_id: USER_B,
+      event_type: "quiz_completed",
+      lesson_id: "R01",
+      metadata: {
+        score: 2,
+        total: 2,
+        answers: [
+          { question_id: "q1", question: "Q1?", is_correct: true },
+          { question_id: "q2", question: "Q2?", is_correct: true }
+        ]
+      }
+    }
+  ];
+  const r01 = computeLessonPerformance(CATALOGUE, [], [], events).find((lesson) => lesson.lesson_id === "R01");
+  assert.equal(r01.avgQuestionIncorrectPercent, 25, "1 incorrect answer out of 4 total answers across both attempts");
+});
+
+test("computeLessonPerformance: avgQuestionIncorrectPercent is null, not 0, when no in-range attempt has an answers snapshot", () => {
+  const events = [{ learning_user_id: USER_A, event_type: "quiz_completed", lesson_id: "R01", metadata: { score: 1, total: 1 } }];
+  const r01 = computeLessonPerformance(CATALOGUE, [], [], events).find((lesson) => lesson.lesson_id === "R01");
+  assert.equal(r01.avgQuestionIncorrectPercent, null);
+});
+
+test("computeLessonPerformance: followOnRate counts a visitor only if they viewed a DIFFERENT lesson later -- repeating the SAME lesson is not progression", () => {
+  const events = [
+    { anonymous_visitor_id: ANON_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-01-01T09:00:00.000Z" },
+    { anonymous_visitor_id: ANON_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-01-01T09:40:00.000Z" },
+    { anonymous_visitor_id: ANON_B, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-01-01T09:00:00.000Z" },
+    { anonymous_visitor_id: ANON_B, event_type: "lesson_viewed", lesson_id: "R02", created_at: "2026-01-01T09:40:00.000Z" }
+  ];
+  const r01 = computeLessonPerformance(CATALOGUE, [], [], events).find((lesson) => lesson.lesson_id === "R01");
+  assert.equal(r01.uniqueViewersFromEvents, 2);
+  assert.equal(r01.followOnRate, 50, "only ANON_B went on to view a different lesson (R02)");
+});
+
+test("computeLessonPerformance: followOnRate does not count a different lesson viewed BEFORE this lesson", () => {
+  const events = [
+    { anonymous_visitor_id: ANON_A, event_type: "lesson_viewed", lesson_id: "R02", created_at: "2026-01-01T09:00:00.000Z" },
+    { anonymous_visitor_id: ANON_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-01-01T09:40:00.000Z" }
+  ];
+  const r01 = computeLessonPerformance(CATALOGUE, [], [], events).find((lesson) => lesson.lesson_id === "R01");
+  assert.equal(r01.followOnRate, 0, "R02 was viewed before R01, not as a follow-on afterward");
+});
+
+test("computeLessonPerformance: EVENT-derived fields respect the selected date range, unlike STATE-derived learnersStarted/completions", () => {
+  const lessonProgress = [{ user_id: USER_A, lesson_id: "R01", completed_at: "2020-01-01T00:00:00Z" }];
+  const events = [
+    { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2020-06-01T00:00:00.000Z" },
+    { learning_user_id: USER_B, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-01-01T00:00:00.000Z" }
+  ];
+  const dateRange = { since: "2026-01-01T00:00:00.000Z", range: "today" };
+  const r01 = computeLessonPerformance(CATALOGUE, lessonProgress, [], events, dateRange).find((lesson) => lesson.lesson_id === "R01");
+  assert.equal(r01.learnersStarted, 1, "STATE is unaffected by the range");
+  assert.equal(r01.viewEvents, 1, "EVENTS are filtered to the range -- only the 2026 view counts");
+});
+
 test("computeLessonPerformance: learnersStarted/completions remain accurate even with zero events (pre-tracking history)", () => {
   const lessonProgress = [{ user_id: USER_A, lesson_id: "R01", completed_at: "2020-01-01T00:00:00Z" }];
   const performance = computeLessonPerformance(CATALOGUE, lessonProgress, [], []);

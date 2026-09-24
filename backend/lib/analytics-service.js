@@ -32,6 +32,9 @@
 // throwing, matching the same defensive convention as
 // theme/learning-hub-pilot/assets/learning-hub-my-learning-core.js.
 import { LEARNING_CATALOGUE } from "./lesson-catalogue.js";
+import { eventIdentity, toMs, percentOf, groupEventsByIdentity } from "./event-identity.js";
+
+export { eventIdentity, toMs, percentOf };
 
 // Every event type the learning_events table's CHECK constraint allows.
 export const KNOWN_EVENT_TYPES = [
@@ -69,17 +72,6 @@ export function isAnonymousClientReportableEventType(eventType) {
 
 function asArray(value) {
   return Array.isArray(value) ? value : [];
-}
-
-function percentOf(count, total) {
-  if (!total) return 0;
-  return Math.round((count / total) * 100);
-}
-
-function toMs(isoTimestamp) {
-  if (!isoTimestamp) return null;
-  const ms = new Date(isoTimestamp).getTime();
-  return Number.isNaN(ms) ? null : ms;
 }
 
 // Records one analytics event. Deliberately narrow: event_type must be one
@@ -234,21 +226,16 @@ export function resolveDateRange(range, now = Date.now) {
   return { since: null, range: "all" };
 }
 
-function isWithinRange(isoTimestamp, dateRange) {
+export function isWithinRange(isoTimestamp, dateRange) {
+  // No lower bound at all ("all time") -- nothing to compare against, so
+  // never exclude for an unparseable timestamp either.
+  if (!dateRange.since) return true;
   const ms = toMs(isoTimestamp);
   if (ms === null) return false;
-  if (!dateRange.since) return true;
   return ms >= toMs(dateRange.since);
 }
 
-// Pair key for deduplicating (learning_user_id, lesson_id) -- exported
-// only for this file's own tests; not part of the public aggregation API.
-function eventIdentity(event) {
-  if (event && event.learning_user_id) return "authenticated:" + event.learning_user_id;
-  if (event && event.anonymous_visitor_id) return "anonymous:" + event.anonymous_visitor_id;
-  return null;
-}
-
+// Pair key for deduplicating (visitor identity, lesson_id).
 function pairKey(identity, lessonId) {
   return identity + "::" + lessonId;
 }
@@ -475,14 +462,42 @@ function computeMostMissedQuestion(quizRowsForLesson) {
 //     on quiz_completed EVENTS from both populations. This is attempt
 //     analytics; authenticated current/latest state remains in
 //     knowledge_check_results and is used only by learner-specific views.
-export function computeLessonPerformance(catalogue, lessonProgress, quizResults, events) {
+//
+// EVENT-derived fields (everything from viewEvents onward) are scoped to
+// `dateRange` (defaults to all-time, same "since X, no upper bound" window
+// used everywhere else in this file) -- STATE-derived learnersStarted/
+// completions/completionRate are never range-filtered, per the header
+// comment above.
+//
+//   - viewerToQuizRate: of the distinct visitors with a lesson_viewed EVENT
+//     in range, what share also have a quiz_completed EVENT in range for
+//     this lesson. Anonymous + authenticated combined (drop-off signal,
+//     not a completion-state figure).
+//   - avgQuestionIncorrectPercent: a difficulty indicator tallied from the
+//     `answers` snapshots on this lesson's in-range quiz_completed events
+//     -- the share of individual question-answers that were wrong, across
+//     all attempts and questions together. null when no attempt in range
+//     carried an answers snapshot.
+//   - followOnRate: of this lesson's distinct in-range viewers, what share
+//     have a lesson_viewed EVENT for a *different* lesson_id at a later
+//     timestamp, anywhere in `dateRange` (not just this lesson's own
+//     events) -- i.e. did they keep going. Viewing this same lesson again
+//     does not count; per-identity event history used here is still
+//     filtered to dateRange, consistent with the "since X, no upper bound"
+//     period definition used across the dashboard.
+export function computeLessonPerformance(catalogue, lessonProgress, quizResults, events, dateRange = resolveDateRange("all")) {
   lessonProgress = asArray(lessonProgress);
   quizResults = asArray(quizResults);
-  events = asArray(events);
+  events = asArray(events).filter((event) => isWithinRange(event.created_at, dateRange));
   const categoryTitleByHandle = {};
   catalogue.categories.forEach((category) => {
     categoryTitleByHandle[category.handle] = category.title;
   });
+
+  // Built once, reused per lesson below, so followOnRate never re-scans
+  // the full events array once per lesson (23 lessons today, but the cost
+  // would otherwise grow with catalogue size).
+  const eventsByIdentity = groupEventsByIdentity(events);
 
   return catalogue.lessons.map((lesson) => {
     // lesson_progress's primary key is (user_id, lesson_id), so each user
@@ -517,6 +532,45 @@ export function computeLessonPerformance(catalogue, lessonProgress, quizResults,
         ? Math.round(quizAttemptPercentages.reduce((sum, value) => sum + value, 0) / quizAttemptPercentages.length)
         : null;
 
+    const uniqueQuizAttemptIdentities = new Set();
+    quizAttemptEvents.forEach((event) => {
+      const identity = eventIdentity(event);
+      if (identity) uniqueQuizAttemptIdentities.add(identity);
+    });
+    const viewerToQuizRate = percentOf(uniqueQuizAttemptIdentities.size, uniqueViewerIdsFromEvents.size);
+
+    let totalAnswered = 0;
+    let totalIncorrect = 0;
+    quizAttemptEvents.forEach((event) => {
+      const answers = event.metadata && Array.isArray(event.metadata.answers) ? event.metadata.answers : [];
+      answers.forEach((item) => {
+        if (!item || typeof item.question_id !== "string") return;
+        totalAnswered += 1;
+        if (item.is_correct !== true) totalIncorrect += 1;
+      });
+    });
+    const avgQuestionIncorrectPercent = totalAnswered > 0 ? percentOf(totalIncorrect, totalAnswered) : null;
+    const questionAnswerSampleSize = totalAnswered;
+
+    let followOnCount = 0;
+    uniqueViewerIdsFromEvents.forEach((identity) => {
+      const identityEvents = eventsByIdentity.get(identity) || [];
+      const firstViewMs = identityEvents.reduce((earliest, event) => {
+        if (event.event_type !== "lesson_viewed" || event.lesson_id !== lesson.lesson_id) return earliest;
+        const ms = toMs(event.created_at);
+        if (ms === null) return earliest;
+        return earliest === null || ms < earliest ? ms : earliest;
+      }, null);
+      if (firstViewMs === null) return;
+      const wentFurther = identityEvents.some((event) => {
+        if (event.event_type !== "lesson_viewed" || !event.lesson_id || event.lesson_id === lesson.lesson_id) return false;
+        const ms = toMs(event.created_at);
+        return ms !== null && ms > firstViewMs;
+      });
+      if (wentFurther) followOnCount += 1;
+    });
+    const followOnRate = percentOf(followOnCount, uniqueViewerIdsFromEvents.size);
+
     return {
       lesson_id: lesson.lesson_id,
       handle: lesson.handle,
@@ -531,6 +585,12 @@ export function computeLessonPerformance(catalogue, lessonProgress, quizResults,
       authenticatedLatestQuizResults: quizRows.length,
       quizAttempts,
       avgQuizAttemptPercent,
+      viewerToQuizRate,
+      uniqueQuizAttemptVisitors: uniqueQuizAttemptIdentities.size,
+      avgQuestionIncorrectPercent,
+      questionAnswerSampleSize,
+      followOnRate,
+      followOnVisitors: followOnCount,
       mostMissedQuestion: computeMostMissedQuestion(quizAttemptEvents.map((event) => event.metadata || {}))
     };
   });

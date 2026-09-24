@@ -22,8 +22,13 @@ export default async function handler(req, res) {
       LEARNING_CATALOGUE,
       events.filter((event) => event.event_type === "quiz_completed")
     );
-    const toReview = questionsToReview(questions);
-    res.status(200).json({ questions, questionsToReview: toReview });
+    // Below this many attempts, a single response swings the incorrect %
+    // wildly (e.g. 1 attempt = 0% or 100%) -- excluded from the primary
+    // review list, but never hidden entirely: the dashboard can still show
+    // every question with at least one wrong answer via `questions`.
+    const MIN_SAMPLE_SIZE = 3;
+    const toReview = questionsToReview(questions, { minSampleSize: MIN_SAMPLE_SIZE });
+    res.status(200).json({ questions, questionsToReview: toReview, minSampleSize: MIN_SAMPLE_SIZE });
   } catch (error) {
     console.error("GET /api/admin/questions failed", error);
     res.status(500).json({ error: "admin_questions_failed" });

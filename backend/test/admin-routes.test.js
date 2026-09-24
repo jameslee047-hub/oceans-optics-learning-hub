@@ -38,6 +38,8 @@ const ROUTES = [
   { name: "lessons", method: "GET", url: "/api/admin/lessons", query: {} },
   { name: "questions", method: "GET", url: "/api/admin/questions", query: {} },
   { name: "learners", method: "GET", url: "/api/admin/learners", query: {} },
+  { name: "funnel", method: "GET", url: "/api/admin/funnel?range=all", query: { range: "all" } },
+  { name: "categories", method: "GET", url: "/api/admin/categories?range=all", query: { range: "all" } },
   {
     name: "learners/[id]",
     method: "GET",
@@ -134,7 +136,9 @@ test("admin API URLs dispatch JSON handlers when Vercel does not populate query.
     ["/api/admin/lessons", {}, "admin_lessons_failed"],
     ["/api/admin/questions", {}, "admin_questions_failed"],
     ["/api/admin/learners", {}, "admin_learners_failed"],
-    ["/api/admin/learners/11111111-1111-1111-1111-111111111111", {}, "admin_learner_detail_failed"]
+    ["/api/admin/learners/11111111-1111-1111-1111-111111111111", {}, "admin_learner_detail_failed"],
+    ["/api/admin/funnel?range=all", { range: "all" }, "admin_funnel_failed"],
+    ["/api/admin/categories?range=all", { range: "all" }, "admin_categories_failed"]
   ];
 
   await withAdminEnv(async () => {
