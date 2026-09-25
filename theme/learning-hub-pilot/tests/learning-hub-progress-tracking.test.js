@@ -64,10 +64,10 @@ function createStorage(initialValue) {
   };
 }
 
-function createAnonymousWindow(pathname, allowed) {
+function createAnonymousWindow(pathname, allowed, hostname) {
   var storage = createStorage();
   return {
-    location: { pathname: pathname },
+    location: { pathname: pathname, hostname: hostname },
     OOLearningProgress: createFakeProgress(null),
     OOLearningHubLessonIdMap: { 'choosing-a-mask': 'R01' },
     localStorage: storage,
@@ -266,5 +266,96 @@ test("an unrecognized path fires no page-view event", function () {
 
     var eventCall = calls.find(function (c) { return c.url.indexOf("/api/learning-event") !== -1; });
     assert.equal(eventCall, undefined);
+  });
+});
+
+// ---------------- client-side non-production host defense in depth ----------------
+// Server-side (lib/analytics-policy.js) is the mandatory guard; these prove
+// the client-side, best-effort layer on top of it, and -- critically --
+// that it never touches the two endpoints that save real progress state.
+
+['dev-store.myshopify.com', 'localhost', '127.0.0.1', 'oceans-optics-learning-progress.vercel.app'].forEach(function (hostname) {
+  test("authenticated page-view analytics is suppressed on an obviously non-production host (" + hostname + ")", function () {
+    withStubbedFetch(function (calls) {
+      var doc = createFakeDoc();
+      var win = { location: { pathname: "/pages/learn", hostname: hostname }, OOLearningProgress: createFakeProgress("tok") };
+      runTrackingScript(win, doc);
+      doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+      assert.equal(calls.length, 0);
+    });
+  });
+
+  test("consented anonymous tracking is suppressed on an obviously non-production host (" + hostname + "), and no visitor id is created", function () {
+    withStubbedFetch(function (calls) {
+      var doc = createFakeDoc();
+      var win = createAnonymousWindow("/pages/learn", true, hostname);
+      runTrackingScript(win, doc);
+      doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+      assert.equal(calls.length, 0);
+      assert.equal(win.localStorage.values.oo_learning_analytics_visitor_v1, undefined, "no anonymous UUID should be created just to send a suppressed event");
+    });
+  });
+
+  test("anonymous Knowledge Check analytics is suppressed on an obviously non-production host (" + hostname + ")", function () {
+    withStubbedFetch(function (calls) {
+      var doc = createFakeDoc();
+      var win = createAnonymousWindow("/pages/learn/choosing-a-mask", true, hostname);
+      runTrackingScript(win, doc);
+      doc.dispatchEvent({
+        type: "oo:knowledge-check-completed",
+        detail: { lessonHandle: "choosing-a-mask", score: 1, total: 1 }
+      });
+      assert.equal(calls.length, 0);
+    });
+  });
+});
+
+test("CRITICAL: authenticated /api/lesson/viewed still fires on an obviously non-production host -- real progress state must keep saving in Preview/dev", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc("choosing-a-mask");
+    var win = {
+      location: { pathname: "/pages/learn/choosing-a-mask", hostname: "dev-store.myshopify.com" },
+      OOLearningProgress: createFakeProgress("tok"),
+      OOLearningHubLessonIdMap: { "choosing-a-mask": "R01" }
+    };
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+
+    assert.equal(calls.length, 1);
+    assert.ok(calls[0].url.indexOf("/api/lesson/viewed") !== -1);
+    assert.deepEqual(JSON.parse(calls[0].init.body), { lesson_id: "R01" });
+  });
+});
+
+test("CRITICAL: authenticated /api/quiz/result still fires on an obviously non-production host -- quiz/progress saving must keep working in Preview/dev", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc();
+    var win = {
+      location: { pathname: "/pages/learn/choosing-a-mask", hostname: "dev-store.myshopify.com" },
+      OOLearningProgress: createFakeProgress("tok"),
+      OOLearningHubLessonIdMap: { "choosing-a-mask": "R01" }
+    };
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({
+      type: "oo:knowledge-check-completed",
+      detail: { lessonHandle: "choosing-a-mask", score: 1, total: 1 }
+    });
+
+    assert.equal(calls.length, 1);
+    assert.ok(calls[0].url.indexOf("/api/quiz/result") !== -1);
+    var body = JSON.parse(calls[0].init.body);
+    assert.equal(body.lesson_id, "R01");
+    assert.equal(body.score, 1);
+  });
+});
+
+test("analytics still fires normally on an ordinary-looking production host", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc();
+    var win = createAnonymousWindow("/pages/learn", true, "oceansoptics.com");
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+    assert.equal(calls.length, 1);
+    assert.ok(calls[0].url.indexOf("/api/learning-event") !== -1);
   });
 });

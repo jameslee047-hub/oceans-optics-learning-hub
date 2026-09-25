@@ -82,7 +82,11 @@ test("anonymous clients cannot record progress dashboard views", async () => {
 
 async function recordAnonymous(body) {
   const supabase = createFakeSupabase();
-  const anonymousHandler = createLearningEventHandler({ getClient: async () => supabase });
+  // Recording behaviour itself is under test here, independent of the
+  // environment guard (see test/analytics-policy.test.js for that) -- so
+  // analytics is explicitly forced on rather than left to default off in
+  // this VERCEL_ENV-less test environment.
+  const anonymousHandler = createLearningEventHandler({ getClient: async () => supabase, analyticsEnabled: () => true });
   const req = bearerRequest({ body: { anonymous_visitor_id: ANONYMOUS_ID, ...body } });
   const res = createMockNodeResponse();
   await anonymousHandler(req, res);

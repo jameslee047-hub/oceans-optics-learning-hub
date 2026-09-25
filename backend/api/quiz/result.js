@@ -15,10 +15,19 @@ import { requireSession } from "../../lib/require-session.js";
 import { getSupabaseClient, findOrCreateLearningUser } from "../../lib/supabase.js";
 import { recordQuizResult, validateQuizResult, validateAnswerReview } from "../../lib/progress-service.js";
 import { recordLearningEventBestEffort } from "../../lib/analytics-service.js";
+import { isBehavioralAnalyticsEnabled } from "../../lib/analytics-policy.js";
 
 const LESSON_ID_PATTERN = /^R\d{2}$/;
 
-export default async function handler(req, res) {
+// Factory form so tests can inject a fake Supabase client and force the
+// analytics-enabled decision, proving the environment guard without
+// needing real SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY or VERCEL_ENV --
+// mirrors the same pattern already used by api/learning-event.js's
+// createLearningEventHandler and routes/admin/learners.js's
+// createLearnersListHandler. The default export below is the real,
+// unchanged production handler.
+export function createQuizResultHandler({ getClient = getSupabaseClient, analyticsEnabled = isBehavioralAnalyticsEnabled } = {}) {
+  return async function handler(req, res) {
   if (applyCors(req, res)) return;
   if (req.method !== "POST") {
     res.status(405).json({ error: "method_not_allowed" });
@@ -50,7 +59,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const supabase = await getSupabaseClient();
+    const supabase = await getClient();
     const userId = await findOrCreateLearningUser(supabase, session.shopify_customer_id);
     const result = await recordQuizResult(supabase, userId, lessonId, { score, total, answers: answerValidation.answers });
 
@@ -58,14 +67,20 @@ export default async function handler(req, res) {
     // action -- always recorded. lesson_completed only fires the FIRST
     // time this lesson is completed (already_complete stays false only
     // once), never again on a retake of an already-complete lesson.
-    await recordLearningEventBestEffort(supabase, {
-      learningUserId: userId,
-      eventType: "quiz_completed",
-      lessonId,
-      metadata: { score, total, answers: answerValidation.answers }
-    });
-    if (!result.already_complete) {
-      await recordLearningEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_completed", lessonId });
+    //
+    // The score/completion STATE write above (recordQuizResult) always
+    // happens regardless of environment -- only these behavioural analytics
+    // events are gated, so a Preview/dev learner's progress still saves.
+    if (analyticsEnabled()) {
+      await recordLearningEventBestEffort(supabase, {
+        learningUserId: userId,
+        eventType: "quiz_completed",
+        lessonId,
+        metadata: { score, total, answers: answerValidation.answers }
+      });
+      if (!result.already_complete) {
+        await recordLearningEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_completed", lessonId });
+      }
     }
 
     res.status(200).json(result);
@@ -73,4 +88,7 @@ export default async function handler(req, res) {
     console.error("POST /api/quiz/result failed", error);
     res.status(500).json({ error: "record_quiz_result_failed" });
   }
+  };
 }
+
+export default createQuizResultHandler();

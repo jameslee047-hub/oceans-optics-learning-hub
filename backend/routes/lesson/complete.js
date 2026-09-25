@@ -7,10 +7,16 @@ import { requireSession } from "../../lib/require-session.js";
 import { getSupabaseClient, findOrCreateLearningUser } from "../../lib/supabase.js";
 import { recordLessonComplete } from "../../lib/progress-service.js";
 import { recordLearningEventBestEffort } from "../../lib/analytics-service.js";
+import { isBehavioralAnalyticsEnabled } from "../../lib/analytics-policy.js";
 
 const LESSON_ID_PATTERN = /^R\d{2}$/;
 
-export default async function handler(req, res) {
+// Factory form so tests can inject a fake Supabase client and force the
+// analytics-enabled decision (see api/quiz/result.js's
+// createQuizResultHandler for the same pattern). The default export below
+// is the real, unchanged production handler.
+export function createLessonCompleteHandler({ getClient = getSupabaseClient, analyticsEnabled = isBehavioralAnalyticsEnabled } = {}) {
+  return async function handler(req, res) {
   if (applyCors(req, res)) return;
   if (req.method !== "POST") {
     res.status(405).json({ error: "method_not_allowed" });
@@ -27,12 +33,17 @@ export default async function handler(req, res) {
   }
 
   try {
-    const supabase = await getSupabaseClient();
+    const supabase = await getClient();
     const userId = await findOrCreateLearningUser(supabase, session.shopify_customer_id);
     const result = await recordLessonComplete(supabase, userId, lessonId);
 
-    if (!result.already_complete) {
-      await recordLearningEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_completed", lessonId });
+    // recordLessonComplete's progress-state write above always happens
+    // regardless of environment -- only this behavioural analytics event is
+    // gated, so a Preview/dev learner's completion state still saves.
+    if (analyticsEnabled()) {
+      if (!result.already_complete) {
+        await recordLearningEventBestEffort(supabase, { learningUserId: userId, eventType: "lesson_completed", lessonId });
+      }
     }
 
     res.status(200).json(result);
@@ -40,4 +51,7 @@ export default async function handler(req, res) {
     console.error("POST /api/lesson/complete failed", error);
     res.status(500).json({ error: "record_complete_failed" });
   }
+  };
 }
+
+export default createLessonCompleteHandler();

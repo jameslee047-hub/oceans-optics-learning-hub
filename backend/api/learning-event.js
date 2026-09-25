@@ -13,6 +13,7 @@ import {
   isAnonymousClientReportableEventType,
   LEARNING_CATALOGUE
 } from "../lib/analytics-service.js";
+import { isBehavioralAnalyticsEnabled } from "../lib/analytics-policy.js";
 
 const UUID_V4_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const LESSON_IDS = new Set(LEARNING_CATALOGUE.lessons.map((lesson) => lesson.lesson_id));
@@ -32,7 +33,8 @@ export function createLearningEventHandler({
   getClient = getSupabaseClient,
   findLearningUser = findOrCreateLearningUser,
   recordEvent = recordLearningEvent,
-  recordPageView = recordPageViewEvent
+  recordPageView = recordPageViewEvent,
+  analyticsEnabled = isBehavioralAnalyticsEnabled
 } = {}) {
   return async function handler(req, res) {
   if (applyCors(req, res)) return;
@@ -104,6 +106,17 @@ export function createLearningEventHandler({
       return;
     }
     metadata = { score: body.score, total: body.total, answers: answerValidation.answers };
+  }
+
+  // Every request-shape/content validation above still runs unconditionally
+  // (a Preview/dev tester's own bad request still gets a real 400) -- only
+  // the actual database work is skipped here, so behavioural analytics
+  // writes happen ONLY on confirmed Vercel Production traffic. This never
+  // touches authenticated session validity or progress state; it only
+  // means this specific event is not recorded.
+  if (!analyticsEnabled()) {
+    res.status(200).json({ recorded: false, reason: "analytics_disabled" });
+    return;
   }
 
   try {

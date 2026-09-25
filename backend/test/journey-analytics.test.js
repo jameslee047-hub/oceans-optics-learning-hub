@@ -205,6 +205,17 @@ test("computeReturningVisitorDetail: activity on a later calendar day is counted
   assert.equal(result.visitorsReturnedOnLaterDay, 1);
 });
 
+test("computeReturningVisitorDetail: a single event survives a reset alone and is never classified as returning, even for a visitor who used to be a genuine repeat visitor", () => {
+  // Simulates an analytics reset: this identity's real pre-reset history is
+  // gone; only one post-reset event exists (as if they just returned for
+  // the first time since the reset). It must not be misread as "returning"
+  // just because this same anonymous UUID existed before.
+  const events = [lessonEvent(ANON_A, "2026-01-05T09:00:00Z", "R01")];
+  const result = computeReturningVisitorDetail(events);
+  assert.equal(result.visitorsWithMultipleSessions, 0);
+  assert.equal(result.visitorsReturnedOnLaterDay, 0);
+});
+
 test("computeReturningVisitorDetail: with no events, totals are 0, not NaN or fabricated", () => {
   const result = computeReturningVisitorDetail([]);
   assert.equal(result.totalVisitors, 0);

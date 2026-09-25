@@ -438,6 +438,53 @@ test("computeSummaryMetrics: identifies a returning learner via prior events, an
   assert.equal(summary.returningLearners, 1);
 });
 
+test("computeSummaryMetrics: returning status is derived ONLY from surviving event rows, never inferred from an identity's mere existence -- proves a post-reset baseline cannot resurrect deleted history", () => {
+  // Simulates the analytics reset: a visitor/learner who was genuinely
+  // returning before an analytics reset (their pre-reset event rows
+  // deleted) must NOT be classified as returning on their first post-reset
+  // visit, even though their identity (localStorage UUID / learning_users
+  // row) still exists. Only a SECOND surviving event, after the reset,
+  // can make them "returning" again.
+  const dateRange = { since: "2026-03-01T00:00:00Z", range: "7d" };
+  const data = {
+    users: [{ id: USER_A }],
+    events: [
+      // No event before dateRange.since exists at all (as if deleted by a
+      // reset) -- only ONE event, inside the range.
+      { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-05T00:00:00Z" }
+    ]
+  };
+  const summary = computeSummaryMetrics(data, dateRange);
+  assert.equal(summary.returningLearners, 0, "a single post-reset event must never be classified as returning");
+});
+
+test("computeSummaryMetrics: two genuinely separate post-reset events correctly re-establish returning status once enough time has passed, using only surviving data", () => {
+  // A visitor's first event after the reset (2026-03-02) predates a LATER
+  // query's own `since` boundary (2026-03-04) -- exactly the same shape as
+  // "prior activity" always meant, now built entirely from data that only
+  // exists because of real post-reset visits, never anything deleted.
+  const dateRange = { since: "2026-03-04T00:00:00Z", range: "7d" };
+  const data = {
+    users: [{ id: USER_A }],
+    events: [
+      { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R01", created_at: "2026-03-02T00:00:00Z" },
+      { learning_user_id: USER_A, event_type: "lesson_viewed", lesson_id: "R02", created_at: "2026-03-05T00:00:00Z" }
+    ]
+  };
+  const summary = computeSummaryMetrics(data, dateRange);
+  assert.equal(summary.returningLearners, 1, "two genuinely separate post-reset events legitimately establish returning status");
+});
+
+test("computeSummaryMetrics: an anonymous visitor's returning status is likewise derived only from surviving rows, not from the mere existence of their localStorage UUID", () => {
+  const dateRange = { since: "2026-03-01T00:00:00Z", range: "7d" };
+  const data = {
+    users: [],
+    events: [{ anonymous_visitor_id: ANON_A, event_type: "learning_hub_viewed", created_at: "2026-03-05T00:00:00Z" }]
+  };
+  const summary = computeSummaryMetrics(data, dateRange);
+  assert.equal(summary.returningVisitors, 0);
+});
+
 test("computeSummaryMetrics: repeated legitimate visits on different days are all retained as separate active-learner signal", () => {
   const dateRange = { since: "2026-03-01T00:00:00Z", range: "30d" };
   const events = [

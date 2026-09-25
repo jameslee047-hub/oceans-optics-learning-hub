@@ -15,6 +15,24 @@
   var privacyLoadStarted = false;
   var privacyCallbacks = [];
 
+  // Defense in depth only -- the authoritative guard is server-side (see
+  // lib/analytics-policy.js: behavioural analytics only ever persist when
+  // Vercel's own VERCEL_ENV reports "production", regardless of what this
+  // check does). This just avoids sending obviously-pointless analytics
+  // requests from a developer/QA session, on the small set of hostnames
+  // that are unambiguously never the live storefront. It deliberately never
+  // touches /api/lesson/viewed or /api/quiz/result -- those save real
+  // learner progress state and must keep working in every environment.
+  function isLikelyNonProductionHost() {
+    var hostname = (window.location && window.location.hostname) || '';
+    return (
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1' ||
+      /(^|\.)myshopify\.com$/i.test(hostname) ||
+      /(^|\.)vercel\.app$/i.test(hostname)
+    );
+  }
+
   function getCurrentLessonHandle() {
     var article = document.querySelector('.learning-lesson[data-lesson-handle]');
     return article ? article.getAttribute('data-lesson-handle') : null;
@@ -129,6 +147,7 @@
   }
 
   function anonymousFetch(body) {
+    if (isLikelyNonProductionHost()) return;
     withAnonymousVisitor(function (visitorId) {
       body.anonymous_visitor_id = visitorId;
       postJson('/api/learning-event', body, null);
@@ -141,10 +160,14 @@
     if (!lessonId) return;
 
     if (isAuthenticated()) {
+      // Always fires, in every environment -- this saves real
+      // lesson_progress state (first_viewed_at), not just an analytics
+      // event; see routes/lesson/viewed.js.
       lessonViewedSent = true;
       authorizedFetch('/api/lesson/viewed', { lesson_id: lessonId });
       return;
     }
+    if (isLikelyNonProductionHost()) return;
     withAnonymousVisitor(function (visitorId) {
       if (lessonViewedSent || isAuthenticated()) return;
       lessonViewedSent = true;
@@ -160,6 +183,9 @@
     if (pageViewEventSent) return;
     var context = detectPageViewContext(window.location.pathname);
     if (!context) return;
+    // Both branches below only ever POST /api/learning-event -- pure
+    // analytics, no progress state -- so this is safe to skip entirely.
+    if (isLikelyNonProductionHost()) return;
 
     var body = { event_type: context.eventType };
     if (context.categoryHandle) body.category_handle = context.categoryHandle;

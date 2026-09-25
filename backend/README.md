@@ -89,6 +89,25 @@ for two different purposes and must not be confused or merged: one is where
 Shopify serves the OAuth/Customer-Account discovery documents, the other is
 this shop's permanent internal identity.
 
+## Behavioural analytics environment guard
+
+`lib/analytics-policy.js`'s `isBehavioralAnalyticsEnabled()` is the single
+source of truth for whether a `learning_events` write should actually
+happen: true only when Vercel's own `VERCEL_ENV` reports `"production"`.
+Preview, Development, and anywhere VERCEL_ENV is unset (local `node`, this
+test suite) are all treated as disabled -- opt-in for confirmed production
+traffic only, never opt-out for everything else. Every behavioural write
+path (`api/learning-event.js`, `api/quiz/result.js`,
+`routes/lesson/viewed.js`, `routes/lesson/complete.js`) checks this before
+its `learning_events` insert; none of them gate the actual learner
+progress-state writes (`lesson_progress`, `knowledge_check_results`,
+`learning_users`) on it, so authentication, lesson completion, and quiz
+saving all keep working identically in every environment. See
+`backend/maintenance/reset-behavioral-analytics.sql` for the one-time,
+manually-run reset this guard's introduction was paired with (deletes only
+`learning_events` rows recorded before the guard shipped; touches no
+learner state).
+
 ## Shopify Admin customer identity lookup
 
 `lib/shopify-admin-client.js` + `lib/learner-identity.js` resolve a
