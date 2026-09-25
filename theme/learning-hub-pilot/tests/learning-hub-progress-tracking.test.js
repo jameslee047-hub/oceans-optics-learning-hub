@@ -64,9 +64,9 @@ function createStorage(initialValue) {
   };
 }
 
-function createAnonymousWindow(pathname, allowed, hostname) {
+function createAnonymousWindow(pathname, allowed, hostname, themeExtra) {
   var storage = createStorage();
-  return {
+  var win = {
     location: { pathname: pathname, hostname: hostname },
     OOLearningProgress: createFakeProgress(null),
     OOLearningHubLessonIdMap: { 'choosing-a-mask': 'R01' },
@@ -78,6 +78,18 @@ function createAnonymousWindow(pathname, allowed, hostname) {
       }
     }
   };
+  applyThemeExtra(win, themeExtra);
+  return win;
+}
+
+// Merges {designMode, visualPreviewMode, role} (any subset) onto a fake
+// window, matching how learning-hub-theme-state.liquid + Shopify's own
+// runtime injection expose theme-render state to the tracking script.
+function applyThemeExtra(win, themeExtra) {
+  if (!themeExtra) return;
+  if (themeExtra.designMode !== undefined) win.Shopify.designMode = themeExtra.designMode;
+  if (themeExtra.visualPreviewMode !== undefined) win.Shopify.visualPreviewMode = themeExtra.visualPreviewMode;
+  if (themeExtra.role !== undefined) win.OOLearningHubThemeState = { themeRole: themeExtra.role };
 }
 
 function runTrackingScript(win, doc) {
@@ -357,5 +369,132 @@ test("analytics still fires normally on an ordinary-looking production host", fu
     doc.dispatchEvent({ type: "oo:learning-progress-ready" });
     assert.equal(calls.length, 1);
     assert.ok(calls[0].url.indexOf("/api/learning-event") !== -1);
+  });
+});
+
+// ---------------- same-origin theme preview / theme-editor defense (learning-hub-theme-state.liquid) ----------------
+// A hostname check alone cannot catch these: an unpublished/development
+// theme, or the theme editor/visual preview, can render on the exact same
+// oceansoptics.com origin as the live theme.
+
+test("analytics is eligible on the live, published theme (theme.role 'main') on the real production host", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc();
+    var win = createAnonymousWindow("/pages/learn", true, "oceansoptics.com", { role: "main" });
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+    assert.equal(calls.length, 1, "the live theme, correctly identified, must still record analytics");
+    assert.ok(calls[0].url.indexOf("/api/learning-event") !== -1);
+  });
+});
+
+["unpublished", "development", "demo"].forEach(function (role) {
+  test("behavioural analytics is suppressed on a '" + role + "' theme even on the real production host", function () {
+    withStubbedFetch(function (calls) {
+      var doc = createFakeDoc();
+      var win = createAnonymousWindow("/pages/learn", true, "oceansoptics.com", { role: role });
+      runTrackingScript(win, doc);
+      doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+      assert.equal(calls.length, 0);
+      assert.equal(win.localStorage.values.oo_learning_analytics_visitor_v1, undefined, "no anonymous UUID created for a suppressed non-live theme render");
+    });
+  });
+});
+
+test("behavioural analytics is suppressed when Shopify.designMode is true (theme editor), even on the real production host", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc();
+    var win = createAnonymousWindow("/pages/learn", true, "oceansoptics.com", { role: "main", designMode: true });
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+    assert.equal(calls.length, 0);
+  });
+});
+
+test("behavioural analytics is suppressed when Shopify.visualPreviewMode is true, even on the real production host", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc();
+    var win = createAnonymousWindow("/pages/learn", true, "oceansoptics.com", { role: "main", visualPreviewMode: true });
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+    assert.equal(calls.length, 0);
+  });
+});
+
+test("an authenticated visitor's page-view analytics is also suppressed in the theme editor on the real production host", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc();
+    var win = {
+      location: { pathname: "/pages/learn", hostname: "oceansoptics.com" },
+      OOLearningProgress: createFakeProgress("tok"),
+      Shopify: { designMode: true }
+    };
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+    assert.equal(calls.length, 0);
+  });
+});
+
+test("CRITICAL: authenticated /api/lesson/viewed still fires in the theme editor (Shopify.designMode) -- real progress state must keep saving", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc("choosing-a-mask");
+    var win = {
+      location: { pathname: "/pages/learn/choosing-a-mask", hostname: "oceansoptics.com" },
+      OOLearningProgress: createFakeProgress("tok"),
+      OOLearningHubLessonIdMap: { "choosing-a-mask": "R01" },
+      Shopify: { designMode: true }
+    };
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+
+    assert.equal(calls.length, 1);
+    assert.ok(calls[0].url.indexOf("/api/lesson/viewed") !== -1);
+  });
+});
+
+test("CRITICAL: authenticated /api/lesson/viewed still fires on an unpublished theme preview -- real progress state must keep saving", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc("choosing-a-mask");
+    var win = {
+      location: { pathname: "/pages/learn/choosing-a-mask", hostname: "oceansoptics.com" },
+      OOLearningProgress: createFakeProgress("tok"),
+      OOLearningHubLessonIdMap: { "choosing-a-mask": "R01" },
+      OOLearningHubThemeState: { themeRole: "unpublished" }
+    };
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+
+    assert.equal(calls.length, 1);
+    assert.ok(calls[0].url.indexOf("/api/lesson/viewed") !== -1);
+  });
+});
+
+test("CRITICAL: authenticated /api/quiz/result still fires on an unpublished theme preview -- quiz/progress saving must keep working", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc();
+    var win = {
+      location: { pathname: "/pages/learn/choosing-a-mask", hostname: "oceansoptics.com" },
+      OOLearningProgress: createFakeProgress("tok"),
+      OOLearningHubLessonIdMap: { "choosing-a-mask": "R01" },
+      OOLearningHubThemeState: { themeRole: "development" }
+    };
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({
+      type: "oo:knowledge-check-completed",
+      detail: { lessonHandle: "choosing-a-mask", score: 1, total: 1 }
+    });
+
+    assert.equal(calls.length, 1);
+    assert.ok(calls[0].url.indexOf("/api/quiz/result") !== -1);
+  });
+});
+
+test("a missing/absent theme-state flag is treated as the live theme (fail-open relative to the mandatory server-side guard), not suppressed", function () {
+  withStubbedFetch(function (calls) {
+    var doc = createFakeDoc();
+    var win = createAnonymousWindow("/pages/learn", true, "oceansoptics.com"); // no themeExtra at all
+    runTrackingScript(win, doc);
+    doc.dispatchEvent({ type: "oo:learning-progress-ready" });
+    assert.equal(calls.length, 1);
   });
 });

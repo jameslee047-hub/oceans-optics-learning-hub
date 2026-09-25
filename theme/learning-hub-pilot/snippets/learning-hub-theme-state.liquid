@@ -1,0 +1,18 @@
+{% comment %}
+  Exposes the one piece of Shopify theme-render state that a static JS
+  asset (learning-hub-progress-tracking.js -- not Liquid-templated) cannot
+  otherwise observe: theme.role ("main" for the live/published theme;
+  "unpublished", "development", "demo", etc. for anything else). Used to
+  suppress behavioural analytics when the Learning Hub is being viewed via
+  an unpublished/development theme preview -- which can run on this exact
+  same oceansoptics.com origin as the live theme, so a hostname check alone
+  cannot tell them apart.
+
+  Theme-editor and visual-preview detection needs no Liquid output at all:
+  Shopify itself sets window.Shopify.designMode / window.Shopify.visualPreviewMode
+  at runtime, and the tracking script reads those directly.
+
+  Render this once, before learning-hub-progress-tracking.js loads, on any
+  page that script is included on.
+{% endcomment %}
+<script>window.OOLearningHubThemeState = { themeRole: {{ theme.role | json }} };</script>

@@ -15,14 +15,15 @@
   var privacyLoadStarted = false;
   var privacyCallbacks = [];
 
-  // Defense in depth only -- the authoritative guard is server-side (see
-  // lib/analytics-policy.js: behavioural analytics only ever persist when
-  // Vercel's own VERCEL_ENV reports "production", regardless of what this
-  // check does). This just avoids sending obviously-pointless analytics
-  // requests from a developer/QA session, on the small set of hostnames
-  // that are unambiguously never the live storefront. It deliberately never
-  // touches /api/lesson/viewed or /api/quiz/result -- those save real
-  // learner progress state and must keep working in every environment.
+  // Defense in depth only -- the authoritative guard for WHICH BACKEND
+  // DEPLOYMENT is being talked to is server-side (see lib/analytics-policy.js:
+  // behavioural analytics only ever persist when Vercel's own VERCEL_ENV
+  // reports "production"). This just avoids sending obviously-pointless
+  // analytics requests from a developer/QA session, on the small set of
+  // hostnames that are unambiguously never the live storefront. It
+  // deliberately never touches /api/lesson/viewed or /api/quiz/result --
+  // those save real learner progress state and must keep working in every
+  // environment.
   function isLikelyNonProductionHost() {
     var hostname = (window.location && window.location.hostname) || '';
     return (
@@ -31,6 +32,39 @@
       /(^|\.)myshopify\.com$/i.test(hostname) ||
       /(^|\.)vercel\.app$/i.test(hostname)
     );
+  }
+
+  // Catches the gap a hostname check cannot: an unpublished/development
+  // theme, or the theme editor/visual preview, can render on this exact
+  // same oceansoptics.com origin as the live theme and still POST to the
+  // same production Vercel backend -- there is no server-side signal for
+  // this at all (the backend never sees which theme/render-mode produced
+  // the request), so this IS the authoritative check for this specific
+  // scenario, not just defense in depth.
+  //
+  // Shopify.designMode / Shopify.visualPreviewMode are set by Shopify
+  // itself at runtime when rendering inside the theme editor or a visual
+  // preview surface -- no Liquid output needed for those. theme.role
+  // ("main" only for the live/published theme; "unpublished"/"development"/
+  // "demo"/etc. otherwise) is NOT exposed as a JS global by Shopify, so it
+  // is passed in via window.OOLearningHubThemeState, set by the
+  // learning-hub-theme-state snippet rendered just before this script tag
+  // (see theme/learning-hub-pilot/snippets/learning-hub-theme-state.liquid).
+  // A missing/malformed flag (e.g. that snippet not yet rendered somewhere)
+  // is treated as "unknown, assume live" -- the same fail-open posture this
+  // whole check already has relative to the mandatory server-side guard,
+  // so a template issue elsewhere can never silently break real production
+  // analytics.
+  function isNonLiveThemeRender() {
+    var shopify = window.Shopify;
+    if (shopify && (shopify.designMode === true || shopify.visualPreviewMode === true)) return true;
+    var themeState = window.OOLearningHubThemeState;
+    var role = themeState && themeState.themeRole;
+    return typeof role === 'string' && role !== 'main';
+  }
+
+  function isAnalyticsSuppressedClientSide() {
+    return isLikelyNonProductionHost() || isNonLiveThemeRender();
   }
 
   function getCurrentLessonHandle() {
@@ -147,7 +181,7 @@
   }
 
   function anonymousFetch(body) {
-    if (isLikelyNonProductionHost()) return;
+    if (isAnalyticsSuppressedClientSide()) return;
     withAnonymousVisitor(function (visitorId) {
       body.anonymous_visitor_id = visitorId;
       postJson('/api/learning-event', body, null);
@@ -167,7 +201,7 @@
       authorizedFetch('/api/lesson/viewed', { lesson_id: lessonId });
       return;
     }
-    if (isLikelyNonProductionHost()) return;
+    if (isAnalyticsSuppressedClientSide()) return;
     withAnonymousVisitor(function (visitorId) {
       if (lessonViewedSent || isAuthenticated()) return;
       lessonViewedSent = true;
@@ -185,7 +219,7 @@
     if (!context) return;
     // Both branches below only ever POST /api/learning-event -- pure
     // analytics, no progress state -- so this is safe to skip entirely.
-    if (isLikelyNonProductionHost()) return;
+    if (isAnalyticsSuppressedClientSide()) return;
 
     var body = { event_type: context.eventType };
     if (context.categoryHandle) body.category_handle = context.categoryHandle;
