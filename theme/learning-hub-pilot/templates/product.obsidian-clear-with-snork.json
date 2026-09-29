@@ -251,9 +251,63 @@
       "settings": {}
     },
     "guide_product_page_PmHeDh": {
-      "type": "guide-product-page",
-      "name": "Snorkeling 101 - Product Page",
-      "settings": {}
+      "type": "oo-learning-hub-hero",
+      "name": "OO Learning Hub Hero",
+      "settings": {
+        "eyebrow": "MORE THAN JUST A MASK",
+        "heading": "Your Free Snorkeling",
+        "heading_accent": "Learning Hub",
+        "body": "<p>At Oceans Optics, we believe the right gear is only part of the experience. Knowing how to use it, what to look out for, and how to feel confident in the water matters just as much.</p>",
+        "trust_badge_text": "Built by Professional Instructors",
+        "lessons_title": "Explore lessons on:",
+        "supporting_text": "<p><strong>Free to explore. Easy to follow.</strong> Built to help you snorkel with more confidence.</p>",
+        "button_label": "EXPLORE THE LEARNING HUB",
+        "button_link": ""
+      },
+      "blocks": {
+        "lesson_topic_bkUpKQ": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "mask",
+            "label": "Gear & Vision"
+          }
+        },
+        "lesson_topic_9XC7aH": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "shield",
+            "label": "Safety & Conditions"
+          }
+        },
+        "lesson_topic_V9c8Bj": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "water",
+            "label": "In-Water Skills"
+          }
+        },
+        "lesson_topic_WAHtTJ": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "science",
+            "label": "Underwater Science & Your Body"
+          }
+        },
+        "lesson_topic_EjFAzw": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "fish",
+            "label": "Marine Life & Conservation"
+          }
+        }
+      },
+      "block_order": [
+        "lesson_topic_bkUpKQ",
+        "lesson_topic_9XC7aH",
+        "lesson_topic_V9c8Bj",
+        "lesson_topic_WAHtTJ",
+        "lesson_topic_EjFAzw"
+      ]
     },
     "1714545178ae5672c1": {
       "type": "apps",

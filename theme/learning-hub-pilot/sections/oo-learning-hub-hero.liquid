@@ -1,0 +1,1918 @@
+{% comment %}
+  Oceans Optics — Learning Hub Hero
+
+  Standardised responsive layout.
+  Changing this section file changes the visual layout of every instance.
+
+  Brand:
+    Blue   #023059
+    Orange #B95E05
+    White  #FFFFFF
+
+  Standard layout:
+    Desktop max height: 600px
+    Desktop header allowance: 60px
+    Desktop content offset: up to 180px
+    Mobile image/title area: 320px
+{% endcomment %}
+
+{% liquid
+  assign oo_desktop_fallback = 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Lady_snorkeling_rx_mask_desktop.png?v=1790409766'
+  assign oo_mobile_fallback = 'https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Lady_snorkeling_rx_mask_Mobile.png?v=1790409738'
+%}
+
+<section
+  id="oo-learning-hero-{{ section.id }}"
+  class="oo-learning-hero"
+>
+
+  {%- comment -%}
+    ============================================================
+    DESKTOP BACKGROUND
+    ============================================================
+  {%- endcomment -%}
+
+  <div class="oo-learning-hero__desktop-media">
+
+    {% if section.settings.background_image != blank %}
+
+      {{
+        section.settings.background_image
+        | image_url: width: 2400
+        | image_tag:
+          loading: 'lazy',
+          widths: '1000, 1400, 1800, 2200, 2400',
+          sizes: '100vw',
+          class: 'oo-learning-hero__desktop-image',
+          alt: section.settings.background_image.alt
+      }}
+
+    {% else %}
+
+      <img
+        src="{{ oo_desktop_fallback }}"
+        class="oo-learning-hero__desktop-image"
+        alt="Snorkeler wearing a twin-lens mask over a coral reef"
+        loading="lazy"
+        width="2400"
+        height="1350"
+      >
+
+    {% endif %}
+
+    <div class="oo-learning-hero__desktop-overlay"></div>
+
+  </div>
+
+
+  {%- comment -%}
+    ============================================================
+    MOBILE IMAGE + TITLE
+
+    The entire title lives INSIDE this image area.
+    It does not cross into the blue content panel.
+    ============================================================
+  {%- endcomment -%}
+
+  <div class="oo-learning-hero__mobile-visual">
+
+    <div class="oo-learning-hero__mobile-media">
+
+      {% if section.settings.mobile_image != blank %}
+
+        {{
+          section.settings.mobile_image
+          | image_url: width: 1200
+          | image_tag:
+            loading: 'lazy',
+            widths: '500, 750, 900, 1200',
+            sizes: '100vw',
+            class: 'oo-learning-hero__mobile-image',
+            alt: section.settings.mobile_image.alt
+        }}
+
+      {% else %}
+
+        <img
+          src="{{ oo_mobile_fallback }}"
+          class="oo-learning-hero__mobile-image"
+          alt="Snorkeler wearing a twin-lens mask over a coral reef"
+          loading="lazy"
+          width="1080"
+          height="1920"
+        >
+
+      {% endif %}
+
+    </div>
+
+    <div class="oo-learning-hero__mobile-overlay"></div>
+
+    <div class="oo-learning-hero__mobile-title">
+
+      {% if section.settings.eyebrow != blank %}
+        <div class="oo-learning-hero__eyebrow">
+          {{ section.settings.eyebrow }}
+        </div>
+      {% endif %}
+
+      {% if section.settings.heading != blank %}
+        <h2 class="oo-learning-hero__heading">
+
+          {{ section.settings.heading }}
+
+          {% if section.settings.heading_accent != blank %}
+            <span>{{ section.settings.heading_accent }}</span>
+          {% endif %}
+
+        </h2>
+      {% endif %}
+
+    </div>
+
+  </div>
+
+
+  {%- comment -%}
+    ============================================================
+    CONTENT
+    ============================================================
+  {%- endcomment -%}
+
+  <div class="oo-learning-hero__inner">
+
+    <div
+      class="oo-learning-hero__content-shell"
+      data-oo-learning-shell
+    >
+
+      <div
+        class="oo-learning-hero__content"
+        data-oo-learning-content
+      >
+
+        {%- comment -%}
+          Desktop title only.
+          Mobile has its own title inside the image above.
+        {%- endcomment -%}
+
+        <div class="oo-learning-hero__desktop-title">
+
+          {% if section.settings.eyebrow != blank %}
+            <div class="oo-learning-hero__eyebrow">
+              {{ section.settings.eyebrow }}
+            </div>
+          {% endif %}
+
+          {% if section.settings.heading != blank %}
+            <h2 class="oo-learning-hero__heading">
+
+              {{ section.settings.heading }}
+
+              {% if section.settings.heading_accent != blank %}
+                <span>{{ section.settings.heading_accent }}</span>
+              {% endif %}
+
+            </h2>
+          {% endif %}
+
+        </div>
+
+
+        {% if section.settings.body != blank %}
+
+          <div class="oo-learning-hero__body">
+            {{ section.settings.body }}
+          </div>
+
+        {% endif %}
+
+
+        {% if section.settings.trust_badge_text != blank %}
+
+          <div class="oo-learning-hero__trust">
+
+            <span
+              class="oo-learning-hero__trust-icon"
+              aria-hidden="true"
+            >
+
+              <svg
+                viewBox="0 0 32 32"
+                fill="none"
+              >
+
+                <path
+                  d="M4 12.5 16 6l12 6.5L16 19 4 12.5Z"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+
+                <path
+                  d="M9 17v5.2c4.2 3 9.8 3 14 0V17"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+
+                <path
+                  d="M28 12.5v7"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+
+              </svg>
+
+            </span>
+
+            <span>
+              {{ section.settings.trust_badge_text }}
+            </span>
+
+          </div>
+
+        {% endif %}
+
+
+        {% if section.settings.lessons_title != blank %}
+
+          <div class="oo-learning-hero__lessons-title">
+            {{ section.settings.lessons_title }}
+          </div>
+
+        {% endif %}
+
+
+        {% if section.blocks.size > 0 %}
+
+          <div class="oo-learning-hero__topics">
+
+            {% for block in section.blocks %}
+
+              <div
+                class="oo-learning-hero__topic"
+                {{ block.shopify_attributes }}
+              >
+
+                <span
+                  class="oo-learning-hero__topic-icon"
+                  aria-hidden="true"
+                >
+
+                  {% case block.settings.icon %}
+
+
+                    {% when 'mask' %}
+
+                      <svg
+                        viewBox="0 0 32 32"
+                        fill="none"
+                      >
+
+                        <path
+                          d="M4 11h24l-1.7 9c-.4 2.2-2.4 3.8-4.6 3.8h-2.4c-1.7 0-3.2-.9-4.1-2.3L13.8 19h-3.6l-1.4 2.5c-.9 1.4-2.4 2.3-4.1 2.3H2.3L.6 11H4Z"
+                          transform="translate(1 0)"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        />
+
+                        <path
+                          d="M25 10V6M25 6h3M28 6v14"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+
+                      </svg>
+
+
+                    {% when 'shield' %}
+
+                      <svg
+                        viewBox="0 0 32 32"
+                        fill="none"
+                      >
+
+                        <path
+                          d="M16 3 27 7v8c0 7.2-4.5 11.7-11 14-6.5-2.3-11-6.8-11-14V7l11-4Z"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        />
+
+                        <path
+                          d="m11 16 3.2 3.2L21 12.5"
+                          stroke="currentColor"
+                          stroke-width="2.2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+
+                      </svg>
+
+
+                    {% when 'water' %}
+
+                      <svg
+                        viewBox="0 0 32 32"
+                        fill="none"
+                      >
+
+                        <path
+                          d="M3 10c3 0 3 3 6 3s3-3 6-3 3 3 6 3 3-3 6-3"
+                          stroke="currentColor"
+                          stroke-width="2.3"
+                          stroke-linecap="round"
+                        />
+
+                        <path
+                          d="M3 16c3 0 3 3 6 3s3-3 6-3 3 3 6 3 3-3 6-3"
+                          stroke="currentColor"
+                          stroke-width="2.3"
+                          stroke-linecap="round"
+                        />
+
+                        <path
+                          d="M3 22c3 0 3 3 6 3s3-3 6-3 3 3 6 3 3-3 6-3"
+                          stroke="currentColor"
+                          stroke-width="2.3"
+                          stroke-linecap="round"
+                        />
+
+                      </svg>
+
+
+                    {% when 'science' %}
+
+                      <svg
+                        viewBox="0 0 32 32"
+                        fill="none"
+                      >
+
+                        <path
+                          d="M14 3v8L7 24a3 3 0 0 0 2.7 4h12.6A3 3 0 0 0 25 24l-7-13V3"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        />
+
+                        <path
+                          d="M11 20h10M12.5 16h7"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                        />
+
+                      </svg>
+
+
+                    {% when 'fish' %}
+
+                      <svg
+                        viewBox="0 0 32 32"
+                        fill="none"
+                      >
+
+                        <path
+                          d="M6 16c4.2-5 9-7 14-7 4.5 0 7 2.3 9 7-2 4.7-4.5 7-9 7-5 0-9.8-2-14-7Z"
+                          stroke="currentColor"
+                          stroke-width="2"
+                        />
+
+                        <path
+                          d="m6 16-4-5v10l4-5Z"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linejoin="round"
+                        />
+
+                        <circle
+                          cx="23.5"
+                          cy="14"
+                          r="1"
+                          fill="currentColor"
+                        />
+
+                      </svg>
+
+                  {% endcase %}
+
+                </span>
+
+                <span class="oo-learning-hero__topic-label">
+                  {{ block.settings.label }}
+                </span>
+
+              </div>
+
+            {% endfor %}
+
+          </div>
+
+        {% endif %}
+
+
+        {% if section.settings.supporting_text != blank %}
+
+          <div class="oo-learning-hero__support">
+            {{ section.settings.supporting_text }}
+          </div>
+
+        {% endif %}
+
+
+        {% if section.settings.button_label != blank %}
+
+          <a
+            class="oo-learning-hero__button"
+            href="{{ section.settings.button_link | default: '/pages/learn' }}"
+          >
+
+            <span class="oo-learning-hero__button-label">
+              {{ section.settings.button_label }}
+            </span>
+
+            <span
+              class="oo-learning-hero__button-arrow"
+              aria-hidden="true"
+            >
+              →
+            </span>
+
+          </a>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<style>
+
+  /* =========================================================
+     CORE
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }} {
+
+    --oo-blue: #023059;
+    --oo-orange: #B95E05;
+    --oo-orange-hover: #CF6907;
+
+    --oo-white: #FFFFFF;
+    --oo-soft-white: rgba(255,255,255,.92);
+    --oo-border: rgba(255,255,255,.39);
+
+    position: relative;
+
+    width: 100%;
+
+    height: clamp(
+      400px,
+      calc(100svh - 60px),
+      600px
+    );
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+
+    isolation: isolate;
+
+    background: var(--oo-blue);
+    color: var(--oo-white);
+
+    font-family: "Lato", Arial, sans-serif;
+  }
+
+
+  #oo-learning-hero-{{ section.id }} * {
+    box-sizing: border-box;
+  }
+
+
+  /* =========================================================
+     DESKTOP BACKGROUND
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__desktop-media {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: -3;
+
+    background: var(--oo-blue);
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__desktop-image {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    /*
+      Keeps the snorkeler on the right side.
+    */
+    object-position: center right;
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__desktop-overlay {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    background:
+      linear-gradient(
+        90deg,
+
+        rgba(2,48,89,1) 0%,
+        rgba(2,48,89,.99) 23%,
+        rgba(2,48,89,.94) 37%,
+        rgba(2,48,89,.74) 52%,
+        rgba(2,48,89,.32) 69%,
+        rgba(2,48,89,.06) 100%
+      );
+  }
+
+
+  /* =========================================================
+     MOBILE VISUAL
+     Hidden on desktop.
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__mobile-visual {
+
+    display: none;
+  }
+
+
+  /* =========================================================
+     DESKTOP CONTENT AREA
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__inner {
+
+    width: 100%;
+    max-width: 1600px;
+
+    height: 100%;
+
+    margin: 0 auto;
+
+    /*
+      180px is the design target from your configured version.
+
+      Clamp stops it becoming ridiculous on narrower laptops.
+    */
+    padding-left: clamp(
+      70px,
+      9.4vw,
+      180px
+    );
+
+    padding-right: 46px;
+
+    padding-top: 22px;
+    padding-bottom: 22px;
+
+    display: flex;
+    align-items: center;
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__content-shell {
+
+    position: relative;
+
+    width: min(
+      760px,
+      58vw
+    );
+
+    flex: 0 0 auto;
+  }
+
+
+  /*
+    Desktop JS scales this WHOLE group down if the available
+    browser height becomes too short.
+
+    It never selectively clips the bottom of the content.
+  */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__content {
+
+    width: 100%;
+
+    transform-origin: top left;
+
+    will-change: transform;
+  }
+
+
+  /* =========================================================
+     EYEBROW
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__eyebrow {
+
+    margin: 0 0 7px;
+
+    color: var(--oo-orange);
+
+    font-size: 15px;
+    line-height: 1.15;
+
+    font-weight: 900;
+
+    letter-spacing: .15em;
+
+    text-transform: uppercase;
+  }
+
+
+  /* =========================================================
+     HEADING
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__heading {
+
+    max-width: 760px;
+
+    margin: 0 0 15px;
+
+    color: var(--oo-white);
+
+    font-size: clamp(
+      38px,
+      3.4vw,
+      58px
+    );
+
+    line-height: .99;
+
+    letter-spacing: -.035em;
+
+    font-weight: 900;
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__heading span {
+
+    display: block;
+
+    color: var(--oo-white);
+  }
+
+
+  /* =========================================================
+     BODY
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__body {
+
+    max-width: 710px;
+
+    margin: 0 0 14px;
+
+    color: var(--oo-soft-white);
+
+    font-size: 17px;
+    line-height: 1.42;
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__body p {
+
+    margin: 0;
+  }
+
+
+  /* =========================================================
+     INSTRUCTOR BADGE
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__trust {
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 9px;
+
+    max-width: 100%;
+
+    margin: 0 0 16px;
+
+    padding: 8px 14px;
+
+    border:
+      1px
+      solid
+      rgba(255,255,255,.48);
+
+    border-radius: 999px;
+
+    background:
+      rgba(2,48,89,.52);
+
+    color: var(--oo-white);
+
+    font-size: 13px;
+    line-height: 1.1;
+
+    font-weight: 800;
+
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__trust-icon {
+
+    display: inline-flex;
+
+    flex: 0 0 22px;
+
+    width: 22px;
+    height: 22px;
+
+    color: var(--oo-orange);
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__trust-icon svg {
+
+    display: block;
+
+    width: 100%;
+    height: 100%;
+  }
+
+
+  /* =========================================================
+     LESSON TITLE
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__lessons-title {
+
+    margin: 0 0 8px;
+
+    color: var(--oo-white);
+
+    font-size: 16px;
+    line-height: 1.2;
+
+    font-weight: 700;
+  }
+
+
+  /* =========================================================
+     TOPIC PILLS
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__topics {
+
+    display: flex;
+    flex-wrap: wrap;
+
+    gap: 7px;
+
+    margin: 0 0 14px;
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__topic {
+
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    min-height: 40px;
+
+    padding: 7px 13px;
+
+    border:
+      1px
+      solid
+      var(--oo-border);
+
+    border-radius: 999px;
+
+    background:
+      rgba(2,48,89,.39);
+
+    color: var(--oo-white);
+
+    font-size: 13px;
+    line-height: 1.15;
+
+    font-weight: 800;
+
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__topic-icon {
+
+    display: inline-flex;
+
+    flex: 0 0 23px;
+
+    width: 23px;
+    height: 23px;
+
+    color: var(--oo-orange);
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__topic-icon svg {
+
+    width: 100%;
+    height: 100%;
+  }
+
+
+  /* =========================================================
+     SUPPORTING COPY
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__support {
+
+    margin: 0 0 14px;
+
+    color: var(--oo-white);
+
+    font-size: 15px;
+    line-height: 1.35;
+
+    font-weight: 600;
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__support p {
+
+    margin: 0;
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__support strong {
+
+    color: var(--oo-orange);
+
+    font-weight: 900;
+  }
+
+
+  /* =========================================================
+     BUTTON
+     ========================================================= */
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__button {
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 12px;
+
+    min-height: 50px;
+
+    padding: 13px 23px;
+
+    border: 0;
+
+    border-radius: 999px;
+
+    background: var(--oo-orange);
+
+    color: var(--oo-white);
+
+    text-decoration: none;
+
+    font-size: 14px;
+    line-height: 1;
+
+    font-weight: 900;
+
+    letter-spacing: .025em;
+
+    text-transform: uppercase;
+
+    transition:
+      transform .18s ease,
+      background .18s ease,
+      box-shadow .18s ease;
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__button:hover {
+
+    background: var(--oo-orange-hover);
+
+    color: var(--oo-white);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+      0
+      8px
+      24px
+      rgba(0,0,0,.22);
+  }
+
+
+  #oo-learning-hero-{{ section.id }}
+  .oo-learning-hero__button-arrow {
+
+    font-size: 22px;
+    line-height: .7;
+  }
+
+
+  /* =========================================================
+     MEDIUM DESKTOP
+     ========================================================= */
+
+  @media screen and (min-width: 990px) and (max-width: 1250px) {
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__inner {
+
+      padding-left: clamp(
+        55px,
+        7vw,
+        100px
+      );
+
+      padding-right: 35px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__content-shell {
+
+      width: 61vw;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__heading {
+
+      font-size: clamp(
+        36px,
+        3.8vw,
+        50px
+      );
+    }
+
+  }
+
+
+  /* =========================================================
+     MOBILE / TABLET
+     ========================================================= */
+
+  @media screen and (max-width: 989px) {
+
+    #oo-learning-hero-{{ section.id }} {
+
+      height: auto;
+      min-height: 0;
+
+      display: block;
+
+      overflow: hidden;
+
+      background: var(--oo-blue);
+    }
+
+
+    /* Desktop background disappears completely */
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__desktop-media {
+
+      display: none;
+    }
+
+
+    /* =======================================================
+       MOBILE IMAGE AREA
+
+       Fixed at our agreed 320px baseline.
+       ======================================================= */
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-visual {
+
+      position: relative;
+
+      display: block;
+
+      width: 100%;
+      height: 320px;
+
+      overflow: hidden;
+
+      background: var(--oo-blue);
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-media {
+
+      position: absolute;
+
+      inset: 0;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-image {
+
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+
+      /*
+        The portrait source places the snorkeler above centre.
+
+        This deliberately biases the crop upward so her
+        mask/face stays in the mobile image.
+      */
+      object-position: center 30%;
+    }
+
+
+    /*
+      Strong lower gradient means the title is readable
+      against the photograph without needing a solid panel.
+
+      The title stays completely inside this 320px area.
+    */
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-overlay {
+
+      position: absolute;
+
+      inset: 0;
+
+      z-index: 1;
+
+      background:
+        linear-gradient(
+          180deg,
+
+          rgba(2,48,89,.02) 0%,
+          rgba(2,48,89,.04) 24%,
+          rgba(2,48,89,.13) 42%,
+          rgba(2,48,89,.52) 65%,
+          rgba(2,48,89,.91) 86%,
+          rgba(2,48,89,1) 100%
+        );
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-title {
+
+      position: absolute;
+
+      z-index: 2;
+
+      left: 22px;
+      right: 22px;
+
+      /*
+        Enough space below the title that it does not sit
+        against the blue-content boundary.
+      */
+      bottom: 28px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-title
+    .oo-learning-hero__eyebrow {
+
+      margin-bottom: 7px;
+
+      font-size: 13px;
+
+      text-shadow:
+        0
+        2px
+        12px
+        rgba(0,0,0,.25);
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-title
+    .oo-learning-hero__heading {
+
+      margin: 0;
+
+      max-width: 620px;
+
+      font-size: clamp(
+        36px,
+        8vw,
+        52px
+      );
+
+      line-height: .98;
+
+      text-shadow:
+        0
+        2px
+        14px
+        rgba(0,0,0,.26);
+    }
+
+
+    /*
+      Desktop copy of title is hidden.
+    */
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__desktop-title {
+
+      display: none;
+    }
+
+
+    /* =======================================================
+       MOBILE BLUE CONTENT PANEL
+       ======================================================= */
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__inner {
+
+      width: 100%;
+      height: auto;
+
+      max-width: none;
+
+      margin: 0;
+
+      padding:
+        24px
+        22px
+        34px;
+
+      display: block;
+
+      background: var(--oo-blue);
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__content-shell {
+
+      width: 100%;
+      height: auto !important;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__content {
+
+      position: static !important;
+
+      width: 100% !important;
+
+      transform: none !important;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__body {
+
+      max-width: none;
+
+      margin-bottom: 18px;
+
+      font-size: 16px;
+      line-height: 1.52;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__trust {
+
+      margin-bottom: 26px;
+
+      padding: 9px 14px;
+
+      font-size: 13px;
+
+      line-height: 1.2;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__lessons-title {
+
+      margin-bottom: 13px;
+
+      font-size: 17px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__topics {
+
+      display: grid;
+
+      grid-template-columns: 1fr;
+
+      gap: 8px;
+
+      margin-bottom: 21px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__topic {
+
+      width: 100%;
+
+      min-height: 54px;
+
+      padding:
+        9px
+        17px;
+
+      justify-content: flex-start;
+
+      gap: 12px;
+
+      font-size: 14px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__topic-icon {
+
+      flex-basis: 25px;
+
+      width: 25px;
+      height: 25px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__support {
+
+      margin-bottom: 20px;
+
+      font-size: 16px;
+      line-height: 1.4;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__button {
+
+      width: 100%;
+
+      min-height: 58px;
+
+      padding:
+        15px
+        20px;
+
+      font-size: 14px;
+    }
+
+  }
+
+
+  /* =========================================================
+     SMALL MOBILE
+     ========================================================= */
+
+  @media screen and (max-width: 640px) {
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-title {
+
+      left: 18px;
+      right: 18px;
+
+      bottom: 26px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-title
+    .oo-learning-hero__eyebrow {
+
+      font-size: 12px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-title
+    .oo-learning-hero__heading {
+
+      font-size: clamp(
+        34px,
+        10vw,
+        44px
+      );
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__inner {
+
+      padding:
+        23px
+        18px
+        30px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__body {
+
+      font-size: 15px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__trust {
+
+      max-width: 100%;
+
+      font-size: 13px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__topic {
+
+      min-height: 52px;
+
+      padding:
+        8px
+        15px;
+
+      font-size: 13px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__support {
+
+      font-size: 15px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__button {
+
+      min-height: 56px;
+
+      font-size: 13px;
+    }
+
+  }
+
+
+  /* =========================================================
+     VERY NARROW MOBILE
+
+     Keep long lesson names tidy without shrinking everything.
+     ========================================================= */
+
+  @media screen and (max-width: 375px) {
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__mobile-title
+    .oo-learning-hero__heading {
+
+      font-size: 32px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__topic {
+
+      font-size: 12.5px;
+    }
+
+
+    #oo-learning-hero-{{ section.id }}
+    .oo-learning-hero__button {
+
+      font-size: 12px;
+    }
+
+  }
+
+</style>
+
+
+<script>
+
+  (function() {
+
+    var section =
+      document.getElementById(
+        'oo-learning-hero-{{ section.id }}'
+      );
+
+
+    if (!section) return;
+
+
+    var shell =
+      section.querySelector(
+        '[data-oo-learning-shell]'
+      );
+
+
+    var content =
+      section.querySelector(
+        '[data-oo-learning-content]'
+      );
+
+
+    var inner =
+      section.querySelector(
+        '.oo-learning-hero__inner'
+      );
+
+
+    if (
+      !shell ||
+      !content ||
+      !inner
+    ) {
+      return;
+    }
+
+
+    var desktopQuery =
+      window.matchMedia(
+        '(min-width: 990px)'
+      );
+
+
+    function resetMobile() {
+
+      shell.style.height = '';
+
+      content.style.position = '';
+      content.style.top = '';
+      content.style.left = '';
+      content.style.width = '';
+      content.style.transform = '';
+
+    }
+
+
+    function fitDesktopContent() {
+
+      /*
+        Mobile is natural-height.
+        Never scale mobile typography.
+      */
+
+      if (!desktopQuery.matches) {
+
+        resetMobile();
+
+        return;
+      }
+
+
+      /*
+        Reset before measuring.
+      */
+
+      content.style.position = 'relative';
+
+      content.style.top = '';
+      content.style.left = '';
+
+      content.style.width = '100%';
+
+      content.style.transform = 'none';
+
+      shell.style.height = 'auto';
+
+
+      var innerStyles =
+        window.getComputedStyle(inner);
+
+
+      var availableHeight =
+        inner.clientHeight
+        -
+        parseFloat(
+          innerStyles.paddingTop || 0
+        )
+        -
+        parseFloat(
+          innerStyles.paddingBottom || 0
+        );
+
+
+      var naturalHeight =
+        content.scrollHeight;
+
+
+      if (
+        !naturalHeight ||
+        !availableHeight
+      ) {
+        return;
+      }
+
+
+      /*
+        If content is taller than the hero,
+        shrink the ENTIRE content group proportionally.
+
+        Nothing gets clipped.
+      */
+
+      var scale =
+        Math.min(
+          1,
+          availableHeight / naturalHeight
+        );
+
+
+      content.style.position = 'absolute';
+
+      content.style.top = '0';
+      content.style.left = '0';
+
+      content.style.width = '100%';
+
+      content.style.transform =
+        'scale(' + scale + ')';
+
+
+      /*
+        Shell takes the scaled visual height,
+        allowing Flexbox to centre it vertically.
+      */
+
+      shell.style.height =
+        Math.ceil(
+          naturalHeight * scale
+        ) + 'px';
+
+    }
+
+
+    var resizeTimer;
+
+
+    function queueFit() {
+
+      window.clearTimeout(
+        resizeTimer
+      );
+
+
+      resizeTimer =
+        window.setTimeout(
+          fitDesktopContent,
+          40
+        );
+
+    }
+
+
+    /*
+      Initial layout.
+    */
+
+    requestAnimationFrame(
+      function() {
+
+        requestAnimationFrame(
+          fitDesktopContent
+        );
+
+      }
+    );
+
+
+    /*
+      Refit after fonts load.
+    */
+
+    if (
+      document.fonts &&
+      document.fonts.ready
+    ) {
+
+      document.fonts.ready.then(
+        fitDesktopContent
+      );
+
+    }
+
+
+    /*
+      Browser resizing.
+    */
+
+    window.addEventListener(
+      'resize',
+      queueFit
+    );
+
+
+    window.addEventListener(
+      'orientationchange',
+      queueFit
+    );
+
+
+    /*
+      Shopify Theme Editor.
+    */
+
+    document.addEventListener(
+      'shopify:section:load',
+      queueFit
+    );
+
+
+    document.addEventListener(
+      'shopify:block:select',
+      queueFit
+    );
+
+
+    document.addEventListener(
+      'shopify:block:deselect',
+      queueFit
+    );
+
+  })();
+
+</script>
+
+
+{% schema %}
+{
+  "name": "OO Learning Hub Hero",
+  "tag": "section",
+  "class": "section-oo-learning-hub-hero",
+
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "Images"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Desktop background image",
+      "info": "Leave blank to use the standard Oceans Optics snorkeler image."
+    },
+
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile background image",
+      "info": "Leave blank to use the standard Oceans Optics mobile snorkeler image."
+    },
+
+    {
+      "type": "header",
+      "content": "Content"
+    },
+
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "MORE THAN JUST A MASK"
+    },
+
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Your Free Snorkeling"
+    },
+
+    {
+      "type": "text",
+      "id": "heading_accent",
+      "label": "Heading line 2",
+      "default": "Learning Hub"
+    },
+
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body text",
+      "default": "<p>At Oceans Optics, we believe the right gear is only part of the experience. Knowing how to use it, what to look out for, and how to feel confident in the water matters just as much.</p>"
+    },
+
+    {
+      "type": "text",
+      "id": "trust_badge_text",
+      "label": "Trust badge text",
+      "default": "Built by Professional Instructors"
+    },
+
+    {
+      "type": "text",
+      "id": "lessons_title",
+      "label": "Lessons heading",
+      "default": "Explore lessons on:"
+    },
+
+    {
+      "type": "richtext",
+      "id": "supporting_text",
+      "label": "Supporting text",
+      "default": "<p><strong>Free to explore. Easy to follow.</strong> Built to help you snorkel with more confidence.</p>"
+    },
+
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "EXPLORE THE LEARNING HUB"
+    },
+
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    }
+
+  ],
+
+  "blocks": [
+
+    {
+      "type": "lesson_topic",
+      "name": "Lesson topic",
+
+      "settings": [
+
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "mask",
+
+          "options": [
+
+            {
+              "value": "mask",
+              "label": "Mask / vision"
+            },
+
+            {
+              "value": "shield",
+              "label": "Safety"
+            },
+
+            {
+              "value": "water",
+              "label": "Water / skills"
+            },
+
+            {
+              "value": "science",
+              "label": "Science / body"
+            },
+
+            {
+              "value": "fish",
+              "label": "Marine life"
+            }
+
+          ]
+        },
+
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Gear & Vision"
+        }
+
+      ]
+    }
+
+  ],
+
+  "presets": [
+
+    {
+      "name": "OO Learning Hub Hero",
+
+      "blocks": [
+
+        {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "mask",
+            "label": "Gear & Vision"
+          }
+        },
+
+        {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "shield",
+            "label": "Safety & Conditions"
+          }
+        },
+
+        {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "water",
+            "label": "In-Water Skills"
+          }
+        },
+
+        {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "science",
+            "label": "Underwater Science & Your Body"
+          }
+        },
+
+        {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "fish",
+            "label": "Marine Life & Conservation"
+          }
+        }
+
+      ]
+    }
+
+  ]
+}
+{% endschema %}
