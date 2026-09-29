@@ -24,9 +24,10 @@
   var UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   var POWER_EPSILON = 1e-9;
   var UPLOAD_OBSERVER_PROPERTY = "__ooRxHandoffUploadObserver";
-  // Purchase sources accepted from the oo_source parameter. Only these exact
-  // values become the hidden _oo_source line-item property.
-  var ALLOWED_SOURCES = ["lens_calculator_v53"];
+  // Purchase sources that may become the hidden _oo_source line-item property.
+  // Only these exact values are accepted, from the oo_source parameter or from
+  // an on-page tool; quiz_v53 is the Quiz / Face Fit handoff. Reserved: face_fit.
+  var ALLOWED_SOURCES = ["lens_calculator_v53", "product_rx_checker", "quiz_v53"];
   var FAILURE_MESSAGE = "We couldn't load your saved prescription. Please select your lens strengths or upload your prescription below.";
 
   function isUuid(value) {

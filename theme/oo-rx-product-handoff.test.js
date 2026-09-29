@@ -375,7 +375,9 @@ function propertyForm() {
 }
 
 test("oo_source accepts only the exact allowlisted calculator value", function () {
-  assert.deepEqual(Handoff.ALLOWED_SOURCES, ["lens_calculator_v53"]);
+  assert.deepEqual(Handoff.ALLOWED_SOURCES, ["lens_calculator_v53", "product_rx_checker", "quiz_v53"]);
+  assert.equal(Handoff.readSource("?oo_source=product_rx_checker"), "product_rx_checker");
+  assert.equal(Handoff.readSource("?oo_source=quiz_v53"), "quiz_v53");
   assert.equal(Handoff.readSource("?oo_rx=" + CONFIG_ID + "&oo_source=lens_calculator_v53"), "lens_calculator_v53");
   assert.equal(Handoff.readSource("?oo_source=%20lens_calculator_v53%20"), "lens_calculator_v53");
   [
@@ -384,7 +386,9 @@ test("oo_source accepts only the exact allowlisted calculator value", function (
     "?oo_source=anything-i-want",
     "?oo_source=LENS_CALCULATOR_V53",
     "?oo_source=lens_calculator_v53x",
-    "?oo_source=quiz_v53",
+    "?oo_source=QUIZ_V53",
+    "?oo_source=quiz_v5",
+    "?oo_source=face_fit",
     "?oo_source=lens_calculator_v53%3Cscript%3E"
   ].forEach(function (search) {
     assert.equal(Handoff.readSource(search), null, search);
@@ -401,8 +405,17 @@ test("allowlisted source is injected alongside the durable config without replac
   ]);
 });
 
+test("quiz_v53 is recorded as its own source, distinct from the full calculator", function () {
+  var fixture = propertyForm();
+  Handoff.injectShopifyProperties(fixture.doc, fixture.form, summary(), "quiz_v53");
+  assert.deepEqual(fixture.inputs.map(function (input) { return [input.name, input.value]; }).slice(0, 2), [
+    ["properties[_oo_rx_config]", CONFIG_ID],
+    ["properties[_oo_source]", "quiz_v53"]
+  ]);
+});
+
 test("missing or non-allowlisted sources never create _oo_source", function () {
-  [undefined, null, "", "anything-i-want", "LENS_CALCULATOR_V53", "quiz_v53"].forEach(function (source) {
+  [undefined, null, "", "anything-i-want", "LENS_CALCULATOR_V53", "QUIZ_V53", "face_fit"].forEach(function (source) {
     var fixture = propertyForm();
     Handoff.injectShopifyProperties(fixture.doc, fixture.form, summary(), source);
     assert.equal(fixture.inputs.some(function (input) { return input.name === "properties[_oo_source]"; }), false, String(source));

@@ -1,33 +1,114 @@
 /*
  * ============================================================================
- * OCEANS OPTICS LENS CALCULATOR - V5.3 (EXPERIMENTAL)
+ * OCEANS OPTICS LENS CALCULATOR — V5.2 (EXPERIMENTAL)
  * ============================================================================
  *
  * STATUS: EXPERIMENTAL. NOT VALIDATED. NOT DEPLOYED. NOT WIRED INTO ANY
- * CUSTOMER-FACING CALCULATOR. This is an isolated V5.2 derivative for
- * methodology comparison only. The historical V5.2 engine remains intact.
+ * LIVE OR PUBLISHED SHOPIFY THEME. Not clinically validated. Not a medical
+ * claim of accuracy. Exists purely so Legacy and V5.2 can be run side by
+ * side on real prescriptions and manually compared before any decision is
+ * made. The 0.50D underwater adjustment below is an EXPERIMENTAL OCEANS
+ * OPTICS EMPIRICAL HYPOTHESIS — it is NOT currently claimed to be a
+ * universal physical constant, and has not yet been validated against
+ * mask optical modelling, underwater comparison, or customer/tested-lens
+ * outcomes.
  *
- * V5.3 keeps V5.2's normalization, sphere-only references, continuous
- * 0.50D underwater adjustment toward zero, CYL bands and warnings, and
- * plano-crossover handling. Its only methodology change is the ordinary
- * stock selection performed after the continuous target is calculated.
+ * This file does NOT replace, modify, or remove
+ * `lens-calculator-master.js` (the production/Legacy engine) or
+ * `legacy-calculator-adapter.js`. Both remain fully intact and continue to
+ * pass their own, unmodified regression suites.
  *
- * Instead of selecting the nearest stocked power and using toward zero only
- * as an exact-tie rule, V5.3 excludes any candidate whose absolute power is
- * stronger than the continuous target. It then selects the closest eligible
- * stocked power. Exact stock targets remain exact. This directional snap is
- * sign-safe because eligibility is expressed as:
+ * ----------------------------------------------------------------------
+ * V5.2 METHODOLOGY CHANGE (2026-09-08) — STOCK-TIE DIRECTION CORRECTED
+ * ----------------------------------------------------------------------
+ * V5.1 introduced an exact-tie rule that, on a stock tie, favored whichever
+ * candidate was closer to the ORIGINAL SE. Real-prescription testing (the
+ * -6.75/+3.00 x130 case, SE -5.25, target -4.75, tied between -5.00 and
+ * -4.50) showed this was conceptually wrong: choosing -5.00 moves BACK
+ * TOWARD SE, partially reversing the underwater adjustment that had just
+ * been deliberately applied. There is no rationale for a tie-break rule
+ * that undoes the adjustment it's supposed to be resolving.
  *
- *   abs(stock power) <= abs(continuous target)
+ * V5.2 corrects this: on an exact stock tie, the selector continues in the
+ * SAME DIRECTION as the underwater adjustment — toward zero — by choosing
+ * the candidate with the smaller absolute power. For the case above, that
+ * is -4.50, not -5.00. See nearestAvailablePowerTowardZero() below. This is
+ * NOT described as "round toward SPH": with small CYL the 0.50D adjustment
+ * can move the target beyond the normalized SPH value, so "toward zero" is
+ * the only correct characterization of the rule.
  *
- * The stock grid can make the total difference between the sphere-only
- * reference and final stock lens exceed 0.75D. For example, reference
- * -7.875 becomes target -7.375 after the 0.50D adjustment, then snaps to
- * -7.00 because -7.50 is stronger than the target: an effective 0.875D
- * weakening from the original reference.
+ * V5.1's separation of concepts is otherwise unchanged and fully preserved:
+ *   1. SPHERICAL EQUIVALENT — the sphere-only optical reference (SPH + CYL/2).
+ *   2. OCEANS OPTICS UNDERWATER ADJUSTMENT — a single, CYL-independent,
+ *      provisional empirical weakening of SE (see underwaterAdjustmentD
+ *      below). This is applied IDENTICALLY regardless of how much
+ *      astigmatism is present.
+ *   3. CYL MAGNITUDE — now controls confidence/warning/approximation
+ *      level ONLY (see warningForBand()), never the adjustment amount.
  *
- * Version: 5.3.0-experimental
- * Created: 2026-09-26 from the unchanged V5.2 engine
+ * The plano-crossover special case (see that section below) is preserved
+ * completely unchanged in its own logic — it still resolves near-zero SE
+ * cases by comparing distance to the ORIGINAL SE, not to the shifted
+ * continuous target, and still returns PLANO_CROSSOVER_REVIEW rather than
+ * guessing when genuinely ambiguous. It takes precedence over the generic
+ * stock-tie rule whenever SE falls inside the crossover zone.
+ *
+ * ----------------------------------------------------------------------
+ * WHY V5 (AND NOW V5.2) EXIST AT ALL
+ * ----------------------------------------------------------------------
+ * The production/Legacy engine (`calcOne()`/`snapToHalf()`, preserved
+ * verbatim in `lens-calculator-master.js` and reused read-only by
+ * `legacy-calculator-adapter.js`) uses the normalized SPH magnitude as its
+ * starting point. Normalized SPH is only ONE of the two principal
+ * meridian powers of an astigmatic eye — it is not the eye's overall mean
+ * spherical requirement. `content-development/research/LENS-CALCULATOR-SOURCE-OF-TRUTH.md`
+ * records that James found real-Rx cases where that approach produces
+ * recommendations that read as too weak, and marked the underlying
+ * empirical model "UNDER REVIEW / MANUAL VALIDATION REQUIRED".
+ *
+ * V5 (and now V5.2) are candidate answers to that open review, built on a
+ * different starting principle: for a sphere-only stock lens, the
+ * SPHERICAL EQUIVALENT (SE = normalized SPH + normalized CYL / 2) — the
+ * mean power across both principal meridians — is a more defensible
+ * optical starting point than either individual meridian.
+ *
+ * NORMALIZATION NOTE: normalization (transposition to minus-cylinder
+ * notation) does NOT remove astigmatism and does NOT itself determine the
+ * recommended stock lens. It exists only so equivalent prescriptions
+ * (however an optometrist chose to notate them) are guaranteed to reach
+ * this module in one canonical internal representation. SE, computed from
+ * the normalized values, is itself provably notation-invariant, so this
+ * guarantee is what makes V5.2's recommendation notation-invariant too.
+ *
+ * ----------------------------------------------------------------------
+ * WHAT THIS FILE DELIBERATELY DOES NOT DO
+ * ----------------------------------------------------------------------
+ * - Does not assume normalized SPH is the overall spherical requirement.
+ * - Does not let CYL magnitude change the underwater adjustment amount —
+ *   CYL band now affects warning/confidence text ONLY.
+ * - Does not treat +CYL and -CYL as different severity types — both are
+ *   transposed to the same canonical minus-cylinder form before any V5.2
+ *   logic runs, and a plus-cylinder input and its minus-cylinder
+ *   equivalent always reach computeV5Recommendation() with identical
+ *   normalized values.
+ * - Does not blindly reuse Legacy's plus-CYL/minus-CYL calcOne() sub-branches;
+ *   V5.2 has its own recommendation logic entirely, built around SE only.
+ * - Does not apply Legacy's very-high-band +/-0.75 offset.
+ * - Does not add an AXIS-based power adjustment (AXIS is normalized and
+ *   retained for completeness/debugging only — see normalizeAxisValue via
+ *   the shared production module).
+ * - Does not change the production engine's snapToHalf() or its tie-break.
+ *   V5.2 has its own, separate, explicitly-coded stock-power selector.
+ * - Does not allow the continuous underwater-adjustment target to cross
+ *   zero (clamped at plano; see computeContinuousTarget()).
+ * - Does not resolve an exact stock tie back toward SE (that was V5.1's
+ *   mistake) — it continues toward zero, in the same direction as the
+ *   underwater adjustment itself (see nearestAvailablePowerTowardZero()).
+ * - Does not publish, sync, or wire into any live theme.
+ * - Does not claim clinical validation of the 0.50D adjustment value.
+ *
+ * Version: 5.2.0-experimental
+ * Created: 2026-09-04 (5.0.0) — Revised: 2026-09-06 (5.1.0) — Revised: 2026-09-08 (5.2.0)
  * ============================================================================
  */
 
@@ -39,15 +120,15 @@
 
   if (!v4) {
     throw new Error(
-      "lens-calculator-v53.js requires lens-calculator-master.js (V4) to be loaded first - " +
-        "V5.3 reuses V4's parsing/validation/normalization, it does not duplicate them."
+      "lens-calculator-v5.js requires lens-calculator-master.js (V4) to be loaded first — " +
+        "V5 reuses V4's parsing/validation/normalization, it does not duplicate them."
     );
   }
 
   var api = factory(v4);
 
   if (typeof module !== "object" || module === null || typeof module.exports === "undefined") {
-    root.OOLensCalculatorV53 = api;
+    root.OOLensCalculatorV5 = api;
   } else {
     module.exports = api;
   }
@@ -57,14 +138,14 @@
   var EPSILON = 1e-9;
 
   // ==========================================================================
-  // V5.3 CONFIGURATION - every tunable experimental constant lives here.
+  // V5 CONFIGURATION — every tunable experimental constant lives here.
   // Nothing below this block should hardcode a diopter offset, a band
   // boundary, or a stock-power list inline; everything reads from here so
   // the experimental model can be re-tuned from one place.
   // ==========================================================================
 
-  var V53_CONFIG = {
-    version: "5.3.0-experimental",
+  var V5_CONFIG = {
+    version: "5.2.0-experimental",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE
@@ -169,11 +250,11 @@
    * @param {number} absCylinder - non-negative CYL magnitude
    * @returns {string} one of the CYL_BAND_* constants above
    */
-  function getCylinderBandV53(absCylinder) {
+  function getCylinderBandV5(absCylinder) {
     var v = Math.abs(absCylinder);
-    if (v <= V53_CONFIG.lowCylinderMax + EPSILON) return CYL_BAND_LOW;
-    if (v <= V53_CONFIG.mediumCylinderMax + EPSILON) return CYL_BAND_MEDIUM;
-    if (v <= V53_CONFIG.highCylinderMax + EPSILON) return CYL_BAND_HIGH;
+    if (v <= V5_CONFIG.lowCylinderMax + EPSILON) return CYL_BAND_LOW;
+    if (v <= V5_CONFIG.mediumCylinderMax + EPSILON) return CYL_BAND_MEDIUM;
+    if (v <= V5_CONFIG.highCylinderMax + EPSILON) return CYL_BAND_HIGH;
     return CYL_BAND_VERY_HIGH;
   }
 
@@ -281,71 +362,8 @@
   }
 
   /**
-   * V5.3 directional stock selector. A stock power is eligible only when it
-   * is no stronger than the continuous target in absolute-power terms.
-   * Among eligible powers, the closest one to the target wins. This keeps
-   * the selection moving toward zero for both minus and plus prescriptions,
-   * while preserving an exact stocked target unchanged.
-   *
-   * `stockCandidates` contains the exact match or the two powers bracketing
-   * the target magnitude. `rejectedStrongerCandidates` identifies any
-   * bracketing power excluded by the V5.3 rule for development diagnostics.
-   *
-   * @param {number} target
-   * @param {number[]} availablePowers
-   * @returns {{power:number|null, stockCandidates:Array, rejectedStrongerCandidates:Array}}
-   */
-  function directionalStockPowerTowardZero(target, availablePowers) {
-    var targetMagnitude = Math.abs(target);
-    var exact = availablePowers.filter(function (power) {
-      return Math.abs(Math.abs(power) - targetMagnitude) < EPSILON;
-    });
-
-    var eligible = availablePowers.filter(function (power) {
-      return Math.abs(power) <= targetMagnitude + EPSILON;
-    });
-
-    var winner = eligible.reduce(function (best, power) {
-      if (best === null) return power;
-      var distance = Math.abs(power - target);
-      var bestDistance = Math.abs(best - target);
-      if (distance < bestDistance - EPSILON) return power;
-      if (Math.abs(distance - bestDistance) < EPSILON && Math.abs(power) < Math.abs(best)) return power;
-      return best;
-    }, null);
-
-    var weaker = eligible.reduce(function (best, power) {
-      if (best === null || Math.abs(power) > Math.abs(best) + EPSILON) return power;
-      return best;
-    }, null);
-    var stronger = availablePowers
-      .filter(function (power) {
-        return Math.abs(power) > targetMagnitude + EPSILON;
-      })
-      .reduce(function (best, power) {
-        if (best === null || Math.abs(power) < Math.abs(best) - EPSILON) return power;
-        return best;
-      }, null);
-
-    var bracketPowers = exact.length ? exact : [stronger, weaker].filter(function (power) { return power !== null; });
-    var stockCandidates = bracketPowers.map(function (power) {
-      return {
-        power: power,
-        distanceFromTarget: Math.abs(power - target),
-        eligible: Math.abs(power) <= targetMagnitude + EPSILON
-      };
-    });
-
-    return {
-      power: winner,
-      stockCandidates: stockCandidates,
-      rejectedStrongerCandidates: stockCandidates.filter(function (candidate) { return !candidate.eligible; })
-    };
-  }
-
-  /**
    * V5.2's continuous underwater-adjustment target (unchanged from V5.1 —
-   * see V53_CONFIG.underwaterAdjustmentD and the module banner's "V5.2
+   * see V5_CONFIG.underwaterAdjustmentD and the module banner's "V5.2
    * METHODOLOGY CHANGE" section, which only touches the stock-tie rule
    * downstream of this target, not this function). Reduces
    * the MAGNITUDE of SE by the configured adjustment, toward zero, and
@@ -362,7 +380,7 @@
    * @returns {number}
    */
   function computeContinuousTarget(se) {
-    var magnitude = Math.max(Math.abs(se) - V53_CONFIG.underwaterAdjustmentD, 0);
+    var magnitude = Math.max(Math.abs(se) - V5_CONFIG.underwaterAdjustmentD, 0);
     if (se > 0) return magnitude;
     if (se < 0) return -magnitude;
     return 0;
@@ -383,7 +401,7 @@
    * would have refused a plano recommendation even in cases where plano
    * is clearly the right answer, and treated every near-the-floor case as
    * requiring manual review instead of recognizing genuinely clear cases.
-   * The recommendation pipeline uses `computeV53Recommendation()`'s own
+   * The LOW band now uses `computeV5Recommendation()`'s own
    * target-then-`selectStockPower()` pipeline instead (see below), which
    * folds plano in as a normal candidate and only asks for manual review
    * when a case is genuinely ambiguous (see `resolvePlanoCrossover()`).
@@ -508,64 +526,10 @@
     return (n >= 0 ? "+" : "") + n.toFixed(2);
   }
 
-  // ==========================================================================
-  // PLANO-TO-FIRST-MINUS GAP (approved V5.3 rule; midpoint updated
-  // 2026-09-29).
-  //
-  // Plano-to-first-minus gap: targets with less than 0.50 D of minus
-  // correction use plano; targets with 0.50 D or more use -1.00. This
-  // applies only to a MINUS continuous target strictly between 0.00 and the
-  // weakest minus stock power (-1.00).
-  //
-  //   less than 0.50 D of minus (e.g. -0.25, -0.49)          ->  0.00
-  //   0.50 D of minus or more (e.g. -0.50, -0.75, -0.875)   -> -1.00
-  //
-  // This narrow rule exists because directional selection alone would
-  // reject -1.00 for being marginally stronger than the target (e.g. target
-  // -0.875) and jump a full 1.00D gap to plano. Everywhere else — exact
-  // 0.00 targets, stronger minus targets, and every plus/hyperopic target —
-  // the existing selection logic is unchanged.
-  // ==========================================================================
-
   /**
-   * @param {number} target - continuous pre-snap target (signed)
-   * @param {number[]} availablePowers - one refractive-type catalog
-   * @returns {object|null} a selection result, or null when the rule does not apply
-   */
-  function planoToFirstMinusGapSelection(target, availablePowers) {
-    var corrective = weakestCorrectivePower(availablePowers);
-    if (!(corrective < 0) || !(target < -EPSILON) || !(target > corrective + EPSILON)) return null;
-
-    var halfStepMagnitude = Math.abs(corrective) / 2;
-    var power = Math.abs(target) >= halfStepMagnitude - EPSILON ? corrective : 0;
-    var candidates = [
-      { power: 0, distanceFromTarget: Math.abs(target - 0) },
-      { power: corrective, distanceFromTarget: Math.abs(target - corrective) }
-    ];
-
-    return {
-      power: power,
-      stockStatus: "OK",
-      rule: "plano-to-first-minus-gap",
-      reason:
-        "Plano-to-first-minus gap: targets with less than 0.50 D of minus correction use plano; targets with 0.50 D or more use -1.00. The continuous target (" +
-        formatSigned(target) +
-        ") lies between 0.00 and " +
-        formatSigned(corrective) +
-        ", so " +
-        formatSigned(power) +
-        " is selected.",
-      candidates: candidates,
-      tieCandidates: null,
-      stockCandidates: null,
-      rejectedStrongerCandidates: null
-    };
-  }
-
-  /**
-   * Unified final stock-power selector used by every V5.3 CYL band. Chooses
+   * Unified final stock-power selector used by every V5 CYL band. Chooses
    * between the plano-crossover comparison (see above) and ordinary
-   * directional stock selection, based on whether SE actually falls
+   * nearest-to-target selection, based on whether SE actually falls
    * inside the plano-crossover zone for its refractive side.
    *
    * @param {number} target - the band's continuous pre-snap target
@@ -574,29 +538,16 @@
    * @returns {{power: number|null, stockStatus: string, reason: string|null, candidates: Array|null}}
    */
   function selectStockPower(target, se, availablePowers) {
-    var planoGap = planoToFirstMinusGapSelection(target, availablePowers);
-    if (planoGap) return planoGap;
-
     var corrective = weakestCorrectivePower(availablePowers);
 
     if (Math.abs(se) < Math.abs(corrective) - EPSILON) {
       var crossover = resolvePlanoCrossover(se, target, corrective);
       crossover.tieCandidates = null;
-      crossover.stockCandidates = null;
-      crossover.rejectedStrongerCandidates = null;
       return crossover;
     }
 
-    var selection = directionalStockPowerTowardZero(target, availablePowers);
-    return {
-      power: selection.power,
-      stockStatus: "OK",
-      reason: null,
-      candidates: null,
-      tieCandidates: null,
-      stockCandidates: selection.stockCandidates,
-      rejectedStrongerCandidates: selection.rejectedStrongerCandidates
-    };
+    var selection = nearestAvailablePowerTowardZero(target, availablePowers);
+    return { power: selection.power, stockStatus: "OK", reason: null, candidates: null, tieCandidates: selection.tieCandidates };
   }
 
   // ==========================================================================
@@ -640,7 +591,7 @@
   }
 
   // ==========================================================================
-  // V5.3 EXPERIMENTAL RECOMMENDATION LOGIC
+  // V5 EXPERIMENTAL RECOMMENDATION LOGIC
   // ----------------------------------------------------------------------
   // Entirely separate from V4's calcOne()/snapToHalf(). Operates on SE and
   // CYL magnitude only. AXIS plays no role (consistent with V4, and
@@ -648,17 +599,24 @@
   // ==========================================================================
 
   /**
-   * V5.3 keeps V5.2's single, CYL-independent underwater adjustment.
-   * CYL band plays no role here; calculateEyeRecommendationV53() uses it
-   * separately to select warning/confidence copy.
+   * @param {number} se - spherical equivalent (signed; negative = myopic side)
+   * @param {string} cylBand - one of the CYL_BAND_* constants
+   * @returns {{preSnapTarget:number, finalPower:number|null, ooAdjustment:string, stockStatus:string, planoCrossoverCandidates:Array|null}}
+   */
+  /**
+   * V5.2: the underwater adjustment is a single, CYL-independent
+   * function of SE alone (unchanged from V5.1 — see module banner "V5.2
+   * METHODOLOGY CHANGE"). CYL band plays NO role here any more — it is passed to
+   * calculateEyeRecommendationV5() separately, purely to select a
+   * warning/confidence message (see warningForBand()).
    *
    * @param {number} se - spherical equivalent (signed; negative = myopic side)
    * @returns {{preSnapTarget:number, finalPower:number|null, ooAdjustment:string, stockStatus:string, planoCrossoverCandidates:Array|null, tieCandidates:Array|null, underwaterAdjustmentApplied:number}}
    */
-  function computeV53Recommendation(se) {
-    var availablePowers = se < 0 ? V53_CONFIG.myopiaAvailablePowers : V53_CONFIG.hyperopiaAvailablePowers;
+  function computeV5Recommendation(se) {
+    var availablePowers = se < 0 ? V5_CONFIG.myopiaAvailablePowers : V5_CONFIG.hyperopiaAvailablePowers;
     var preSnapTarget = computeContinuousTarget(se);
-    var configuredAdjustment = V53_CONFIG.underwaterAdjustmentD;
+    var configuredAdjustment = V5_CONFIG.underwaterAdjustmentD;
     var appliedAdjustment = Math.round((Math.abs(se) - Math.abs(preSnapTarget)) * 1e6) / 1e6;
     var wasClamped = appliedAdjustment < configuredAdjustment - EPSILON;
 
@@ -673,25 +631,19 @@
 
     var selection = selectStockPower(preSnapTarget, se, availablePowers);
     var ooAdjustment = baseAdjustment;
-    if (selection.rule === "plano-to-first-minus-gap") {
-      ooAdjustment += " V5.3 " + selection.reason;
-    } else if (selection.reason) {
+    if (selection.reason) {
       ooAdjustment +=
         " PLANO CROSSOVER " +
         (selection.stockStatus === "PLANO_CROSSOVER_REVIEW" ? "(UNRESOLVED)" : "(RESOLVED)") +
         ": " +
         selection.reason;
-    } else {
-      var rejected = selection.rejectedStrongerCandidates || [];
+    } else if (selection.tieCandidates) {
       ooAdjustment +=
-        " V5.3 directional stock selection: only powers with absolute power no greater than the continuous target are eligible." +
-        (rejected.length
-          ? " Rejected stronger candidate" +
-            (rejected.length === 1 ? " " : "s ") +
-            rejected.map(function (c) { return formatSigned(c.power); }).join(" and ") +
-            "."
-          : "") +
-        " Final stock power: " +
+        " EXACT STOCK TIE at target " +
+        formatSigned(preSnapTarget) +
+        " between " +
+        selection.tieCandidates.map(function (c) { return formatSigned(c.power); }).join(" and ") +
+        " — continuing in the direction of the underwater adjustment (toward zero): " +
         formatSigned(selection.power) +
         ".";
     }
@@ -701,49 +653,17 @@
       finalPower: selection.power,
       ooAdjustment: ooAdjustment,
       stockStatus: selection.stockStatus,
-      planoCrossoverCandidates: selection.rule ? null : selection.candidates,
-      planoGapCandidates: selection.rule === "plano-to-first-minus-gap" ? selection.candidates : null,
-      stockRule: selection.rule || null,
+      planoCrossoverCandidates: selection.candidates,
       tieCandidates: selection.tieCandidates,
-      stockCandidates: selection.stockCandidates,
-      rejectedStrongerCandidates: selection.rejectedStrongerCandidates,
-      underwaterAdjustmentApplied: appliedAdjustment,
-      effectiveWeakeningFromReference:
-        selection.power === null ? null : Math.round((Math.abs(se) - Math.abs(selection.power)) * 1e6) / 1e6
-    };
-  }
-
-  /**
-   * Computes both existing high-CYL sphere-only references, then sends each
-   * through the same V5.3 adjustment and stock-selection pipeline. The
-   * caller remains responsible for applying the existing high-CYL threshold
-   * and presenting the strategy choice.
-   *
-   * @param {number} normalizedSphere
-   * @param {number} normalizedCylinder - canonical minus-cylinder value
-   * @returns {{balanced:object, closerToSph:object}}
-   */
-  function computeStrategyRecommendationsV53(normalizedSphere, normalizedCylinder) {
-    var balancedReference = normalizedSphere + normalizedCylinder / 2;
-    var closerToSphReference = normalizedSphere + normalizedCylinder / 4;
-
-    return {
-      balanced: {
-        reference: balancedReference,
-        recommendation: computeV53Recommendation(balancedReference)
-      },
-      closerToSph: {
-        reference: closerToSphReference,
-        recommendation: computeV53Recommendation(closerToSphReference)
-      }
+      underwaterAdjustmentApplied: appliedAdjustment
     };
   }
 
   function warningForBand(cylBand) {
     if (cylBand === CYL_BAND_LOW) return null;
-    if (cylBand === CYL_BAND_MEDIUM) return V53_CONFIG.warnings.medium;
-    if (cylBand === CYL_BAND_HIGH) return V53_CONFIG.warnings.high;
-    return V53_CONFIG.warnings.veryHigh;
+    if (cylBand === CYL_BAND_MEDIUM) return V5_CONFIG.warnings.medium;
+    if (cylBand === CYL_BAND_HIGH) return V5_CONFIG.warnings.high;
+    return V5_CONFIG.warnings.veryHigh;
   }
 
   var PLANO_CROSSOVER_REVIEW_WARNING_LEVEL = "plano-crossover-review";
@@ -753,23 +673,23 @@
   // ==========================================================================
 
   /**
-   * Full V5.3 pipeline for one eye: parse -> validate -> normalize -> compute
+   * Full V5 pipeline for one eye: parse -> validate -> normalize -> compute
    * optical values -> apply experimental OO adjustment -> select stock
    * power. Reuses V4's parsing/validation/transposition (not duplicated)
    * so both engines start from an identical, already-agreed-upon
    * normalized prescription; only what happens AFTER normalization
-   * differs between V4 and V5.3.
+   * differs between V4 and V5.
    *
    * @param {{sphere:string, cylinder:string, axis:string, add:string}} rawEyeInput
    * @param {string} eyeLabel
    * @returns {object}
    */
-  function calculateEyeRecommendationV53(rawEyeInput, eyeLabel) {
+  function calculateEyeRecommendationV5(rawEyeInput, eyeLabel) {
     var parsed = V4.parsePrescription(rawEyeInput);
     var validation = V4.validatePrescription(parsed, eyeLabel);
 
     if (!validation.valid) {
-      return { valid: false, errors: validation.errors, version: V53_CONFIG.version };
+      return { valid: false, errors: validation.errors, version: V5_CONFIG.version };
     }
 
     var original = { sphere: parsed.sphere, cylinder: parsed.cylinder, axis: parsed.axis, add: parsed.add };
@@ -795,7 +715,7 @@
       return {
         valid: true,
         errors: [],
-        version: V53_CONFIG.version,
+        version: V5_CONFIG.version,
         original: original,
         normalized: normalized,
         meridian1: 0,
@@ -805,16 +725,12 @@
         cylinderMagnitude: 0,
         cylinderBand: null,
         stockStatus: "OK",
-        ooAdjustment: "True plano — no correction, V5.3 logic not applied.",
+        ooAdjustment: "True plano — no correction, V5.2 logic not applied.",
         preSnapTarget: 0,
         finalStockPower: 0,
         planoCrossoverCandidates: null,
-        stockRule: null,
         tieCandidates: null,
-        stockCandidates: null,
-        rejectedStrongerCandidates: null,
         underwaterAdjustmentApplied: 0,
-        effectiveWeakeningFromReference: 0,
         recommendation: "0.00",
         warning: null,
         manualReview: false
@@ -824,9 +740,9 @@
     var meridian1 = transposed.sphere;
     var meridian2 = transposed.sphere + transposed.cylinder;
     var sphericalEquivalent = transposed.sphere + transposed.cylinder / 2;
-    var cylBand = getCylinderBandV53(cylinderMagnitude);
+    var cylBand = getCylinderBandV5(cylinderMagnitude);
 
-    var rec = computeV53Recommendation(sphericalEquivalent);
+    var rec = computeV5Recommendation(sphericalEquivalent);
     var planoCrossoverUnresolved = rec.stockStatus === "PLANO_CROSSOVER_REVIEW";
     var recommendation = planoCrossoverUnresolved ? null : V4.formatLensStrength(rec.finalPower);
 
@@ -844,7 +760,7 @@
     return {
       valid: true,
       errors: [],
-      version: V53_CONFIG.version,
+      version: V5_CONFIG.version,
       original: original,
       normalized: normalized,
       meridian1: meridian1,
@@ -858,12 +774,8 @@
       preSnapTarget: rec.preSnapTarget,
       finalStockPower: rec.finalPower,
       planoCrossoverCandidates: rec.planoCrossoverCandidates,
-      stockRule: rec.stockRule,
       tieCandidates: rec.tieCandidates,
-      stockCandidates: rec.stockCandidates,
-      rejectedStrongerCandidates: rec.rejectedStrongerCandidates,
       underwaterAdjustmentApplied: rec.underwaterAdjustmentApplied,
-      effectiveWeakeningFromReference: rec.effectiveWeakeningFromReference,
       recommendation: recommendation,
       warning: warning,
       manualReview: planoCrossoverUnresolved || cylBand === CYL_BAND_VERY_HIGH
@@ -875,19 +787,19 @@
    * @param {object} rawLeftInput
    * @returns {{right:object, left:object, valid:boolean, errors:string[]}}
    */
-  function calculatePrescriptionPairV53(rawRightInput, rawLeftInput) {
-    var right = calculateEyeRecommendationV53(rawRightInput, "Right (OD)");
-    var left = calculateEyeRecommendationV53(rawLeftInput, "Left (OS)");
+  function calculatePrescriptionPairV5(rawRightInput, rawLeftInput) {
+    var right = calculateEyeRecommendationV5(rawRightInput, "Right (OD)");
+    var left = calculateEyeRecommendationV5(rawLeftInput, "Left (OS)");
     var errors = [].concat(right.errors || [], left.errors || []);
     return { right: right, left: left, valid: right.valid && left.valid, errors: errors };
   }
 
   // ==========================================================================
-  // V4 vs V5.3 COMPARISON / DEBUG MODE
+  // V4 vs V5 COMPARISON / DEBUG MODE
   // ==========================================================================
 
   /**
-   * Runs BOTH V4 and V5.3 on the same raw eye input and returns a single
+   * Runs BOTH V4 and V5 on the same raw eye input and returns a single
    * record with everything needed to see why they differ, at a glance.
    * Does not alter, call into private internals of, or duplicate V4's own
    * logic — just calls V4's own public calculateEyeRecommendation().
@@ -896,39 +808,38 @@
    * @param {string} eyeLabel
    * @returns {object}
    */
-  function compareEyeV4V53(rawEyeInput, eyeLabel) {
+  function compareEyeV4V5(rawEyeInput, eyeLabel) {
     var v4Result = V4.calculateEyeRecommendation(rawEyeInput, eyeLabel);
-    var v53Result = calculateEyeRecommendationV53(rawEyeInput, eyeLabel);
+    var v5Result = calculateEyeRecommendationV5(rawEyeInput, eyeLabel);
 
-    if (!v4Result.valid || !v53Result.valid) {
+    if (!v4Result.valid || !v5Result.valid) {
       return {
         valid: false,
-        errors: [].concat(v4Result.errors || [], v53Result.errors || [])
+        errors: [].concat(v4Result.errors || [], v5Result.errors || [])
       };
     }
 
     return {
       valid: true,
       errors: [],
-      original: v53Result.original,
-      normalized: v53Result.normalized,
-      meridian1: v53Result.meridian1,
-      meridian2: v53Result.meridian2,
-      sphericalEquivalent: v53Result.sphericalEquivalent,
-      cylinderBand: v53Result.cylinderBand,
+      original: v5Result.original,
+      normalized: v5Result.normalized,
+      meridian1: v5Result.meridian1,
+      meridian2: v5Result.meridian2,
+      sphericalEquivalent: v5Result.sphericalEquivalent,
+      cylinderBand: v5Result.cylinderBand,
       v4Recommendation: v4Result.recommendation,
-      v53Recommendation: v53Result.recommendation,
-      v53OOAdjustment: v53Result.ooAdjustment,
-      v53PreSnapTarget: v53Result.preSnapTarget,
-      v53FinalStockPower: v53Result.finalStockPower,
-      v53StockStatus: v53Result.stockStatus,
-      v53PlanoCrossoverCandidates: v53Result.planoCrossoverCandidates,
-      v53StockCandidates: v53Result.stockCandidates,
-      v53RejectedStrongerCandidates: v53Result.rejectedStrongerCandidates,
-      v53UnderwaterAdjustmentApplied: v53Result.underwaterAdjustmentApplied,
-      warning: v53Result.warning,
-      manualReview: v53Result.manualReview,
-      changed: v4Result.recommendation !== v53Result.recommendation
+      v5Recommendation: v5Result.recommendation,
+      v5OOAdjustment: v5Result.ooAdjustment,
+      v5PreSnapTarget: v5Result.preSnapTarget,
+      v5FinalStockPower: v5Result.finalStockPower,
+      v5StockStatus: v5Result.stockStatus,
+      v5PlanoCrossoverCandidates: v5Result.planoCrossoverCandidates,
+      v5TieCandidates: v5Result.tieCandidates,
+      v5UnderwaterAdjustmentApplied: v5Result.underwaterAdjustmentApplied,
+      warning: v5Result.warning,
+      manualReview: v5Result.manualReview,
+      changed: v4Result.recommendation !== v5Result.recommendation
     };
   }
 
@@ -937,10 +848,10 @@
    * @param {object} rawLeftInput
    * @returns {{right:object, left:object}}
    */
-  function comparePrescriptionPairV4V53(rawRightInput, rawLeftInput) {
+  function comparePrescriptionPairV4V5(rawRightInput, rawLeftInput) {
     return {
-      right: compareEyeV4V53(rawRightInput, "Right (OD)"),
-      left: compareEyeV4V53(rawLeftInput, "Left (OS)")
+      right: compareEyeV4V5(rawRightInput, "Right (OD)"),
+      left: compareEyeV4V5(rawLeftInput, "Left (OS)")
     };
   }
 
@@ -949,29 +860,26 @@
   // ==========================================================================
 
   return {
-    VERSION: V53_CONFIG.version,
-    V53_CONFIG: V53_CONFIG,
+    VERSION: V5_CONFIG.version,
+    V5_CONFIG: V5_CONFIG,
     CYL_BAND_LOW: CYL_BAND_LOW,
     CYL_BAND_MEDIUM: CYL_BAND_MEDIUM,
     CYL_BAND_HIGH: CYL_BAND_HIGH,
     CYL_BAND_VERY_HIGH: CYL_BAND_VERY_HIGH,
 
-    getCylinderBandV53: getCylinderBandV53,
+    getCylinderBandV5: getCylinderBandV5,
     nearestAvailablePower: nearestAvailablePower,
     nearestAvailablePowerTowardZero: nearestAvailablePowerTowardZero,
-    directionalStockPowerTowardZero: directionalStockPowerTowardZero,
     computeContinuousTarget: computeContinuousTarget,
     nextWeakerAvailablePower: nextWeakerAvailablePower,
     weakestCorrectivePower: weakestCorrectivePower,
     resolvePlanoCrossover: resolvePlanoCrossover,
     selectStockPower: selectStockPower,
-    planoToFirstMinusGapSelection: planoToFirstMinusGapSelection,
     assertSphericalEquivalentInvariant: assertSphericalEquivalentInvariant,
-    computeV53Recommendation: computeV53Recommendation,
-    computeStrategyRecommendationsV53: computeStrategyRecommendationsV53,
-    calculateEyeRecommendationV53: calculateEyeRecommendationV53,
-    calculatePrescriptionPairV53: calculatePrescriptionPairV53,
-    compareEyeV4V53: compareEyeV4V53,
-    comparePrescriptionPairV4V53: comparePrescriptionPairV4V53
+    computeV5Recommendation: computeV5Recommendation,
+    calculateEyeRecommendationV5: calculateEyeRecommendationV5,
+    calculatePrescriptionPairV5: calculatePrescriptionPairV5,
+    compareEyeV4V5: compareEyeV4V5,
+    comparePrescriptionPairV4V5: comparePrescriptionPairV4V5
   };
 });

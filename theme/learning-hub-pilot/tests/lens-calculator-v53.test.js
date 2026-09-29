@@ -154,17 +154,17 @@ test("plus-side plano crossover and exact-zero targets are unchanged from V5.2",
   });
 });
 
-test("plano-to-first-minus gap uses nearest endpoint, with midpoint ties toward zero", function () {
+test("plano-to-first-minus gap: less than 0.50 D of minus uses plano, 0.50 D or more uses -1.00", function () {
   var myopia = V53.V53_CONFIG.myopiaAvailablePowers;
   [
-    [-0.25, 0], [-0.49, 0], [-0.5, 0], [-0.51, -1], [-0.625, -1], [-0.75, -1], [-0.875, -1]
+    [-0.25, 0], [-0.49, 0], [-0.5, -1], [-0.51, -1], [-0.625, -1], [-0.75, -1], [-0.875, -1]
   ].forEach(function (entry) {
     var selection = V53.planoToFirstMinusGapSelection(entry[0], myopia);
     assert.ok(selection, "rule applies to target " + entry[0]);
     assert.equal(selection.power, entry[1], "target " + entry[0]);
     assert.equal(selection.stockStatus, "OK");
     assert.equal(selection.rule, "plano-to-first-minus-gap");
-    assert.match(selection.reason, /nearest endpoint, with midpoint ties toward zero/);
+    assert.match(selection.reason, /less than 0\.50 D of minus correction use plano; targets with 0\.50 D or more use -1\.00/);
   });
   // Outside the open interval (0.00, -1.00), or on the plus side, the rule never applies.
   [0, -0, -1, -1.25, -3, 0.25, 0.75].forEach(function (target) {
@@ -174,10 +174,10 @@ test("plano-to-first-minus gap uses nearest endpoint, with midpoint ties toward 
   assert.equal(V53.selectStockPower(-1, -1.5, myopia).power, -1);
 });
 
-test("approved gap cases: SE -1.375 now gives -1.00 and SE -1.00 or weaker gives plano", function () {
+test("approved gap cases: SE -1.00 or stronger (inside the gap) gives -1.00, weaker gives plano", function () {
   var cases = [
     [-1.375, -0.875, -1], [-1.25, -0.75, -1], [-1.125, -0.625, -1], [-1.01, -0.51, -1],
-    [-1.0, -0.5, 0], [-0.99, -0.49, 0], [-0.875, -0.375, 0], [-0.75, -0.25, 0]
+    [-1.0, -0.5, -1], [-0.99, -0.49, 0], [-0.875, -0.375, 0], [-0.75, -0.25, 0]
   ];
   cases.forEach(function (entry) {
     var result = V53.computeV53Recommendation(entry[0]);
@@ -185,7 +185,7 @@ test("approved gap cases: SE -1.375 now gives -1.00 and SE -1.00 or weaker gives
     assert.equal(result.finalPower, entry[2], "final for SE " + entry[0]);
     assert.equal(result.stockRule, "plano-to-first-minus-gap");
     assert.equal(result.planoCrossoverCandidates, null);
-    assert.match(result.ooAdjustment, /Plano-to-first-minus gap uses nearest endpoint/);
+    assert.match(result.ooAdjustment, /Plano-to-first-minus gap: targets with less than 0\.50 D/);
   });
   var eye = V53.calculateEyeRecommendationV53({ sphere: "-1.00", cylinder: "-0.75", axis: "90" }, "Right");
   assert.equal(eye.recommendation, "-1.00");

@@ -1,0 +1,100 @@
+{{ 'oo-cropper-1.6.2.min.css' | asset_url | stylesheet_tag }}
+{{ 'oo-product-rx-checker-v53.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="oo-rx-checker page-width"
+  id="oo-rx-checker-{{ section.id }}"
+  data-oo-product-rx-checker
+  data-product-handle="{{ product.handle | escape }}"
+  data-pdfjs-src="{{ 'oo-pdfjs-3.11.174.min.js' | asset_url }}"
+  data-pdfjs-worker="{{ 'oo-pdfjs-3.11.174.worker.min.js' | asset_url }}"
+  aria-labelledby="oo-rx-checker-title-{{ section.id }}"
+  aria-busy="false"
+>
+  <h2 class="oo-rx-checker__title" id="oo-rx-checker-title-{{ section.id }}">Check your prescription for this mask</h2>
+  <p class="oo-rx-checker__intro">We'll work out your recommended underwater lenses and set them on this mask for you.</p>
+
+  <div class="oo-rx-checker__upload">
+    <label class="oo-rx-checker__upload-button" for="oo-rx-checker-file-{{ section.id }}">Upload prescription</label>
+    <input
+      class="oo-rx-checker__file"
+      id="oo-rx-checker-file-{{ section.id }}"
+      type="file"
+      accept="image/jpeg,image/png,image/webp,image/gif,application/pdf"
+      data-checker-file
+    >
+  </div>
+
+  <div class="oo-rx-checker__review" data-checker-review hidden>
+    <p class="oo-rx-checker__review-title">Crop to just your prescription</p>
+    <p class="oo-rx-checker__review-help">Drag the corners to select only the prescription values. Remove names, addresses and anything else you don't want to send. Only the selected area is uploaded.</p>
+    <label class="oo-rx-checker__pages" data-checker-pages hidden>
+      PDF page
+      <select data-checker-page aria-label="PDF page"></select>
+    </label>
+    <div class="oo-rx-checker__crop">
+      <img alt="Prescription to crop" data-checker-crop-image>
+    </div>
+    <div class="oo-rx-checker__crop-tools">
+      <button type="button" class="oo-rx-checker__tool" data-checker-rotate-left>Rotate left</button>
+      <button type="button" class="oo-rx-checker__tool" data-checker-rotate-right>Rotate right</button>
+      <button type="button" class="oo-rx-checker__tool" data-checker-reset>Reset</button>
+    </div>
+    <button type="button" class="oo-rx-checker__use" data-checker-use disabled>Use this area</button>
+    <div class="oo-rx-checker__crop-tools">
+      <button type="button" class="oo-rx-checker__tool" data-checker-choose-another>Choose another file</button>
+      <button type="button" class="oo-rx-checker__tool" data-checker-cancel>Cancel</button>
+    </div>
+  </div>
+
+  <p class="oo-rx-checker__divider"><span>or enter your prescription manually</span></p>
+
+  <form class="oo-rx-checker__form" data-checker-form novalidate>
+    <label class="oo-rx-checker__label-field" for="oo-rx-checker-label-{{ section.id }}">
+      Who is this prescription for? <span>(optional)</span>
+    </label>
+    <input class="oo-rx-checker__label-input" id="oo-rx-checker-label-{{ section.id }}" type="text" maxlength="60" autocomplete="off" placeholder="e.g. James" data-checker-label>
+
+    <div class="oo-rx-checker__eyes">
+      <fieldset class="oo-rx-checker__eye" data-eye="right">
+        <legend>Right eye (OD)</legend>
+        <label>SPH <select data-field="sphere" aria-label="Right SPH"></select></label>
+        <label>CYL <select data-field="cylinder" aria-label="Right CYL"></select></label>
+        <label>AXIS <select data-field="axis" aria-label="Right AXIS"></select></label>
+      </fieldset>
+      <fieldset class="oo-rx-checker__eye" data-eye="left">
+        <legend>Left eye (OS)</legend>
+        <label>SPH <select data-field="sphere" aria-label="Left SPH"></select></label>
+        <label>CYL <select data-field="cylinder" aria-label="Left CYL"></select></label>
+        <label>AXIS <select data-field="axis" aria-label="Left AXIS"></select></label>
+      </fieldset>
+    </div>
+
+    <button class="oo-rx-checker__check" type="submit" data-checker-check>Check this mask</button>
+  </form>
+
+  <p class="oo-rx-checker__status" data-checker-status role="status" aria-live="polite" hidden></p>
+  <div class="oo-rx-checker__result" data-checker-result aria-live="polite" hidden></div>
+</section>
+
+<script src="{{ 'oo-cropper-1.6.2.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'oo-lens-calculator-v53-base.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'oo-lens-calculator-v53-engine.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'oo-lens-calculator-v53-high-cyl.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'oo-lens-calculator-v53-rx.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'oo-lens-calculator-v53-products.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'oo-product-rx-checker-v53.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "V5.3 Product Rx Checker",
+  "tag": "div",
+  "class": "oo-product-rx-checker-v53-section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "V5.3 Product Rx Checker"
+    }
+  ]
+}
+{% endschema %}

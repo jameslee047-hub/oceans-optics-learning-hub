@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Oceans Optics Underwater Lens Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.css" integrity="sha384-6LFfkTKLRlzFtgx8xsWyBdKGpcMMQTkv+dB7rAbugeJAu1Ym2q1Aji1cjHBG12Xh" crossorigin="anonymous">
+    <link rel="stylesheet" href="lens-calculator-v52.css">
+    <script src="https://cdn.jsdelivr.net/npm/cropperjs@1.6.2/dist/cropper.min.js" integrity="sha384-jrOgQzBlDeUNdmQn3rUt/PZD+pdcRBdWd/HWRqRo+n2OR2QtGyjSaJC0GiCeH+ir" crossorigin="anonymous" defer></script>
+    <script src="lens-calculator-master.js" defer></script>
+    <script src="lens-calculator-v53.js" defer></script>
+    <script src="lens-calculator-v52-high-cyl.js" defer></script>
+    <script src="lens-calculator-v52-ui.js" defer></script>
+    <script src="lens-calculator-v52-rx.js" defer></script>
+    <script src="lens-calculator-v52-products.js" defer></script>
+  </head>
+  <body>
+    <main class="oo-v52-page">
+      <section class="oo-v52" aria-labelledby="oo-v52-title">
+        <h1 id="oo-v52-title">Underwater Lens Calculator</h1>
+
+        <div class="oo-v52__calculator">
+          <p class="oo-v52__intro">Enter your prescription to find your recommended underwater lens strength</p>
+
+          <section class="oo-v52-profiles" id="oo-v52-profiles" aria-label="Your prescriptions" hidden>
+            <div class="oo-v52-profiles__header" id="oo-v52-profiles-header" hidden>
+              <h2 class="oo-v52-profiles__title">Your prescriptions</h2>
+              <p class="oo-v52-profiles__hint">Rename them if it helps you tell them apart.</p>
+            </div>
+            <div class="oo-v52-profiles__row">
+              <div class="oo-v52-profiles__tabs" id="oo-v52-profile-tabs"></div>
+              <button class="oo-v52-profiles__add" id="oo-v52-add-prescription" type="button">+ Add prescription</button>
+            </div>
+            <p class="oo-v52-profiles__status" id="oo-v52-profiles-status" role="status" hidden></p>
+          </section>
+
+          <section class="oo-v52-rx__entry" id="oo-v52-rx-entry" aria-labelledby="oo-v52-rx-entry-title">
+            <h2 id="oo-v52-rx-entry-title">Have your prescription handy?</h2>
+            <div class="oo-v52-rx__choice">
+              <button class="oo-v52-rx__primary" id="oo-v52-rx-upload" type="button">Upload prescription</button>
+            </div>
+            <details class="oo-v52-rx__photo-help">
+              <summary>
+                <span class="oo-v52-rx__photo-help-icon" aria-hidden="true">i</span>
+                <span>Tips for a clear prescription photo</span>
+                <span class="oo-v52-rx__photo-help-chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="oo-v52-rx__photo-help-body">
+                <p>For the clearest read:</p>
+                <ul>
+                  <li>Show the full prescription, not just a cropped number.</li>
+                  <li>Keep OD/right, OS/left, Sphere, Cylinder, and Axis sharp and well lit.</li>
+                  <li>Avoid glare, blur, tiny text, and handwritten notes.</li>
+                </ul>
+                <div class="oo-v52-rx__photo-examples">
+                  <figure>
+                    <figcaption><strong class="is-good">Good photo</strong><span>All values and labels are visible and in focus.</span></figcaption>
+                    <div class="oo-v52-rx__photo-example-media">
+                      <img src="https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Good_Rx_2.png?v=1781067576" alt="Clear prescription example showing OD, OS, Sphere, Cylinder, and Axis" width="1245" height="436" loading="lazy">
+                    </div>
+                  </figure>
+                  <figure>
+                    <figcaption><strong class="is-bad">Avoid</strong><span>Values are cropped without eye or column labels.</span></figcaption>
+                    <div class="oo-v52-rx__photo-example-media">
+                      <img src="https://cdn.shopify.com/s/files/1/0798/8055/2781/files/Bad_Rx_2.png?v=1781067302" alt="Cropped prescription example missing eye and column labels" width="334" height="84" loading="lazy">
+                    </div>
+                  </figure>
+                </div>
+              </div>
+            </details>
+            <input
+              id="oo-v52-rx-file"
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif,application/pdf,.jpg,.jpeg,.png,.webp,.gif,.pdf"
+              hidden
+            >
+            <p class="oo-v52-rx__file-error" id="oo-v52-rx-file-error" role="alert" hidden></p>
+            <p class="oo-v52-rx__manual-guidance">or enter your prescription below <span aria-hidden="true">↓</span></p>
+          </section>
+
+          <section class="oo-v52-rx__review" id="oo-v52-rx-review" aria-labelledby="oo-v52-rx-review-title" hidden>
+            <h2 id="oo-v52-rx-review-title">Check your prescription</h2>
+            <div class="oo-v52-rx__crop" id="oo-v52-rx-crop">
+              <img id="oo-v52-rx-image" alt="Selected prescription ready to crop">
+            </div>
+            <div class="oo-v52-rx__pdf" id="oo-v52-rx-pdf" hidden>
+              <span class="oo-v52-rx__pdf-mark" aria-hidden="true">PDF</span>
+              <strong id="oo-v52-rx-pdf-name"></strong>
+              <span>Ready to upload</span>
+            </div>
+            <div class="oo-v52-rx__tools" id="oo-v52-rx-tools">
+              <button type="button" id="oo-v52-rx-rotate-left" aria-label="Rotate image left 90 degrees">Rotate left</button>
+              <button type="button" id="oo-v52-rx-rotate-right" aria-label="Rotate image right 90 degrees">Rotate right</button>
+              <button type="button" id="oo-v52-rx-reset">Reset</button>
+            </div>
+            <p class="oo-v52-rx__file-error" id="oo-v52-rx-review-error" role="alert" hidden></p>
+            <div class="oo-v52-rx__review-actions">
+              <button class="oo-v52-rx__text-button" id="oo-v52-rx-choose-another" type="button">Choose another</button>
+              <button class="oo-v52-rx__primary" id="oo-v52-rx-use" type="button">Use this image</button>
+            </div>
+          </section>
+
+          <section class="oo-v52-rx__status" id="oo-v52-rx-status" aria-live="polite" hidden>
+            <h2 id="oo-v52-rx-status-title"></h2>
+            <p id="oo-v52-rx-status-copy"></p>
+            <div class="oo-v52-rx__status-actions">
+              <button class="oo-v52-rx__secondary" id="oo-v52-rx-retry" type="button" hidden>Try again</button>
+              <button class="oo-v52-rx__secondary" id="oo-v52-rx-adjust" type="button" hidden>Adjust / choose another image</button>
+              <button class="oo-v52-rx__text-button" id="oo-v52-rx-manual-status" type="button" hidden>Enter prescription manually</button>
+            </div>
+          </section>
+
+          <div class="oo-v52-rx__label-field" id="oo-v52-rx-label-field">
+            <div class="oo-v52-rx__label-draft" id="oo-v52-rx-label-draft">
+              <label for="oo-v52-rx-label">Who is this prescription for? <span>(optional)</span></label>
+              <input id="oo-v52-rx-label" type="text" maxlength="60" autocomplete="off" placeholder="e.g. James">
+              <p class="oo-v52-rx__label-hint" id="oo-v52-rx-label-hint" hidden>Adding more than one? A name makes it easier to tell them apart.</p>
+            </div>
+            <div class="oo-v52-rx__label-confirmed" id="oo-v52-rx-label-confirmed" hidden>
+              <button class="oo-v52-rx__label-display" id="oo-v52-rx-label-display" type="button">
+                <span id="oo-v52-rx-label-display-text"></span>
+                <span class="oo-v52-rx__label-pencil" id="oo-v52-rx-label-pencil" aria-hidden="true">✎</span>
+              </button>
+              <div class="oo-v52-rx__label-editor" id="oo-v52-rx-label-editor" hidden>
+                <label class="oo-v52-sr-only" for="oo-v52-rx-label-edit">Prescription name</label>
+                <input id="oo-v52-rx-label-edit" type="text" maxlength="60" autocomplete="off" autofocus>
+                <button id="oo-v52-rx-label-save" type="button" aria-label="Save prescription name" title="Save prescription name">✓</button>
+                <button id="oo-v52-rx-label-cancel" type="button" aria-label="Cancel name editing" title="Cancel name editing">×</button>
+              </div>
+            </div>
+            <p class="oo-v52-rx__label-status" id="oo-v52-rx-label-status" role="status" hidden></p>
+          </div>
+
+          <section class="oo-v52-rx__expanded" id="oo-v52-rx-expanded" aria-labelledby="oo-v52-rx-expanded-title" hidden>
+            <div class="oo-v52-rx__expanded-heading">
+              <h2 id="oo-v52-rx-expanded-title">Prescription image</h2>
+              <button class="oo-v52-rx__text-button" id="oo-v52-rx-expanded-close" type="button">Collapse image</button>
+            </div>
+            <img id="oo-v52-rx-expanded-image" alt="Approved cropped prescription shown larger">
+          </section>
+
+          <section class="oo-v52-rx__read-summary" id="oo-v52-rx-read-summary" aria-live="polite" hidden>
+            <strong>We read:</strong>
+            <span id="oo-v52-rx-read-right"></span>
+            <span id="oo-v52-rx-read-left"></span>
+          </section>
+
+          <div class="oo-v52-rx__check-layout" id="oo-v52-rx-check-layout">
+            <section class="oo-v52-rx__approved" id="oo-v52-rx-approved" aria-labelledby="oo-v52-rx-approved-title" hidden>
+              <h2 id="oo-v52-rx-approved-title">Approved prescription image</h2>
+              <button class="oo-v52-rx__approved-image" id="oo-v52-rx-approved-view" type="button" aria-label="View approved prescription image larger">
+                <img id="oo-v52-rx-approved-image" alt="Approved cropped prescription">
+              </button>
+              <div class="oo-v52-rx__approved-pdf" id="oo-v52-rx-approved-pdf" hidden>
+                <span class="oo-v52-rx__pdf-mark" aria-hidden="true">PDF</span>
+                <strong id="oo-v52-rx-approved-pdf-name"></strong>
+                <span><span aria-hidden="true">✓</span> Uploaded</span>
+              </div>
+              <div class="oo-v52-rx__approved-actions">
+                <button class="oo-v52-rx__text-button" id="oo-v52-rx-approved-larger" type="button">View larger</button>
+                <button class="oo-v52-rx__text-button" id="oo-v52-rx-approved-adjust" type="button">Adjust image</button>
+                <button class="oo-v52-rx__text-button" id="oo-v52-rx-approved-another" type="button">Choose another</button>
+              </div>
+            </section>
+
+            <div class="oo-v52-rx__values">
+              <form id="oo-v52-form" novalidate>
+            <div class="oo-v52__eyes">
+              <fieldset class="oo-v52__eye" data-eye="right">
+                <legend>Right Eye <span>(OD)</span></legend>
+
+                <div class="oo-v52__field" data-rx-field="sphere">
+                  <div class="oo-v52__field-label">
+                    <label>Sphere (SPH)</label>
+                    <span class="oo-v52__help-wrap">
+                      <button class="oo-v52__help" type="button" aria-label="Sphere help" aria-expanded="false" aria-describedby="oo-v52-right-sph-help">i</button>
+                      <span class="oo-v52__tooltip" id="oo-v52-right-sph-help" role="tooltip">Enter the SPH value exactly as shown on your prescription, including the + or - sign.</span>
+                    </span>
+                  </div>
+                  <div class="oo-v52__number" aria-label="Right eye sphere">
+                    <button class="oo-v52__sign" type="button" data-field="sphere" aria-label="Choose right SPH sign" aria-pressed="false">+/-</button>
+                    <select class="oo-v52__integer oo-v52-step-select" data-field="sphere" aria-label="Right SPH integer"></select>
+                    <span class="oo-v52__dot" aria-hidden="true">.</span>
+                    <select class="oo-v52__fraction oo-v52-step-select" data-field="sphere" aria-label="Right SPH fraction"></select>
+                  </div>
+                </div>
+
+                <div class="oo-v52__field" data-rx-field="cylinder">
+                  <div class="oo-v52__field-label">
+                    <label>Cylinder (CYL)</label>
+                    <span class="oo-v52__help-wrap">
+                      <button class="oo-v52__help" type="button" aria-label="Cylinder help" aria-expanded="false" aria-describedby="oo-v52-right-cyl-help">i</button>
+                      <span class="oo-v52__tooltip" id="oo-v52-right-cyl-help" role="tooltip">Enter the CYL value exactly as shown on your prescription, including the + or - sign. If your prescription has no CYL value, leave this at 0.00.</span>
+                    </span>
+                  </div>
+                  <div class="oo-v52__number" aria-label="Right eye cylinder">
+                    <button class="oo-v52__sign" type="button" data-field="cylinder" aria-label="Choose right CYL sign" aria-pressed="false">+/-</button>
+                    <select class="oo-v52__integer oo-v52-step-select" data-field="cylinder" aria-label="Right CYL integer"></select>
+                    <span class="oo-v52__dot" aria-hidden="true">.</span>
+                    <select class="oo-v52__fraction oo-v52-step-select" data-field="cylinder" aria-label="Right CYL fraction"></select>
+                  </div>
+                </div>
+
+                <div class="oo-v52__field" data-rx-field="axis">
+                  <div class="oo-v52__field-label">
+                    <label for="oo-v52-right-axis">Axis</label>
+                    <span class="oo-v52__help-wrap">
+                      <button class="oo-v52__help" type="button" aria-label="Axis help" aria-expanded="false" aria-describedby="oo-v52-right-axis-help">i</button>
+                      <span class="oo-v52__tooltip" id="oo-v52-right-axis-help" role="tooltip">Enter the AXIS number shown with your CYL, from 001 to 180. AXIS is only required when CYL is not 0.00.</span>
+                    </span>
+                  </div>
+                  <select class="oo-v52__axis" id="oo-v52-right-axis" data-field="axis" disabled>
+                    <option value="">Not required</option>
+                  </select>
+                </div>
+              </fieldset>
+
+              <fieldset class="oo-v52__eye" data-eye="left">
+                <legend>Left Eye <span>(OS)</span></legend>
+
+                <div class="oo-v52__field" data-rx-field="sphere">
+                  <div class="oo-v52__field-label">
+                    <label>Sphere (SPH)</label>
+                  </div>
+                  <div class="oo-v52__number" aria-label="Left eye sphere">
+                    <button class="oo-v52__sign" type="button" data-field="sphere" aria-label="Choose left SPH sign" aria-pressed="false">+/-</button>
+                    <select class="oo-v52__integer oo-v52-step-select" data-field="sphere" aria-label="Left SPH integer"></select>
+                    <span class="oo-v52__dot" aria-hidden="true">.</span>
+                    <select class="oo-v52__fraction oo-v52-step-select" data-field="sphere" aria-label="Left SPH fraction"></select>
+                  </div>
+                </div>
+
+                <div class="oo-v52__field" data-rx-field="cylinder">
+                  <div class="oo-v52__field-label">
+                    <label>Cylinder (CYL)</label>
+                  </div>
+                  <div class="oo-v52__number" aria-label="Left eye cylinder">
+                    <button class="oo-v52__sign" type="button" data-field="cylinder" aria-label="Choose left CYL sign" aria-pressed="false">+/-</button>
+                    <select class="oo-v52__integer oo-v52-step-select" data-field="cylinder" aria-label="Left CYL integer"></select>
+                    <span class="oo-v52__dot" aria-hidden="true">.</span>
+                    <select class="oo-v52__fraction oo-v52-step-select" data-field="cylinder" aria-label="Left CYL fraction"></select>
+                  </div>
+                </div>
+
+                <div class="oo-v52__field" data-rx-field="axis">
+                  <div class="oo-v52__field-label">
+                    <label for="oo-v52-left-axis">Axis</label>
+                  </div>
+                  <select class="oo-v52__axis" id="oo-v52-left-axis" data-field="axis" disabled>
+                    <option value="">Not required</option>
+                  </select>
+                </div>
+              </fieldset>
+            </div>
+
+            <button class="oo-v52__submit" type="submit">Find My Lens Strength</button>
+            <button class="oo-v52__edit" id="oo-v52-edit" type="button" hidden>Edit prescription</button>
+            <div class="oo-v52__error" id="oo-v52-error" role="alert" hidden></div>
+              </form>
+            </div>
+          </div>
+
+          <section class="oo-v52__result" id="oo-v52-result" aria-live="polite" tabindex="-1" hidden>
+            <h2>Suggested Lens Strength</h2>
+            <p class="oo-v52__result-intro">Based on the prescription above, these are the sphere-only mask lens strengths suggested for your selected calculation method.</p>
+            <div class="oo-v52__result-values" id="oo-v52-result-values">
+              <div class="oo-v52__result-eye">
+                <span>Right (OD)</span>
+                <strong id="oo-v52-result-right">--</strong>
+              </div>
+              <div class="oo-v52__divider" aria-hidden="true"></div>
+              <div class="oo-v52__result-eye">
+                <span>Left (OS)</span>
+                <strong id="oo-v52-result-left">--</strong>
+              </div>
+            </div>
+            <div class="oo-v52-high-cyl" id="oo-v52-high-cyl" hidden>
+              <p class="oo-v52-high-cyl__intro" id="oo-v52-high-description">Your prescription has higher astigmatism, so you can choose between two sphere-only approaches.</p>
+              <fieldset class="oo-v52-high-cyl__selector" aria-describedby="oo-v52-high-description oo-v52-high-next">
+                <legend>Choose the lens approach you'd like us to use</legend>
+                <p class="oo-v52-high-cyl__next" id="oo-v52-high-next">Next, we’ll show you the masks available with these lens strengths.</p>
+                <div class="oo-v52-high-cyl__options">
+                  <div class="oo-v52-high-cyl__choice">
+                    <input class="oo-v52-high-cyl__input" type="radio" id="oo-v52-high-balanced" name="oo-v52-high-strategy" value="balanced" checked>
+                    <label class="oo-v52-high-cyl__option" for="oo-v52-high-balanced">
+                      <span class="oo-v52-high-cyl__option-heading">
+                        <span class="oo-v52-high-cyl__option-title">Balanced (Spherical Equivalent)</span>
+                        <span class="oo-v52-high-cyl__indicator" aria-hidden="true"></span>
+                      </span>
+                      <span class="oo-v52-high-cyl__pair">
+                        <span><span>R</span><strong id="oo-v52-high-balanced-right">--</strong></span>
+                        <span><span>L</span><strong id="oo-v52-high-balanced-left">--</strong></span>
+                      </span>
+                      <span class="oo-v52-high-cyl__copy">Uses your spherical equivalent — SPH plus half of your CYL.</span>
+                    </label>
+                  </div>
+                  <div class="oo-v52-high-cyl__choice">
+                    <input class="oo-v52-high-cyl__input" type="radio" id="oo-v52-high-alternative" name="oo-v52-high-strategy" value="closer_to_sph">
+                    <label class="oo-v52-high-cyl__option" for="oo-v52-high-alternative">
+                      <span class="oo-v52-high-cyl__option-heading">
+                        <span class="oo-v52-high-cyl__option-title">Closer to your SPH</span>
+                        <span class="oo-v52-high-cyl__indicator" aria-hidden="true"></span>
+                      </span>
+                      <span class="oo-v52-high-cyl__pair">
+                        <span>
+                          <span>R</span>
+                          <strong id="oo-v52-high-alternative-right">--</strong>
+                          <small id="oo-v52-high-alternative-right-note" hidden></small>
+                        </span>
+                        <span>
+                          <span>L</span>
+                          <strong id="oo-v52-high-alternative-left">--</strong>
+                          <small id="oo-v52-high-alternative-left-note" hidden></small>
+                        </span>
+                      </span>
+                      <span class="oo-v52-high-cyl__copy">Uses a smaller portion of your CYL, keeping the result closer to the SPH value on your prescription.</span>
+                    </label>
+                  </div>
+                </div>
+              </fieldset>
+              <p class="oo-v52-high-cyl__summary" id="oo-v52-high-summary"></p>
+              <button class="oo-v52-high-cyl__use" id="oo-v52-high-use" type="button" aria-describedby="oo-v52-high-summary">See Matching Masks</button>
+              <p class="oo-v52-sr-only" id="oo-v52-high-selection-status" aria-live="polite"></p>
+            </div>
+            <details class="oo-v52-calc-details" id="oo-v52-calc-details" hidden>
+              <summary id="oo-v52-calc-summary" aria-expanded="false">
+                <span class="oo-v52-calc-details__summary-copy">
+                  <strong>Why is my mask lens different from my glasses prescription?</strong>
+                  <small>See how we calculated this</small>
+                </span>
+                <span class="oo-v52-calc-details__chevron" aria-hidden="true"></span>
+              </summary>
+              <div class="oo-v52-calc-details__body">
+                <h2>How your mask lens strength is calculated</h2>
+                <p>Your glasses can correct Sphere (SPH), Cylinder (CYL) and Axis. Prescription mask lenses use sphere-only powers, so we first convert your prescription to an appropriate sphere-only starting point. We then make an adjustment for underwater use and match the result to the closest lens strength available.</p>
+                <div class="oo-v52-calc-details__high" id="oo-v52-calc-high" hidden>
+                  <p>With higher astigmatism, there can be more than one sensible way to approximate a full prescription using sphere-only mask lenses.</p>
+                  <p class="oo-v52-calc-details__selected">Your selected approach: <strong id="oo-v52-calc-selected-strategy"></strong></p>
+                  <p id="oo-v52-calc-strategy-copy"></p>
+                </div>
+                <div class="oo-v52-calc-details__eyes">
+                  <section aria-labelledby="oo-v52-calc-right-title">
+                    <h3 id="oo-v52-calc-right-title">Right Eye (OD)</h3>
+                    <ol class="oo-v52-calc-steps">
+                      <li><span class="oo-v52-calc-steps__number">1</span><div><h4>Your glasses prescription</h4><strong id="oo-v52-calc-right-prescription">--</strong></div></li>
+                      <li><span class="oo-v52-calc-steps__number">2</span><div><h4>Convert to a sphere-only lens</h4><strong id="oo-v52-calc-right-reference">--</strong><p id="oo-v52-calc-right-reference-copy"></p></div></li>
+                      <li><span class="oo-v52-calc-steps__number">3</span><div><h4>Adjust for underwater use</h4><strong id="oo-v52-calc-right-target">--</strong><p>We move the calculated strength 0.50 D toward zero for underwater use.</p></div></li>
+                      <li class="oo-v52-calc-steps__final"><span class="oo-v52-calc-steps__number">4</span><div><h4>Match to an available mask lens</h4><p id="oo-v52-calc-right-stock-copy"></p><span>Recommended right lens</span><strong id="oo-v52-calc-right-final">--</strong></div></li>
+                    </ol>
+                  </section>
+                  <section aria-labelledby="oo-v52-calc-left-title">
+                    <h3 id="oo-v52-calc-left-title">Left Eye (OS)</h3>
+                    <ol class="oo-v52-calc-steps">
+                      <li><span class="oo-v52-calc-steps__number">1</span><div><h4>Your glasses prescription</h4><strong id="oo-v52-calc-left-prescription">--</strong></div></li>
+                      <li><span class="oo-v52-calc-steps__number">2</span><div><h4>Convert to a sphere-only lens</h4><strong id="oo-v52-calc-left-reference">--</strong><p id="oo-v52-calc-left-reference-copy"></p></div></li>
+                      <li><span class="oo-v52-calc-steps__number">3</span><div><h4>Adjust for underwater use</h4><strong id="oo-v52-calc-left-target">--</strong><p>We move the calculated strength 0.50 D toward zero for underwater use.</p></div></li>
+                      <li class="oo-v52-calc-steps__final"><span class="oo-v52-calc-steps__number">4</span><div><h4>Match to an available mask lens</h4><p id="oo-v52-calc-left-stock-copy"></p><span>Recommended left lens</span><strong id="oo-v52-calc-left-final">--</strong></div></li>
+                    </ol>
+                  </section>
+                </div>
+              </div>
+            </details>
+            <p class="oo-v52__result-benefit">Underwater, light bends differently and can make your usual prescription feel too strong. This suggested starting strength is adjusted slightly to help prevent overmagnification.</p>
+            <p class="oo-v52-rx__attached" id="oo-v52-rx-attached" hidden>Prescription saved</p>
+          </section>
+
+          <section class="oo-v52-profile-summary" id="oo-v52-profile-summary" aria-live="polite" hidden>
+            <div class="oo-v52-profile-summary__heading">
+              <strong id="oo-v52-profile-summary-label"></strong>
+              <span>Ready</span>
+            </div>
+            <div class="oo-v52-profile-summary__pair">
+              <strong id="oo-v52-profile-summary-right"></strong>
+              <strong id="oo-v52-profile-summary-left"></strong>
+            </div>
+            <p id="oo-v52-profile-summary-strategy"></p>
+          </section>
+
+          <section class="oo-v52__guidance" id="oo-v52-guidance" aria-live="polite" tabindex="-1" hidden>
+            <h2>About Your Recommendation</h2>
+            <div id="oo-v52-guidance-content"></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="oo-v52-benefits" id="oo-v52-benefits" aria-label="Oceans Optics product benefits" hidden>
+        <div class="oo-v52-benefits__item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2L3 5v5c0 4.5 3 8 7 9 4-1 7-4.5 7-9V5L10 2z" stroke="#B95E05" stroke-width="1.5" fill="none"></path><path d="M7 10l2 2 4-4" stroke="#B95E05" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span>Tempered glass lenses</span>
+        </div>
+        <div class="oo-v52-benefits__item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 3c0 0-6 3-6 8a6 6 0 0012 0c0-5-6-8-6-8z" stroke="#B95E05" stroke-width="1.5" fill="none"></path><path d="M10 3v14" stroke="#B95E05" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span>Hypoallergenic silicone</span>
+        </div>
+        <div class="oo-v52-benefits__item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M2 10c2 0 2-3 4-3s2 3 4 3 2-3 4-3 2 3 4 3" stroke="#B95E05" stroke-width="1.5" stroke-linecap="round"></path><path d="M2 14c2 0 2-3 4-3s2 3 4 3 2-3 4-3 2 3 4 3" stroke="#B95E05" stroke-width="1.5" stroke-linecap="round"></path></svg>
+          <span>Rated to 100ft</span>
+        </div>
+        <div class="oo-v52-benefits__item">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="#B95E05" stroke-width="1.5"></circle><path d="M6.5 10l2.5 2.5 4.5-5" stroke="#B95E05" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          <span>Free Rx check</span>
+        </div>
+      </section>
+
+      <section class="oo-v52-products" id="oo-v52-products" aria-labelledby="oo-v52-products-title" hidden>
+        <h2 id="oo-v52-products-title"></h2>
+        <p class="oo-v52-products__intro">Choose a mask that supports both suggested lens strengths, then select your preferred frame and seal colours.</p>
+        <div class="oo-v52-products__switcher" id="oo-v52-products-switcher" hidden></div>
+        <p class="oo-v52-products__empty" id="oo-v52-products-empty" hidden></p>
+        <div class="oo-v52-products__grid" id="oo-v52-products-grid"></div>
+      </section>
+    </main>
+  </body>
+</html>
