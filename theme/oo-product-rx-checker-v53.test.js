@@ -48,6 +48,8 @@ test("every active product handle, including white variants, maps to its catalog
   Object.keys(HANDLES).forEach(function (id) { assert.equal(product(id).id, id); });
   assert.equal(Checker.catalogProductForHandle("white-rx-rover-nearsighted-prescription-dive-mask", Products.CATALOG).id, "rover");
   assert.equal(Checker.catalogProductForHandle("rx-lumix-optical-dive-mask-aluminum-white-series", Products.CATALOG).id, "lumix");
+  assert.equal(Checker.catalogProductForHandle("prescription-scuba-dive-snorkel-mask-optical", Products.CATALOG).id, "obsidian-nearsighted");
+  assert.equal(Checker.catalogProductForHandle("prescription-scuba-dive-snorkel-mask-optical", Products.CATALOG), product("obsidian-nearsighted"));
   assert.equal(Checker.catalogProductForHandle("whale-shark-long-sleeve-rashguard", Products.CATALOG), null);
   assert.equal(Checker.catalogProductForHandle("", Products.CATALOG), null);
 });
@@ -69,6 +71,26 @@ test("Obsidian Near: standard minus, plano, mixed plano and too-strong pairs", f
   assert.deepEqual(pair(check("obsidian-nearsighted", eye(-10, 0), eye(-10, 0)).calc), ["-9.00", "-9.00"]);
   assert.equal(check("obsidian-nearsighted", eye(-10, 0), eye(-10, 0)).build.buildable, true);
   assert.equal(check("obsidian-nearsighted", eye(2.75, 0), eye(2.75, 0)).build.buildable, false);
+});
+
+test("Obsidian clear-seal alias uses the Obsidian Near stock, including -8.50", function () {
+  var clear = Checker.catalogProductForHandle("prescription-scuba-dive-snorkel-mask-optical", Products.CATALOG);
+  var build = function (r, l) {
+    var calc = Checker.calculate(Engine, HighCyl, { right: r, left: l });
+    return { calc: calc, build: Checker.buildability(clear, calc.activeRecommendation, Products.supportsPower) };
+  };
+  var eight50 = build(eye(-9.5, 0), eye(-9.25, 0));
+  assert.deepEqual(pair(eight50.calc).indexOf("-8.50") >= 0, true, JSON.stringify(pair(eight50.calc)));
+  assert.equal(eight50.build.buildable, true);
+  assert.equal(build(eye(-3, 0), eye(-2.5, 0)).build.buildable, true);
+  assert.equal(build(eye(-0.75, 0), eye(-0.75, 0)).build.buildable, true);
+  assert.equal(build(eye(-0.75, 0), eye(-3, 0)).build.buildable, true);
+  assert.equal(build(eye(2.75, 0), eye(2.75, 0)).build.buildable, false);
+  // Live Avis labels on this product (trailing spaces, bracketed plano) parse.
+  ["-3.00 ", "-1.50 ", "-8.50", "0 [No Correction]"].forEach(function (label) {
+    assert.ok(Number.isFinite(Handoff.parseAvisPower(label)), label);
+  });
+  assert.equal(Handoff.parseAvisPower("0 [No Correction]"), 0);
 });
 
 test("Obsidian Far: standard plus, plano and minus pairs", function () {

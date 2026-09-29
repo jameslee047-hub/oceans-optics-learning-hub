@@ -103,9 +103,20 @@
   }
 
   // The catalog product whose variant URLs point at this Shopify product handle.
+  // Product pages sold with exactly an existing family's lens stock, audited
+  // against live Avis OD/OS options. They reuse that family's definition.
+  var HANDLE_ALIASES = {
+    // Rx Obsidian clear seal (Medium): OD/OS 0.00, -1.00 to -9.00 = Obsidian Near.
+    "prescription-scuba-dive-snorkel-mask-optical": "obsidian-nearsighted"
+  };
+
   function catalogProductForHandle(handle, catalog) {
     var wanted = String(handle || "").trim().toLowerCase();
     if (!wanted) return null;
+    if (Object.prototype.hasOwnProperty.call(HANDLE_ALIASES, wanted)) {
+      var aliasId = HANDLE_ALIASES[wanted];
+      return (catalog || []).find(function (product) { return product.id === aliasId; }) || null;
+    }
     return (catalog || []).find(function (product) {
       return (product.variantMap || []).some(function (variant) { return handleFromUrl(variant.url) === wanted; });
     }) || null;
