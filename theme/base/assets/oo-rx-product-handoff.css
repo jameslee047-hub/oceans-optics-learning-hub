@@ -1,0 +1,88 @@
+.oo-rx-handoff-status {
+  clear: both;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0 0 18px;
+  padding: 14px 16px;
+  border: 1px solid rgba(2, 48, 89, 0.2);
+  border-left: 4px solid #b95e05;
+  border-radius: 6px;
+  background: #fff;
+  color: #023059;
+  font-family: Lato, sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.oo-rx-handoff-status.is-error {
+  border-left-color: #b95e05;
+  color: #6d3711;
+}
+
+.oo-rx-handoff-status__title,
+.oo-rx-handoff-status__label,
+.oo-rx-handoff-status__note {
+  margin: 0;
+}
+
+.oo-rx-handoff-status__title {
+  color: #023059;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.oo-rx-handoff-status__label {
+  margin-top: 4px;
+  font-weight: 700;
+}
+
+.oo-rx-handoff-status__lenses {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 20px;
+  margin: 12px 0;
+}
+
+.oo-rx-handoff-status__lenses div {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.oo-rx-handoff-status__lenses dt,
+.oo-rx-handoff-status__lenses dd {
+  margin: 0;
+}
+
+.oo-rx-handoff-status__lenses dd {
+  color: #b95e05;
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.oo-rx-handoff-status__note {
+  color: #40566a;
+  font-size: 13px;
+}
+
+.oo-rx-handoff-hidden {
+  display: none !important;
+}
+
+.oo-rx-handoff-confirmed .avp-option:has(input[name="Upload"]),
+.oo-rx-handoff-confirmed .avp-option:has(input[type="file"].avp-file__input) {
+  display: none !important;
+}
+
+@media screen and (max-width: 480px) {
+  .oo-rx-handoff-status {
+    padding: 12px 13px;
+  }
+
+  .oo-rx-handoff-status__lenses {
+    gap: 6px 14px;
+  }
+}
