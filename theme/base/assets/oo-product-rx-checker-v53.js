@@ -32,10 +32,11 @@
   // Avis/Shopify handoff from the shared product-page handoff module.
 
   var SOURCE = "product_rx_checker";
-  var FULL_CALCULATOR_URL = "https://oceansoptics.com/pages/prescription-lenses-calculator-tool";
   var BACKEND_URL = "https://oceans-optics-rx-test.vercel.app";
-  var NOT_BUILDABLE_MESSAGE = "This mask isn't available with both of your recommended lens strengths.";
   var BUILDABLE_MESSAGE = "This mask supports your recommended lenses.";
+  var ALTERNATIVES_TITLE = "Available for your prescription";
+  var NO_ALTERNATIVES_MESSAGE = "None of our current prescription masks stock this exact lens combination. Email info@oceansoptics.com and we'll help you find an option.";
+  var RX_CONFIG_ID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   var EPSILON = 1e-9;
   // Backend record source for checker uploads and manual prescriptions; the
   // Shopify line item keeps _oo_source = product_rx_checker (SOURCE).
@@ -71,8 +72,35 @@
     return values;
   }
 
-  var SPHERE_VALUES = steps(-20, 20, 0.25);
+  // Manual-entry input caps (UI only; the V5.3 engine and stock are unchanged).
+  var SPHERE_LIMIT = 12;
+  var SPHERE_VALUES = steps(-SPHERE_LIMIT, SPHERE_LIMIT, 0.25);
   var CYLINDER_VALUES = steps(-6, 6, 0.25);
+  var SPHERE_FRACTIONS = ["00", "25", "50", "75"];
+
+  // Legacy product-calculator sphere picker: sign button + whole number + decimal.
+  // Returns "" until the value is complete (a non-zero value needs a sign).
+  function sphereFromPicker(sign, whole, fraction) {
+    if (whole === "" || whole === null || whole === undefined) return "";
+    var magnitude = Number(whole) + Number(fraction || 0) / 100;
+    if (!Number.isFinite(magnitude) || magnitude > SPHERE_LIMIT + EPSILON) return "";
+    if (magnitude < EPSILON) return "0";
+    if (sign !== "-" && sign !== "+") return "";
+    return String(sign === "-" ? -magnitude : magnitude);
+  }
+
+  function pickerFromSphere(value) {
+    var n = Number(value);
+    if (value === "" || value === null || value === undefined || !Number.isFinite(n)) return null;
+    var magnitude = Math.round(Math.abs(n) * 4) / 4;
+    if (magnitude > SPHERE_LIMIT + EPSILON) return null;
+    var whole = Math.floor(magnitude + EPSILON);
+    return {
+      sign: magnitude < EPSILON ? "" : (n < 0 ? "-" : "+"),
+      whole: String(whole),
+      fraction: String(Math.round((magnitude - whole) * 100)).padStart(2, "0")
+    };
+  }
 
   function formatPower(value) {
     var n = Number(value);
@@ -137,7 +165,8 @@
     ["right", "left"].forEach(function (side) {
       var eye = entry && entry[side];
       var name = side === "right" ? "Right" : "Left";
-      if (!eye || eye.sphere === "" || eye.sphere === null || !Number.isFinite(Number(eye.sphere))) errors.push(name + " SPH is required.");
+      if (!eye || eye.sphere === "" || eye.sphere === null || !Number.isFinite(Number(eye.sphere))) errors.push(name + " SPH is required (choose + or − and the value).");
+      if (eye && eye.cylinder === "") { errors.push(name + " CYL needs a + or − sign."); return; }
       var cylinder = eye ? Number(eye.cylinder || 0) : 0;
       if (Math.abs(cylinder) > EPSILON) {
         var axis = Number(eye.axis);
@@ -195,6 +224,85 @@
     return { buildable: right && left, right: right, left: left, reason: right && left ? "ok" : "unsupported-power" };
   }
 
+  function lensKind(power) {
+    var n = Number(power);
+    if (Math.abs(n) < EPSILON) return "zero";
+    return n < 0 ? "minus" : "plus";
+  }
+
+  var KIND_WORDS = {
+    minus: { customer: "nearsighted (−)", lenses: "nearsighted" },
+    plus: { customer: "farsighted (+)", lenses: "farsighted" }
+  };
+
+  function lensRangeText(product) {
+    var low = Math.min(Math.abs(product.diopterMin), Math.abs(product.diopterMax));
+    var high = Math.max(Math.abs(product.diopterMin), Math.abs(product.diopterMax));
+    var sign = product.lensType === "plus" ? "+" : "-";
+    return sign + low.toFixed(2) + " to " + sign + high.toFixed(2);
+  }
+
+  // Why this mask can't build the recommended pair. Uses only the shared
+  // catalogue definition (lensType, diopter range, step) of the current mask.
+  // displayName: how to refer to the mask being viewed (alias pages such as
+  // Obsidian Clear say "This mask" rather than the catalogue family name).
+  function incompatibilityReason(product, recommendation, supportsPower, displayName) {
+    var name = displayName || product.name;
+    var build = buildability(product, recommendation, supportsPower);
+    if (build.buildable) return { kind: "ok", message: BUILDABLE_MESSAGE };
+    var right = Number(recommendation.recommendedRight);
+    var left = Number(recommendation.recommendedLeft);
+    var rightKind = lensKind(right);
+    var leftKind = lensKind(left);
+    if (rightKind !== "zero" && leftKind !== "zero" && rightKind !== leftKind) {
+      return {
+        kind: "mixed",
+        message: "Your recommended lenses are one nearsighted (−) and one farsighted (+) lens. " + name + " can't combine them in one mask."
+      };
+    }
+    var kind = rightKind !== "zero" ? rightKind : leftKind;
+    if (kind !== "zero" && kind !== product.lensType) {
+      return {
+        kind: "lens-type",
+        message: "Your prescription is " + KIND_WORDS[kind].customer + ". " + name + " is available with " + KIND_WORDS[product.lensType].lenses + " prescription lenses only."
+      };
+    }
+    var low = Math.min(Math.abs(product.diopterMin), Math.abs(product.diopterMax));
+    var high = Math.max(Math.abs(product.diopterMin), Math.abs(product.diopterMax));
+    var outside = [right, left].some(function (power) {
+      if (lensKind(power) === "zero") return false;
+      var magnitude = Math.abs(power);
+      return magnitude < low - EPSILON || magnitude > high + EPSILON;
+    });
+    if (outside) {
+      return {
+        kind: "range",
+        message: "Your recommended lens strengths are outside the available range for this mask (" + lensRangeText(product) + ", or plano)."
+      };
+    }
+    return { kind: "combination", message: "This exact lens combination isn't available in " + (displayName ? displayName.toLowerCase() : name) + "." };
+  }
+
+  // Other masks that can build the recommended pair, from the same shared
+  // catalogue routing the full V5.3 calculator uses (no second table).
+  function compatibleAlternatives(products, currentProduct, recommendation) {
+    var routed = products.findCompatibleProducts(recommendation.recommendedRight, recommendation.recommendedLeft);
+    return (routed.products || []).filter(function (candidate) {
+      return !currentProduct || candidate.id !== currentProduct.id;
+    });
+  }
+
+  // Product link carrying only the opaque confirmed configuration and source.
+  function alternativeProductUrl(products, product, configId) {
+    var variant = products.defaultVariant(product);
+    var url = new URL(variant ? variant.url : product.variantMap[0].url);
+    if (RX_CONFIG_ID_PATTERN.test(String(configId || "").trim())) {
+      url.searchParams.set("oo_rx", String(configId).trim().toLowerCase());
+      url.searchParams.set("oo_source", SOURCE);
+    }
+    return url.toString();
+  }
+
   // The summary object the product-page handoff validates and applies to Avis.
   function handoffSummary(configId, recommendation, label, prescriptionAttached) {
     return {
@@ -242,13 +350,15 @@
     }
     container.dataset.ooCheckerMounted = "true";
     container.dataset.catalogProduct = product.id;
+    var isAliasPage = Object.prototype.hasOwnProperty.call(HANDLE_ALIASES, String(container.dataset.productHandle || "").trim().toLowerCase());
+    var productDisplayName = isAliasPage ? "This mask" : null;
     var transport = rx.createTransport({
       source: BACKEND_SOURCE,
       fetchImpl: root.fetch.bind(root),
       FormDataCtor: root.FormData,
       backendUrl: (root.OOV52_RX_CONFIG && root.OOV52_RX_CONFIG.backendUrl) || BACKEND_URL
     });
-    var state = { upload: null, configId: null, editToken: null, source: "manual", calculation: null, busy: false, file: null };
+    var state = { upload: null, configId: null, editToken: null, source: "manual", calculation: null, busy: false, file: null, confirmedKey: null, confirmedId: null };
 
     var q = function (selector) { return container.querySelector(selector); };
     var status = q("[data-checker-status]");
@@ -258,23 +368,57 @@
     var result = q("[data-checker-result]");
     var labelInput = q("[data-checker-label]");
 
+    var eyes = {};
     ["right", "left"].forEach(function (side) {
-      var sph = q('[data-eye="' + side + '"] [data-field="sphere"]');
-      var cyl = q('[data-eye="' + side + '"] [data-field="cylinder"]');
-      var axis = q('[data-eye="' + side + '"] [data-field="axis"]');
-      sph.appendChild(option(doc, "", "SPH"));
-      SPHERE_VALUES.forEach(function (v) { sph.appendChild(option(doc, String(v), formatPower(v))); });
-      CYLINDER_VALUES.forEach(function (v) { cyl.appendChild(option(doc, String(v), formatPower(v))); });
-      cyl.value = "0";
-      axis.appendChild(option(doc, "", "AXIS"));
-      for (var a = 1; a <= 180; a += 1) axis.appendChild(option(doc, String(a), String(a).padStart(3, "0")));
-      var syncAxis = function () {
-        var needsAxis = Math.abs(Number(cyl.value)) > EPSILON;
-        axis.disabled = !needsAxis;
-        if (!needsAxis) axis.value = "";
+      var scope = q('[data-eye="' + side + '"]');
+      var eye = {
+        sphere: scope.querySelector('[data-field="sphere"]'),
+        sphereSign: scope.querySelector("[data-sphere-sign]"),
+        whole: scope.querySelector("[data-sphere-int]"),
+        fraction: scope.querySelector("[data-sphere-frac]"),
+        cylinder: scope.querySelector('[data-field="cylinder"]'),
+        cylSign: scope.querySelector("[data-cyl-sign]"),
+        cylMag: scope.querySelector("[data-cyl-mag]"),
+        axis: scope.querySelector('[data-field="axis"]')
       };
-      cyl.addEventListener("change", syncAxis);
-      syncAxis();
+      eyes[side] = eye;
+      eye.whole.appendChild(option(doc, "", "–"));
+      for (var w = 0; w <= SPHERE_LIMIT; w += 1) eye.whole.appendChild(option(doc, String(w), String(w)));
+      SPHERE_FRACTIONS.forEach(function (f) { eye.fraction.appendChild(option(doc, f, f)); });
+      CYLINDER_VALUES.filter(function (v) { return v >= 0; }).forEach(function (v) { eye.cylMag.appendChild(option(doc, v.toFixed(2), v.toFixed(2))); });
+      eye.axis.appendChild(option(doc, "", "–"));
+      for (var a = 1; a <= 180; a += 1) eye.axis.appendChild(option(doc, String(a), String(a).padStart(3, "0")));
+      var sync = function () {
+        // +12.00 is the cap, so 12 only allows .00.
+        var atCap = eye.whole.value === String(SPHERE_LIMIT);
+        Array.prototype.forEach.call(eye.fraction.options, function (o) { o.disabled = atCap && o.value !== "00"; });
+        if (atCap) eye.fraction.value = "00";
+        eye.sphere.value = sphereFromPicker(eye.sphereSign.dataset.sign, eye.whole.value, eye.fraction.value);
+        var magnitude = Number(eye.cylMag.value) || 0;
+        var cylSign = eye.cylSign.dataset.sign;
+        eye.cylinder.value = magnitude < EPSILON ? "0" : (cylSign === "+" ? String(magnitude) : cylSign === "-" ? String(-magnitude) : "");
+        var needsAxis = magnitude > EPSILON;
+        eye.axis.disabled = !needsAxis;
+        if (!needsAxis) eye.axis.value = "";
+        eye.cylSign.disabled = !needsAxis;
+      };
+      var toggle = function (button) {
+        button.dataset.sign = button.dataset.sign === "-" ? "+" : "-";
+        button.textContent = button.dataset.sign === "-" ? "−" : "+";
+        button.classList.add("is-set");
+        sync();
+      };
+      eye.sphereSign.addEventListener("click", function () { toggle(eye.sphereSign); });
+      eye.cylSign.addEventListener("click", function () { toggle(eye.cylSign); });
+      [eye.whole, eye.fraction, eye.cylMag].forEach(function (node) { node.addEventListener("change", sync); });
+      eye.setSign = function (button, sign) {
+        button.dataset.sign = sign || "";
+        button.textContent = sign === "-" ? "−" : sign === "+" ? "+" : "+/-";
+        button.classList.toggle("is-set", Boolean(sign));
+      };
+      eye.sync = sync;
+      eye.cylMag.value = "0.00";
+      sync();
     });
 
     function setStatus(kind, message) {
@@ -294,7 +438,7 @@
       ["right", "left"].forEach(function (side) {
         entry[side] = {
           sphere: q('[data-eye="' + side + '"] [data-field="sphere"]').value,
-          cylinder: q('[data-eye="' + side + '"] [data-field="cylinder"]').value || "0",
+          cylinder: q('[data-eye="' + side + '"] [data-field="cylinder"]').value,
           axis: q('[data-eye="' + side + '"] [data-field="axis"]').value || null
         };
       });
@@ -302,23 +446,28 @@
     }
 
     function applyExtracted(parsed) {
+      var skipped = [];
       ["right", "left"].forEach(function (side) {
-        var eye = parsed && parsed[side];
-        if (!eye) return;
-        var sph = Number(eye.sph);
-        var cylMagnitude = Math.abs(Number(eye.cyl || 0));
-        var signedCyl = eye.cylSign === "+" ? cylMagnitude : -cylMagnitude;
-        var set = function (field, value) {
-          var select = q('[data-eye="' + side + '"] [data-field="' + field + '"]');
-          var wanted = String(Math.round(value * 100) / 100);
-          if (Array.prototype.some.call(select.options, function (o) { return o.value === wanted; })) select.value = wanted;
-          select.dispatchEvent(new root.Event("change", { bubbles: true }));
-        };
-        if (Number.isFinite(sph)) set("sphere", sph);
-        if (Number.isFinite(signedCyl)) set("cylinder", signedCyl);
-        var axis = q('[data-eye="' + side + '"] [data-field="axis"]');
-        if (eye.axis && Math.abs(signedCyl) > EPSILON) axis.value = String(Number(eye.axis));
+        var extracted = parsed && parsed[side];
+        var eye = eyes[side];
+        if (!extracted) return;
+        var picker = pickerFromSphere(extracted.sph);
+        if (picker) {
+          eye.setSign(eye.sphereSign, picker.sign);
+          eye.whole.value = picker.whole;
+          eye.fraction.value = picker.fraction;
+        } else if (extracted.sph !== null && extracted.sph !== undefined) {
+          skipped.push(side === "right" ? "Right" : "Left");
+        }
+        var cylMagnitude = Math.round(Math.abs(Number(extracted.cyl || 0)) * 4) / 4;
+        if (Array.prototype.some.call(eye.cylMag.options, function (o) { return o.value === cylMagnitude.toFixed(2); })) {
+          eye.cylMag.value = cylMagnitude.toFixed(2);
+          eye.setSign(eye.cylSign, cylMagnitude > EPSILON ? (extracted.cylSign === "+" ? "+" : "-") : "");
+        }
+        eye.sync();
+        if (extracted.axis && cylMagnitude > EPSILON) eye.axis.value = String(Number(extracted.axis));
       });
+      return skipped;
     }
 
     // Upload review: images and PDFs are previewed and cropped on this device;
@@ -357,6 +506,8 @@
     }
 
     function resetUploadState() {
+      state.confirmedKey = null;
+      state.confirmedId = null;
       state.upload = null;
       state.configId = null;
       state.editToken = null;
@@ -482,7 +633,11 @@
           setStatus("error", "We couldn't read enough of this prescription. Check the values below or enter them manually, then check this mask.");
           return;
         }
-        applyExtracted(processed.parsedRx);
+        var skipped = applyExtracted(processed.parsedRx);
+        if (skipped.length) {
+          setStatus("error", skipped.join(" and ") + " SPH is beyond ±" + SPHERE_LIMIT.toFixed(2) + ". Please email info@oceansoptics.com and we'll help.");
+          return;
+        }
         setStatus("success", "Prescription read. Please check the values below, then check this mask.");
       } catch (error) {
         resetUploadState();
@@ -492,15 +647,25 @@
       }
     }
 
+    function resultEye(label, value) {
+      var eye = el(doc, "div", "oo-rx-checker__result-eye");
+      eye.appendChild(el(doc, "span", "oo-rx-checker__result-eye-label", label));
+      eye.appendChild(el(doc, "span", "oo-rx-checker__result-eye-value", formatLensLabel(value)));
+      return eye;
+    }
+
     function renderResult(calculation) {
       result.innerHTML = "";
       result.hidden = false;
       var rec = calculation.activeRecommendation;
-      result.appendChild(el(doc, "h3", "oo-rx-checker__result-title", "Your recommended lenses"));
-      var pair = el(doc, "p", "oo-rx-checker__pair");
-      pair.appendChild(el(doc, "span", "", "Right: " + formatLensLabel(rec.recommendedRight)));
-      pair.appendChild(el(doc, "span", "", "Left: " + formatLensLabel(rec.recommendedLeft)));
-      result.appendChild(pair);
+      var summary = el(doc, "div", "oo-rx-checker__summary");
+      summary.appendChild(el(doc, "div", "oo-rx-checker__result-title", "Your recommended lenses"));
+      var values = el(doc, "div", "oo-rx-checker__result-values");
+      values.appendChild(resultEye("Right (OD)", rec.recommendedRight));
+      values.appendChild(el(doc, "span", "oo-rx-checker__result-divider", "|"));
+      values.appendChild(resultEye("Left (OS)", rec.recommendedLeft));
+      summary.appendChild(values);
+      result.appendChild(summary);
 
       if (calculation.highCylinderPreview) {
         var fieldset = el(doc, "fieldset", "oo-rx-checker__strategy");
@@ -524,22 +689,106 @@
         result.appendChild(fieldset);
       }
 
-      var build = buildability(product, rec, products.supportsPower);
-      if (!build.buildable) {
-        var notice = el(doc, "p", "oo-rx-checker__notice", NOT_BUILDABLE_MESSAGE);
-        notice.setAttribute("role", "alert");
-        result.appendChild(notice);
-        var link = el(doc, "a", "oo-rx-checker__compatible", "See Compatible Masks");
-        link.href = FULL_CALCULATOR_URL;
-        result.appendChild(link);
+      var reason = incompatibilityReason(product, rec, products.supportsPower, productDisplayName);
+      if (reason.kind === "ok") {
+        result.appendChild(el(doc, "p", "oo-rx-checker__ok", BUILDABLE_MESSAGE));
+        var apply = el(doc, "button", "oo-rx-checker__apply", "Use these lenses for this mask");
+        apply.type = "button";
+        apply.addEventListener("click", function () { useLenses(calculation, apply); });
+        result.appendChild(apply);
         return;
       }
-      var ok = el(doc, "p", "oo-rx-checker__ok", BUILDABLE_MESSAGE);
-      result.appendChild(ok);
-      var apply = el(doc, "button", "oo-rx-checker__apply", "Use these lenses for this mask");
-      apply.type = "button";
-      apply.addEventListener("click", function () { useLenses(calculation, apply); });
-      result.appendChild(apply);
+
+      var notice = el(doc, "p", "oo-rx-checker__notice", reason.message);
+      notice.dataset.reason = reason.kind;
+      notice.setAttribute("role", "alert");
+      result.appendChild(notice);
+      renderAlternatives(calculation, compatibleAlternatives(products, product, rec));
+    }
+
+    // Masks that can build the same recommended lenses, shown right here. The
+    // link carries the customer's confirmed prescription (oo_rx), so the next
+    // product page sets the lenses without asking for the prescription again.
+    function renderAlternatives(calculation, alternatives) {
+      var section = el(doc, "div", "oo-rx-checker__alternatives");
+      section.dataset.checkerAlternatives = "";
+      section.appendChild(el(doc, "h3", "oo-rx-checker__alternatives-title", ALTERNATIVES_TITLE));
+      if (!alternatives.length) {
+        section.appendChild(el(doc, "p", "oo-rx-checker__alternatives-empty", NO_ALTERNATIVES_MESSAGE));
+        result.appendChild(section);
+        return;
+      }
+      var rec = calculation.activeRecommendation;
+      alternatives.forEach(function (candidate) {
+        var card = el(doc, "div", "oo-rx-checker__alt");
+        card.dataset.catalogProduct = candidate.id;
+        var variant = products.defaultVariant(candidate);
+        if (variant && variant.img) {
+          var img = doc.createElement("img");
+          img.className = "oo-rx-checker__alt-image";
+          img.src = variant.img;
+          img.alt = candidate.name;
+          img.width = 72;
+          img.height = 72;
+          img.loading = "lazy";
+          card.appendChild(img);
+        }
+        var body = el(doc, "div", "oo-rx-checker__alt-body");
+        body.appendChild(el(doc, "p", "oo-rx-checker__alt-name", candidate.name));
+        body.appendChild(el(doc, "p", "oo-rx-checker__alt-lenses", "Right (OD) " + formatLensLabel(rec.recommendedRight) + " · Left (OS) " + formatLensLabel(rec.recommendedLeft)));
+        if (candidate.quickNote) body.appendChild(el(doc, "p", "oo-rx-checker__alt-note", candidate.quickNote));
+        card.appendChild(body);
+        var link = el(doc, "a", "oo-rx-checker__alt-cta", "View Product");
+        link.href = alternativeProductUrl(products, candidate, null);
+        link.addEventListener("click", function (event) {
+          event.preventDefault();
+          openAlternative(calculation, candidate, link);
+        });
+        card.appendChild(link);
+        section.appendChild(card);
+      });
+      result.appendChild(section);
+    }
+
+    async function openAlternative(calculation, candidate, link) {
+      if (state.busy) return;
+      setBusy(true);
+      link.setAttribute("aria-disabled", "true");
+      link.textContent = "Opening…";
+      try {
+        setStatus("busy", "Saving your prescription for " + candidate.name + "…");
+        var configId = await ensureConfirmed(calculation);
+        root.location.assign(alternativeProductUrl(products, candidate, configId));
+      } catch (error) {
+        link.removeAttribute("aria-disabled");
+        link.textContent = "View Product";
+        setStatus("error", ((error && error.message) || "We couldn't save your prescription.") + " You can still open the mask and choose your lens strengths there.");
+      } finally {
+        setBusy(false);
+      }
+    }
+
+    // Confirms the customer's reviewed prescription once per prescription and
+    // lens approach. A confirmed record is never changed; a different entry or
+    // approach gets a new record.
+    async function ensureConfirmed(calculation) {
+      var label = labelInput.value.trim() || null;
+      var entry = readEntry();
+      var key = JSON.stringify([entry, calculation.activeRecommendation.recommendationStrategy, label]);
+      if (state.confirmedKey === key && state.confirmedId) return state.confirmedId;
+      var prescription = { right: confirmedEye(entry.right), left: confirmedEye(entry.left) };
+      var payload = rx.buildConfirmationPayload(prescription, calculation, label);
+      if (!state.configId || !state.editToken) {
+        var initialized = await transport.manualInit(label);
+        state.configId = initialized.configId;
+        state.editToken = initialized.editToken;
+        state.source = "manual";
+      }
+      await transport.confirm(state.configId, state.editToken, payload);
+      state.editToken = null;
+      state.confirmedKey = key;
+      state.confirmedId = state.configId;
+      return state.configId;
     }
 
     async function useLenses(calculation, button) {
@@ -549,23 +798,13 @@
       var label = labelInput.value.trim() || null;
       try {
         setStatus("busy", "Saving your prescription…");
-        var entry = readEntry();
-        var prescription = { right: confirmedEye(entry.right), left: confirmedEye(entry.left) };
-        var payload = rx.buildConfirmationPayload(prescription, calculation, label);
-        if (!state.configId || !state.editToken) {
-          var initialized = await transport.manualInit(label);
-          state.configId = initialized.configId;
-          state.editToken = initialized.editToken;
-          state.source = "manual";
-        }
-        await transport.confirm(state.configId, state.editToken, payload);
-        var summary = handoffSummary(state.configId, calculation.activeRecommendation, label, state.source === "uploaded");
+        var configId = await ensureConfirmed(calculation);
+        var summary = handoffSummary(configId, calculation.activeRecommendation, label, state.source === "uploaded");
         setStatus("busy", "Adding your lenses to this mask…");
         var handoffApi = handoff || root.OORxProductHandoff;
         if (!handoffApi) throw new Error("This page couldn't apply your lenses. Please refresh and try again.");
         var controls = await handoffApi.waitForAvisControls(doc);
         handoffApi.applyConfirmedHandoff(doc, controls, summary, SOURCE);
-        state.editToken = null;
         setStatus("success", "Your lenses are set on this mask. Choose any accessories, then add to cart.");
         button.textContent = "Lenses added to this mask";
         container.dataset.checkerState = "applied";
@@ -607,10 +846,16 @@
   return {
     SOURCE: SOURCE,
     BACKEND_SOURCE: BACKEND_SOURCE,
-    FULL_CALCULATOR_URL: FULL_CALCULATOR_URL,
-    NOT_BUILDABLE_MESSAGE: NOT_BUILDABLE_MESSAGE,
     BUILDABLE_MESSAGE: BUILDABLE_MESSAGE,
+    ALTERNATIVES_TITLE: ALTERNATIVES_TITLE,
+    NO_ALTERNATIVES_MESSAGE: NO_ALTERNATIVES_MESSAGE,
+    SPHERE_LIMIT: SPHERE_LIMIT,
     SPHERE_VALUES: SPHERE_VALUES,
+    sphereFromPicker: sphereFromPicker,
+    pickerFromSphere: pickerFromSphere,
+    incompatibilityReason: incompatibilityReason,
+    compatibleAlternatives: compatibleAlternatives,
+    alternativeProductUrl: alternativeProductUrl,
     CYLINDER_VALUES: CYLINDER_VALUES,
     formatLensLabel: formatLensLabel,
     handleFromUrl: handleFromUrl,
