@@ -233,6 +233,7 @@ test("incompatibility reasons and alternatives come from actual catalogue builda
   // minus beyond Rover (-7.00), supported by Obsidian Near only
   var strong = reasonOn("rover", eye(-8, 0), eye(-8, 0));
   assert.equal(strong.kind, "range");
+  assert.deepEqual([recFor(eye(-8, 0), eye(-8, 0)).recommendedRight, recFor(eye(-8, 0), eye(-8, 0)).recommendedLeft], [-7.5, -7.5]);
   assert.match(strong.message, /outside the available range for this mask \(-1\.50 to -6\.00, or plano\)/);
   assert.deepEqual(alternativesOn("rover", eye(-8, 0), eye(-8, 0)), ["obsidian-nearsighted"]);
   // minus beyond Lumix, supported elsewhere
@@ -241,7 +242,9 @@ test("incompatibility reasons and alternatives come from actual catalogue builda
   // plano / -1.00: Rover's range starts at -1.50; Obsidian Near builds it
   var planoOne = recFor(eye(-0.75, 0), eye(-1.25, 0));
   assert.deepEqual([planoOne.recommendedRight, planoOne.recommendedLeft], [0, -1]);
-  assert.equal(reasonOn("rover", eye(-0.75, 0), eye(-1.25, 0)).kind, "range");
+  var planoGap = reasonOn("rover", eye(-0.75, 0), eye(-1.25, 0));
+  assert.equal(planoGap.kind, "combination");
+  assert.equal(planoGap.message, "This exact lens combination isn't available in Rx Rover.");
   assert.deepEqual(alternativesOn("rover", eye(-0.75, 0), eye(-1.25, 0)), ["obsidian-nearsighted"]);
   // plano / -2.50: buildable on Rover, Titan, Lumix, Obsidian Near
   assert.equal(reasonOn("rover", eye(-0.75, 0), eye(-3, 0)).kind, "ok");
@@ -409,7 +412,9 @@ test("routing is catalogue-driven on every checker page for every SPH pair (-12.
         }
       } else if (!built) {
         counts.sameTypeOut += 1;
-        assert.ok(reason.kind === "range" || reason.kind === "combination", where);
+        var high = Math.max(Math.abs(page.product.diopterMin), Math.abs(page.product.diopterMax));
+        var tooStrong = [rec.recommendedRight, rec.recommendedLeft].some(function (p) { return kindOf(p) !== "zero" && Math.abs(p) > high + 1e-9; });
+        assert.equal(reason.kind, tooStrong ? "range" : "combination", where);
         alts.forEach(function (p) { assert.equal(p.lensType, page.product.lensType, "same prescription type: " + where); });
       }
       if (!built && !ids.length) counts.noAlternatives += 1;

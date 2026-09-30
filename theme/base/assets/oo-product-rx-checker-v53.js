@@ -269,10 +269,11 @@
     }
     var low = Math.min(Math.abs(product.diopterMin), Math.abs(product.diopterMax));
     var high = Math.max(Math.abs(product.diopterMin), Math.abs(product.diopterMax));
+    // Only a genuine power limit (stronger than this mask's strongest stock)
+    // is "outside the range". A weaker lens next to plano (e.g. Rover
+    // plano / -1.00) or a step gap is described as an unavailable combination.
     var outside = [right, left].some(function (power) {
-      if (lensKind(power) === "zero") return false;
-      var magnitude = Math.abs(power);
-      return magnitude < low - EPSILON || magnitude > high + EPSILON;
+      return lensKind(power) !== "zero" && Math.abs(power) > high + EPSILON;
     });
     if (outside) {
       return {
