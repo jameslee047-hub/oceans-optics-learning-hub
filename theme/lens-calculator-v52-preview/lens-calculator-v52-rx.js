@@ -162,6 +162,84 @@
     };
   }
 
+  // PDFs are reviewed on the customer's device: pdf.js renders one chosen page
+  // to an image, which goes through the same crop review as a photo. The
+  // original PDF is never uploaded. Shared by the calculator and the product
+  // checker (the Quiz uses a TypeScript port of the same rules).
+  var PDF_ERROR = "This PDF couldn't be opened. Choose another file, use a photo of your prescription, or enter it manually.";
+  var PDF_RENDER_LONGEST_SIDE = 2400;
+  var pdfJsLoads = [];
+
+  // Render a PDF page with its longest side near 2400px (never below 1x, max 4x).
+  function pdfRenderScale(width, height) {
+    var longest = Math.max(Number(width) || 0, Number(height) || 0);
+    if (!(longest > 0)) return 1;
+    return Math.max(1, Math.min(4, PDF_RENDER_LONGEST_SIDE / longest));
+  }
+
+  function pdfPageFilename(name, pageNumber) {
+    var base = String(name || "prescription").replace(/\.pdf$/i, "").replace(/[^a-z0-9_-]+/gi, "-").replace(/^-+|-+$/g, "") || "prescription";
+    return base + "-page-" + pageNumber + ".jpg";
+  }
+
+  // Loads pdf.js only when a PDF is chosen; the worker comes from the same host.
+  function loadPdfJs(root, doc, src, workerSrc) {
+    if (root.pdfjsLib) {
+      if (workerSrc) root.pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
+      return Promise.resolve(root.pdfjsLib);
+    }
+    var existing = pdfJsLoads.find(function (entry) { return entry.root === root; });
+    if (existing) return existing.promise;
+    var promise = new Promise(function (resolve, reject) {
+      if (!src) { reject(new Error(PDF_ERROR)); return; }
+      var script = doc.createElement("script");
+      script.src = src;
+      script.async = true;
+      script.onload = function () {
+        if (!root.pdfjsLib) { reject(new Error(PDF_ERROR)); return; }
+        root.pdfjsLib.GlobalWorkerOptions.workerSrc = workerSrc;
+        resolve(root.pdfjsLib);
+      };
+      script.onerror = function () { reject(new Error(PDF_ERROR)); };
+      doc.head.appendChild(script);
+    });
+    pdfJsLoads.push({ root: root, promise: promise });
+    promise.catch(function () {
+      pdfJsLoads = pdfJsLoads.filter(function (entry) { return entry.promise !== promise; });
+    });
+    return promise;
+  }
+
+  async function openPdfDocument(pdfjs, file) {
+    try {
+      var data = new Uint8Array(await file.arrayBuffer());
+      return await pdfjs.getDocument({ data: data, isEvalSupported: false }).promise;
+    } catch (error) {
+      throw new Error(PDF_ERROR);
+    }
+  }
+
+  async function renderPdfPage(doc, pdfDoc, pageNumber, sourceName, FileCtor) {
+    try {
+      var page = await pdfDoc.getPage(pageNumber);
+      var base = page.getViewport({ scale: 1 });
+      var viewport = page.getViewport({ scale: pdfRenderScale(base.width, base.height) });
+      var canvas = doc.createElement("canvas");
+      canvas.width = Math.ceil(viewport.width);
+      canvas.height = Math.ceil(viewport.height);
+      var context = canvas.getContext("2d");
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, canvas.width, canvas.height);
+      await page.render({ canvasContext: context, viewport: viewport }).promise;
+      var blob = await new Promise(function (resolve, reject) {
+        canvas.toBlob(function (result) { if (result) resolve(result); else reject(new Error(PDF_ERROR)); }, "image/jpeg", 0.92);
+      });
+      return new FileCtor([blob], pdfPageFilename(sourceName, pageNumber), { type: "image/jpeg", lastModified: Date.now() });
+    } catch (error) {
+      throw new Error(PDF_ERROR);
+    }
+  }
+
   function unique(values) {
     return values.filter(function (value, index) { return values.indexOf(value) === index; });
   }
@@ -471,7 +549,17 @@
   }
   RequestError.prototype = Object.create(Error.prototype);
 
+  // Backend record source per tool. Anything else is refused, never passed on.
+  var BACKEND_SOURCES = ["calculator", "product_rx_checker"];
+
+  function backendSourceFor(value) {
+    if (value === undefined || value === null) return "calculator";
+    if (BACKEND_SOURCES.indexOf(value) === -1) throw new Error("Unsupported prescription source.");
+    return value;
+  }
+
   function createTransport(options) {
+    var source = backendSourceFor(options.source);
     var fetchImpl = options.fetchImpl;
     var FormDataCtor = options.FormDataCtor;
     var backendUrl = String(options.backendUrl).replace(/\/$/, "");
@@ -495,7 +583,7 @@
           filename: file.name,
           mimeType: file.type,
           fileSize: file.size,
-          source: "calculator",
+          source: source,
           quizSessionId: null
         }, prescriptionLabel);
         return jsonRequest(backendUrl + "/api/rx-config/upload/init", {
@@ -507,7 +595,7 @@
       }, "We couldn't prepare the prescription upload. Please try again.");
       },
       manualInit: function (prescriptionLabel) {
-        var body = withOptionalPrescriptionLabel({ source: "calculator" }, prescriptionLabel);
+        var body = withOptionalPrescriptionLabel({ source: source }, prescriptionLabel);
         return jsonRequest(backendUrl + "/api/rx-config/manual/init", {
           method: "POST",
           credentials: "omit",
@@ -714,6 +802,8 @@
       upload: null,
       source: null,
       prescriptionPreview: null,
+      cropSource: null,
+      pdfDoc: null,
       extractedRx: null,
       confirmed: false,
       labelEditing: false,
@@ -1206,7 +1296,9 @@
       clearDraftState();
       profileStore.clearActive();
       setProfileStatus("");
+      closePdf();
       state.selectedFile = null;
+      state.cropSource = null;
       state.approvedFile = null;
       elements.file.value = "";
       elements.label.value = "";
@@ -1338,19 +1430,104 @@
       if (firstControl) firstControl.focus({ preventScroll: true });
     }
 
-    function showPdfReview(file) {
+    var pagePicker = null;
+
+    function pdfPagePicker() {
+      if (pagePicker) return pagePicker;
+      var label = doc.createElement("label");
+      label.className = "oo-v52-rx__pages";
+      label.id = "oo-v52-rx-pages";
+      label.hidden = true;
+      label.style.cssText = "display:grid;gap:4px;width:min(100%,320px);margin:0 auto 10px;font-size:13px;font-weight:800;";
+      label.appendChild(doc.createTextNode("PDF page"));
+      var select = doc.createElement("select");
+      select.id = "oo-v52-rx-page";
+      select.setAttribute("aria-label", "PDF page");
+      select.style.cssText = "min-height:40px;padding:6px 8px;border:1px solid rgba(2,48,89,0.3);border-radius:6px;background:#fff;color:inherit;font:inherit;";
+      label.appendChild(select);
+      elements.crop.parentNode.insertBefore(label, elements.crop);
+      select.addEventListener("change", function () {
+        showPdfPage(Number(select.value) || 1);
+      });
+      pagePicker = { label: label, select: select };
+      return pagePicker;
+    }
+
+    function closePdf() {
+      if (state.pdfDoc && typeof state.pdfDoc.destroy === "function") state.pdfDoc.destroy();
+      state.pdfDoc = null;
+      if (pagePicker) pagePicker.label.hidden = true;
+    }
+
+    function pdfJsUrls() {
+      return {
+        src: runtimeConfig.pdfjsSrc || options.pdfjsSrc || null,
+        worker: runtimeConfig.pdfjsWorkerSrc || options.pdfjsWorkerSrc || null
+      };
+    }
+
+    function showPdfFailure() {
       destroyCropper();
+      closePdf();
+      state.selectedFile = null;
+      state.cropSource = null;
+      state.inputMode = "manual";
+      elements.review.hidden = true;
+      elements.status.hidden = true;
+      showFileError(PDF_ERROR);
+    }
+
+    async function showPdfPage(pageNumber) {
+      var pdfDoc = state.pdfDoc;
+      var selected = state.selectedFile;
+      if (!pdfDoc || !selected) return;
+      elements.use.disabled = true;
+      try {
+        var rendered = await renderPdfPage(doc, pdfDoc, pageNumber, selected.name, FileCtor);
+        if (state.pdfDoc !== pdfDoc) return;
+        state.cropSource = rendered;
+        showImageReview(rendered);
+      } catch (error) {
+        if (state.pdfDoc === pdfDoc) showPdfFailure();
+      }
+    }
+
+    // The PDF stays on this device: the chosen page is rendered to an image and
+    // reviewed in the same cropper as a photo. Only the approved crop is sent.
+    async function showPdfReview(file) {
+      destroyCropper();
+      closePdf();
       hideApprovedPreview();
       elements.entry.hidden = true;
       elements.status.hidden = true;
       elements.review.hidden = false;
-      elements.crop.hidden = true;
-      elements.tools.hidden = true;
-      elements.pdf.hidden = false;
-      elements.pdfName.textContent = file.name;
-      elements.use.textContent = "Use this prescription";
-      elements.use.disabled = false;
+      elements.crop.hidden = false;
+      elements.tools.hidden = false;
+      elements.pdf.hidden = true;
+      elements.use.disabled = true;
       clearReviewError();
+      try {
+        var urls = pdfJsUrls();
+        var pdfjs = await loadPdfJs(root, doc, urls.src, urls.worker);
+        var pdfDoc = await openPdfDocument(pdfjs, file);
+        if (state.selectedFile !== file) {
+          if (typeof pdfDoc.destroy === "function") pdfDoc.destroy();
+          return;
+        }
+        state.pdfDoc = pdfDoc;
+        var picker = pdfPagePicker();
+        picker.select.innerHTML = "";
+        for (var n = 1; n <= pdfDoc.numPages; n += 1) {
+          var pageOption = doc.createElement("option");
+          pageOption.value = String(n);
+          pageOption.textContent = "Page " + n + " of " + pdfDoc.numPages;
+          picker.select.appendChild(pageOption);
+        }
+        picker.label.hidden = pdfDoc.numPages < 2;
+        await showPdfPage(1);
+      } catch (error) {
+        if (state.selectedFile === file) showPdfFailure();
+      }
     }
 
     function showImageReview(file) {
@@ -1411,10 +1588,16 @@
       clearDraftPreview();
       clearDraftState();
       calculatorUi.markMissingFields([]);
+      closePdf();
       state.selectedFile = normalizedFile(file, validation.mimeType, FileCtor);
+      state.cropSource = null;
       state.inputMode = "upload-review";
-      if (reviewModeFor(state.selectedFile) === "pdf") showPdfReview(state.selectedFile);
-      else showImageReview(state.selectedFile);
+      if (reviewModeFor(state.selectedFile) === "pdf") {
+        showPdfReview(state.selectedFile);
+      } else {
+        state.cropSource = state.selectedFile;
+        showImageReview(state.selectedFile);
+      }
     }
 
     async function processUpload() {
@@ -1486,12 +1669,12 @@
       elements.use.disabled = true;
       setProcessingStatus("prepare");
       try {
-        state.approvedFile = reviewModeFor(state.selectedFile) === "pdf"
-          ? state.selectedFile
-          : await approvedImageFromCrop(state.selectedFile, state.cropper, FileCtor);
+        // Photos and rendered PDF pages alike: only the approved crop is uploaded.
+        state.approvedFile = await approvedImageFromCrop(state.cropSource, state.cropper, FileCtor);
         setDraftPreview(state.approvedFile);
         state.inputMode = "upload-pending";
         destroyCropper();
+        if (pagePicker) pagePicker.label.hidden = true;
         elements.review.hidden = true;
         await initializeUpload();
       } catch (error) {
@@ -1504,9 +1687,11 @@
 
     function chooseAnother() {
       destroyCropper();
+      closePdf();
       clearDraftPreview();
       clearDraftState();
       state.selectedFile = null;
+      state.cropSource = null;
       state.approvedFile = null;
       state.inputMode = "manual";
       elements.review.hidden = true;
@@ -1519,9 +1704,10 @@
       clearDraftPreview();
       clearDraftState();
       elements.status.hidden = true;
-      if (state.selectedFile && reviewModeFor(state.selectedFile) === "image") {
+      if (state.selectedFile && state.cropSource) {
         state.inputMode = "upload-review";
-        showImageReview(state.selectedFile);
+        if (pagePicker && state.pdfDoc) pagePicker.label.hidden = state.pdfDoc.numPages < 2;
+        showImageReview(state.cropSource);
         return;
       }
       chooseAnother();
@@ -1551,6 +1737,8 @@
         state.upload = null;
         state.approvedFile = null;
         state.selectedFile = null;
+        state.cropSource = null;
+        closePdf();
         state.confirmed = true;
         state.lastConfirmPayload = null;
         state.retryAction = null;
@@ -1685,6 +1873,7 @@
 
     function destroy() {
       destroyCropper();
+      closePdf();
       clearDraftPreview();
       profileStore.disposePreviews(function (url) { URLApi.revokeObjectURL(url); });
       collapseExpandedPreview();
@@ -1710,6 +1899,13 @@
     reviewModeFor: reviewModeFor,
     approvedImageFromCrop: approvedImageFromCrop,
     cropActions: cropActions,
+    PDF_ERROR: PDF_ERROR,
+    pdfRenderScale: pdfRenderScale,
+    pdfPageFilename: pdfPageFilename,
+    loadPdfJs: loadPdfJs,
+    openPdfDocument: openPdfDocument,
+    renderPdfPage: renderPdfPage,
+    BACKEND_SOURCES: BACKEND_SOURCES.slice(),
     missingFieldsForExtraction: missingFieldsForExtraction,
     applyProcessResult: applyProcessResult,
     normalizePrescriptionLabel: normalizePrescriptionLabel,

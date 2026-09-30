@@ -184,12 +184,18 @@ test("plano is labelled Plano (0.00) and incompatible pairs point to the full ca
 });
 
 test("PDF pages are rendered locally at a readable size with safe filenames", function () {
-  assert.equal(Checker.pdfRenderScale(595, 842), 2400 / 842);
-  assert.equal(Checker.pdfRenderScale(3000, 4000), 1);
-  assert.equal(Checker.pdfRenderScale(100, 100), 4);
-  assert.equal(Checker.pdfRenderScale(0, 0), 1);
-  assert.equal(Checker.pdfPageFilename("My Rx (2024).PDF", 2), "My-Rx-2024-page-2.jpg");
-  assert.equal(Checker.pdfPageFilename("", 1), "prescription-page-1.jpg");
+  // Shared with the full calculator: the checker has no PDF code of its own.
+  assert.equal(Rx.pdfRenderScale(595, 842), 2400 / 842);
+  assert.equal(Rx.pdfRenderScale(3000, 4000), 1);
+  assert.equal(Rx.pdfRenderScale(100, 100), 4);
+  assert.equal(Rx.pdfRenderScale(0, 0), 1);
+  assert.equal(Rx.pdfPageFilename("My Rx (2024).PDF", 2), "My-Rx-2024-page-2.jpg");
+  assert.equal(Rx.pdfPageFilename("", 1), "prescription-page-1.jpg");
+  var source = fs.readFileSync(path.join(__dirname, "base/assets/oo-product-rx-checker-v53.js"), "utf8");
+  assert.match(source, /rx\.loadPdfJs\(root, doc, container\.dataset\.pdfjsSrc, container\.dataset\.pdfjsWorker\)/);
+  assert.match(source, /rx\.openPdfDocument\(pdfjs, file\)/);
+  assert.match(source, /rx\.renderPdfPage\(doc, pdfDoc, number, pdfName, root\.File\)/);
+  assert.doesNotMatch(source, /getDocument|toBlob|PDF_RENDER_LONGEST_SIDE/);
 });
 
 test("uploads only ever send the approved crop, never the chosen file", function () {
@@ -198,7 +204,7 @@ test("uploads only ever send the approved crop, never the chosen file", function
   assert.doesNotMatch(source, /transport\.init\((file|state\.file|sourceFile)\b/);
   assert.doesNotMatch(source, /transport\.upload\([^)]*,\s*(file|state\.file|sourceFile)\)/);
   assert.match(source, /transport\.init\(approvedFile,/);
-  assert.match(source, /isEvalSupported: false/);
+  assert.match(fs.readFileSync(path.join(SOURCE_DIR, "lens-calculator-v52-rx.js"), "utf8"), /isEvalSupported: false/);
   var section = fs.readFileSync(path.join(__dirname, "base/sections/oo-product-rx-checker-v53.liquid"), "utf8");
   assert.match(section, /data-pdfjs-src="\{\{ 'oo-pdfjs-3\.11\.174\.min\.js' \| asset_url \}\}"/);
   assert.match(section, /data-pdfjs-worker="\{\{ 'oo-pdfjs-3\.11\.174\.worker\.min\.js' \| asset_url \}\}"/);
@@ -207,4 +213,21 @@ test("uploads only ever send the approved crop, never the chosen file", function
   ["data-checker-rotate-left", "data-checker-rotate-right", "data-checker-reset", "data-checker-choose-another", "data-checker-cancel", "data-checker-use", "data-checker-page"].forEach(function (attr) {
     assert.ok(section.indexOf(attr) >= 0, attr);
   });
+});
+
+test("checker durable records use backend source product_rx_checker; the cart source is unchanged", async function () {
+  assert.equal(Checker.BACKEND_SOURCE, "product_rx_checker");
+  assert.equal(Checker.SOURCE, "product_rx_checker");
+  var source = fs.readFileSync(path.join(__dirname, "base/assets/oo-product-rx-checker-v53.js"), "utf8");
+  assert.match(source, /rx\.createTransport\(\{\s+source: BACKEND_SOURCE,/);
+  var bodies = [];
+  var transport = Rx.createTransport({
+    source: Checker.BACKEND_SOURCE,
+    FormDataCtor: FormData,
+    backendUrl: "https://rx.test",
+    fetchImpl: async function (url, init) { bodies.push(JSON.parse(init.body)); return new Response("{}", { status: 200 }); }
+  });
+  await transport.init(new File([new Uint8Array(4)], "rx-approved.jpg", { type: "image/jpeg" }), null);
+  await transport.manualInit(null);
+  assert.deepEqual(bodies.map(function (b) { return b.source; }), ["product_rx_checker", "product_rx_checker"]);
 });

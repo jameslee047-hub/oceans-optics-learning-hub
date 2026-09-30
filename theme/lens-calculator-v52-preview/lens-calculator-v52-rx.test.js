@@ -94,10 +94,38 @@ test("rejects unsupported and HEIC files clearly", function () {
   assert.match(Rx.validateSelectedFile(file("rx.heic", "image/heic")).error, /HEIC/);
 });
 
-test("PDF bypasses image cropping", function () {
+test("PDFs are rendered and cropped on the device, never uploaded as the original", function () {
   var pdf = file("prescription.pdf", "application/pdf");
   assert.equal(Rx.validateSelectedFile(pdf).ok, true);
   assert.equal(Rx.reviewModeFor(pdf), "pdf");
+  var source = fs.readFileSync(path.join(__dirname, "lens-calculator-v52-rx.js"), "utf8");
+  // Every upload is the approved crop of a photo or of a rendered PDF page.
+  assert.match(source, /state\.approvedFile = await approvedImageFromCrop\(state\.cropSource, state\.cropper, FileCtor\);/);
+  assert.doesNotMatch(source, /state\.approvedFile = [^;]*state\.selectedFile/);
+  assert.match(source, /var rendered = await renderPdfPage\(doc, pdfDoc, pageNumber, selected\.name, FileCtor\);\s+if \(state\.pdfDoc !== pdfDoc\) return;\s+state\.cropSource = rendered;/);
+  assert.match(source, /isEvalSupported: false/);
+  assert.equal(Rx.pdfPageFilename("My Rx (2024).PDF", 2), "My-Rx-2024-page-2.jpg");
+  assert.equal(Rx.pdfRenderScale(595, 842), 2400 / 842);
+  assert.equal(Rx.pdfRenderScale(3000, 4000), 1);
+  assert.equal(Rx.pdfRenderScale(100, 100), 4);
+});
+
+test("backend record source is strict per tool", async function () {
+  var bodies = [];
+  var fetchImpl = async function (url, init) {
+    bodies.push(JSON.parse(init.body));
+    return new Response(JSON.stringify({ configId: "28bf81b0-d4fb-4a51-a2db-d262dbf29cb8", editToken: "t" }), { status: 200 });
+  };
+  var image = file("rx-approved.jpg", "image/jpeg");
+  await Rx.createTransport({ fetchImpl: fetchImpl, FormDataCtor: FormData, backendUrl: "https://rx.test" }).init(image, null);
+  await Rx.createTransport({ fetchImpl: fetchImpl, FormDataCtor: FormData, backendUrl: "https://rx.test" }).manualInit(null);
+  await Rx.createTransport({ fetchImpl: fetchImpl, FormDataCtor: FormData, backendUrl: "https://rx.test", source: "product_rx_checker" }).init(image, null);
+  await Rx.createTransport({ fetchImpl: fetchImpl, FormDataCtor: FormData, backendUrl: "https://rx.test", source: "product_rx_checker" }).manualInit(null);
+  assert.deepEqual(bodies.map(function (b) { return b.source; }), ["calculator", "calculator", "product_rx_checker", "product_rx_checker"]);
+  assert.deepEqual(Rx.BACKEND_SOURCES, ["calculator", "product_rx_checker"]);
+  ["quiz_v53", "lens_calculator_v53", "", "anything", "CALCULATOR"].forEach(function (bad) {
+    assert.throws(function () { Rx.createTransport({ fetchImpl: fetchImpl, FormDataCtor: FormData, backendUrl: "https://rx.test", source: bad }); }, /Unsupported prescription source/, bad);
+  });
 });
 
 test("complete AI extraction populates the visible calculator fields", function () {

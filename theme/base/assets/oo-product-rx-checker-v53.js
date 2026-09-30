@@ -37,8 +37,9 @@
   var NOT_BUILDABLE_MESSAGE = "This mask isn't available with both of your recommended lens strengths.";
   var BUILDABLE_MESSAGE = "This mask supports your recommended lenses.";
   var EPSILON = 1e-9;
-  var PDF_ERROR = "This PDF couldn't be opened. Choose another file, use a photo of your prescription, or enter it manually.";
-  var PDF_RENDER_LONGEST_SIDE = 2400;
+  // Backend record source for checker uploads and manual prescriptions; the
+  // Shopify line item keeps _oo_source = product_rx_checker (SOURCE).
+  var BACKEND_SOURCE = "product_rx_checker";
 
   // Same crop settings as the full V5.3 calculator's upload review.
   function CROPPER_OPTIONS(onReady) {
@@ -62,18 +63,6 @@
       checkOrientation: true,
       ready: onReady
     };
-  }
-
-  // Render a PDF page with its longest side near 2400px (never below 1x, max 4x).
-  function pdfRenderScale(width, height) {
-    var longest = Math.max(Number(width) || 0, Number(height) || 0);
-    if (!(longest > 0)) return 1;
-    return Math.max(1, Math.min(4, PDF_RENDER_LONGEST_SIDE / longest));
-  }
-
-  function pdfPageFilename(name, pageNumber) {
-    var base = String(name || "prescription").replace(/\.pdf$/i, "").replace(/[^a-z0-9_-]+/gi, "-").replace(/^-+|-+$/g, "") || "prescription";
-    return base + "-page-" + pageNumber + ".jpg";
   }
 
   function steps(from, to, step) {
@@ -254,6 +243,7 @@
     container.dataset.ooCheckerMounted = "true";
     container.dataset.catalogProduct = product.id;
     var transport = rx.createTransport({
+      source: BACKEND_SOURCE,
       fetchImpl: root.fetch.bind(root),
       FormDataCtor: root.FormData,
       backendUrl: (root.OOV52_RX_CONFIG && root.OOV52_RX_CONFIG.backendUrl) || BACKEND_URL
@@ -398,37 +388,9 @@
       });
     }
 
-    function loadPdfJs() {
-      if (root.pdfjsLib) return Promise.resolve(root.pdfjsLib);
-      return new Promise(function (resolve, reject) {
-        var script = doc.createElement("script");
-        script.src = container.dataset.pdfjsSrc;
-        script.async = true;
-        script.onload = function () {
-          if (!root.pdfjsLib) return reject(new Error(PDF_ERROR));
-          root.pdfjsLib.GlobalWorkerOptions.workerSrc = container.dataset.pdfjsWorker;
-          resolve(root.pdfjsLib);
-        };
-        script.onerror = function () { reject(new Error(PDF_ERROR)); };
-        doc.head.appendChild(script);
-      });
-    }
-
-    async function renderPdfPage(number) {
-      var page = await pdfDoc.getPage(number);
-      var base = page.getViewport({ scale: 1 });
-      var viewport = page.getViewport({ scale: pdfRenderScale(base.width, base.height) });
-      var canvas = doc.createElement("canvas");
-      canvas.width = Math.ceil(viewport.width);
-      canvas.height = Math.ceil(viewport.height);
-      var context = canvas.getContext("2d");
-      context.fillStyle = "#ffffff";
-      context.fillRect(0, 0, canvas.width, canvas.height);
-      await page.render({ canvasContext: context, viewport: viewport }).promise;
-      var blob = await new Promise(function (resolve, reject) {
-        canvas.toBlob(function (b) { if (b) resolve(b); else reject(new Error(PDF_ERROR)); }, "image/jpeg", 0.92);
-      });
-      return new root.File([blob], pdfPageFilename(pdfName, number), { type: "image/jpeg", lastModified: Date.now() });
+    // PDF helpers are shared with the full calculator (OOV52RxUpload).
+    function renderPage(number) {
+      return rx.renderPdfPage(doc, pdfDoc, number, pdfName, root.File);
     }
 
     fileInput.addEventListener("change", async function () {
@@ -448,13 +410,13 @@
       try {
         if (rx.reviewModeFor(file) === "pdf") {
           setStatus("busy", "Opening your PDF on this device…");
-          var pdfjs = await loadPdfJs();
+          var pdfjs = await rx.loadPdfJs(root, doc, container.dataset.pdfjsSrc, container.dataset.pdfjsWorker);
           pdfName = file.name || "prescription.pdf";
-          pdfDoc = await pdfjs.getDocument({ data: new Uint8Array(await file.arrayBuffer()), isEvalSupported: false }).promise;
+          pdfDoc = await rx.openPdfDocument(pdfjs, file);
           pageSelect.innerHTML = "";
           for (var n = 1; n <= pdfDoc.numPages; n += 1) pageSelect.appendChild(option(doc, String(n), "Page " + n + " of " + pdfDoc.numPages));
           pageField.hidden = pdfDoc.numPages < 2;
-          await showInCropper(await renderPdfPage(1));
+          await showInCropper(await renderPage(1));
           setStatus("", "");
         } else {
           await showInCropper(file);
@@ -462,17 +424,17 @@
       } catch (error) {
         var isPdf = rx.reviewModeFor(file) === "pdf";
         closeReview();
-        setStatus("error", isPdf ? PDF_ERROR : ((error && error.message) || "This file could not be opened. Choose another file."));
+        setStatus("error", isPdf ? rx.PDF_ERROR : ((error && error.message) || "This file could not be opened. Choose another file."));
       }
     });
 
     pageSelect.addEventListener("change", async function () {
       if (!pdfDoc) return;
       try {
-        await showInCropper(await renderPdfPage(Number(pageSelect.value) || 1));
+        await showInCropper(await renderPage(Number(pageSelect.value) || 1));
       } catch (error) {
         closeReview();
-        setStatus("error", PDF_ERROR);
+        setStatus("error", rx.PDF_ERROR);
       }
     });
 
@@ -644,15 +606,13 @@
 
   return {
     SOURCE: SOURCE,
+    BACKEND_SOURCE: BACKEND_SOURCE,
     FULL_CALCULATOR_URL: FULL_CALCULATOR_URL,
     NOT_BUILDABLE_MESSAGE: NOT_BUILDABLE_MESSAGE,
     BUILDABLE_MESSAGE: BUILDABLE_MESSAGE,
     SPHERE_VALUES: SPHERE_VALUES,
     CYLINDER_VALUES: CYLINDER_VALUES,
     formatLensLabel: formatLensLabel,
-    PDF_ERROR: PDF_ERROR,
-    pdfRenderScale: pdfRenderScale,
-    pdfPageFilename: pdfPageFilename,
     handleFromUrl: handleFromUrl,
     catalogProductForHandle: catalogProductForHandle,
     confirmedEye: confirmedEye,
