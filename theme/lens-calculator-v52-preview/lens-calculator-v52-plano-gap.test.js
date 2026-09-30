@@ -78,3 +78,12 @@ test("midpoint boundaries: less than 0.50 D of minus uses plano, 0.50 D or more 
     assert.equal(V53.selectStockPower(entry[0], entry[0] - 0.5, myopia).power, entry[1], "target " + entry[0]);
   });
 });
+
+test("farsighted stock explanation describes the nearest-stock rule; minus wording is unchanged", function () {
+  var ui = require("node:fs").readFileSync(require("node:path").join(__dirname, "lens-calculator-v52-ui.js"), "utf8");
+  assert.match(ui, /There is no lens between 0\.00 and \+1\.00 D\. If the adjusted value is \+0\.50 D or less we use 0\.00; above \+0\.50 D we use \+1\.00\./);
+  assert.match(ui, /Our farsighted corrective lenses are available in 1\.00 D steps, so we choose the closest available strength\. If the adjusted value is exactly halfway between two strengths, we use the weaker one\./);
+  assert.doesNotMatch(ui, /farsighted corrective lenses are available in 1\.00 D steps, so we choose the closest available strength that stays at or closer to zero/);
+  assert.match(ui, /Our corrective lenses are available in 0\.50 D steps, so we choose the closest available strength that stays at or closer to zero than the adjusted value\./);
+  assert.match(ui, /There is no lens between 0\.00 and -1\.00 D\. If the adjusted value needs less than 0\.50 D of correction we use 0\.00; if it needs 0\.50 D or more we use -1\.00\./);
+});

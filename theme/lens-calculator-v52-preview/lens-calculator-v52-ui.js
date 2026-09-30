@@ -296,8 +296,11 @@
     if (recommended < 0) {
       return "Our corrective lenses are available in 0.50 D steps, so we choose the closest available strength that stays at or closer to zero than the adjusted value.";
     }
+    if (target > 0 && target < 1) {
+      return "There is no lens between 0.00 and +1.00 D. If the adjusted value is +0.50 D or less we use 0.00; above +0.50 D we use +1.00.";
+    }
     if (recommended > 0) {
-      return "Our farsighted corrective lenses are available in 1.00 D steps, so we choose the closest available strength that stays at or closer to zero than the adjusted value.";
+      return "Our farsighted corrective lenses are available in 1.00 D steps, so we choose the closest available strength. If the adjusted value is exactly halfway between two strengths, we use the weaker one.";
     }
     return "We match the adjusted value to the closest suitable lens strength available.";
   }

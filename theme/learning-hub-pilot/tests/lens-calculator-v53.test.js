@@ -101,15 +101,57 @@ test("broad half-step boundaries always snap toward zero for both signs", functi
   });
 });
 
-test("every ordinary configured result is no stronger than its continuous target", function () {
-  [-8.99, -8.51, -7.875, -6.26, -5.01, -4.49, -3.37, -2.12, -1.01, 1.01, 2.12, 3.37, 4.49, 5.01].forEach(function (se) {
+test("every ordinary minus result is no stronger than its continuous target", function () {
+  [-8.99, -8.51, -7.875, -6.26, -5.01, -4.49, -3.37, -2.12, -1.01].forEach(function (se) {
     var result = V53.computeV53Recommendation(se);
-    // The approved plano-to-first-minus gap rule is the one place a stock
-    // power may be stronger than the target; it is tested separately below.
+    // The approved plano-to-first-minus gap rule is the one place a minus
+    // stock power may be stronger than the target; it is tested separately below.
     if (result.stockStatus === "OK" && result.stockRule !== "plano-to-first-minus-gap") {
       assert.ok(Math.abs(result.finalPower) <= Math.abs(result.preSnapTarget) + EPSILON, "configured result for SE " + se);
     }
   });
+});
+
+test("farsighted results use the nearest stocked plus power, exact ties toward zero, never stronger than SE", function () {
+  var plus = V53.V53_CONFIG.hyperopiaAvailablePowers;
+  [1.01, 2.12, 3.37, 4.49, 5.01, 1.125, 2.625, 3.125, 3.75].forEach(function (se) {
+    var result = V53.computeV53Recommendation(se);
+    assert.equal(result.stockRule, V53.PLUS_NEAREST_STOCK_RULE, "SE " + se);
+    assert.equal(result.finalPower, V53.nearestAvailablePowerTowardZero(result.preSnapTarget, plus).power, "nearest for SE " + se);
+    assert.ok(result.finalPower <= se + EPSILON, "never stronger than SE " + se);
+  });
+  [[2.25, 2], [2.5, 2], [2.625, 3], [2.75, 3], [3.5, 3], [3.75, 4], [4.5, 4], [4.625, 5], [6, 5]].forEach(function (entry) {
+    assert.equal(V53.plusNearestStockSelection(entry[0], entry[0] + 0.5, plus).power, entry[1], "target +" + entry[0]);
+  });
+});
+
+test("farsighted recommendation never weakens as SE increases (outside the SE +0.50 review)", function () {
+  var previous = null;
+  for (var i = 1; i <= 80; i += 1) {
+    var se = i * 0.125;
+    var result = V53.computeV53Recommendation(se);
+    if (Math.abs(se - 0.5) < EPSILON) {
+      assert.equal(result.stockStatus, "PLANO_CROSSOVER_REVIEW");
+      continue;
+    }
+    if (previous !== null) assert.ok(result.finalPower >= previous - EPSILON, "SE +" + se);
+    previous = result.finalPower;
+  }
+});
+
+test("low-plus gap: target +0.50 or less gives plano, above +0.50 gives +1.00", function () {
+  [[0.625, 0], [0.875, 0], [1.0, 0], [1.125, 1], [1.375, 1], [1.5, 1]].forEach(function (entry) {
+    var result = V53.computeV53Recommendation(entry[0]);
+    assert.equal(result.finalPower, entry[1], "SE +" + entry[0]);
+    assert.equal(result.stockStatus, "OK");
+  });
+});
+
+test("named farsighted order R +3.25/-0.25 x075, L +3.25/-1.00 x100 gives +3.00 / +2.00", function () {
+  var right = V53.calculateEyeRecommendationV53({ sphere: "3.25", cylinder: "-0.25", axis: "75" }, "Right");
+  var left = V53.calculateEyeRecommendationV53({ sphere: "3.25", cylinder: "-1.00", axis: "100" }, "Left");
+  assert.deepEqual([right.sphericalEquivalent, right.preSnapTarget, right.recommendation], [3.125, 2.625, "+3.00"]);
+  assert.deepEqual([left.sphericalEquivalent, left.preSnapTarget, left.recommendation], [2.75, 2.25, "+2.00"]);
 });
 
 test("Balanced and Closer-to-SPH references use the identical V5.3 stock policy", function () {
@@ -141,17 +183,22 @@ test("transposition invariance remains intact", function () {
   assert.equal(minusForm.warning.level, plusForm.warning.level);
 });
 
-test("plus-side plano crossover and exact-zero targets are unchanged from V5.2", function () {
+test("minus exact-zero targets and the SE +0.50 review are unchanged from V5.2", function () {
   // SE -0.50 and -0.25 give a target of exactly 0.00 (not inside the minus
   // gap), so the V5.2 crossover still decides them, including manual review.
-  [-0.5, -0.25, 0.25, 0.5, 0.75].forEach(function (se) {
+  // SE +0.50 keeps its manual-review safeguard.
+  [-0.5, -0.25, 0.5].forEach(function (se) {
     var v5 = V5.computeV5Recommendation(se);
     var v53 = V53.computeV53Recommendation(se);
     assert.equal(v53.finalPower, v5.finalPower, "crossover final power for SE " + se);
     assert.equal(v53.stockStatus, v5.stockStatus, "crossover status for SE " + se);
     assert.deepEqual(v53.planoCrossoverCandidates, v5.planoCrossoverCandidates, "crossover candidates for SE " + se);
-    assert.equal(v53.stockRule, null, "no plano-gap rule for SE " + se);
+    assert.equal(v53.stockRule, null, "no stock rule for SE " + se);
   });
+  // Low plus now follows the nearest-stock rule on the target (intended change:
+  // SE +0.75 was +1.00 under the SE-based crossover; target +0.25 gives 0.00).
+  assert.equal(V53.computeV53Recommendation(0.25).finalPower, 0);
+  assert.equal(V53.computeV53Recommendation(0.75).finalPower, 0);
 });
 
 test("plano-to-first-minus gap: less than 0.50 D of minus uses plano, 0.50 D or more uses -1.00", function () {

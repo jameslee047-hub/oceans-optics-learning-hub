@@ -26,6 +26,16 @@
  * -7.00 because -7.50 is stronger than the target: an effective 0.875D
  * weakening from the original reference.
  *
+ * FARSIGHTED STOCK (revised 2026-09-30): for positive (hyperopic)
+ * prescriptions the directional rule above no longer applies. Farsighted
+ * stock comes in 1.00 D steps, where "never stronger than the target"
+ * could discard up to 0.875 D beyond the intended adjustment. Positive
+ * targets now use the nearest stocked plus power, with an exact tie going
+ * to the weaker lens (toward zero) — the V5.2 selector — including the
+ * 0.00 / +1.00 gap (target +0.50 or less -> 0.00, above +0.50 -> +1.00).
+ * The exact SE +0.50 manual-review safeguard is kept. Minus selection is
+ * unchanged.
+ *
  * Version: 5.3.0-experimental
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
@@ -562,6 +572,54 @@
     };
   }
 
+  // ==========================================================================
+  // FARSIGHTED (PLUS) STOCK SELECTION (revised 2026-09-30).
+  //
+  // Positive continuous targets use the nearest stocked plus power; on an
+  // exact distance tie the weaker lens (smaller absolute power, toward zero)
+  // wins. This also covers the 0.00 / +1.00 gap: target +0.50 or less ->
+  // 0.00, above +0.50 -> +1.00. The one exception is the existing manual
+  // review safeguard for an SE of exactly +0.50 (equidistant from plano and
+  // +1.00 before the adjustment), which is preserved unchanged.
+  // ==========================================================================
+
+  var PLUS_NEAREST_STOCK_RULE = "plus-nearest-stock";
+
+  function plusNearestStockSelection(target, se, availablePowers) {
+    var corrective = weakestCorrectivePower(availablePowers);
+    if (Math.abs(se - corrective / 2) < EPSILON) {
+      var review = resolvePlanoCrossover(se, target, corrective);
+      review.tieCandidates = null;
+      review.stockCandidates = null;
+      review.rejectedStrongerCandidates = null;
+      return review;
+    }
+
+    var nearest = nearestAvailablePowerTowardZero(target, availablePowers);
+    var ordered = availablePowers.slice().sort(function (a, b) {
+      return Math.abs(a - target) - Math.abs(b - target) || Math.abs(a) - Math.abs(b);
+    });
+    var stockCandidates = ordered.slice(0, 2).map(function (power) {
+      return { power: power, distanceFromTarget: Math.abs(power - target) };
+    });
+
+    return {
+      power: nearest.power,
+      stockStatus: "OK",
+      rule: PLUS_NEAREST_STOCK_RULE,
+      reason:
+        "Farsighted stock selection: the nearest stocked plus power to the continuous target (" +
+        formatSigned(target) +
+        ") is selected; an exact tie goes to the weaker lens. Final stock power: " +
+        formatSigned(nearest.power) +
+        ".",
+      candidates: null,
+      tieCandidates: nearest.tieCandidates,
+      stockCandidates: stockCandidates,
+      rejectedStrongerCandidates: null
+    };
+  }
+
   /**
    * Unified final stock-power selector used by every V5.3 CYL band. Chooses
    * between the plano-crossover comparison (see above) and ordinary
@@ -576,6 +634,8 @@
   function selectStockPower(target, se, availablePowers) {
     var planoGap = planoToFirstMinusGapSelection(target, availablePowers);
     if (planoGap) return planoGap;
+
+    if (se > EPSILON) return plusNearestStockSelection(target, se, availablePowers);
 
     var corrective = weakestCorrectivePower(availablePowers);
 
@@ -673,7 +733,7 @@
 
     var selection = selectStockPower(preSnapTarget, se, availablePowers);
     var ooAdjustment = baseAdjustment;
-    if (selection.rule === "plano-to-first-minus-gap") {
+    if (selection.rule === "plano-to-first-minus-gap" || selection.rule === PLUS_NEAREST_STOCK_RULE) {
       ooAdjustment += " V5.3 " + selection.reason;
     } else if (selection.reason) {
       ooAdjustment +=
@@ -960,6 +1020,8 @@
     nearestAvailablePower: nearestAvailablePower,
     nearestAvailablePowerTowardZero: nearestAvailablePowerTowardZero,
     directionalStockPowerTowardZero: directionalStockPowerTowardZero,
+    plusNearestStockSelection: plusNearestStockSelection,
+    PLUS_NEAREST_STOCK_RULE: PLUS_NEAREST_STOCK_RULE,
     computeContinuousTarget: computeContinuousTarget,
     nextWeakerAvailablePower: nextWeakerAvailablePower,
     weakestCorrectivePower: weakestCorrectivePower,
