@@ -29,12 +29,12 @@
  * FARSIGHTED STOCK (revised 2026-09-30): for positive (hyperopic)
  * prescriptions the directional rule above no longer applies. Farsighted
  * stock comes in 1.00 D steps, where "never stronger than the target"
- * could discard up to 0.875 D beyond the intended adjustment. Positive
- * targets now use the nearest stocked plus power, with an exact tie going
- * to the weaker lens (toward zero) — the V5.2 selector — including the
- * 0.00 / +1.00 gap (target +0.50 or less -> 0.00, above +0.50 -> +1.00).
- * The exact SE +0.50 manual-review safeguard is kept. Minus selection is
- * unchanged.
+ * could discard up to 0.875 D beyond the intended adjustment. Above SE
+ * +1.00, positive targets use the nearest stocked plus power, with an
+ * exact tie going to the weaker lens (toward zero) — the V5.2 selector.
+ * A separate low-plus guard, decided on SE, keeps plano from being an
+ * ordinary stock step: SE below +0.50 -> 0.00, exactly +0.50 -> manual
+ * review, above +0.50 up to +1.00 -> +1.00. Minus selection is unchanged.
  *
  * Version: 5.3.0-experimental
  * Created: 2026-09-26 from the unchanged V5.2 engine
@@ -575,24 +575,29 @@
   // ==========================================================================
   // FARSIGHTED (PLUS) STOCK SELECTION (revised 2026-09-30).
   //
-  // Positive continuous targets use the nearest stocked plus power; on an
-  // exact distance tie the weaker lens (smaller absolute power, toward zero)
-  // wins. This also covers the 0.00 / +1.00 gap: target +0.50 or less ->
-  // 0.00, above +0.50 -> +1.00. The one exception is the existing manual
-  // review safeguard for an SE of exactly +0.50 (equidistant from plano and
-  // +1.00 before the adjustment), which is preserved unchanged.
+  // LOW-PLUS GUARD (SE up to +1.00): plano is not treated as an ordinary
+  // stock step. The existing SE-based plano crossover decides:
+  //   SE below +0.50            -> 0.00
+  //   SE exactly +0.50          -> manual review
+  //   SE above +0.50 to +1.00   -> +1.00
+  // so a farsighted customer in this range keeps correction, and the
+  // recommendation never drops from +1.00 back to plano as SE increases.
+  //
+  // ABOVE SE +1.00: the continuous target uses the nearest stocked plus
+  // power; on an exact distance tie the weaker lens (smaller absolute power,
+  // toward zero) wins.
   // ==========================================================================
 
   var PLUS_NEAREST_STOCK_RULE = "plus-nearest-stock";
 
   function plusNearestStockSelection(target, se, availablePowers) {
     var corrective = weakestCorrectivePower(availablePowers);
-    if (Math.abs(se - corrective / 2) < EPSILON) {
-      var review = resolvePlanoCrossover(se, target, corrective);
-      review.tieCandidates = null;
-      review.stockCandidates = null;
-      review.rejectedStrongerCandidates = null;
-      return review;
+    if (se <= corrective + EPSILON) {
+      var lowPlus = resolvePlanoCrossover(se, target, corrective);
+      lowPlus.tieCandidates = null;
+      lowPlus.stockCandidates = null;
+      lowPlus.rejectedStrongerCandidates = null;
+      return lowPlus;
     }
 
     var nearest = nearestAvailablePowerTowardZero(target, availablePowers);

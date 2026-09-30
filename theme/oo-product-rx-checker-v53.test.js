@@ -41,7 +41,7 @@ function pair(calc) {
 
 test("uses the approved V5.3 engine", function () {
   var hash = crypto.createHash("sha256").update(fs.readFileSync(path.join(SOURCE_DIR, "lens-calculator-v53.js"))).digest("hex");
-  assert.equal(hash, "880e3ab995ce3f3454c64d9ff92f075391e13d3339399f742b928aa6786a9665");
+  assert.equal(hash, "ce4a511d8307ff79904241d51eaf833d450c0e4f105e9fe1bc6590d8064f4ecf");
 });
 
 test("every active product handle, including white variants, maps to its catalog family", function () {

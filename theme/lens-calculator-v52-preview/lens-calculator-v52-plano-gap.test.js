@@ -81,7 +81,8 @@ test("midpoint boundaries: less than 0.50 D of minus uses plano, 0.50 D or more 
 
 test("farsighted stock explanation describes the nearest-stock rule; minus wording is unchanged", function () {
   var ui = require("node:fs").readFileSync(require("node:path").join(__dirname, "lens-calculator-v52-ui.js"), "utf8");
-  assert.match(ui, /There is no lens between 0\.00 and \+1\.00 D\. If the adjusted value is \+0\.50 D or less we use 0\.00; above \+0\.50 D we use \+1\.00\./);
+  assert.match(ui, /There is no lens between 0\.00 and \+1\.00 D, so for this low farsighted prescription we use \+1\.00 rather than no correction\./);
+  assert.match(ui, /There is no lens between 0\.00 and \+1\.00 D, and your adjusted value is small enough that no correction \(0\.00\) is suggested\./);
   assert.match(ui, /Our farsighted corrective lenses are available in 1\.00 D steps, so we choose the closest available strength\. If the adjusted value is exactly halfway between two strengths, we use the weaker one\./);
   assert.doesNotMatch(ui, /farsighted corrective lenses are available in 1\.00 D steps, so we choose the closest available strength that stays at or closer to zero/);
   assert.match(ui, /Our corrective lenses are available in 0\.50 D steps, so we choose the closest available strength that stays at or closer to zero than the adjusted value\./);
