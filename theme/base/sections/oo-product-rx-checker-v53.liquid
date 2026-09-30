@@ -14,7 +14,7 @@
   <h2 class="oo-rx-checker__title" id="oo-rx-checker-title-{{ section.id }}">Underwater Lens Calculator</h2>
 
   <div class="oo-rx-checker__box">
-    <p class="oo-rx-checker__intro">Enter or upload your prescription to find your recommended underwater lens strength for this mask.</p>
+    <p class="oo-rx-checker__intro"><span class="oo-rx-checker__tip oo-rx-checker__tip--inline" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Underwater lens strength help" aria-expanded="false" aria-describedby="oo-rx-tip-intro-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-intro-{{ section.id }}" role="tooltip">Underwater, light bends differently and can make your usual prescription feel too strong. We adjust it slightly for comfortable vision underwater.</span></span>Enter or upload your prescription to find your recommended underwater lens strength for this mask.</p>
 
     <div class="oo-rx-checker__upload">
       <label class="oo-rx-checker__upload-button" for="oo-rx-checker-file-{{ section.id }}">Upload prescription</label>
@@ -54,6 +54,7 @@
       <div class="oo-rx-checker__eyes">
       <div class="oo-rx-checker__eye" data-eye="right">
         <span class="oo-rx-checker__eye-title">Sphere Right (OD)</span>
+        <span class="oo-rx-checker__tip oo-rx-checker__tip--corner" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Right (OD) sphere sign help" aria-expanded="false" aria-describedby="oo-rx-tip-right-sph-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-right-sph-{{ section.id }}" role="tooltip">Choose − for nearsighted (myopia) or + for farsighted (hyperopia)</span></span>
         <div class="oo-rx-checker__sph">
           <button type="button" class="oo-rx-checker__sign" data-sign="" data-sphere-sign aria-label="Right (OD) sphere sign: choose + or −">+/-</button>
           <span class="oo-rx-checker__picker">
@@ -67,15 +68,18 @@
           <span class="oo-rx-checker__row-label">CYL:</span>
           <button type="button" class="oo-rx-checker__row-sign" data-sign="" data-cyl-sign aria-label="Right (OD) cylinder sign: choose + or −">+/-</button>
           <select data-cyl-mag aria-label="Right (OD) cylinder"></select>
+          <span class="oo-rx-checker__tip" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Right (OD) CYL help" aria-expanded="false" aria-describedby="oo-rx-tip-right-cyl-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-right-cyl-{{ section.id }}" role="tooltip">Check your prescription for the CYL value and its + or − sign. If you have no CYL, leave it at 0.00.</span></span>
           <input type="hidden" data-field="cylinder" value="0">
         </div>
         <div class="oo-rx-checker__row">
           <span class="oo-rx-checker__row-label">AXIS:</span>
           <select data-field="axis" aria-label="Right (OD) axis"></select>
+          <span class="oo-rx-checker__tip" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Right (OD) AXIS help" aria-expanded="false" aria-describedby="oo-rx-tip-right-axis-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-right-axis-{{ section.id }}" role="tooltip">Enter the AXIS number shown with your CYL, from 001 to 180. AXIS is only required when CYL is not 0.00.</span></span>
         </div>
       </div>
       <div class="oo-rx-checker__eye" data-eye="left">
         <span class="oo-rx-checker__eye-title">Sphere Left (OS)</span>
+        <span class="oo-rx-checker__tip oo-rx-checker__tip--corner" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Left (OS) sphere sign help" aria-expanded="false" aria-describedby="oo-rx-tip-left-sph-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-left-sph-{{ section.id }}" role="tooltip">Choose − for nearsighted (myopia) or + for farsighted (hyperopia)</span></span>
         <div class="oo-rx-checker__sph">
           <button type="button" class="oo-rx-checker__sign" data-sign="" data-sphere-sign aria-label="Left (OS) sphere sign: choose + or −">+/-</button>
           <span class="oo-rx-checker__picker">
@@ -89,11 +93,13 @@
           <span class="oo-rx-checker__row-label">CYL:</span>
           <button type="button" class="oo-rx-checker__row-sign" data-sign="" data-cyl-sign aria-label="Left (OS) cylinder sign: choose + or −">+/-</button>
           <select data-cyl-mag aria-label="Left (OS) cylinder"></select>
+          <span class="oo-rx-checker__tip" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Left (OS) CYL help" aria-expanded="false" aria-describedby="oo-rx-tip-left-cyl-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-left-cyl-{{ section.id }}" role="tooltip">Check your prescription for the CYL value and its + or − sign. If you have no CYL, leave it at 0.00.</span></span>
           <input type="hidden" data-field="cylinder" value="0">
         </div>
         <div class="oo-rx-checker__row">
           <span class="oo-rx-checker__row-label">AXIS:</span>
           <select data-field="axis" aria-label="Left (OS) axis"></select>
+          <span class="oo-rx-checker__tip" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Left (OS) AXIS help" aria-expanded="false" aria-describedby="oo-rx-tip-left-axis-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-left-axis-{{ section.id }}" role="tooltip">Enter the AXIS number shown with your CYL, from 001 to 180. AXIS is only required when CYL is not 0.00.</span></span>
         </div>
       </div>
       </div>

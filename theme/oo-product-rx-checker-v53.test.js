@@ -463,3 +463,34 @@ test("no product-specific routing in the checker: the only catalogue id is the O
   var code = source.replace(/^\s*\/\/.*$/gm, "");
   assert.doesNotMatch(code, /Rx Rover|Rx Lumix|Rx Titan|Rx Obsidian/, "no product names hard-coded in checker code");
 });
+
+test("untouched SPH reads 0.00 (valid plano); a non-zero value still needs + or −", function () {
+  var source = fs.readFileSync(path.join(__dirname, "base/assets/oo-product-rx-checker-v53.js"), "utf8");
+  assert.match(source, /eye\.whole\.value = "0";\s+eye\.fraction\.value = "00";/);
+  assert.doesNotMatch(source, /eye\.whole\.appendChild\(option\(doc, "", "–"\)\)/);
+  assert.equal(Checker.sphereFromPicker("", "0", "00"), "0");
+  assert.equal(Checker.sphereFromPicker("", "2", "50"), "");
+  assert.equal(Checker.sphereFromPicker("", "0", "25"), "", "even 0.25 needs a sign");
+  assert.equal(Checker.sphereFromPicker("+", "2", "50"), "2.5");
+  assert.equal(Checker.sphereFromPicker("-", "2", "50"), "-2.5");
+  assert.deepEqual(Checker.validateEntry({ right: { sphere: "", cylinder: "0" }, left: eye(0, 0) }), ["Right SPH is required (choose + or − and the value)."]);
+  assert.deepEqual(Checker.validateEntry({ right: eye(0, 0), left: eye(0, 0) }), []);
+});
+
+test("legacy help tooltips are restored with the legacy wording", function () {
+  var section = fs.readFileSync(path.join(__dirname, "base/sections/oo-product-rx-checker-v53.liquid"), "utf8");
+  var texts = [];
+  section.replace(/<span class="oo-rx-checker__tip-text" id="[^"]+" role="tooltip">([^<]+)<\/span>/g, function (_, text) { texts.push(text); });
+  assert.deepEqual(texts, [
+    "Underwater, light bends differently and can make your usual prescription feel too strong. We adjust it slightly for comfortable vision underwater.",
+    "Choose − for nearsighted (myopia) or + for farsighted (hyperopia)",
+    "Check your prescription for the CYL value and its + or − sign. If you have no CYL, leave it at 0.00.",
+    "Enter the AXIS number shown with your CYL, from 001 to 180. AXIS is only required when CYL is not 0.00.",
+    "Choose − for nearsighted (myopia) or + for farsighted (hyperopia)",
+    "Check your prescription for the CYL value and its + or − sign. If you have no CYL, leave it at 0.00.",
+    "Enter the AXIS number shown with your CYL, from 001 to 180. AXIS is only required when CYL is not 0.00."
+  ]);
+  // Each tooltip button is described by its own bubble.
+  var ids = (section.match(/aria-describedby="(oo-rx-tip-[^"]+)"/g) || []).length;
+  assert.equal(ids, 7);
+});

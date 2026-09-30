@@ -383,8 +383,11 @@
         axis: scope.querySelector('[data-field="axis"]')
       };
       eyes[side] = eye;
-      eye.whole.appendChild(option(doc, "", "–"));
+      // Untouched SPH reads "+/-  0 . 00": plano needs no sign, any non-zero
+      // value still needs + or − (see sphereFromPicker).
       for (var w = 0; w <= SPHERE_LIMIT; w += 1) eye.whole.appendChild(option(doc, String(w), String(w)));
+      eye.whole.value = "0";
+      eye.fraction.value = "00";
       SPHERE_FRACTIONS.forEach(function (f) { eye.fraction.appendChild(option(doc, f, f)); });
       CYLINDER_VALUES.filter(function (v) { return v >= 0; }).forEach(function (v) { eye.cylMag.appendChild(option(doc, v.toFixed(2), v.toFixed(2))); });
       eye.axis.appendChild(option(doc, "", "–"));
@@ -420,6 +423,47 @@
       eye.sync = sync;
       eye.cylMag.value = "0.00";
       sync();
+    });
+
+    // Legacy help tooltips: hover on desktop, tap to toggle, tap elsewhere or
+    // Escape to close. Each bubble is nudged to stay inside the viewport.
+    var tips = Array.prototype.slice.call(container.querySelectorAll("[data-checker-tip]"));
+    function placeTip(tip) {
+      var bubble = tip.querySelector(".oo-rx-checker__tip-text");
+      bubble.style.setProperty("--oo-tip-shift", "0px");
+      var rect = bubble.getBoundingClientRect();
+      var viewport = doc.documentElement.clientWidth || root.innerWidth;
+      var margin = 8;
+      var shift = 0;
+      if (rect.right > viewport - margin) shift = viewport - margin - rect.right;
+      if (rect.left + shift < margin) shift = margin - rect.left;
+      bubble.style.setProperty("--oo-tip-shift", Math.round(shift) + "px");
+    }
+    function closeTips(except) {
+      tips.forEach(function (tip) {
+        if (tip === except) return;
+        tip.classList.remove("is-open");
+        tip.querySelector(".oo-rx-checker__tip-button").setAttribute("aria-expanded", "false");
+      });
+    }
+    tips.forEach(function (tip) {
+      var button = tip.querySelector(".oo-rx-checker__tip-button");
+      button.addEventListener("click", function (event) {
+        event.preventDefault();
+        event.stopPropagation();
+        var open = !tip.classList.contains("is-open");
+        closeTips(tip);
+        tip.classList.toggle("is-open", open);
+        button.setAttribute("aria-expanded", String(open));
+        if (open) placeTip(tip);
+      });
+      tip.addEventListener("mouseenter", function () { placeTip(tip); });
+    });
+    doc.addEventListener("click", function (event) {
+      if (!event.target.closest || !event.target.closest("[data-checker-tip]")) closeTips(null);
+    });
+    doc.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") closeTips(null);
     });
 
     function setStatus(kind, message) {

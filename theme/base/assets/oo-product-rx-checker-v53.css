@@ -103,6 +103,7 @@ body {
 }
 
 .oo-rx-checker__eye {
+  position: relative;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -562,6 +563,95 @@ body {
   gap: 8px;
 }
 
+/* ===== Help tooltips (legacy .tooltip / .input-help / .cyl-help) ===== */
+.oo-rx-checker__tip {
+  position: relative;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+}
+
+.oo-rx-checker__tip--inline {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.oo-rx-checker__tip--corner {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 3;
+}
+
+.oo-rx-checker__tip-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.oo-rx-checker__row .oo-rx-checker__tip-button {
+  width: 18px;
+  height: 18px;
+}
+
+.oo-rx-checker__tip-button svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--oo-rx-orange);
+}
+
+.oo-rx-checker__tip-text {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  z-index: 9999;
+  width: 180px;
+  padding: 10px;
+  border-radius: 6px;
+  background: var(--oo-rx-blue);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.5;
+  text-align: center;
+  text-transform: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateX(calc(-50% + var(--oo-tip-shift, 0px)));
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.oo-rx-checker__tip-text::after {
+  position: absolute;
+  bottom: 100%;
+  left: calc(50% - var(--oo-tip-shift, 0px));
+  margin-left: -5px;
+  border: 5px solid transparent;
+  border-bottom-color: var(--oo-rx-blue);
+  content: "";
+}
+
+/* Bubbles never take pointer events, so an open tooltip can't block the
+   pickers, selects or other help icons underneath it. */
+.oo-rx-checker__tip.is-open .oo-rx-checker__tip-text {
+  opacity: 1;
+  visibility: visible;
+}
+
+@media (hover: hover) {
+  .oo-rx-checker__tip-button:hover + .oo-rx-checker__tip-text {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
 /* ===== Mobile (legacy breakpoint) ===== */
 @media (max-width: 500px) {
   .oo-rx-checker__eye {
@@ -571,7 +661,18 @@ body {
   }
 
   .oo-rx-checker__eye-title {
+    padding-right: 14px;
     font-size: 13px;
+  }
+
+  .oo-rx-checker__tip--corner {
+    top: 9px;
+    right: 8px;
+  }
+
+  .oo-rx-checker__row .oo-rx-checker__tip-button {
+    width: 16px;
+    height: 16px;
   }
 
   .oo-rx-checker__sph {
