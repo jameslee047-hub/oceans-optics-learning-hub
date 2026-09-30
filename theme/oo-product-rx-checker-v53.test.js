@@ -341,3 +341,120 @@ test("checker durable records use backend source product_rx_checker; the cart so
   await transport.manualInit(null);
   assert.deepEqual(bodies.map(function (b) { return b.source; }), ["product_rx_checker", "product_rx_checker"]);
 });
+
+// ---------------------------------------------------------------------------
+// Global, catalogue-driven routing: every checker page, every SPH pair.
+// ---------------------------------------------------------------------------
+var PAGES = Products.CATALOG.map(function (p) { return { label: p.id, product: p, displayName: null }; }).concat([
+  { label: "obsidian-clear (alias)", product: Checker.catalogProductForHandle("prescription-scuba-dive-snorkel-mask-optical", Products.CATALOG), displayName: "This mask" }
+]);
+
+function kindOf(power) { return Math.abs(power) < 1e-9 ? "zero" : power < 0 ? "minus" : "plus"; }
+
+// The rule, written from the spec: same prescription type as the recommended
+// lenses (plano-only pairs use the catalogue's plano family), both eyes
+// buildable, current mask excluded, nothing for mixed plus/minus.
+function expectedAlternatives(current, rec) {
+  var r = kindOf(rec.recommendedRight), l = kindOf(rec.recommendedLeft);
+  if (r !== "zero" && l !== "zero" && r !== l) return [];
+  var type = r !== "zero" ? r : l;
+  return Products.CATALOG.filter(function (p) {
+    if (p.id === current.id) return false;
+    if (type === "zero") return p.lensType === "minus";
+    return p.lensType === type && Products.supportsPower(p, rec.recommendedRight) && Products.supportsPower(p, rec.recommendedLeft);
+  }).map(function (p) { return p.id; });
+}
+
+test("routing is catalogue-driven on every checker page for every SPH pair (-12..+12)", function () {
+  var counts = { pairs: 0, plusOnMinusPage: 0, minusOnPlusPage: 0, sameTypeOut: 0, mixed: 0, noAlternatives: 0 };
+  var values = Checker.SPHERE_VALUES;
+  var recs = [];
+  values.forEach(function (r) {
+    values.forEach(function (l) {
+      var calc = Checker.calculate(Engine, HighCyl, { right: eye(r, 0), left: eye(l, 0) });
+      if (calc.successful) recs.push(calc.activeRecommendation);
+    });
+  });
+  PAGES.forEach(function (page) {
+    recs.forEach(function (rec) {
+      counts.pairs += 1;
+      var reason = Checker.incompatibilityReason(page.product, rec, Products.supportsPower, page.displayName);
+      var alts = Checker.compatibleAlternatives(Products, page.product, rec);
+      var ids = alts.map(function (p) { return p.id; });
+      var built = Products.supportsPower(page.product, rec.recommendedRight) && Products.supportsPower(page.product, rec.recommendedLeft);
+      var r = kindOf(rec.recommendedRight), l = kindOf(rec.recommendedLeft);
+      var mixed = r !== "zero" && l !== "zero" && r !== l;
+      var type = r !== "zero" ? r : l;
+      var where = page.label + " R" + rec.recommendedRight + " L" + rec.recommendedLeft;
+
+      assert.equal(reason.kind === "ok", built, where);
+      if (!built) assert.deepEqual(ids, expectedAlternatives(page.product, rec), where);
+      assert.ok(ids.indexOf(page.product.id) === -1, "current mask never offered: " + where);
+      alts.forEach(function (p) {
+        assert.ok(Products.supportsPower(p, rec.recommendedRight) && Products.supportsPower(p, rec.recommendedLeft), "offered mask builds both eyes: " + p.id + " " + where);
+      });
+      if (mixed) {
+        counts.mixed += 1;
+        assert.equal(reason.kind, "mixed", where);
+        assert.deepEqual(ids, [], "mixed plus/minus never offers a mask: " + where);
+      } else if (!built && type !== "zero" && type !== page.product.lensType) {
+        assert.equal(reason.kind, "lens-type", where);
+        alts.forEach(function (p) { assert.equal(p.lensType, type, where); });
+        if (type === "plus") {
+          counts.plusOnMinusPage += 1;
+          assert.match(reason.message, /^Your prescription is farsighted \(\+\)\. .+ is available with nearsighted prescription lenses only\.$/, where);
+        } else {
+          counts.minusOnPlusPage += 1;
+          assert.match(reason.message, /^Your prescription is nearsighted \(−\)\. Rx Obsidian Farsighted is available with farsighted prescription lenses only\.$/, where);
+        }
+      } else if (!built) {
+        counts.sameTypeOut += 1;
+        assert.ok(reason.kind === "range" || reason.kind === "combination", where);
+        alts.forEach(function (p) { assert.equal(p.lensType, page.product.lensType, "same prescription type: " + where); });
+      }
+      if (!built && !ids.length) counts.noAlternatives += 1;
+    });
+  });
+  // Every branch was exercised on real engine output.
+  assert.ok(counts.plusOnMinusPage > 0 && counts.minusOnPlusPage > 0 && counts.sameTypeOut > 0 && counts.mixed > 0 && counts.noAlternatives > 0, JSON.stringify(counts));
+});
+
+test("farsighted Rx on every nearsighted page routes to the farsighted mask(s) that build it", function () {
+  var rec = recFor(eye(2.75, 0), eye(3.5, 0));
+  PAGES.filter(function (page) { return page.product.lensType === "minus"; }).forEach(function (page) {
+    assert.equal(Checker.incompatibilityReason(page.product, rec, Products.supportsPower, page.displayName).kind, "lens-type", page.label);
+    assert.deepEqual(Checker.compatibleAlternatives(Products, page.product, rec).map(function (p) { return p.id; }), ["obsidian-farsighted"], page.label);
+  });
+});
+
+test("nearsighted Rx on Obsidian Farsighted routes only to nearsighted masks that build the pair", function () {
+  var far = product("obsidian-farsighted");
+  var ids = function (right, left) { return Checker.compatibleAlternatives(Products, far, recFor(right, left)).map(function (p) { return p.id; }).sort(); };
+  assert.deepEqual(ids(eye(-3, 0), eye(-2.5, 0)), ["lumix", "obsidian-nearsighted", "rover", "titan"]);
+  assert.deepEqual(ids(eye(-1.25, 0), eye(-1.25, 0)), ["obsidian-nearsighted"], "-1.00 is only stocked by Obsidian Near");
+  assert.deepEqual(ids(eye(-8, 0), eye(-7, 0)), ["obsidian-nearsighted"], "beyond -6.00 only Obsidian Near");
+  assert.deepEqual(ids(eye(-3, 0), eye(-7, 0)), ["obsidian-nearsighted"], "each eye must be buildable");
+});
+
+test("no compatible product: mixed plus/minus shows the help message, never an invalid mask", function () {
+  PAGES.forEach(function (page) {
+    var rec = recFor(eye(-3, 0), eye(3, 0));
+    assert.deepEqual(Checker.compatibleAlternatives(Products, page.product, rec), [], page.label);
+    assert.equal(Checker.incompatibilityReason(page.product, rec, Products.supportsPower, page.displayName).kind, "mixed", page.label);
+  });
+  assert.equal(Checker.NO_ALTERNATIVES_MESSAGE, "None of our current prescription masks stock this exact lens combination. Email info@oceansoptics.com and we'll help you find an option.");
+  var source = fs.readFileSync(path.join(__dirname, "base/assets/oo-product-rx-checker-v53.js"), "utf8");
+  assert.match(source, /if \(!alternatives\.length\) \{\s+section\.appendChild\(el\(doc, "p", "oo-rx-checker__alternatives-empty", NO_ALTERNATIVES_MESSAGE\)\);/);
+});
+
+test("no product-specific routing in the checker: the only catalogue id is the Obsidian Clear handle alias", function () {
+  var source = fs.readFileSync(path.join(__dirname, "base/assets/oo-product-rx-checker-v53.js"), "utf8");
+  var mentions = Products.CATALOG.reduce(function (all, p) {
+    var hits = source.split('"' + p.id + '"').length - 1;
+    return hits ? all.concat(p.id + " x" + hits) : all;
+  }, []);
+  assert.deepEqual(mentions, ["obsidian-nearsighted x1"]);
+  assert.match(source, /"prescription-scuba-dive-snorkel-mask-optical": "obsidian-nearsighted"/);
+  var code = source.replace(/^\s*\/\/.*$/gm, "");
+  assert.doesNotMatch(code, /Rx Rover|Rx Lumix|Rx Titan|Rx Obsidian/, "no product names hard-coded in checker code");
+});
