@@ -58,11 +58,21 @@ test("mixed plano / Rx pairs route by the non-plano eye", function () {
   assert.equal(Products.findCompatibleProducts(-2, 2).type, "mixed");
 });
 
-test("SPH -0.75 stays 0.00 in the engine and now shows compatible plano masks", function () {
-  var eye = V53.calculateEyeRecommendationV53({ sphere: "-0.75", cylinder: "0", axis: "" }, "Right");
+test("SPH -0.25 stays 0.00 in the engine and shows compatible plano masks", function () {
+  var eye = V53.calculateEyeRecommendationV53({ sphere: "-0.25", cylinder: "0", axis: "" }, "Right");
   assert.equal(eye.recommendation, "0.00");
-  assert.equal(eye.stockRule, "plano-to-first-minus-gap");
+  assert.equal(eye.lowMinusChoice, false);
   assert.deepEqual(ids(eye.finalStockPower, eye.finalStockPower), ["obsidian-nearsighted", "rover", "titan", "lumix"]);
+});
+
+test("SPH -0.75 is a low-minus choice: -1.00 primary, 0.00 softer alternative", function () {
+  var eye = V53.calculateEyeRecommendationV53({ sphere: "-0.75", cylinder: "0", axis: "" }, "Right");
+  assert.equal(eye.recommendation, "-1.00");
+  assert.equal(eye.stockRule, "low-minus-choice");
+  assert.equal(eye.lowMinusChoice, true);
+  assert.equal(eye.alternativePower, 0);
+  assert.deepEqual(ids(eye.finalStockPower, eye.finalStockPower), ["obsidian-nearsighted"]);
+  assert.deepEqual(ids(eye.alternativePower, eye.alternativePower), ["obsidian-nearsighted", "rover", "titan", "lumix"]);
 });
 
 test("plano is presented as Plano (0.00), not as an error", function () {
@@ -92,5 +102,5 @@ test("plano handoff URLs keep the selected variant, config and source", function
 
 test("the V5.3 engine file is the approved midpoint-rule engine", function () {
   var hash = crypto.createHash("sha256").update(fs.readFileSync(path.join(__dirname, "lens-calculator-v53.js"))).digest("hex");
-  assert.equal(hash, "ce4a511d8307ff79904241d51eaf833d450c0e4f105e9fe1bc6590d8064f4ecf");
+  assert.equal(hash, "a658483de3a1ba7f2237ef1f8f89afcc3a71fd9d46b6ea73e049f7be42aca6fa");
 });

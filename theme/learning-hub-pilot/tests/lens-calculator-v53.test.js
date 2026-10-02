@@ -222,7 +222,6 @@ test("plano-to-first-minus gap: less than 0.50 D of minus uses plano, 0.50 D or 
 test("approved gap cases: SE -1.00 or stronger (inside the gap) gives -1.00, weaker gives plano", function () {
   var cases = [
     [-1.375, -0.875, -1], [-1.25, -0.75, -1], [-1.125, -0.625, -1], [-1.01, -0.51, -1],
-    [-1.0, -0.5, -1], [-0.99, -0.49, 0], [-0.875, -0.375, 0], [-0.75, -0.25, 0]
   ];
   cases.forEach(function (entry) {
     var result = V53.computeV53Recommendation(entry[0]);
@@ -235,6 +234,23 @@ test("approved gap cases: SE -1.00 or stronger (inside the gap) gives -1.00, wea
   var eye = V53.calculateEyeRecommendationV53({ sphere: "-1.00", cylinder: "-0.75", axis: "90" }, "Right");
   assert.equal(eye.recommendation, "-1.00");
   assert.equal(eye.stockRule, "plano-to-first-minus-gap");
+});
+
+test("low-minus choice zone (SE beyond -0.50 to -1.00): -1.00 primary, 0.00 softer alternative", function () {
+  [[-1.0, -0.5], [-0.99, -0.49], [-0.875, -0.375], [-0.75, -0.25], [-0.625, -0.125]].forEach(function (entry) {
+    var result = V53.computeV53Recommendation(entry[0]);
+    assert.ok(Math.abs(result.preSnapTarget - entry[1]) < EPSILON, "target for SE " + entry[0]);
+    assert.equal(result.finalPower, -1, "primary for SE " + entry[0]);
+    assert.equal(result.stockRule, V53.LOW_MINUS_CHOICE_RULE);
+    assert.equal(result.lowMinusChoice, true);
+    assert.equal(result.alternativePower, 0);
+    assert.equal(result.stockStatus, "OK");
+  });
+  [-1.01, -1.125, -1.5, -3, -0.25, -0.375].forEach(function (se) {
+    var result = V53.computeV53Recommendation(se);
+    assert.equal(result.lowMinusChoice, false, "SE " + se);
+    assert.equal(result.alternativePower, null, "SE " + se);
+  });
 });
 
 test("normalization, 0.50 D adjustment, CYL bands and warnings remain V5.2-equivalent", function () {

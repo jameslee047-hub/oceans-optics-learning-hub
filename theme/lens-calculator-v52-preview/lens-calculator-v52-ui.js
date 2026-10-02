@@ -289,7 +289,18 @@
       : "This option uses your spherical equivalent — SPH plus half of your CYL.";
   }
 
-  function stockExplanation(recommended, target) {
+  // True when the reference (SE, or the Closer-to-SPH base) is in the
+  // engine's low-minus choice zone: -1.00 primary, 0.00 softer alternative.
+  function isLowMinusChoice(reference, target) {
+    var engine = window.OOLensCalculatorV53;
+    if (!engine || typeof engine.lowMinusChoiceSelection !== "function") return false;
+    return engine.lowMinusChoiceSelection(target, reference, engine.V53_CONFIG.myopiaAvailablePowers) !== null;
+  }
+
+  function stockExplanation(recommended, target, lowMinusChoice) {
+    if (lowMinusChoice) {
+      return "There is no lens between 0.00 and -1.00 D, so the two options sit either side of your adjusted value. We recommend -1.00: it keeps some correction and may give slightly crisper distance vision, although it may feel a little stronger underwater. 0.00 is a softer option with less correction; contact us if you'd prefer it.";
+    }
     if (target < 0 && target > -1) {
       return "There is no lens between 0.00 and -1.00 D. If the adjusted value needs less than 0.50 D of correction we use 0.00; if it needs 0.50 D or more we use -1.00.";
     }
@@ -323,7 +334,13 @@
       target: usesAlternative ? highEye.alternativeTarget : eyeResult.preSnapTarget,
       finalRecommendation: recommended,
       referenceExplanation: sphereOnlyExplanation(usesAlternative),
-      stockExplanation: stockExplanation(recommended, usesAlternative ? highEye.alternativeTarget : eyeResult.preSnapTarget)
+      stockExplanation: stockExplanation(
+        recommended,
+        usesAlternative ? highEye.alternativeTarget : eyeResult.preSnapTarget,
+        usesAlternative
+          ? isLowMinusChoice(highEye.quarterCylinderBase, highEye.alternativeTarget)
+          : eyeResult.lowMinusChoice === true
+      )
     };
   }
 

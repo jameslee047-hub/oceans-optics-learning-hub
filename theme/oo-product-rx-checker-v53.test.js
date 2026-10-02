@@ -41,7 +41,7 @@ function pair(calc) {
 
 test("uses the approved V5.3 engine", function () {
   var hash = crypto.createHash("sha256").update(fs.readFileSync(path.join(SOURCE_DIR, "lens-calculator-v53.js"))).digest("hex");
-  assert.equal(hash, "ce4a511d8307ff79904241d51eaf833d450c0e4f105e9fe1bc6590d8064f4ecf");
+  assert.equal(hash, "a658483de3a1ba7f2237ef1f8f89afcc3a71fd9d46b6ea73e049f7be42aca6fa");
 });
 
 test("every active product handle, including white variants, maps to its catalog family", function () {
@@ -55,7 +55,7 @@ test("every active product handle, including white variants, maps to its catalog
 });
 
 test("recommendations come straight from the engine for each eye", function () {
-  [[eye(-1, -0.75), "-1.00"], [eye(-0.75, 0), "0.00"], [eye(-1, 0), "-1.00"], [eye(2.75, 0), "+2.00"], [eye(-3.25, -0.5, 90), "-3.00"]].forEach(function (entry) {
+  [[eye(-1, -0.75), "-1.00"], [eye(-0.25, 0), "0.00"], [eye(-0.75, 0), "-1.00"], [eye(-1, 0), "-1.00"], [eye(2.75, 0), "+2.00"], [eye(-3.25, -0.5, 90), "-3.00"]].forEach(function (entry) {
     var calc = Checker.calculate(Engine, HighCyl, { right: entry[0], left: entry[0] });
     assert.equal(calc.rightResult.recommendation, Engine.calculateEyeRecommendationV53(Checker.engineInput(entry[0]), "E").recommendation);
     assert.equal(calc.rightResult.recommendation, entry[1]);
@@ -65,8 +65,8 @@ test("recommendations come straight from the engine for each eye", function () {
 test("Obsidian Near: standard minus, plano, mixed plano and too-strong pairs", function () {
   assert.deepEqual(pair(check("obsidian-nearsighted", eye(-3, 0), eye(-2.5, 0)).calc), ["-2.50", "-2.00"]);
   assert.equal(check("obsidian-nearsighted", eye(-3, 0), eye(-2.5, 0)).build.buildable, true);
-  assert.equal(check("obsidian-nearsighted", eye(-0.75, 0), eye(-0.75, 0)).build.buildable, true);
-  assert.equal(check("obsidian-nearsighted", eye(-0.75, 0), eye(-1.25, 0)).build.buildable, true);
+  assert.equal(check("obsidian-nearsighted", eye(-0.25, 0), eye(-0.25, 0)).build.buildable, true);
+  assert.equal(check("obsidian-nearsighted", eye(-0.25, 0), eye(-1.25, 0)).build.buildable, true);
   // The engine caps at the strongest stocked lens (-9.00), which Obsidian Near builds.
   assert.deepEqual(pair(check("obsidian-nearsighted", eye(-10, 0), eye(-10, 0)).calc), ["-9.00", "-9.00"]);
   assert.equal(check("obsidian-nearsighted", eye(-10, 0), eye(-10, 0)).build.buildable, true);
@@ -83,8 +83,8 @@ test("Obsidian clear-seal alias uses the Obsidian Near stock, including -8.50", 
   assert.deepEqual(pair(eight50.calc).indexOf("-8.50") >= 0, true, JSON.stringify(pair(eight50.calc)));
   assert.equal(eight50.build.buildable, true);
   assert.equal(build(eye(-3, 0), eye(-2.5, 0)).build.buildable, true);
-  assert.equal(build(eye(-0.75, 0), eye(-0.75, 0)).build.buildable, true);
-  assert.equal(build(eye(-0.75, 0), eye(-3, 0)).build.buildable, true);
+  assert.equal(build(eye(-0.25, 0), eye(-0.25, 0)).build.buildable, true);
+  assert.equal(build(eye(-0.25, 0), eye(-3, 0)).build.buildable, true);
   assert.equal(build(eye(2.75, 0), eye(2.75, 0)).build.buildable, false);
   // Live Avis labels on this product (trailing spaces, bracketed plano) parse.
   ["-3.00 ", "-1.50 ", "-8.50", "0 [No Correction]"].forEach(function (label) {
@@ -96,18 +96,18 @@ test("Obsidian clear-seal alias uses the Obsidian Near stock, including -8.50", 
 test("Obsidian Far: standard plus, plano and minus pairs", function () {
   assert.deepEqual(pair(check("obsidian-farsighted", eye(2.75, 0), eye(3.5, 0)).calc), ["+2.00", "+3.00"]);
   assert.equal(check("obsidian-farsighted", eye(2.75, 0), eye(3.5, 0)).build.buildable, true);
-  assert.equal(check("obsidian-farsighted", eye(2.75, 0), eye(-0.75, 0)).build.buildable, true);
-  assert.equal(check("obsidian-farsighted", eye(-0.75, 0), eye(-0.75, 0)).build.buildable, true);
+  assert.equal(check("obsidian-farsighted", eye(2.75, 0), eye(-0.25, 0)).build.buildable, true);
+  assert.equal(check("obsidian-farsighted", eye(-0.25, 0), eye(-0.25, 0)).build.buildable, true);
   assert.equal(check("obsidian-farsighted", eye(-3, 0), eye(-3, 0)).build.buildable, false);
 });
 
 test("Rover, Lumix and Titan: -1.50 to -6.00 plus plano", function () {
   ["rover", "lumix", "titan"].forEach(function (id) {
     assert.equal(check(id, eye(-3, 0), eye(-2.5, 0)).build.buildable, true, id + " standard");
-    assert.equal(check(id, eye(-0.75, 0), eye(-0.75, 0)).build.buildable, true, id + " 0.00/0.00");
-    assert.equal(check(id, eye(-0.75, 0), eye(-3, 0)).build.buildable, true, id + " 0.00/-2.50");
-    assert.equal(check(id, eye(-3, 0), eye(-0.75, 0)).build.buildable, true, id + " -2.50/0.00");
-    var incompatible = check(id, eye(-0.75, 0), eye(-1.25, 0));
+    assert.equal(check(id, eye(-0.25, 0), eye(-0.25, 0)).build.buildable, true, id + " 0.00/0.00");
+    assert.equal(check(id, eye(-0.25, 0), eye(-3, 0)).build.buildable, true, id + " 0.00/-2.50");
+    assert.equal(check(id, eye(-3, 0), eye(-0.25, 0)).build.buildable, true, id + " -2.50/0.00");
+    var incompatible = check(id, eye(-0.25, 0), eye(-1.25, 0));
     assert.deepEqual(pair(incompatible.calc), ["0.00", "-1.00"]);
     assert.equal(incompatible.build.buildable, false, id + " 0.00/-1.00");
     assert.equal(check(id, eye(-7, 0), eye(-7, 0)).build.buildable, false, id + " -6.50");
@@ -136,11 +136,11 @@ test("missing AXIS is required only when CYL is not zero; SE -0.50 needs review"
 });
 
 test("the confirmation payload and handoff summary match the shared backend and handoff contracts", function () {
-  var entry = { right: eye(-0.75, 0), left: eye(-3, -0.5, 170) };
+  var entry = { right: eye(-0.25, 0), left: eye(-3, -0.5, 170) };
   var calc = Checker.calculate(Engine, HighCyl, entry);
   var prescription = { right: Checker.confirmedEye(entry.right), left: Checker.confirmedEye(entry.left) };
   var payload = Rx.buildConfirmationPayload(prescription, calc, "Partner Rx");
-  assert.deepEqual(payload.right, { sph: -0.75, cyl: 0, cylSign: "+", axis: null });
+  assert.deepEqual(payload.right, { sph: -0.25, cyl: 0, cylSign: "+", axis: null });
   assert.deepEqual(payload.left, { sph: -3, cyl: 0.5, cylSign: "-", axis: 170 });
   assert.equal(payload.recommendedRight, 0);
   assert.equal(payload.recommendedLeft, -2.5);

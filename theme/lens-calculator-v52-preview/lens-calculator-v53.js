@@ -36,6 +36,12 @@
  * ordinary stock step: SE below +0.50 -> 0.00, exactly +0.50 -> manual
  * review, above +0.50 up to +1.00 -> +1.00. Minus selection is unchanged.
  *
+ * LOW-MINUS CHOICE (2026-10-02): myopic SE beyond -0.50 up to -1.00 gets
+ * -1.00 as the primary recommendation with 0.00 as a softer alternative
+ * (lowMinusChoice / alternativePower / stockRule "low-minus-choice").
+ * SE exactly -0.50 stays manual review; SE closer to zero stays 0.00; SE
+ * stronger than -1.00 uses the unchanged minus selection.
+ *
  * Version: 5.3.0-experimental
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
@@ -573,6 +579,51 @@
   }
 
   // ==========================================================================
+  // LOW-MINUS CHOICE (2026-10-02).
+  //
+  // Decided on SE, before the plano-to-first-minus gap rule. For a myopic SE
+  // beyond half the weakest minus stock power (-0.50) up to that power
+  // (-1.00), the primary recommendation is -1.00 so a customer with real
+  // myopia keeps correction, and 0.00 is reported as a softer alternative.
+  //   SE closer to zero than -0.50   -> unchanged (0.00)
+  //   SE exactly -0.50               -> unchanged (manual review)
+  //   SE beyond -0.50 to -1.00       -> -1.00, softer alternative 0.00
+  //   SE stronger than -1.00         -> unchanged minus selection
+  // ==========================================================================
+
+  var LOW_MINUS_CHOICE_RULE = "low-minus-choice";
+
+  function lowMinusChoiceSelection(target, se, availablePowers) {
+    var corrective = weakestCorrectivePower(availablePowers);
+    if (!(corrective < 0) || !(se < -EPSILON)) return null;
+    var magnitude = Math.abs(se);
+    var half = Math.abs(corrective) / 2;
+    if (!(magnitude > half + EPSILON) || !(magnitude <= Math.abs(corrective) + EPSILON)) return null;
+    return {
+      power: corrective,
+      stockStatus: "OK",
+      rule: LOW_MINUS_CHOICE_RULE,
+      lowMinusChoice: true,
+      alternativePower: 0,
+      reason:
+        "Low-minus choice: the spherical equivalent (" +
+        se.toFixed(3) +
+        ") is between -0.50 and " +
+        formatSigned(corrective) +
+        ", so " +
+        formatSigned(corrective) +
+        " is recommended to keep some correction, with 0.00 available as a softer alternative.",
+      candidates: [
+        { power: corrective, distanceFromTarget: Math.abs(target - corrective) },
+        { power: 0, distanceFromTarget: Math.abs(target) }
+      ],
+      tieCandidates: null,
+      stockCandidates: null,
+      rejectedStrongerCandidates: null
+    };
+  }
+
+  // ==========================================================================
   // FARSIGHTED (PLUS) STOCK SELECTION (revised 2026-09-30).
   //
   // LOW-PLUS GUARD (SE up to +1.00): plano is not treated as an ordinary
@@ -637,6 +688,9 @@
    * @returns {{power: number|null, stockStatus: string, reason: string|null, candidates: Array|null}}
    */
   function selectStockPower(target, se, availablePowers) {
+    var lowMinus = lowMinusChoiceSelection(target, se, availablePowers);
+    if (lowMinus) return lowMinus;
+
     var planoGap = planoToFirstMinusGapSelection(target, availablePowers);
     if (planoGap) return planoGap;
 
@@ -738,7 +792,7 @@
 
     var selection = selectStockPower(preSnapTarget, se, availablePowers);
     var ooAdjustment = baseAdjustment;
-    if (selection.rule === "plano-to-first-minus-gap" || selection.rule === PLUS_NEAREST_STOCK_RULE) {
+    if (selection.rule === "plano-to-first-minus-gap" || selection.rule === PLUS_NEAREST_STOCK_RULE || selection.rule === LOW_MINUS_CHOICE_RULE) {
       ooAdjustment += " V5.3 " + selection.reason;
     } else if (selection.reason) {
       ooAdjustment +=
@@ -769,6 +823,8 @@
       planoCrossoverCandidates: selection.rule ? null : selection.candidates,
       planoGapCandidates: selection.rule === "plano-to-first-minus-gap" ? selection.candidates : null,
       stockRule: selection.rule || null,
+      lowMinusChoice: selection.lowMinusChoice === true,
+      alternativePower: selection.lowMinusChoice === true ? selection.alternativePower : null,
       tieCandidates: selection.tieCandidates,
       stockCandidates: selection.stockCandidates,
       rejectedStrongerCandidates: selection.rejectedStrongerCandidates,
@@ -875,6 +931,8 @@
         finalStockPower: 0,
         planoCrossoverCandidates: null,
         stockRule: null,
+        lowMinusChoice: false,
+        alternativePower: null,
         tieCandidates: null,
         stockCandidates: null,
         rejectedStrongerCandidates: null,
@@ -924,6 +982,8 @@
       finalStockPower: rec.finalPower,
       planoCrossoverCandidates: rec.planoCrossoverCandidates,
       stockRule: rec.stockRule,
+      lowMinusChoice: rec.lowMinusChoice,
+      alternativePower: rec.alternativePower,
       tieCandidates: rec.tieCandidates,
       stockCandidates: rec.stockCandidates,
       rejectedStrongerCandidates: rec.rejectedStrongerCandidates,
@@ -940,11 +1000,38 @@
    * @param {object} rawLeftInput
    * @returns {{right:object, left:object, valid:boolean, errors:string[]}}
    */
+  /**
+   * Pair-level softer alternative for the low-minus choice. Returns null
+   * unless at least one eye is a low-minus choice; otherwise one softer pair
+   * where only the low-minus-choice eye(s) use their alternative (0.00).
+   *
+   * @param {object} right - calculateEyeRecommendationV53 result
+   * @param {object} left - calculateEyeRecommendationV53 result
+   * @returns {{right:number, left:number}|null}
+   */
+  function lowMinusSofterAlternative(right, left) {
+    var rightChoice = Boolean(right && right.lowMinusChoice);
+    var leftChoice = Boolean(left && left.lowMinusChoice);
+    if (!rightChoice && !leftChoice) return null;
+    if ((!rightChoice && right.finalStockPower === null) || (!leftChoice && left.finalStockPower === null)) return null;
+    return {
+      right: rightChoice ? right.alternativePower : right.finalStockPower,
+      left: leftChoice ? left.alternativePower : left.finalStockPower
+    };
+  }
+
   function calculatePrescriptionPairV53(rawRightInput, rawLeftInput) {
     var right = calculateEyeRecommendationV53(rawRightInput, "Right (OD)");
     var left = calculateEyeRecommendationV53(rawLeftInput, "Left (OS)");
     var errors = [].concat(right.errors || [], left.errors || []);
-    return { right: right, left: left, valid: right.valid && left.valid, errors: errors };
+    var valid = right.valid && left.valid;
+    return {
+      right: right,
+      left: left,
+      valid: valid,
+      errors: errors,
+      softerAlternative: valid ? lowMinusSofterAlternative(right, left) : null
+    };
   }
 
   // ==========================================================================
@@ -1026,6 +1113,9 @@
     nearestAvailablePowerTowardZero: nearestAvailablePowerTowardZero,
     directionalStockPowerTowardZero: directionalStockPowerTowardZero,
     plusNearestStockSelection: plusNearestStockSelection,
+    lowMinusChoiceSelection: lowMinusChoiceSelection,
+    lowMinusSofterAlternative: lowMinusSofterAlternative,
+    LOW_MINUS_CHOICE_RULE: LOW_MINUS_CHOICE_RULE,
     PLUS_NEAREST_STOCK_RULE: PLUS_NEAREST_STOCK_RULE,
     computeContinuousTarget: computeContinuousTarget,
     nextWeakerAvailablePower: nextWeakerAvailablePower,
