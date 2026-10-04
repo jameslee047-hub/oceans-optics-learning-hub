@@ -2,7 +2,7 @@
 {{ 'oo-product-rx-checker-v53.css' | asset_url | stylesheet_tag }}
 
 <section
-  class="oo-rx-checker page-width"
+  class="oo-rx-checker"
   id="oo-rx-checker-{{ section.id }}"
   data-oo-product-rx-checker
   data-product-handle="{{ product.handle | escape }}"
@@ -11,70 +11,110 @@
   aria-labelledby="oo-rx-checker-title-{{ section.id }}"
   aria-busy="false"
 >
-  <h2 class="oo-rx-checker__title" id="oo-rx-checker-title-{{ section.id }}">Check your prescription for this mask</h2>
-  <p class="oo-rx-checker__intro">We'll work out your recommended underwater lenses and set them on this mask for you.</p>
+  <h2 class="oo-rx-checker__title" id="oo-rx-checker-title-{{ section.id }}">Underwater Lens Calculator</h2>
 
-  <div class="oo-rx-checker__upload">
-    <label class="oo-rx-checker__upload-button" for="oo-rx-checker-file-{{ section.id }}">Upload prescription</label>
-    <input
-      class="oo-rx-checker__file"
-      id="oo-rx-checker-file-{{ section.id }}"
-      type="file"
-      accept="image/jpeg,image/png,image/webp,image/gif,application/pdf"
-      data-checker-file
-    >
+  <div class="oo-rx-checker__box">
+    <p class="oo-rx-checker__intro"><span class="oo-rx-checker__tip oo-rx-checker__tip--inline" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Underwater lens strength help" aria-expanded="false" aria-describedby="oo-rx-tip-intro-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-intro-{{ section.id }}" role="tooltip">Underwater, light bends differently and can make your usual prescription feel too strong. We adjust it slightly for comfortable vision underwater.</span></span>Enter or upload your prescription to find your recommended underwater lens strength for this mask.</p>
+
+    <div class="oo-rx-checker__upload">
+      <label class="oo-rx-checker__upload-button" for="oo-rx-checker-file-{{ section.id }}">Upload prescription</label>
+      <input
+        class="oo-rx-checker__file"
+        id="oo-rx-checker-file-{{ section.id }}"
+        type="file"
+        accept="image/jpeg,image/png,image/webp,image/gif,application/pdf"
+        data-checker-file
+      >
+      <span class="oo-rx-checker__divider">or enter it below</span>
+    </div>
+
+    <div class="oo-rx-checker__review" data-checker-review hidden>
+      <p class="oo-rx-checker__review-title">Crop to just your prescription</p>
+      <p class="oo-rx-checker__review-help">Drag the corners to select only the prescription values. Remove names, addresses and anything else you don't want to send. Only the selected area is uploaded.</p>
+      <label class="oo-rx-checker__pages" data-checker-pages hidden>
+        PDF page
+        <select data-checker-page aria-label="PDF page"></select>
+      </label>
+      <div class="oo-rx-checker__crop">
+        <img alt="Prescription to crop" width="1200" height="1600" data-checker-crop-image>
+      </div>
+      <div class="oo-rx-checker__crop-tools">
+        <button type="button" class="oo-rx-checker__tool" data-checker-rotate-left>Rotate left</button>
+        <button type="button" class="oo-rx-checker__tool" data-checker-rotate-right>Rotate right</button>
+        <button type="button" class="oo-rx-checker__tool" data-checker-reset>Reset</button>
+      </div>
+      <button type="button" class="oo-rx-checker__use" data-checker-use disabled>Use this area</button>
+      <div class="oo-rx-checker__crop-tools">
+        <button type="button" class="oo-rx-checker__tool" data-checker-choose-another>Choose another file</button>
+        <button type="button" class="oo-rx-checker__tool" data-checker-cancel>Cancel</button>
+      </div>
+    </div>
+
+    <form class="oo-rx-checker__form" data-checker-form novalidate>
+      <div class="oo-rx-checker__eyes">
+      <div class="oo-rx-checker__eye" data-eye="right">
+        <span class="oo-rx-checker__eye-title">Sphere Right (OD)</span>
+        <span class="oo-rx-checker__tip oo-rx-checker__tip--corner" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Right (OD) sphere sign help" aria-expanded="false" aria-describedby="oo-rx-tip-right-sph-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-right-sph-{{ section.id }}" role="tooltip">Choose − for nearsighted (myopia) or + for farsighted (hyperopia)</span></span>
+        <div class="oo-rx-checker__sph">
+          <button type="button" class="oo-rx-checker__sign" data-sign="" data-sphere-sign aria-label="Right (OD) sphere sign: choose + or −">+/-</button>
+          <span class="oo-rx-checker__picker">
+            <select data-sphere-int aria-label="Right (OD) sphere whole number"></select>
+            <span class="oo-rx-checker__dot" aria-hidden="true">.</span>
+            <select data-sphere-frac aria-label="Right (OD) sphere decimal"></select>
+          </span>
+          <input type="hidden" data-field="sphere" value="">
+        </div>
+        <div class="oo-rx-checker__row">
+          <span class="oo-rx-checker__row-label">CYL:</span>
+          <button type="button" class="oo-rx-checker__row-sign" data-sign="" data-cyl-sign aria-label="Right (OD) cylinder sign: choose + or −">+/-</button>
+          <select data-cyl-mag aria-label="Right (OD) cylinder"></select>
+          <span class="oo-rx-checker__tip" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Right (OD) CYL help" aria-expanded="false" aria-describedby="oo-rx-tip-right-cyl-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-right-cyl-{{ section.id }}" role="tooltip">Check your prescription for the CYL value and its + or − sign. If you have no CYL, leave it at 0.00.</span></span>
+          <input type="hidden" data-field="cylinder" value="0">
+        </div>
+        <div class="oo-rx-checker__row">
+          <span class="oo-rx-checker__row-label">AXIS:</span>
+          <select data-field="axis" aria-label="Right (OD) axis"></select>
+          <span class="oo-rx-checker__tip" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Right (OD) AXIS help" aria-expanded="false" aria-describedby="oo-rx-tip-right-axis-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-right-axis-{{ section.id }}" role="tooltip">Enter the AXIS number shown with your CYL, from 001 to 180. AXIS is only required when CYL is not 0.00.</span></span>
+        </div>
+      </div>
+      <div class="oo-rx-checker__eye" data-eye="left">
+        <span class="oo-rx-checker__eye-title">Sphere Left (OS)</span>
+        <span class="oo-rx-checker__tip oo-rx-checker__tip--corner" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Left (OS) sphere sign help" aria-expanded="false" aria-describedby="oo-rx-tip-left-sph-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-left-sph-{{ section.id }}" role="tooltip">Choose − for nearsighted (myopia) or + for farsighted (hyperopia)</span></span>
+        <div class="oo-rx-checker__sph">
+          <button type="button" class="oo-rx-checker__sign" data-sign="" data-sphere-sign aria-label="Left (OS) sphere sign: choose + or −">+/-</button>
+          <span class="oo-rx-checker__picker">
+            <select data-sphere-int aria-label="Left (OS) sphere whole number"></select>
+            <span class="oo-rx-checker__dot" aria-hidden="true">.</span>
+            <select data-sphere-frac aria-label="Left (OS) sphere decimal"></select>
+          </span>
+          <input type="hidden" data-field="sphere" value="">
+        </div>
+        <div class="oo-rx-checker__row">
+          <span class="oo-rx-checker__row-label">CYL:</span>
+          <button type="button" class="oo-rx-checker__row-sign" data-sign="" data-cyl-sign aria-label="Left (OS) cylinder sign: choose + or −">+/-</button>
+          <select data-cyl-mag aria-label="Left (OS) cylinder"></select>
+          <span class="oo-rx-checker__tip" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Left (OS) CYL help" aria-expanded="false" aria-describedby="oo-rx-tip-left-cyl-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-left-cyl-{{ section.id }}" role="tooltip">Check your prescription for the CYL value and its + or − sign. If you have no CYL, leave it at 0.00.</span></span>
+          <input type="hidden" data-field="cylinder" value="0">
+        </div>
+        <div class="oo-rx-checker__row">
+          <span class="oo-rx-checker__row-label">AXIS:</span>
+          <select data-field="axis" aria-label="Left (OS) axis"></select>
+          <span class="oo-rx-checker__tip" data-checker-tip><button type="button" class="oo-rx-checker__tip-button" aria-label="Left (OS) AXIS help" aria-expanded="false" aria-describedby="oo-rx-tip-left-axis-{{ section.id }}"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="12" opacity=".12"></circle><path d="M11 10h2v7h-2zm0-3h2v2h-2z"></path></svg></button><span class="oo-rx-checker__tip-text" id="oo-rx-tip-left-axis-{{ section.id }}" role="tooltip">Enter the AXIS number shown with your CYL, from 001 to 180. AXIS is only required when CYL is not 0.00.</span></span>
+        </div>
+      </div>
+      </div>
+
+      <label class="oo-rx-checker__label-field" for="oo-rx-checker-label-{{ section.id }}">
+        Who is this prescription for? <span>(optional)</span>
+        <input class="oo-rx-checker__label-input" id="oo-rx-checker-label-{{ section.id }}" type="text" maxlength="60" autocomplete="off" placeholder="e.g. James" data-checker-label>
+      </label>
+
+      <button class="oo-rx-checker__check" type="submit" data-checker-check>Find My Lens Strength</button>
+    </form>
+
+    <p class="oo-rx-checker__status" data-checker-status role="status" aria-live="polite" hidden></p>
+    <div class="oo-rx-checker__result" data-checker-result aria-live="polite" hidden></div>
   </div>
-
-  <div class="oo-rx-checker__review" data-checker-review hidden>
-    <p class="oo-rx-checker__review-title">Crop to just your prescription</p>
-    <p class="oo-rx-checker__review-help">Drag the corners to select only the prescription values. Remove names, addresses and anything else you don't want to send. Only the selected area is uploaded.</p>
-    <label class="oo-rx-checker__pages" data-checker-pages hidden>
-      PDF page
-      <select data-checker-page aria-label="PDF page"></select>
-    </label>
-    <div class="oo-rx-checker__crop">
-      <img alt="Prescription to crop" width="1200" height="1600" data-checker-crop-image>
-    </div>
-    <div class="oo-rx-checker__crop-tools">
-      <button type="button" class="oo-rx-checker__tool" data-checker-rotate-left>Rotate left</button>
-      <button type="button" class="oo-rx-checker__tool" data-checker-rotate-right>Rotate right</button>
-      <button type="button" class="oo-rx-checker__tool" data-checker-reset>Reset</button>
-    </div>
-    <button type="button" class="oo-rx-checker__use" data-checker-use disabled>Use this area</button>
-    <div class="oo-rx-checker__crop-tools">
-      <button type="button" class="oo-rx-checker__tool" data-checker-choose-another>Choose another file</button>
-      <button type="button" class="oo-rx-checker__tool" data-checker-cancel>Cancel</button>
-    </div>
-  </div>
-
-  <p class="oo-rx-checker__divider"><span>or enter your prescription manually</span></p>
-
-  <form class="oo-rx-checker__form" data-checker-form novalidate>
-    <label class="oo-rx-checker__label-field" for="oo-rx-checker-label-{{ section.id }}">
-      Who is this prescription for? <span>(optional)</span>
-    </label>
-    <input class="oo-rx-checker__label-input" id="oo-rx-checker-label-{{ section.id }}" type="text" maxlength="60" autocomplete="off" placeholder="e.g. James" data-checker-label>
-
-    <div class="oo-rx-checker__eyes">
-      <fieldset class="oo-rx-checker__eye" data-eye="right">
-        <legend>Right eye (OD)</legend>
-        <label>SPH <select data-field="sphere" aria-label="Right SPH"></select></label>
-        <label>CYL <select data-field="cylinder" aria-label="Right CYL"></select></label>
-        <label>AXIS <select data-field="axis" aria-label="Right AXIS"></select></label>
-      </fieldset>
-      <fieldset class="oo-rx-checker__eye" data-eye="left">
-        <legend>Left eye (OS)</legend>
-        <label>SPH <select data-field="sphere" aria-label="Left SPH"></select></label>
-        <label>CYL <select data-field="cylinder" aria-label="Left CYL"></select></label>
-        <label>AXIS <select data-field="axis" aria-label="Left AXIS"></select></label>
-      </fieldset>
-    </div>
-
-    <button class="oo-rx-checker__check" type="submit" data-checker-check>Check this mask</button>
-  </form>
-
-  <p class="oo-rx-checker__status" data-checker-status role="status" aria-live="polite" hidden></p>
-  <div class="oo-rx-checker__result" data-checker-result aria-live="polite" hidden></div>
 </section>
 
 <script src="{{ 'oo-cropper-1.6.2.min.js' | asset_url }}" defer="defer"></script>
