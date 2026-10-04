@@ -210,11 +210,11 @@ function alternativesOn(id, right, left) {
   return Checker.compatibleAlternatives(Products, product(id), recFor(right, left)).map(function (p) { return p.id; });
 }
 
-test("Rover farsighted example: +1.00/+4.00, lens-type reason, only Rx Obsidian Farsighted offered", function () {
+test("Rover farsighted example: +2.00/+5.00, lens-type reason, only Rx Obsidian Farsighted offered", function () {
   var right = { sphere: "2.5", cylinder: "-0.75", axis: "171" };
   var left = { sphere: "4.25", cylinder: "2", axis: "125" };
   var rec = recFor(right, left);
-  assert.deepEqual([Products.formatPower(rec.recommendedRight), Products.formatPower(rec.recommendedLeft)], ["+1.00", "+4.00"]);
+  assert.deepEqual([Products.formatPower(rec.recommendedRight), Products.formatPower(rec.recommendedLeft)], ["+2.00", "+5.00"]);
   var reason = reasonOn("rover", right, left);
   assert.equal(reason.kind, "lens-type");
   assert.equal(reason.message, "Your prescription is farsighted (+). Rx Rover is available with nearsighted prescription lenses only.");
@@ -240,15 +240,15 @@ test("incompatibility reasons and alternatives come from actual catalogue builda
   assert.equal(reasonOn("lumix", eye(-7.5, 0), eye(-7, 0)).kind, "range");
   assert.deepEqual(alternativesOn("lumix", eye(-7.5, 0), eye(-7, 0)), ["obsidian-nearsighted"]);
   // plano / -1.00: Rover's range starts at -1.50; Obsidian Near builds it
-  var planoOne = recFor(eye(-0.75, 0), eye(-1.25, 0));
+  var planoOne = recFor(eye(-0.25, 0), eye(-1.25, 0));
   assert.deepEqual([planoOne.recommendedRight, planoOne.recommendedLeft], [0, -1]);
-  var planoGap = reasonOn("rover", eye(-0.75, 0), eye(-1.25, 0));
+  var planoGap = reasonOn("rover", eye(-0.25, 0), eye(-1.25, 0));
   assert.equal(planoGap.kind, "combination");
   assert.equal(planoGap.message, "This exact lens combination isn't available in Rx Rover.");
-  assert.deepEqual(alternativesOn("rover", eye(-0.75, 0), eye(-1.25, 0)), ["obsidian-nearsighted"]);
+  assert.deepEqual(alternativesOn("rover", eye(-0.25, 0), eye(-1.25, 0)), ["obsidian-nearsighted"]);
   // plano / -2.50: buildable on Rover, Titan, Lumix, Obsidian Near
-  assert.equal(reasonOn("rover", eye(-0.75, 0), eye(-3, 0)).kind, "ok");
-  assert.deepEqual(alternativesOn("obsidian-farsighted", eye(-0.75, 0), eye(-3, 0)).sort(), ["lumix", "obsidian-nearsighted", "rover", "titan"]);
+  assert.equal(reasonOn("rover", eye(-0.25, 0), eye(-3, 0)).kind, "ok");
+  assert.deepEqual(alternativesOn("obsidian-farsighted", eye(-0.25, 0), eye(-3, 0)).sort(), ["lumix", "obsidian-nearsighted", "rover", "titan"]);
   // Titan limits: -6.00 builds, -6.50 does not
   assert.equal(reasonOn("titan", eye(-6.5, 0), eye(-6.5, 0)).kind, "ok");
   assert.equal(reasonOn("titan", eye(-7, 0), eye(-7, 0)).kind, "range");
