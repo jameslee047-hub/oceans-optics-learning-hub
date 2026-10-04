@@ -206,7 +206,6 @@
     },
     "oo_quiz_card_9BTTnP": {
       "type": "oo-quiz-card",
-      "disabled": true,
       "name": "OO Quiz Card",
       "settings": {
         "eyebrow": "Rx Lens Strength + Face Fit",
@@ -226,6 +225,7 @@
     },
     "mask_sizing_tool_shortcut_pzWAYG": {
       "type": "mask-sizing-tool-shortcut",
+      "disabled": true,
       "name": "Mask fit shortcut",
       "settings": {
         "heading": "How would you like to find your mask fit?",
@@ -255,7 +255,8 @@
       }
     },
     "lens_calc_tool_product_XFpKQy": {
-      "type": "lens-calc-tool-product",
+      "type": "oo-lens-calculator-v53",
+      "disabled": true,
       "name": "Lens Calculator",
       "settings": {}
     },

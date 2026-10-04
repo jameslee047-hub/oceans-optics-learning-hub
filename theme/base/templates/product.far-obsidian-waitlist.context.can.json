@@ -1,0 +1,37 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "can"
+  },
+  "parent": "product.far-obsidian-waitlist.json",
+  "sections": {
+    "oo_product_rx_checker_v53_Vidyk": {
+      "type": "oo-product-rx-checker-v53",
+      "disabled": false,
+      "settings": {},
+      "blocks": {},
+      "block_order": [],
+      "name": "V5.3 Product Rx Checker"
+    }
+  },
+  "order": [
+    "1790846469df44da2f",
+    "breadcrumbs_ibnqUJ",
+    "main",
+    "blocks_tG6B3m",
+    "oo_product_rx_checker_v53_Vidyk",
+    "guide_product_page_pzJgnb",
+    "1714545178ae5672c1",
+    "related-products",
+    "featured_collection_rdVai9",
+    "17186861496a9246fa"
+  ]
+}

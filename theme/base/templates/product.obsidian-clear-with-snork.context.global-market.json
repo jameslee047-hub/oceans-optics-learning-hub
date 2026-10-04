@@ -8,46 +8,30 @@
  * ------------------------------------------------------------
  */
 {
-  "parent": "product.obsidian-clear-with-snork.json",
   "context": {
-    "market": "can"
+    "market": "global-market"
   },
+  "parent": "product.obsidian-clear-with-snork.json",
   "sections": {
     "main": {
       "settings": {},
       "blocks": {
-        "snorkel_set_coupon_AdNkLn": {
+        "snorkel_set_coupon_pQygK": {
           "type": "snorkel_set_coupon",
           "disabled": false,
           "settings": {
             "badge": "10% OFF",
-            "offer_label": "September Snorkel Set  Sale",
+            "offer_label": "Snorkel Set Sale",
             "offer_text": "Buy a Mask + Snorkel + Case & Get 10% OFF",
             "code_prefix": "Use code",
             "discount_code": "SNORKELSET10",
             "code_suffix": "at checkout.",
-            "copy_text": "Copy Code",
+            "copy_text": "Copy",
             "copied_text": "Copied",
             "margin_top": 6,
             "margin_bottom": 8,
             "color_blue": "#023059",
             "color_orange": "#b95e05"
-          }
-        },
-        "collapsible_tab_8w39TL": {
-          "settings": {
-            "content": "<p><strong>This mask features nearsighted (SPH) lenses in negative diopters (e.g., -1.50, -1.75, -2.00).</strong></p><p><strong>Tempered glass lenses for strength, safety, and clear underwater vision.</strong></p><p><strong>Need help? Chat with us live or email info@oceansoptics.com</strong></p>"
-          }
-        },
-        "collapsible_tab_AFrCjF": {
-          "settings": {
-            "heading": "Hand-Assembled, Free Shipping Over $70",
-            "content": "<p>Every Obsidian is made to order. Enjoy Free USPS tracked shipping when you spend $70 or $5.99 for orders under $70. Shipping takes 5-14 days. (5-10 on average)</p>"
-          }
-        },
-        "collapsible_tab_Fi4UYW": {
-          "settings": {
-            "content": "<p>Take advantage of our 30 days from delivery return policy — shop with confidence. Eligible items only. See our<em> </em><a href=\"/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\"><em>full return policy</em></a><em> </em>for more info.</p>"
           }
         }
       },
@@ -58,7 +42,7 @@
         "variant_picker",
         "quantity_selector",
         "price",
-        "snorkel_set_coupon_AdNkLn",
+        "snorkel_set_coupon_pQygK",
         "buy_buttons_XccnBF",
         "appstle_loyalty_appstle_loyalty_acquire_points_HPB6nb",
         "custom_liquid_zbmCLR",
@@ -72,29 +56,30 @@
         "description_34zGNX"
       ]
     },
-    "1790846587b2857069": {
-      "type": "apps",
+    "ns_cylinder_guide_8mmkC6": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    },
+    "oo_product_rx_checker_v53_3qHPE": {
+      "type": "oo-product-rx-checker-v53",
       "disabled": false,
+      "settings": {},
+      "blocks": {},
+      "block_order": [],
+      "name": "V5.3 Product Rx Checker"
+    },
+    "featured_collection_rdVai9": {
       "settings": {
-        "include_margins": true
+        "quick_add": "none",
+        "show_vendor": true
       },
-      "blocks": {
-        "essential_countdown_timer_app_block_ERfXG": {
-          "type": "shopify://apps/essential-countdown-timer/blocks/app-block/722378e8-5a70-4eae-aa89-9e44e8e9f6de",
-          "disabled": false,
-          "settings": {
-            "id": "cmunkatgm003nlb64tqtz356r"
-          }
-        }
-      },
-      "block_order": [
-        "essential_countdown_timer_app_block_ERfXG"
-      ]
+      "blocks": {}
     }
   },
   "order": [
+    "responsive_banner_DD8GfU",
     "breadcrumbs_iryXbc",
-    "1790846587b2857069",
     "main",
     "blocks_4CHpEU",
     "oo_product_rx_checker_v53_3qHPE",

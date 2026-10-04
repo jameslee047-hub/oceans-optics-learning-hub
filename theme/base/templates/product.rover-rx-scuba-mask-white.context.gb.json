@@ -1,0 +1,40 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "gb"
+  },
+  "parent": "product.rover-rx-scuba-mask-white.json",
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {},
+      "block_order": [
+        "vendor",
+        "title",
+        "judge_me_reviews_preview_badge_N4R9aY",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "snorkel_set_coupon_iKrhW",
+        "buy_buttons",
+        "appstle_loyalty_appstle_loyalty_acquire_points_DhtCdD",
+        "custom_liquid_K49RQW",
+        "collapsible_tab_hmC7wz",
+        "collapsible_tab_6JiY6j",
+        "collapsible_tab_qXHGrN",
+        "collapsible_tab_KmcLrp",
+        "collapsible_tab_GNVzih",
+        "collapsible_tab_pxbFmR",
+        "share"
+      ]
+    }
+  }
+}

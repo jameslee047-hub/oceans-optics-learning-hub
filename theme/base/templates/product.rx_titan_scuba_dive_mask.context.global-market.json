@@ -1,0 +1,41 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "global-market"
+  },
+  "parent": "product.rx_titan_scuba_dive_mask.json",
+  "sections": {
+    "oo_product_rx_checker_v53_r38BR": {
+      "type": "oo-product-rx-checker-v53",
+      "disabled": false,
+      "settings": {},
+      "blocks": {},
+      "block_order": [],
+      "name": "V5.3 Product Rx Checker"
+    }
+  },
+  "order": [
+    "breadcrumbs_RqzaRt",
+    "main",
+    "image_banner_7yVWdQ",
+    "178313317889f2a353",
+    "oo_product_rx_checker_v53_r38BR",
+    "multicolumn_39KnCE",
+    "guide_product_page_DwfNLk",
+    "image_with_text_E9XLBR",
+    "oo_quiz_card_VGXPCk",
+    "172768701653766417",
+    "related-products",
+    "ns_cylinder_guide_fzVh7H",
+    "featured_collection_zjrA7L",
+    "176215487189708239"
+  ]
+}

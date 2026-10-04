@@ -13,9 +13,118 @@
     "market": "can"
   },
   "sections": {
-    "main": {
-      "settings": {},
+    "1789787015e76378c1": {
+      "type": "apps",
+      "disabled": false,
+      "settings": {
+        "include_margins": true
+      },
       "blocks": {
+        "essential_countdown_timer_app_block_f4jVq": {
+          "type": "shopify://apps/essential-countdown-timer/blocks/app-block/722378e8-5a70-4eae-aa89-9e44e8e9f6de",
+          "disabled": false,
+          "settings": {
+            "id": "cmtuzt5yn000b136e2yh7nl76"
+          }
+        }
+      },
+      "block_order": [
+        "essential_countdown_timer_app_block_f4jVq"
+      ]
+    },
+    "oo_learning_hub_hero_NreMG": {
+      "type": "oo-learning-hub-hero",
+      "disabled": false,
+      "settings": {
+        "header-dfb1959374d37a383e2394a952ed1abd": null,
+        "background_image": "shopify://shop_images/Lady_snorkeling_rx_mask_desktop.png",
+        "mobile_image": "shopify://shop_images/Lady_snorkeling_rx_mask_Mobile.png",
+        "header-31b583327cd3caa60796e32f1e0fe005": null,
+        "eyebrow": "MORE THAN JUST A MASK",
+        "heading": "Your Free Snorkeling",
+        "heading_accent": "Learning Hub",
+        "body": "<p>At Oceans Optics, we believe the right gear is only part of the experience. Knowing how to use it, what to look out for, and how to feel confident in the water matters just as much.</p>",
+        "trust_badge_text": "Built by Professional Instructors",
+        "lessons_title": "Explore lessons on:",
+        "supporting_text": "<p><strong>Free to explore. Easy to follow.</strong> Built to help you snorkel with more confidence.</p>",
+        "button_label": "EXPLORE THE LEARNING HUB",
+        "button_link": "shopify://pages/learn"
+      },
+      "blocks": {
+        "lesson_topic_LrwkW": {
+          "type": "lesson_topic",
+          "disabled": false,
+          "settings": {
+            "icon": "mask",
+            "label": "Gear & Vision"
+          }
+        },
+        "lesson_topic_ygBcm": {
+          "type": "lesson_topic",
+          "disabled": false,
+          "settings": {
+            "icon": "shield",
+            "label": "Safety & Conditions"
+          }
+        },
+        "lesson_topic_XbK3Y": {
+          "type": "lesson_topic",
+          "disabled": false,
+          "settings": {
+            "icon": "water",
+            "label": "In-Water Skills"
+          }
+        },
+        "lesson_topic_TRAPQ": {
+          "type": "lesson_topic",
+          "disabled": false,
+          "settings": {
+            "icon": "science",
+            "label": "Underwater Science & Your Body"
+          }
+        },
+        "lesson_topic_iUwNJ": {
+          "type": "lesson_topic",
+          "disabled": false,
+          "settings": {
+            "icon": "fish",
+            "label": "Marine Life & Conservation"
+          }
+        }
+      },
+      "block_order": [
+        "lesson_topic_LrwkW",
+        "lesson_topic_ygBcm",
+        "lesson_topic_XbK3Y",
+        "lesson_topic_TRAPQ",
+        "lesson_topic_iUwNJ"
+      ],
+      "name": "OO Learning Hub Hero"
+    },
+    "main": {
+      "settings": {
+        "enable_sticky_info": true,
+        "media_size": "medium"
+      },
+      "blocks": {
+        "snorkel_set_coupon_DGqxGB": {
+          "type": "snorkel_set_coupon",
+          "disabled": false,
+          "settings": {
+            "badge": "10% OFF",
+            "offer_label": "September Snorkel Set  Sale",
+            "offer_text": "Buy a Mask + Snorkel + Case & Get 10% OFF",
+            "code_prefix": "Use code",
+            "discount_code": "SNORKELSET10",
+            "code_suffix": "at checkout.",
+            "copy_text": "Copy Code",
+            "copied_text": "Copied",
+            "margin_top": 6,
+            "margin_bottom": 8,
+            "color_blue": "#023059",
+            "color_orange": "#b95e05"
+          }
+        },
         "collapsible_tab_wEGU7X": {
           "settings": {
             "content": "<h4>The Obsidian Corrective Mask for Nearsighted Adventurers is made for those who want sharp, clear vision underwater without relying on contact lenses. </h4><h4>With precision-crafted tempered glass lenses matched to your prescription, you'll see the ocean as it's meant to be seen. </h4><h4>The soft black silicone skirt fits comfortably on medium-sized faces, forming a secure, watertight seal. </h4><h4>Whether you're snorkeling in shallow reefs or diving deeper, this mask offers dependable comfort, easy equalizing, and excellent visibility. </h4><h4>Designed with performance and style in mind, the Obsidian is your go-to for underwater clarity and confidence.</h4>"
@@ -32,13 +141,51 @@
             "content": "<h5>Every Obsidian is made to order. Enjoy FREE USPS tracked delivery when you spend $70 or $5.99 for orders under $70. Shipping takes 5-14 days. (5-10 on average) </h5>"
           }
         },
-        "collapsible_tab_X8M3CP": {
+        "collapsible_tab_AMEm4A": {
           "settings": {
-            "heading": "More than JUST a Guide!",
-            "content": "<h5><strong>Snorkelling 101 is Your Ultimate Guide to Better Aquatic Adventures.</strong><br/><br/>Now <strong>free</strong> with every order! Access your eGuide instantly after checkout or via email, and dive in at your own leisure.</h5>"
+            "content": "<p>Take advantage of our FREE 30 days from delivery easy return policy. Shop with confidence. Eligible items only. For more info see our<a href=\"/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\"> <span style=\"text-decoration:underline\">full return policy</span>.</a></p>"
           }
         }
-      }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_3d4Haf",
+        "title",
+        "custom_liquid_QcjzDh",
+        "variant_picker",
+        "avis_product_options_avisplus_options_block_BBLLBG",
+        "custom_liquid_bEVPGH",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "snorkel_set_coupon_DGqxGB",
+        "appstle_loyalty_appstle_loyalty_acquire_points_ECqDrR",
+        "custom_liquid_QYMcry",
+        "collapsible_tab_wEGU7X",
+        "collapsible_tab_3hCXce",
+        "collapsible_tab_c6hiee",
+        "collapsible_tab_dBLaA4",
+        "collapsible_tab_eBhqKN",
+        "collapsible_tab_AMEm4A",
+        "collapsible_tab_X8M3CP",
+        "share"
+      ]
     }
-  }
+  },
+  "order": [
+    "breadcrumbs_RqzaRt",
+    "1789787015e76378c1",
+    "main",
+    "image_banner_7yVWdQ",
+    "blocks_Nhkre9",
+    "oo_quiz_card_VGXPCk",
+    "multicolumn_39KnCE",
+    "oo_learning_hub_hero_NreMG",
+    "image_with_text_E9XLBR",
+    "172768701653766417",
+    "related-products",
+    "lens_calc_tool_product_hhrhLD",
+    "ns_cylinder_guide_fzVh7H",
+    "featured_collection_zjrA7L",
+    "176215487189708239"
+  ]
 }

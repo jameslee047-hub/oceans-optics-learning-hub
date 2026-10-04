@@ -1,0 +1,99 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "can"
+  },
+  "parent": "product.rx-lumix-dive-mask.json",
+  "sections": {
+    "oo_product_rx_checker_v53_t3HAR": {
+      "type": "oo-product-rx-checker-v53",
+      "disabled": false,
+      "settings": {},
+      "blocks": {},
+      "block_order": [],
+      "name": "V5.3 Product Rx Checker"
+    },
+    "main": {
+      "settings": {},
+      "blocks": {
+        "snorkel_set_coupon_fzz8mi": {
+          "type": "snorkel_set_coupon",
+          "disabled": false,
+          "settings": {
+            "badge": "10% OFF",
+            "offer_label": "September Snorkel Set Sale",
+            "offer_text": "Buy a Mask + Snorkel + Case & Get a 10% OFF",
+            "code_prefix": "Use code",
+            "discount_code": "SNORKELSET10",
+            "code_suffix": "at checkout.",
+            "copy_text": "Copy",
+            "copied_text": "Copied",
+            "margin_top": 6,
+            "margin_bottom": 8,
+            "color_blue": "#023059",
+            "color_orange": "#b95e05"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_wp8Ttk",
+        "title",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "snorkel_set_coupon_fzz8mi",
+        "buy_buttons",
+        "appstle_loyalty_appstle_loyalty_acquire_points_WiKEby",
+        "custom_liquid_E6m8Yz",
+        "collapsible_tab_3pcVAN",
+        "collapsible_tab_TJ4w9q",
+        "collapsible_tab_6JiY6j",
+        "collapsible_tab_gweLrA",
+        "collapsible_tab_KmcLrp",
+        "collapsible_tab_GNVzih",
+        "collapsible_tab_pxbFmR",
+        "share"
+      ]
+    },
+    "17908467099f66253a": {
+      "type": "apps",
+      "disabled": false,
+      "settings": {
+        "include_margins": true
+      },
+      "blocks": {
+        "essential_countdown_timer_app_block_N4QHU": {
+          "type": "shopify://apps/essential-countdown-timer/blocks/app-block/722378e8-5a70-4eae-aa89-9e44e8e9f6de",
+          "disabled": false,
+          "settings": {
+            "id": "cmunkatgm003nlb64tqtz356r"
+          }
+        }
+      },
+      "block_order": [
+        "essential_countdown_timer_app_block_N4QHU"
+      ]
+    }
+  },
+  "order": [
+    "17908467099f66253a",
+    "breadcrumbs_QUq7fY",
+    "main",
+    "17312057008b2de433",
+    "image_banner_gbgLiN",
+    "oo_product_rx_checker_v53_t3HAR",
+    "guide_product_page_nKXME7",
+    "related-products",
+    "featured_collection_rF9FkW",
+    "ns_cylinder_guide_WDCLJ4",
+    "1718686304ebf135d4"
+  ]
+}

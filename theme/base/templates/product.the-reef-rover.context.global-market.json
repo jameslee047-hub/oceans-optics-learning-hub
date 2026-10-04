@@ -1,0 +1,84 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "global-market"
+  },
+  "parent": "product.the-reef-rover.json",
+  "sections": {
+    "main": {
+      "settings": {
+        "color_scheme": "scheme-23b30e0d-a253-4758-ba37-a2463038ebfc"
+      },
+      "blocks": {
+        "snorkel_set_coupon_KNx7zc": {
+          "type": "snorkel_set_coupon",
+          "disabled": false,
+          "settings": {
+            "badge": "10% OFF",
+            "offer_label": "September Snorkel Set Sale",
+            "offer_text": "Buy a Mask + Snorkel + Case & Get a 10% OFF",
+            "code_prefix": "Use code",
+            "discount_code": "SNORKELSET10",
+            "code_suffix": "at checkout.",
+            "copy_text": "Copy",
+            "copied_text": "Copied",
+            "margin_top": 6,
+            "margin_bottom": 8,
+            "color_blue": "#023059",
+            "color_orange": "#b95e05"
+          }
+        },
+        "collapsible_tab_GNVzih": {
+          "settings": {
+            "content": "<p>Take advantage of our 30 days from delivery FREE return policy — shop with confidence. Eligible items only, see our<a href=\"/pages/returns-and-warranty\" target=\"_blank\" title=\"Returns & Warranty\"> full return policy</a> for more info</p>"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_PN3UFr",
+        "title",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "snorkel_set_coupon_KNx7zc",
+        "buy_buttons",
+        "custom_liquid_cwRNna",
+        "collapsible_tab_3pcVAN",
+        "collapsible_tab_6JiY6j",
+        "collapsible_tab_RhbpBW",
+        "collapsible_tab_KmcLrp",
+        "collapsible_tab_GNVzih",
+        "collapsible_tab_pxbFmR",
+        "share"
+      ]
+    },
+    "oo_product_rx_checker_v53_GwgUA": {
+      "type": "oo-product-rx-checker-v53",
+      "disabled": false,
+      "settings": {},
+      "blocks": {},
+      "block_order": [],
+      "name": "V5.3 Product Rx Checker"
+    }
+  },
+  "order": [
+    "breadcrumbs_mwjLdy",
+    "main",
+    "blocks_qcpYke",
+    "oo_product_rx_checker_v53_GwgUA",
+    "guide_product_page_WQtmNM",
+    "1707711583fd59ddaf",
+    "related-products",
+    "featured_collection_rF9FkW",
+    "ns_cylinder_guide_7GTjyQ",
+    "1718686304ebf135d4"
+  ]
+}

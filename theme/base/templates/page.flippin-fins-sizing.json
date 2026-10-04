@@ -17,7 +17,7 @@
       }
     },
     "lens_calculator_GHRYB7": {
-      "type": "lens-calculator",
+      "type": "oo-lens-calculator-v53",
       "disabled": true,
       "name": "Lens Calculator Main",
       "settings": {}

@@ -1,0 +1,89 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "global-market"
+  },
+  "parent": "product.far-obsidian-waitlist.json",
+  "sections": {
+    "oo_lens_calculator_v53_FiiDK": {
+      "type": "oo-product-rx-checker-v53",
+      "disabled": false,
+      "settings": {},
+      "blocks": {},
+      "block_order": [],
+      "name": "V5.3 Product Rx Checker"
+    },
+    "main": {
+      "settings": {},
+      "blocks": {
+        "snorkel_set_coupon_M9iNcJ": {
+          "name": "October Sale",
+          "settings": {
+            "offer_label": "September Set Sale",
+            "offer_text": "Buy a Mask + Snorkel + Case & Get 10% OFF"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_bhbekP",
+        "title",
+        "custom_liquid_EL6YLb",
+        "custom_liquid_U6zbPF",
+        "variant_picker",
+        "quantity_selector",
+        "price",
+        "buy_buttons",
+        "snorkel_set_coupon_M9iNcJ",
+        "appstle_loyalty_appstle_loyalty_acquire_points_HPB6nb",
+        "custom_liquid_mi7WA3",
+        "collapsible_tab_Lafzpe",
+        "collapsible_tab_8w39TL",
+        "collapsible_tab_zkBpL4",
+        "collapsible_tab_AFrCjF",
+        "collapsible_tab_Fi4UYW",
+        "collapsible_tab_LEPMcQ",
+        "share",
+        "description_34zGNX"
+      ]
+    },
+    "1790846469df44da2f": {
+      "type": "apps",
+      "disabled": false,
+      "settings": {
+        "include_margins": true
+      },
+      "blocks": {
+        "essential_countdown_timer_app_block_8JDE8": {
+          "type": "shopify://apps/essential-countdown-timer/blocks/app-block/722378e8-5a70-4eae-aa89-9e44e8e9f6de",
+          "disabled": false,
+          "settings": {
+            "id": "cmunkatgm003nlb64tqtz356r"
+          }
+        }
+      },
+      "block_order": [
+        "essential_countdown_timer_app_block_8JDE8"
+      ]
+    }
+  },
+  "order": [
+    "breadcrumbs_ibnqUJ",
+    "1790846469df44da2f",
+    "main",
+    "blocks_tG6B3m",
+    "oo_lens_calculator_v53_FiiDK",
+    "guide_product_page_pzJgnb",
+    "1714545178ae5672c1",
+    "related-products",
+    "featured_collection_rdVai9",
+    "17186861496a9246fa"
+  ]
+}

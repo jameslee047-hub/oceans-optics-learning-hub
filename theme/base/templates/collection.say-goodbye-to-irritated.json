@@ -75,7 +75,8 @@
         "image_behavior": "ambient",
         "mobile_content_alignment": "center",
         "stack_images_on_mobile": false,
-        "show_text_below": true
+        "show_text_below": true,
+        "fetchpriority_high": false
       }
     },
     "breadcrumbs_XDqDtY": {
@@ -86,7 +87,9 @@
         "padding_bottom_desktop": 20,
         "padding_top_mobile": 12,
         "padding_bottom_mobile": 12,
-        "breadcrumb_collection": ""
+        "breadcrumb_collection": "",
+        "breadcrumb_link_url": "",
+        "breadcrumb_link_label": ""
       }
     },
     "featured_collection_NMtpzJ": {
@@ -160,9 +163,9 @@
         "padding_bottom": 52
       }
     },
-    "lens_calculator_KqR6UE": {
-      "type": "lens-calculator",
-      "name": "Lens Calculator Main",
+    "oo_lens_calculator_v53_XRWRxm": {
+      "type": "oo-lens-calculator-v53",
+      "name": "V5.3 Lens Calculator",
       "settings": {}
     },
     "rich_text_3FkCki": {
@@ -240,10 +243,64 @@
         "padding_bottom": 36
       }
     },
-    "snorkel_101_guide_zyUpTK": {
-      "type": "Snorkel-101-guide",
-      "name": "Snorkeling 101 promo",
-      "settings": {}
+    "oo_learning_hub_hero_LeiQ6x": {
+      "type": "oo-learning-hub-hero",
+      "blocks": {
+        "lesson_topic_Fhgn7G": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "mask",
+            "label": "Gear & Vision"
+          }
+        },
+        "lesson_topic_jHAjet": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "shield",
+            "label": "Safety & Conditions"
+          }
+        },
+        "lesson_topic_Lir4rg": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "water",
+            "label": "In-Water Skills"
+          }
+        },
+        "lesson_topic_RtEBT4": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "science",
+            "label": "Underwater Science & Your Body"
+          }
+        },
+        "lesson_topic_VfRM3y": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "fish",
+            "label": "Marine Life & Conservation"
+          }
+        }
+      },
+      "block_order": [
+        "lesson_topic_Fhgn7G",
+        "lesson_topic_jHAjet",
+        "lesson_topic_Lir4rg",
+        "lesson_topic_RtEBT4",
+        "lesson_topic_VfRM3y"
+      ],
+      "name": "OO Learning Hub Hero",
+      "settings": {
+        "eyebrow": "MORE THAN JUST A MASK",
+        "heading": "Your Free Snorkeling",
+        "heading_accent": "Learning Hub",
+        "body": "<p>At Oceans Optics, we believe the right gear is only part of the experience. Knowing how to use it, what to look out for, and how to feel confident in the water matters just as much.</p>",
+        "trust_badge_text": "Built by Professional Instructors",
+        "lessons_title": "Explore lessons on:",
+        "supporting_text": "<p><strong>Free to explore. Easy to follow.</strong> Built to help you snorkel with more confidence.</p>",
+        "button_label": "EXPLORE THE LEARNING HUB",
+        "button_link": ""
+      }
     }
   },
   "order": [
@@ -253,9 +310,9 @@
     "breadcrumbs_XDqDtY",
     "featured_collection_NMtpzJ",
     "rich_text_Xy3mtC",
-    "lens_calculator_KqR6UE",
+    "oo_lens_calculator_v53_XRWRxm",
     "rich_text_3FkCki",
     "featured_collection_c69mVH",
-    "snorkel_101_guide_zyUpTK"
+    "oo_learning_hub_hero_LeiQ6x"
   ]
 }

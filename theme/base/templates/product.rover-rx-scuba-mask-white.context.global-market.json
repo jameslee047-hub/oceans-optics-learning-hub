@@ -9,39 +9,40 @@
  */
 {
   "context": {
-    "market": "can"
+    "market": "global-market"
   },
   "parent": "product.rover-rx-scuba-mask-white.json",
   "sections": {
-    "17908469800c0e0a7a": {
-      "type": "apps",
+    "oo_product_rx_checker_v53_zXE9n": {
+      "type": "oo-product-rx-checker-v53",
       "disabled": false,
-      "settings": {
-        "include_margins": true
-      },
+      "settings": {},
+      "blocks": {},
+      "block_order": [],
+      "name": "V5.3 Product Rx Checker"
+    },
+    "main": {
+      "settings": {},
       "blocks": {
-        "essential_countdown_timer_app_block_aLwPH": {
-          "type": "shopify://apps/essential-countdown-timer/blocks/app-block/722378e8-5a70-4eae-aa89-9e44e8e9f6de",
+        "snorkel_set_coupon_iKrhW": {
+          "type": "snorkel_set_coupon",
           "disabled": false,
           "settings": {
-            "id": "cmunkatgm003nlb64tqtz356r"
+            "badge": "10% OFF",
+            "offer_label": "September Snorkel Sale",
+            "offer_text": "Buy a Mask + Snorkel + Case & Get 10% OFF",
+            "code_prefix": "Use code",
+            "discount_code": "SNORKELSET10",
+            "code_suffix": "at checkout.",
+            "copy_text": "Copy",
+            "copied_text": "Copied",
+            "margin_top": 6,
+            "margin_bottom": 8,
+            "color_blue": "#023059",
+            "color_orange": "#b95e05"
           }
         }
       },
-      "block_order": [
-        "essential_countdown_timer_app_block_aLwPH"
-      ]
-    },
-    "breadcrumbs_HcwiQp": {
-      "disabled": false,
-      "settings": {},
-      "blocks": {}
-    },
-    "main": {
-      "settings": {
-        "enable_sticky_info": true
-      },
-      "blocks": {},
       "block_order": [
         "vendor",
         "title",
@@ -65,7 +66,6 @@
   },
   "order": [
     "breadcrumbs_HcwiQp",
-    "17908469800c0e0a7a",
     "main",
     "image_banner_7riwhe",
     "blocks_qDBGpe",

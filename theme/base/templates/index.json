@@ -20,6 +20,9 @@
       "block_order": [
         "judge_me_reviews_all_reviews_text_bMVdCU"
       ],
+      "custom_css": [
+        "{padding-bottom: 12px !important;}"
+      ],
       "settings": {
         "include_margins": true
       }
@@ -100,7 +103,7 @@
         "featured_collection_jP8bad": {
           "type": "featured_collection",
           "settings": {
-            "collection": "i-can-sea-shirts"
+            "collection": "rashguards"
           }
         }
       },
@@ -123,40 +126,23 @@
         "padding_bottom": 16
       }
     },
-    "rich_text_GtLcwq": {
-      "type": "rich-text",
-      "blocks": {
-        "caption_mTQpXq": {
-          "type": "caption",
-          "settings": {
-            "caption": "🌊 Save 10% on Your Entire Order | Use Code: OCEAN10 at Checkout 🌊",
-            "text_style": "caption-with-letter-spacing",
-            "text_size": "large"
-          }
-        },
-        "button_yWakDU": {
-          "type": "button",
-          "settings": {
-            "button_label": "GET 10% 0FF",
-            "button_link": "https://oceansoptics.com/discount/Bye2025",
-            "button_style_secondary": false,
-            "button_label_2": "",
-            "button_link_2": "",
-            "button_style_secondary_2": false
-          }
-        }
-      },
-      "block_order": [
-        "caption_mTQpXq",
-        "button_yWakDU"
-      ],
+    "oo_quiz_card_W8DcjP": {
+      "type": "oo-quiz-card",
+      "name": "OO Quiz Card",
       "settings": {
-        "desktop_content_position": "center",
-        "content_alignment": "center",
-        "color_scheme": "inverse",
-        "full_width": true,
-        "padding_top": 24,
-        "padding_bottom": 24
+        "eyebrow": "Rx Lens Strength + Face Fit",
+        "heading": "Find Your Prescription Mask Quiz",
+        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
+        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
+        "button_text": "Start the quiz →",
+        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
+        "badge_1_text": "Lens strength",
+        "badge_2_text": "Face fit",
+        "badge_3_text": "Snorkel or dive",
+        "show_reviews": true,
+        "review_text": "4.94 / 5 based on 1,220 verified reviews",
+        "show_privacy": true,
+        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
       }
     },
     "multirow_FHWNc4": {
@@ -324,6 +310,42 @@
         "padding_bottom": 48
       }
     },
+    "rich_text_GtLcwq": {
+      "type": "rich-text",
+      "blocks": {
+        "caption_mTQpXq": {
+          "type": "caption",
+          "settings": {
+            "caption": "🌊 Save 10% when you buy a Mask + Snorkel +Case | Use Code: SNORKELSET10 at Checkout 🌊",
+            "text_style": "caption-with-letter-spacing",
+            "text_size": "large"
+          }
+        },
+        "button_yWakDU": {
+          "type": "button",
+          "settings": {
+            "button_label": "GET 10% 0FF",
+            "button_link": "shopify://collections/all-our-masks",
+            "button_style_secondary": false,
+            "button_label_2": "",
+            "button_link_2": "",
+            "button_style_secondary_2": false
+          }
+        }
+      },
+      "block_order": [
+        "caption_mTQpXq",
+        "button_yWakDU"
+      ],
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "inverse",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    },
     "featured_collection_NeJNJt": {
       "type": "featured-collection",
       "settings": {
@@ -333,8 +355,8 @@
         "show_description": false,
         "description_style": "body",
         "collection": "all-our-masks",
-        "products_to_show": 6,
-        "columns_desktop": 3,
+        "products_to_show": 4,
+        "columns_desktop": 4,
         "full_width": true,
         "show_view_all": true,
         "view_all_style": "solid",
@@ -352,27 +374,8 @@
         "padding_bottom": 68
       }
     },
-    "oo_quiz_card_W8DcjP": {
-      "type": "oo-quiz-card",
-      "name": "OO Quiz Card",
-      "settings": {
-        "eyebrow": "Rx Lens Strength + Face Fit",
-        "heading": "Find Your Prescription Mask Quiz",
-        "body_text": "Built specifically for prescription snorkel and dive masks, this quiz helps match your lens strength, face fit, and intended use in one simple flow.",
-        "time_text": "Answer up to 6 quick questions in about 2 minutes.",
-        "button_text": "Start the quiz →",
-        "prep_text": "Have your prescription nearby if you know your numbers. If not, no problem, we can still guide you.",
-        "badge_1_text": "Lens strength",
-        "badge_2_text": "Face fit",
-        "badge_3_text": "Snorkel or dive",
-        "show_reviews": true,
-        "review_text": "4.94 / 5 based on 1,220 verified reviews",
-        "show_privacy": true,
-        "privacy_text": "Your prescription image is only used to read your values. It is never stored."
-      }
-    },
     "lens_calculator_qTyGrf": {
-      "type": "lens-calculator",
+      "type": "oo-lens-calculator-v53",
       "disabled": true,
       "name": "Lens Calculator Main",
       "settings": {}
@@ -395,6 +398,9 @@
               "rx-lumix-optical-dive-mask-aluminum-white-series",
               "the-rx-carbon-scuba-dive-snorkel-freedive-mask"
             ],
+            "filter_pinned": false,
+            "filter_featured": false,
+            "filter_custom_tags": "",
             "star_rating": "all",
             "show_review_media": false,
             "display_order": "most_recent",
@@ -417,7 +423,8 @@
             "arrows_color": "#023059",
             "transition_speed": 10,
             "header_text": "Happy Customers",
-            "show_average_rating": true
+            "show_average_rating": true,
+            "rating_display": "default"
           }
         }
       },
@@ -557,7 +564,7 @@
         "button_xTRgTY": {
           "type": "button",
           "settings": {
-            "button_label": "Learn more about our artificial reef",
+            "button_label": "Learn more about our reef",
             "button_link": "shopify://pages/learn-more-about-our-artificial-reef",
             "button_style_secondary": false
           }
@@ -571,12 +578,12 @@
       "name": "t:sections.image-with-text.presets.name",
       "settings": {
         "image": "shopify://shop_images/Our-artificial-coral-reef-prescription-mask_1.jpg",
-        "height": "adapt",
-        "desktop_image_width": "medium",
+        "height": "small",
+        "desktop_image_width": "small",
         "layout": "text_first",
         "desktop_content_position": "middle",
         "desktop_content_alignment": "left",
-        "content_layout": "overlap",
+        "content_layout": "no-overlap",
         "section_color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
         "color_scheme": "scheme-d9d64129-0d50-419e-a9e9-74c711e62320",
         "image_behavior": "none",
@@ -704,13 +711,13 @@
     "17167935629bcc4972",
     "image_banner_XPgKVC",
     "collection_list_YEfP4N",
-    "rich_text_GtLcwq",
+    "oo_quiz_card_W8DcjP",
     "multirow_FHWNc4",
     "mask_sizing_tool_shortcut_K7znyT",
     "collapsible_content_b8ygjT",
     "multicolumn_MLqYaL",
+    "rich_text_GtLcwq",
     "featured_collection_NeJNJt",
-    "oo_quiz_card_W8DcjP",
     "lens_calculator_qTyGrf",
     "17658503335e2d1da0",
     "multicolumn_zCkApB",

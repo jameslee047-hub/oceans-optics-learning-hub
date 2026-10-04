@@ -154,7 +154,7 @@
       }
     },
     "lens_calculator_4bwefC": {
-      "type": "lens-calculator",
+      "type": "oo-lens-calculator-v53",
       "name": "Lens Calculator Main",
       "settings": {}
     },

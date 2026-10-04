@@ -83,11 +83,21 @@
           "type": "price",
           "settings": {}
         },
-        "custom_liquid_w8MJR9": {
-          "type": "custom_liquid",
-          "name": "Ocean10",
+        "snorkel_set_coupon_kV4qPW": {
+          "type": "snorkel_set_coupon",
           "settings": {
-            "custom_liquid": "<style>\n  /* Scoped to THIS Custom Liquid only */\n  #shopify-section-{{ section.id }} .oo-coupon{\n    display:flex;align-items:center;gap:10px;\n    padding:10px 12px;margin:8px 0 12px;\n    border:2px dashed #023059;border-radius:12px;background:#fff;color:#023059;\n    box-shadow:0 4px 14px rgba(2,48,89,.08);\n    font:600 16px/1.4 Lato,system-ui,sans-serif;max-width:520px;position:relative;\n  }\n  @supports ((-webkit-mask:linear-gradient(#000,#000)) or (mask:linear-gradient(#000,#000))){\n    #shopify-section-{{ section.id }} .oo-coupon{\n      -webkit-mask:\n        radial-gradient(12px at left center,transparent 98%,#000 100%) left/24px 100% no-repeat,\n        radial-gradient(12px at right center,transparent 98%,#000 100%) right/24px 100% no-repeat,\n        linear-gradient(#000,#000);\n              mask:\n        radial-gradient(12px at left center,transparent 98%,#000 100%) left/24px 100% no-repeat,\n        radial-gradient(12px at right center,transparent 98%,#000 100%) right/24px 100% no-repeat,\n        linear-gradient(#000,#000);\n    }\n  }\n  #shopify-section-{{ section.id }} .oo-chip{background:#B95E05;color:#fff;padding:2px 8px;border-radius:999px;font-weight:800;font-size:12px}\n  #shopify-section-{{ section.id }} .oo-text{margin:0;flex:1}\n  #shopify-section-{{ section.id }} .oo-code{font-weight:900;letter-spacing:.5px}\n  #shopify-section-{{ section.id }} .oo-btn{\n    border:1px solid #023059;background:#fff;color:#023059;\n    padding:6px 10px;border-radius:8px;font:700 13px/1 Lato,system-ui,sans-serif;cursor:pointer\n  }\n  #shopify-section-{{ section.id }} .oo-btn:hover{background:#023059;color:#fff}\n  #shopify-section-{{ section.id }} .oo-toast{\n    position:absolute;right:10px;top:-8px;transform:translateY(-100%);\n    background:#023059;color:#fff;border-radius:8px;padding:4px 8px;font:700 12px/1 Lato,system-ui,sans-serif;opacity:0;pointer-events:none;transition:.18s ease\n  }\n  #shopify-section-{{ section.id }} .oo-toast.show{opacity:1;transform:translateY(-110%)}\n  @media (max-width:749px){#shopify-section-{{ section.id }} .oo-coupon{font-size:15px}}\n</style>\n\n<div class=\"oo-coupon\" role=\"note\" aria-label=\"Discount code\">\n  <span class=\"oo-chip\">10% OFF</span>\n  <p class=\"oo-text\">Use code <span class=\"oo-code\" data-code=\"OCEAN10\">OCEAN10</span> at checkout.</p>\n  <button type=\"button\" class=\"oo-btn oo-copy\" aria-label=\"Copy discount code\">Copy</button>\n  <span class=\"oo-toast\" aria-hidden=\"true\">Copied</span>\n</div>\n\n<script>\n  (()=>{const root=document.getElementById('shopify-section-{{ section.id }}');\n    const coupon=root?.querySelector('.oo-coupon'); if(!coupon) return;\n    const btn=coupon.querySelector('.oo-copy'); const toast=coupon.querySelector('.oo-toast');\n    const code=(coupon.querySelector('.oo-code')?.textContent||'OCEAN10').trim();\n    btn?.addEventListener('click',async()=>{\n      try{await navigator.clipboard.writeText(code);}catch(e){}\n      toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1200);\n    });\n  })();\n</script>"
+            "badge": "10% OFF",
+            "offer_label": "FULL GEAR:",
+            "offer_text": "Mask + Snorkel + Case",
+            "code_prefix": "Use code",
+            "discount_code": "SNORKELSET10",
+            "code_suffix": "at checkout.",
+            "copy_text": "Copy",
+            "copied_text": "Copied",
+            "margin_top": 6,
+            "margin_bottom": 8,
+            "color_blue": "#023059",
+            "color_orange": "#b95e05"
           }
         },
         "buy_buttons_XccnBF": {
@@ -187,7 +197,7 @@
         "variant_picker",
         "quantity_selector",
         "price",
-        "custom_liquid_w8MJR9",
+        "snorkel_set_coupon_kV4qPW",
         "buy_buttons_XccnBF",
         "appstle_loyalty_appstle_loyalty_acquire_points_HPB6nb",
         "custom_liquid_zbmCLR",
@@ -241,8 +251,8 @@
       "settings": {}
     },
     "lens_calc_tool_product_6cQdMF": {
-      "type": "lens-calc-tool-product",
-      "name": "Lens Calculator",
+      "type": "oo-product-rx-checker-v53",
+      "name": "V5.3 Product Rx Checker",
       "settings": {}
     },
     "ns_cylinder_guide_8mmkC6": {
@@ -252,18 +262,6 @@
     },
     "guide_product_page_PmHeDh": {
       "type": "oo-learning-hub-hero",
-      "name": "OO Learning Hub Hero",
-      "settings": {
-        "eyebrow": "MORE THAN JUST A MASK",
-        "heading": "Your Free Snorkeling",
-        "heading_accent": "Learning Hub",
-        "body": "<p>At Oceans Optics, we believe the right gear is only part of the experience. Knowing how to use it, what to look out for, and how to feel confident in the water matters just as much.</p>",
-        "trust_badge_text": "Built by Professional Instructors",
-        "lessons_title": "Explore lessons on:",
-        "supporting_text": "<p><strong>Free to explore. Easy to follow.</strong> Built to help you snorkel with more confidence.</p>",
-        "button_label": "EXPLORE THE LEARNING HUB",
-        "button_link": ""
-      },
       "blocks": {
         "lesson_topic_bkUpKQ": {
           "type": "lesson_topic",
@@ -307,7 +305,19 @@
         "lesson_topic_V9c8Bj",
         "lesson_topic_WAHtTJ",
         "lesson_topic_EjFAzw"
-      ]
+      ],
+      "name": "OO Learning Hub Hero",
+      "settings": {
+        "eyebrow": "MORE THAN JUST A MASK",
+        "heading": "Your Free Snorkeling",
+        "heading_accent": "Learning Hub",
+        "body": "<p>At Oceans Optics, we believe the right gear is only part of the experience. Knowing how to use it, what to look out for, and how to feel confident in the water matters just as much.</p>",
+        "trust_badge_text": "Built by Professional Instructors",
+        "lessons_title": "Explore lessons on:",
+        "supporting_text": "<p><strong>Free to explore. Easy to follow.</strong> Built to help you snorkel with more confidence.</p>",
+        "button_label": "EXPLORE THE LEARNING HUB",
+        "button_link": ""
+      }
     },
     "1714545178ae5672c1": {
       "type": "apps",

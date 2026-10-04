@@ -75,7 +75,7 @@
       }
     },
     "lens_calc_tool_product_8GgNnL": {
-      "type": "lens-calc-tool-product",
+      "type": "oo-lens-calculator-v53",
       "disabled": true,
       "name": "Lens Calculator",
       "settings": {}

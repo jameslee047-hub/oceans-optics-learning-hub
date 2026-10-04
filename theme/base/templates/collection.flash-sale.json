@@ -134,86 +134,6 @@
         "padding_bottom": 60
       }
     },
-    "image_banner_FaBfwP": {
-      "type": "image-banner",
-      "disabled": true,
-      "custom_css": [],
-      "settings": {
-        "image": "shopify://shop_images/Mobile_Guide_88951d2f-e86c-4f02-aca9-531937caef1d.svg",
-        "image_2": "shopify://shop_images/Desktop_Guide_ccc9486e-03f2-436d-81b9-7cb7798708bc.svg",
-        "image_overlay_opacity": 0,
-        "banner_link": "shopify://collections/all-our-masks",
-        "image_height": "medium",
-        "desktop_content_position": "middle-center",
-        "show_text_box": false,
-        "desktop_content_alignment": "center",
-        "color_scheme": "background-2",
-        "image_behavior": "none",
-        "mobile_content_alignment": "center",
-        "stack_images_on_mobile": false,
-        "show_text_below": false,
-        "fetchpriority_high": false
-      }
-    },
-    "guide_product_page_HeiKDe": {
-      "type": "oo-learning-hub-hero",
-      "name": "OO Learning Hub Hero",
-      "settings": {
-        "eyebrow": "MORE THAN JUST A MASK",
-        "heading": "Your Free Snorkeling",
-        "heading_accent": "Learning Hub",
-        "body": "<p>At Oceans Optics, we believe the right gear is only part of the experience. Knowing how to use it, what to look out for, and how to feel confident in the water matters just as much.</p>",
-        "trust_badge_text": "Built by Professional Instructors",
-        "lessons_title": "Explore lessons on:",
-        "supporting_text": "<p><strong>Free to explore. Easy to follow.</strong> Built to help you snorkel with more confidence.</p>",
-        "button_label": "EXPLORE THE LEARNING HUB",
-        "button_link": ""
-      },
-      "blocks": {
-        "lesson_topic_bkUpKQ": {
-          "type": "lesson_topic",
-          "settings": {
-            "icon": "mask",
-            "label": "Gear & Vision"
-          }
-        },
-        "lesson_topic_9XC7aH": {
-          "type": "lesson_topic",
-          "settings": {
-            "icon": "shield",
-            "label": "Safety & Conditions"
-          }
-        },
-        "lesson_topic_V9c8Bj": {
-          "type": "lesson_topic",
-          "settings": {
-            "icon": "water",
-            "label": "In-Water Skills"
-          }
-        },
-        "lesson_topic_WAHtTJ": {
-          "type": "lesson_topic",
-          "settings": {
-            "icon": "science",
-            "label": "Underwater Science & Your Body"
-          }
-        },
-        "lesson_topic_EjFAzw": {
-          "type": "lesson_topic",
-          "settings": {
-            "icon": "fish",
-            "label": "Marine Life & Conservation"
-          }
-        }
-      },
-      "block_order": [
-        "lesson_topic_bkUpKQ",
-        "lesson_topic_9XC7aH",
-        "lesson_topic_V9c8Bj",
-        "lesson_topic_WAHtTJ",
-        "lesson_topic_EjFAzw"
-      ]
-    },
     "rich_text_htiDQq": {
       "type": "rich-text",
       "blocks": {
@@ -240,7 +160,7 @@
       "settings": {
         "desktop_content_position": "center",
         "content_alignment": "center",
-        "color_scheme": "inverse",
+        "color_scheme": "scheme-872c410c-4081-4e22-b228-cb6d63753ddc",
         "full_width": true,
         "padding_top": 20,
         "padding_bottom": 20
@@ -254,6 +174,75 @@
         "show_collection_description": false,
         "show_collection_image": false,
         "color_scheme": "background-1"
+      }
+    },
+    "oo_learning_hub_hero_TgPbg7": {
+      "type": "oo-learning-hub-hero",
+      "blocks": {
+        "lesson_topic_cqemV8": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "mask",
+            "label": "Gear & Vision"
+          }
+        },
+        "lesson_topic_MWcUHR": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "shield",
+            "label": "Safety & Conditions"
+          }
+        },
+        "lesson_topic_wqXVk6": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "water",
+            "label": "In-Water Skills"
+          }
+        },
+        "lesson_topic_XhyhCH": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "science",
+            "label": "Underwater Science & Your Body"
+          }
+        },
+        "lesson_topic_Xpf4C7": {
+          "type": "lesson_topic",
+          "settings": {
+            "icon": "fish",
+            "label": "Marine Life & Conservation"
+          }
+        }
+      },
+      "block_order": [
+        "lesson_topic_cqemV8",
+        "lesson_topic_MWcUHR",
+        "lesson_topic_wqXVk6",
+        "lesson_topic_XhyhCH",
+        "lesson_topic_Xpf4C7"
+      ],
+      "name": "OO Learning Hub Hero",
+      "settings": {
+        "background_image": "shopify://shop_images/Lady_snorkeling_rx_mask_desktop.png",
+        "mobile_image": "shopify://shop_images/Lady_snorkeling_rx_mask_Mobile.png",
+        "image_fit": "cover",
+        "image_position": "center right",
+        "desktop_content_offset": 180,
+        "desktop_height": 600,
+        "header_offset": 100,
+        "mobile_image_height": 420,
+        "show_wordmark": false,
+        "eyebrow": "MORE THAN JUST A MASK",
+        "heading": "Your Free Snorkeling",
+        "heading_accent": "Learning Hub",
+        "body": "<p>At Oceans Optics, we believe the right gear is only part of the experience. Knowing how to use it, what to look out for, and how to feel confident in the water matters just as much.</p>",
+        "show_trust_badge": true,
+        "trust_badge_text": "Built by Professional Instructors",
+        "lessons_title": "Explore lessons on:",
+        "supporting_text": "<p><strong>Free to explore. Easy to follow.</strong> Built to help you snorkel with more confidence.</p>",
+        "button_label": "EXPLORE THE LEARNING HUB",
+        "button_link": "shopify://pages/learn"
       }
     },
     "multirow_6WEEdM": {
@@ -343,8 +332,8 @@
       "settings": {
         "custom_liquid": "<section id=\"collection-faq-section\" class=\"faq-container\" aria-labelledby=\"collection-faq-title\">\n<h2 id=\"collection-faq-title\" class=\"faq-title\">Scuba Masks for Sale FAQ</h2>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">What should I look for in scuba masks for sale?</h3></summary>\n<div class=\"faq-answer\">\n<p>When comparing scuba diving masks for sale, comfort and fit should come first. A soft silicone skirt, tempered glass lenses, and a secure strap system help reduce leaks and improve visibility underwater. Many divers also prefer low-volume or dual-lens designs for a wider field of view and easier mask clearing.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are prescription options available during a scuba mask sale?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many scuba mask sale collections include prescription-ready models with corrective lenses for nearsighted or farsighted divers. These masks are designed to improve underwater clarity while maintaining the same comfort, durability, and performance as standard diving masks.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Can I order a prescription scuba mask with different lens strengths for each eye?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many prescription scuba masks let you choose a different lens strength for each eye, which is especially helpful if your vision prescription is not the same on both sides. Popular models on sale, like the RX Obsidian Prescription Dive Mask, are designed to make customization simple while still providing a comfortable fit and clear underwater visibility for both scuba diving and snorkeling.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are affordable prescription scuba masks reliable for deeper dives?</h3></summary>\n<div class=\"faq-answer\">\n<p>Absolutely. Many affordable scuba masks are designed for deeper dives and regular diving equipment use. The most important thing is choosing a mask with a comfortable mask strap, anti-fog lenses, and a secure seal around the nose bridge to reduce discomfort underwater.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Are there seasonal sales on prescription scuba masks for snorkeling and diving?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many shops run seasonal sales on prescription scuba masks throughout the year, especially before summer vacations and holiday travel. It’s often a great time to find best selling masks, lightweight designs, or even a dual-lens mask at a better price.</p>\n</div>\n</details>\n\n<details class=\"faq-item\">\n<summary class=\"faq-question\"><h3 style=\"margin: 0;\">Do prescription scuba mask sales include different styles and full-face options?</h3></summary>\n<div class=\"faq-answer\">\n<p>Yes. Many masks on sale come in different styles, including full-face mask and dual-lens designs. Depending on the mask you choose, some models offer a wider field of peripheral vision, easier breathing, and a more comfortable fit for exploring the underwater world.</p>\n</div>\n</details>\n\n</section>\n\n<script type=\"application/ld+json\">\n{\n\"@context\": \"https://schema.org\",\n\"@type\": \"FAQPage\",\n\"mainEntity\": [\n{\n\"@type\": \"Question\",\n\"name\": \"What should I look for in scuba masks for sale?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"When comparing scuba diving masks for sale, comfort and fit should come first. A soft silicone skirt, tempered glass lenses, and a secure strap system help reduce leaks and improve visibility underwater. Many divers also prefer low-volume or dual-lens designs for a wider field of view and easier mask clearing.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are prescription options available during a scuba mask sale?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many scuba mask sale collections include prescription-ready models with corrective lenses for nearsighted or farsighted divers. These masks are designed to improve underwater clarity while maintaining the same comfort, durability, and performance as standard diving masks.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Can I order a prescription scuba mask with different lens strengths for each eye?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many prescription scuba masks let you choose a different lens strength for each eye, which is especially helpful if your vision prescription is not the same on both sides. Popular models on sale, like the RX Obsidian Prescription Dive Mask, are designed to make customization simple while still providing a comfortable fit and clear underwater visibility for both scuba diving and snorkeling.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are affordable prescription scuba masks reliable for deeper dives?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Absolutely. Many affordable scuba masks are designed for deeper dives and regular diving equipment use. The most important thing is choosing a mask with a comfortable mask strap, anti-fog lenses, and a secure seal around the nose bridge to reduce discomfort underwater.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Are there seasonal sales on prescription scuba masks for snorkeling and diving?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many shops run seasonal sales on prescription scuba masks throughout the year, especially before summer vacations and holiday travel. It’s often a great time to find best selling masks, lightweight designs, or even a dual-lens mask at a better price.\"\n}\n},\n{\n\"@type\": \"Question\",\n\"name\": \"Do prescription scuba mask sales include different styles and full-face options?\",\n\"acceptedAnswer\": {\n\"@type\": \"Answer\",\n\"text\": \"Yes. Many masks on sale come in different styles, including full-face mask and dual-lens designs. Depending on the mask you choose, some models offer a wider field of peripheral vision, easier breathing, and a more comfortable fit for exploring the underwater world.\"\n}\n}\n]\n}\n</script>\n\n<style>\n.faq-container {\nmax-width: 700px;\nmargin: 20px auto;\npadding: 20px;\nborder-top: 1px solid #023059;\nfont-family: 'Lato', sans-serif;\n}\n.faq-title {\nfont-size: 24px;\nfont-weight: bold;\ncolor: #023059;\ntext-align: center;\nmargin-bottom: 15px;\n}\n.faq-item {\nborder-bottom: 1px solid #ddd;\nmargin-bottom: 10px;\n}\n.faq-question {\nfont-size: 16px;\nbackground-color: #ffffff;\ncolor: #023059;\npadding: 10px;\ncursor: pointer;\nborder: 1px solid #023059;\nborder-radius: 5px;\nmargin: 0;\nfont-weight: 700;\ndisplay: flex;\nalign-items: baseline;\n}\n.faq-question h3 {\nfont-size: 16px;\ncolor: #023059;\nfont-weight: 700;\nmargin: 0;\n}\n.faq-answer {\npadding: 10px;\nfont-size: 14px;\nbackground-color: #f9f9f9;\ncolor: #333;\nfont-weight: 400;\n}\n.faq-answer p { margin: 0 0 8px 0; }\n.faq-answer p:last-child { margin-bottom: 0; }\n.faq-answer a { color: #B95e05; text-decoration: none; }\n.faq-answer a:hover { text-decoration: underline; }\ndetails summary::-webkit-details-marker { display: none; }\ndetails[open] .faq-question::before { content: \"▾ \"; }\ndetails:not([open]) .faq-question::before { content: \"▸ \"; }\n</style>",
         "color_scheme": "",
-        "padding_top": 40,
-        "padding_bottom": 52
+        "padding_top": 20,
+        "padding_bottom": 4
       }
     }
   },
@@ -354,10 +343,9 @@
     "rich_text_aUewbJ",
     "product-grid",
     "featured_collection_aqgrBt",
-    "image_banner_FaBfwP",
-    "guide_product_page_HeiKDe",
     "rich_text_htiDQq",
     "banner",
+    "oo_learning_hub_hero_TgPbg7",
     "multirow_6WEEdM",
     "1728180942ffb8d9dc",
     "17152440046bc5a1ee",
