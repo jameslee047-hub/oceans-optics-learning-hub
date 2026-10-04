@@ -313,7 +313,12 @@
         : "There is no lens between 0.00 and +1.00 D, and your adjusted value is small enough that no correction (0.00) is suggested.";
     }
     if (recommended > 0) {
-      return "Our farsighted corrective lenses are available in 1.00 D steps, so we choose the closest available strength. If the adjusted value is exactly halfway between two strengths, we use the weaker one.";
+      // Exact tie: the target sits halfway between two stocked strengths and
+      // the engine chose the stronger one (target +5.50 capped at +5.00 is not a tie).
+      if (Math.abs(recommended - target - 0.5) < 1e-6) {
+        return "The calculated underwater strength falls exactly between two available farsighted lens powers. In this case we use the stronger of the two options to retain more of the prescription correction.";
+      }
+      return "Our farsighted corrective lenses are available in 1.00 D steps, so we choose the closest available strength.";
     }
     return "We match the adjusted value to the closest suitable lens strength available.";
   }

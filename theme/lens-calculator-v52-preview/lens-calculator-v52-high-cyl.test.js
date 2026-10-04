@@ -30,8 +30,8 @@ var matrix = [
   { sph: -2, cyl: -5, se: -4.5, balanced: "-4.00", base: -3.25, target: -2.75, alternative: "-2.50", difference: 1.5, triggered: true },
   { sph: -3, cyl: -6, se: -6, balanced: "-5.50", base: -4.5, target: -4, alternative: "-4.00", difference: 1.5, triggered: true },
   { sph: 5, cyl: -3.25, se: 3.375, balanced: "+3.00", base: 4.1875, target: 3.6875, alternative: "+4.00", difference: 1, triggered: true },
-  { sph: 6, cyl: -4, se: 4, balanced: "+3.00", base: 5, target: 4.5, alternative: "+4.00", difference: 1, triggered: true },
-  { sph: 8, cyl: -6, se: 5, balanced: "+4.00", base: 6.5, target: 6, alternative: "+5.00", difference: 1, triggered: true }
+  { sph: 6, cyl: -4, se: 4, balanced: "+4.00", base: 5, target: 4.5, alternative: "+5.00", difference: 1, triggered: true },
+  { sph: 8, cyl: -6, se: 5, balanced: "+5.00", base: 6.5, target: 6, alternative: "+5.00", difference: 0, triggered: true }
 ];
 
 test("preview uses the same V5.3 implementation as the comparison harness", function () {

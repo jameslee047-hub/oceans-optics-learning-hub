@@ -112,7 +112,7 @@ test("every ordinary minus result is no stronger than its continuous target", fu
   });
 });
 
-test("farsighted results use the nearest stocked plus power, exact ties toward zero, never stronger than SE", function () {
+test("farsighted results use the nearest stocked plus power, exact ties to the stronger lens, never stronger than SE", function () {
   var plus = V53.V53_CONFIG.hyperopiaAvailablePowers;
   [1.01, 2.12, 3.37, 4.49, 5.01, 1.125, 1.625, 2.625, 3.125, 3.75].forEach(function (se) {
     var result = V53.computeV53Recommendation(se);
@@ -120,7 +120,7 @@ test("farsighted results use the nearest stocked plus power, exact ties toward z
     assert.equal(result.finalPower, V53.nearestAvailablePowerTowardZero(result.preSnapTarget, plus).power, "nearest for SE " + se);
     assert.ok(result.finalPower <= se + EPSILON, "never stronger than SE " + se);
   });
-  [[1.25, 1], [1.5, 1], [1.625, 2], [1.75, 2], [2.25, 2], [2.5, 2], [2.625, 3], [2.75, 3], [3.5, 3], [3.75, 4], [4.5, 4], [4.625, 5], [6, 5]].forEach(function (entry) {
+  [[1.25, 1], [1.5, 2], [1.625, 2], [1.75, 2], [2.25, 2], [2.5, 3], [2.625, 3], [2.75, 3], [3.5, 4], [3.75, 4], [4.5, 5], [4.625, 5], [5.5, 5], [6, 5]].forEach(function (entry) {
     assert.equal(V53.plusNearestStockSelection(entry[0], entry[0] + 0.5, plus).power, entry[1], "target +" + entry[0]);
   });
 });

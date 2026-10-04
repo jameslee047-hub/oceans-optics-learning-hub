@@ -30,8 +30,9 @@
  * prescriptions the directional rule above no longer applies. Farsighted
  * stock comes in 1.00 D steps, where "never stronger than the target"
  * could discard up to 0.875 D beyond the intended adjustment. Above SE
- * +1.00, positive targets use the nearest stocked plus power, with an
- * exact tie going to the weaker lens (toward zero) — the V5.2 selector.
+ * +1.00, positive targets use the nearest stocked plus power. An exact
+ * tie (target exactly halfway between two stocked plus powers) goes to
+ * the STRONGER lens, farther from zero (revised 2026-10-04).
  * A separate low-plus guard, decided on SE, keeps plano from being an
  * ordinary stock step: SE below +0.50 -> 0.00, exactly +0.50 -> manual
  * review, above +0.50 up to +1.00 -> +1.00. Minus selection is unchanged.
@@ -635,8 +636,9 @@
   // recommendation never drops from +1.00 back to plano as SE increases.
   //
   // ABOVE SE +1.00: the continuous target uses the nearest stocked plus
-  // power; on an exact distance tie the weaker lens (smaller absolute power,
-  // toward zero) wins.
+  // power; on an exact distance tie the STRONGER lens (larger absolute
+  // power, farther from zero) wins, retaining more of the correction
+  // (revised 2026-10-04).
   // ==========================================================================
 
   var PLUS_NEAREST_STOCK_RULE = "plus-nearest-stock";
@@ -652,6 +654,12 @@
     }
 
     var nearest = nearestAvailablePowerTowardZero(target, availablePowers);
+    var power = nearest.power;
+    if (nearest.tieCandidates) {
+      nearest.tieCandidates.forEach(function (candidate) {
+        if (Math.abs(candidate.power) > Math.abs(power) + EPSILON) power = candidate.power;
+      });
+    }
     var ordered = availablePowers.slice().sort(function (a, b) {
       return Math.abs(a - target) - Math.abs(b - target) || Math.abs(a) - Math.abs(b);
     });
@@ -660,14 +668,14 @@
     });
 
     return {
-      power: nearest.power,
+      power: power,
       stockStatus: "OK",
       rule: PLUS_NEAREST_STOCK_RULE,
       reason:
         "Farsighted stock selection: the nearest stocked plus power to the continuous target (" +
         formatSigned(target) +
-        ") is selected; an exact tie goes to the weaker lens. Final stock power: " +
-        formatSigned(nearest.power) +
+        ") is selected; an exact tie goes to the stronger lens. Final stock power: " +
+        formatSigned(power) +
         ".",
       candidates: null,
       tieCandidates: nearest.tieCandidates,
