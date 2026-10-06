@@ -51,14 +51,16 @@ function sources(view) {
   return view.source_history.join(",");
 }
 
-test("a plain visit with no tool use records nothing and never touches the cart", function () {
+test("a plain visit with no tool use records nothing and never touches the cart", async function () {
   var p = page({ search: "?utm_source=google" });
+  await settle();
   assert.equal(JSON.stringify(p.journey.snapshot()), JSON.stringify({ first_source: null, source_history: [], source_history_text: "" }));
   assert.equal(p.fetchCalls.length, 0);
 });
 
-test("a Quiz arrival records the Quiz even without a prescription, and syncs cart attributes", function () {
+test("a Quiz arrival records the Quiz even without a prescription, and syncs cart attributes", async function () {
   var p = page({ search: "?quiz_session_id=qs_1&quiz_product_id=rx-rover" });
+  await settle();
   assert.equal(p.journey.snapshot().first_source, "quiz_v53");
   assert.equal(sources(p.journey.snapshot()), "quiz_v53");
   assert.equal(p.fetchCalls.length, 1);
@@ -206,4 +208,34 @@ test("product checker and calculator record their own use through the journey", 
   var calculator = fs.readFileSync(path.join(__dirname, "lens-calculator-v52-preview/lens-calculator-v52-products.js"), "utf8");
   assert.match(calculator, /if \(cartReady\) recordCalculatorUse\(doc\);/);
   assert.match(calculator, /var destination = prepareProductPageUrl\(profile, product, selection\);\n\s+recordCalculatorUse\(doc\);/);
+});
+
+test("cart attribute updates are serialised so a new cart never loses attributes", async function () {
+  var order = [];
+  var inFlight = 0;
+  var maxInFlight = 0;
+  var window = {
+    localStorage: storage(),
+    sessionStorage: storage(),
+    location: { search: "?quiz_session_id=qs_7" },
+    document: { cookie: "" },
+    fetch: function (url, init) {
+      inFlight += 1;
+      maxInFlight = Math.max(maxInFlight, inFlight);
+      order.push(JSON.parse(init.body).attributes);
+      return new Promise(function (resolve) { setTimeout(function () { inFlight -= 1; resolve({ ok: true }); }, 5); });
+    }
+  };
+  vm.runInNewContext(journeyScript, { window: window, URLSearchParams: URLSearchParams, Date: Date, JSON: JSON, Promise: Promise });
+  window.OOSourceJourney.cartUpdate({ quiz_session_id: "qs_7" });
+  await new Promise(function (resolve) { setTimeout(resolve, 40); });
+  assert.equal(maxInFlight, 1);
+  assert.equal(JSON.stringify(order), JSON.stringify([
+    { _oo_first_source: "quiz_v53", _oo_source_history: "quiz_v53" },
+    { quiz_session_id: "qs_7" }
+  ]));
+});
+
+test("the quiz attribution sync goes through the shared cart queue", function () {
+  assert.match(snippet, /journey && typeof journey\.cartUpdate === 'function'\n\s+\? journey\.cartUpdate\(attributes\)/);
 });

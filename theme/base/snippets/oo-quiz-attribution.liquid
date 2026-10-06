@@ -71,6 +71,23 @@
   }
 
   var pendingSignature = null;
+  var cartQueue = Promise.resolve();
+
+  // Cart attribute updates run one at a time. On a brand-new cart two
+  // concurrent /cart/update.js calls can each create a cart, losing one set
+  // of attributes; queued, the first call creates the cart and the next
+  // reuses it. The quiz attribution sync below uses the same queue.
+  function cartUpdate(attributes) {
+    var run = cartQueue.then(function () {
+      return root.fetch('/cart/update.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ attributes: attributes })
+      });
+    });
+    cartQueue = run.catch(function () {});
+    return run;
+  }
 
   // Mirrors the journey onto the cart once per journey state and cart.
   function syncCart(force) {
@@ -82,15 +99,9 @@
       if (!force && root.sessionStorage.getItem(SYNC_KEY) === signature) return;
     } catch (e) {}
     pendingSignature = signature;
-    root.fetch('/cart/update.js', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({
-        attributes: {
-          _oo_first_source: view.first_source || '',
-          _oo_source_history: view.source_history_text
-        }
-      })
+    cartUpdate({
+      _oo_first_source: view.first_source || '',
+      _oo_source_history: view.source_history_text
     }).then(function () {
       try {
         root.sessionStorage.setItem(SYNC_KEY, signature);
@@ -119,7 +130,8 @@
     read: read,
     record: record,
     snapshot: function () { return snapshot(); },
-    syncCart: syncCart
+    syncCart: syncCart,
+    cartUpdate: cartUpdate
   };
 
   // A Quiz arrival counts as Quiz use, with or without a prescription.
@@ -240,16 +252,21 @@
       if (window.sessionStorage.getItem(ATTR_SYNC_KEY) === syncSignature) return;
     } catch (e) {}
 
-    fetch('/cart/update.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        attributes: attributes
-      })
-    })
+    var journey = window.OOSourceJourney;
+    var update = journey && typeof journey.cartUpdate === 'function'
+      ? journey.cartUpdate(attributes)
+      : fetch('/cart/update.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          attributes: attributes
+        })
+      });
+
+    update
       .then(function () {
         try {
           window.sessionStorage.setItem(ATTR_SYNC_KEY, syncSignature);
