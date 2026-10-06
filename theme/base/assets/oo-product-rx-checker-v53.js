@@ -795,6 +795,14 @@
       result.appendChild(section);
     }
 
+    // The checker has produced and is applying a new prescription config:
+    // append it to the storefront journey (never replacing earlier tools)
+    // before the handoff writes _oo_source = product_rx_checker.
+    function recordCheckerUse() {
+      var journey = root.OOSourceJourney;
+      if (journey && typeof journey.record === "function") journey.record(SOURCE);
+    }
+
     async function openAlternative(calculation, candidate, link) {
       if (state.busy) return;
       setBusy(true);
@@ -803,6 +811,7 @@
       try {
         setStatus("busy", "Saving your prescription for " + candidate.name + "…");
         var configId = await ensureConfirmed(calculation);
+        recordCheckerUse();
         root.location.assign(alternativeProductUrl(products, candidate, configId));
       } catch (error) {
         link.removeAttribute("aria-disabled");
@@ -848,6 +857,7 @@
         setStatus("busy", "Adding your lenses to this mask…");
         var handoffApi = handoff || root.OORxProductHandoff;
         if (!handoffApi) throw new Error("This page couldn't apply your lenses. Please refresh and try again.");
+        recordCheckerUse();
         var controls = await handoffApi.waitForAvisControls(doc);
         handoffApi.applyConfirmedHandoff(doc, controls, summary, SOURCE);
         setStatus("success", "Your lenses are set on this mask. Choose any accessories, then add to cart.");

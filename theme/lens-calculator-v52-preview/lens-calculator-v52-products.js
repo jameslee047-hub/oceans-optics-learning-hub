@@ -356,7 +356,20 @@
     return buildProductDetailsUrl(commerce.variant.url, profile.configId, PURCHASE_SOURCE);
   }
 
-  function prepareCartSubmission(profile, product, variant) {
+  // The storefront journey (window.OOSourceJourney from the quiz attribution
+  // snippet). The calculator records its own use; other tools are kept.
+  function sourceJourney(doc) {
+    var view = doc && doc.defaultView;
+    var journey = view && view.OOSourceJourney;
+    return journey && typeof journey.record === "function" ? journey : null;
+  }
+
+  function recordCalculatorUse(doc) {
+    var journey = sourceJourney(doc);
+    return journey ? journey.record(PURCHASE_SOURCE) : null;
+  }
+
+  function prepareCartSubmission(profile, product, variant, journeyView) {
     var commerce = resolveCommerceVariant(profile, product, variant);
 
     var fields = {
@@ -369,6 +382,8 @@
       "properties[_oo_source]": PURCHASE_SOURCE,
       "properties[_has_apo]": "true"
     };
+    if (journeyView && journeyView.first_source) fields["properties[_oo_first_source]"] = journeyView.first_source;
+    if (journeyView && journeyView.source_history_text) fields["properties[_oo_source_history]"] = journeyView.source_history_text;
     var label = typeof profile.label === "string" ? profile.label.trim() : "";
     if (label) fields["properties[Prescription]"] = label;
 
@@ -499,8 +514,12 @@
       status.textContent = "Save this prescription before adding a mask to your cart.";
     }
 
+    // A saved (confirmed) calculator prescription is Lens Calculator use.
+    if (cartReady) recordCalculatorUse(doc);
+
     var customizeOnce = createSubmissionGuard(function () {
       var destination = prepareProductPageUrl(profile, product, selection);
+      recordCalculatorUse(doc);
       openNewContext(doc.defaultView, destination);
       customizeButton.disabled = true;
       customizeButton.textContent = "Opened in Shopify";
@@ -541,7 +560,7 @@
       submitCartInNewContext(
         doc.defaultView,
         doc,
-        prepareCartSubmission(profile, product, selection)
+        prepareCartSubmission(profile, product, selection, recordCalculatorUse(doc))
       );
       addButton.textContent = "Cart opened";
     });

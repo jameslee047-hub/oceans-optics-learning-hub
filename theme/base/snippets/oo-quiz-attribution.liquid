@@ -1,4 +1,136 @@
 <script>
+/*
+  Oceans Optics tool journey (window.OOSourceJourney).
+  A 30-day, first-party record of which Oceans Optics tools a shopper used,
+  kept in localStorage as `oo_source_journey`:
+    { first: "quiz_v53", history: [{ source, at }], updated_at }
+  Only quiz_v53, lens_calculator_v53 and product_rx_checker are accepted;
+  history is ordered and de-duplicated, and a tool never removes another.
+  The journey is mirrored to the cart attributes `_oo_first_source` and
+  `_oo_source_history` (underscore-prefixed, hidden at checkout). Only tool
+  names and timestamps are stored.
+*/
+(function (root) {
+  'use strict';
+  if (!root || root.OOSourceJourney) return;
+
+  var STORAGE_KEY = 'oo_source_journey';
+  var SYNC_KEY = 'oo_source_journey_synced';
+  var MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+  var SOURCES = ['quiz_v53', 'lens_calculator_v53', 'product_rx_checker'];
+
+  function isSource(value) {
+    return SOURCES.indexOf(value) >= 0;
+  }
+
+  function empty() {
+    return { first: null, history: [], updated_at: null };
+  }
+
+  function read() {
+    var data;
+    try {
+      data = JSON.parse(root.localStorage.getItem(STORAGE_KEY) || 'null');
+    } catch (e) {
+      data = null;
+    }
+    if (!data || typeof data !== 'object') return empty();
+    var updated = Date.parse(data.updated_at || '');
+    if (!updated || Date.now() - updated > MAX_AGE_MS) return empty();
+    var seen = [];
+    var history = (Array.isArray(data.history) ? data.history : []).filter(function (entry) {
+      if (!entry || !isSource(entry.source) || seen.indexOf(entry.source) >= 0) return false;
+      seen.push(entry.source);
+      return true;
+    }).map(function (entry) {
+      return { source: entry.source, at: String(entry.at || '') };
+    });
+    var first = isSource(data.first) ? data.first : (history[0] ? history[0].source : null);
+    return { first: first, history: history, updated_at: data.updated_at };
+  }
+
+  function write(journey) {
+    try {
+      root.localStorage.setItem(STORAGE_KEY, JSON.stringify(journey));
+    } catch (e) {}
+  }
+
+  function snapshot(journey) {
+    var current = journey || read();
+    var sources = current.history.map(function (entry) { return entry.source; });
+    return {
+      first_source: current.first,
+      source_history: sources,
+      source_history_text: sources.join(',')
+    };
+  }
+
+  function cartToken() {
+    var match = String(root.document && root.document.cookie || '').match(/(?:^|;\s*)cart=([^;]+)/);
+    return match ? match[1] : '';
+  }
+
+  var pendingSignature = null;
+
+  // Mirrors the journey onto the cart once per journey state and cart.
+  function syncCart(force) {
+    var view = snapshot();
+    if (!view.source_history.length || !root.fetch) return;
+    var signature = JSON.stringify([view.first_source, view.source_history_text, cartToken()]);
+    if (!force && pendingSignature === signature) return;
+    try {
+      if (!force && root.sessionStorage.getItem(SYNC_KEY) === signature) return;
+    } catch (e) {}
+    pendingSignature = signature;
+    root.fetch('/cart/update.js', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        attributes: {
+          _oo_first_source: view.first_source || '',
+          _oo_source_history: view.source_history_text
+        }
+      })
+    }).then(function () {
+      try {
+        root.sessionStorage.setItem(SYNC_KEY, signature);
+      } catch (e) {}
+    }).catch(function () {
+      pendingSignature = null;
+    });
+  }
+
+  // Appends a tool use (no-op when already recorded) and returns the snapshot.
+  function record(source) {
+    if (!isSource(source)) return snapshot();
+    var journey = read();
+    var known = journey.history.some(function (entry) { return entry.source === source; });
+    var now = new Date().toISOString();
+    if (!known) journey.history.push({ source: source, at: now });
+    if (!journey.first) journey.first = journey.history[0].source;
+    journey.updated_at = now;
+    write(journey);
+    syncCart(false);
+    return snapshot(journey);
+  }
+
+  root.OOSourceJourney = {
+    SOURCES: SOURCES.slice(),
+    read: read,
+    record: record,
+    snapshot: function () { return snapshot(); },
+    syncCart: syncCart
+  };
+
+  // A Quiz arrival counts as Quiz use, with or without a prescription.
+  try {
+    var params = new URLSearchParams(root.location.search || '');
+    if (params.get('quiz_session_id') || params.get('oo_source') === 'quiz_v53') record('quiz_v53');
+  } catch (e) {}
+  syncCart(false);
+})(typeof window !== 'undefined' ? window : null);
+</script>
+<script>
 (function () {
   var QUIZ_KEYS = [
     'quiz_session_id',

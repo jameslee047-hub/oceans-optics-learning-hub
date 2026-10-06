@@ -269,10 +269,31 @@
     });
   }
 
+  // The shared storefront journey (window.OOSourceJourney, defined in the
+  // oo-quiz-attribution snippet), when the page has it.
+  function sourceJourney(doc) {
+    var view = doc && doc.defaultView;
+    var journey = view && view.OOSourceJourney;
+    return journey && typeof journey.record === "function" ? journey : null;
+  }
+
   function injectShopifyProperties(doc, form, summary, source) {
     upsertHiddenProperty(doc, form, "properties[_oo_rx_config]", summary.configId);
     if (ALLOWED_SOURCES.indexOf(source) >= 0) {
+      // _oo_source stays the tool that applied this config (conversion
+      // source). The journey first records that tool, so earlier tools are
+      // kept in the first-source and history properties alongside it.
       upsertHiddenProperty(doc, form, "properties[_oo_source]", source);
+      var journey = sourceJourney(doc);
+      if (journey) {
+        var view = journey.record(source);
+        if (view && view.first_source) {
+          upsertHiddenProperty(doc, form, "properties[_oo_first_source]", view.first_source);
+        }
+        if (view && view.source_history_text) {
+          upsertHiddenProperty(doc, form, "properties[_oo_source_history]", view.source_history_text);
+        }
+      }
     }
     if (summary.prescriptionLabel) {
       upsertHiddenProperty(doc, form, "properties[Prescription]", summary.prescriptionLabel);
@@ -477,6 +498,7 @@
     waitForAvisControls: waitForAvisControls,
     applyAvisValues: applyAvisValues,
     injectShopifyProperties: injectShopifyProperties,
+    sourceJourney: sourceJourney,
     removeInjectedProperties: removeInjectedProperties,
     setUploadSuppressed: setUploadSuppressed,
     suppressLateUploadControls: suppressLateUploadControls,
