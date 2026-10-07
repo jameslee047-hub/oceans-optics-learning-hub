@@ -2,6 +2,8 @@
 
 var test = require("node:test");
 var assert = require("node:assert/strict");
+var fs = require("node:fs");
+var path = require("node:path");
 var Handoff = require("./base/assets/oo-rx-product-handoff.js");
 
 var CONFIG_ID = "7adf6f8a-1f62-4e2e-9d06-5f5348997a43";
@@ -457,4 +459,26 @@ test("both live Avis plano formats select the plano option for a 0.00 eye", func
     assert.equal(Handoff.findPowerOption({ options: options }, -2.5).value, "-2.50");
     assert.equal(Handoff.findPowerOption({ options: options }, -1), null, "no silent substitution for an unstocked power");
   });
+});
+
+test("authoritative theme layout loads the handoff assets only on product pages", function () {
+  var layout = fs.readFileSync(path.join(__dirname, "base/layout/theme.liquid"), "utf8");
+  assert.match(layout, /if request\.page_type == 'product'[\s\S]*oo-rx-product-handoff\.css[\s\S]*endif/);
+  assert.match(layout, /if request\.page_type == 'product'[\s\S]*oo-rx-product-handoff\.js[\s\S]*endif/);
+  assert.equal((layout.match(/oo-rx-product-handoff\.css/g) || []).length, 1);
+  assert.equal((layout.match(/oo-rx-product-handoff\.js/g) || []).length, 1);
+});
+
+test("variant URL rewrites leave the confirmed Rx properties in the product form", function () {
+  var fixture = propertyForm();
+  Handoff.injectShopifyProperties(fixture.doc, fixture.form, summary(), "quiz_v53");
+
+  var visibleUrl = new URL("https://oceansoptics.com/products/example?oo_rx=" + CONFIG_ID + "&oo_source=quiz_v53&variant=1");
+  visibleUrl.search = "?variant=2";
+
+  assert.equal(visibleUrl.searchParams.has("oo_rx"), false);
+  assert.deepEqual(fixture.inputs.map(function (input) { return [input.name, input.value]; }).slice(0, 2), [
+    ["properties[_oo_rx_config]", CONFIG_ID],
+    ["properties[_oo_source]", "quiz_v53"]
+  ]);
 });
