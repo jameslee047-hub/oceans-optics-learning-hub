@@ -92,6 +92,8 @@ Which to Choose?
 
 For most snorkeling, which happens in bright, shallow, tropical water, a dark skirt is the stronger default. Clear is worth choosing for lower light conditions, or for anyone who wants a more open feel or prefers their face to stay visible.
 
+[RELATED] **Want to learn more?** Read our full guide to [clear vs. black snorkel masks](https://oceansoptics.com/blogs/home/clear-vs-black-snorkel-mask).
+
 Prescription Compatibility
 
 If you need prescription correction, check compatibility before falling in love with a mask. Lens strength, lens type, and mask model all matter.

@@ -432,6 +432,21 @@ function markdownBodyToHtml(markdown) {
       continue;
     }
 
+    // Mirrors relatedParagraph() in lib/learning-data.js: the only line type
+    // whose external https links are kept.
+    const relatedMatch = /^\[RELATED\]\s+(.+)$/.exec(line);
+    if (relatedMatch) {
+      flushParagraph();
+      flushList();
+      flushActions();
+      const html = inlineHtml(relatedMatch[1]).replace(
+        /\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g,
+        (_match, label, url) => `<a href="${url}">${label}</a>`
+      );
+      blocks.push(`<p>${html}</p>`);
+      continue;
+    }
+
     const mediaMarker = parseMediaMarker(line);
     if (mediaMarker) {
       flushParagraph();

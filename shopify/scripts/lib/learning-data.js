@@ -342,6 +342,39 @@ function linkParagraph(link) {
   };
 }
 
+// `[RELATED] **Lead-in** text [label](https://...)` is a small related-reading
+// caption closing a section. Only on these lines are **bold** and external
+// https links kept -- ordinary paragraphs still strip both -- so existing
+// lesson copy that uses ** renders exactly as before. No `target` is set:
+// these are internal Oceans Optics links and open in the same tab.
+const RELATED_LINE_PATTERN = /^\[RELATED\]\s+(.+)$/;
+const RELATED_INLINE_PATTERN = /\*\*([^*]+)\*\*|\[([^\]]+)\]\((https:\/\/[^)\s]+)\)/g;
+
+function relatedParagraph(value) {
+  const children = [];
+  let lastIndex = 0;
+
+  for (const match of value.matchAll(RELATED_INLINE_PATTERN)) {
+    if (match.index > lastIndex) {
+      children.push(textSegmentNode(value.slice(lastIndex, match.index)));
+    }
+
+    if (match[1]) {
+      children.push({ type: "text", value: match[1], bold: true });
+    } else {
+      children.push({ type: "link", url: match[3], children: [{ type: "text", value: match[2] }] });
+    }
+
+    lastIndex = match.index + match[0].length;
+  }
+
+  if (lastIndex < value.length) {
+    children.push(textSegmentNode(value.slice(lastIndex)));
+  }
+
+  return { type: "paragraph", children: children.filter((node) => node.value !== "") };
+}
+
 function heading(value, level) {
   return { type: "heading", level, children: richTextInlineNodes(value) };
 }
@@ -416,6 +449,14 @@ export function markdownToShopifyRichText(markdown) {
       flushList();
       const link = resolveContentMarker(contentMarker.kind, contentMarker.rawLabel);
       if (link.url) children.push(linkParagraph(link));
+      continue;
+    }
+
+    const relatedMatch = RELATED_LINE_PATTERN.exec(line);
+    if (relatedMatch) {
+      flushParagraph();
+      flushList();
+      children.push(relatedParagraph(relatedMatch[1]));
       continue;
     }
 

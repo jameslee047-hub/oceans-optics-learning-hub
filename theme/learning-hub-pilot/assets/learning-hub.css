@@ -645,14 +645,16 @@
    inline text. Explicit [TOOL:]/[PRODUCT:]/[CTA:] destinations never start
    with /pages/learn/, so they still correctly get the button treatment. */
 a.learning-inline-reference,
-.learning-rich-text a[href^="/pages/learn/"] {
+.learning-rich-text a[href^="/pages/learn/"],
+.learning-rich-text a[href^="https://oceansoptics.com/blogs/"] {
   color: var(--oo-learning-blue);
   font-family: inherit;
   font-weight: 700;
 }
 
 a.learning-inline-reference,
-.learning-rich-text a[href^="/pages/learn/"] {
+.learning-rich-text a[href^="/pages/learn/"],
+.learning-rich-text a[href^="https://oceansoptics.com/blogs/"] {
   text-decoration: underline;
   text-decoration-color: rgba(185, 94, 5, 0.45);
   text-decoration-thickness: 0.12rem;
@@ -661,10 +663,20 @@ a.learning-inline-reference,
 
 a.learning-inline-reference:hover,
 .learning-rich-text a[href^="/pages/learn/"]:hover,
+.learning-rich-text a[href^="https://oceansoptics.com/blogs/"]:hover,
 a.learning-inline-reference:focus-visible,
-.learning-rich-text a[href^="/pages/learn/"]:focus-visible {
+.learning-rich-text a[href^="/pages/learn/"]:focus-visible,
+.learning-rich-text a[href^="https://oceansoptics.com/blogs/"]:focus-visible {
   color: var(--oo-learning-orange);
   text-decoration-color: currentColor;
+}
+
+/* [RELATED] related-reading caption (see relatedParagraph() in
+   shopify/scripts/lib/learning-data.js): same muted, smaller treatment as
+   the secondary link row in .learning-action-choice-group. */
+.learning-rich-text p:has(> a[href^="https://oceansoptics.com/blogs/"]) {
+  color: var(--oo-learning-muted);
+  font-size: 1.4rem;
 }
 
 .learning-inline-action {
