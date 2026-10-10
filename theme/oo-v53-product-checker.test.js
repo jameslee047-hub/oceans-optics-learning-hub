@@ -120,8 +120,13 @@ function cards(page) {
   });
 }
 
+// The selected option card (or the single recommendation card) is the only
+// place the recommended pair is shown.
 function shownPair(page) {
-  return Array.prototype.map.call(page.container.querySelectorAll(".oo-rx-checker__result-eye-value"), function (node) { return node.textContent; }).join("/");
+  var checked = page.container.querySelector(".oo-rx-checker__choice-input:checked");
+  var card = checked ? checked.parentNode : page.container.querySelector(".oo-rx-checker__choice-card--single");
+  if (!card) return "";
+  return Array.prototype.map.call(card.querySelectorAll(".oo-rx-checker__choice-eye-value"), function (node) { return node.textContent; }).join("/");
 }
 
 function choose(page, strategy) {
@@ -171,7 +176,7 @@ test("J. checker -7 case: strictly closer Sharper is the selected Closer Match; 
   assert.equal(page.applied[0].summary.recommendedRight, -7);
   assert.equal(page.applied[0].summary.recommendedLeft, -8);
   assert.deepEqual(page.journey, ["product_rx_checker"]);
-  assert.match(page.container.querySelector(".oo-rx-explain").textContent, /Why did you choose these lens strengths for this mask\?/);
+  assert.match(page.container.querySelector(".oo-rx-explain").textContent, /How we calculated your lens strength/);
 });
 
 test("J. checker Daniel: Closer Match -3.50/-3.50 selected by default; Use these lenses with no change saves sharper", { skip: skipDom }, async function () {
@@ -205,13 +210,59 @@ test("J. checker Daniel: choosing Softer confirms balanced -3.00/-3.00", { skip:
   assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["balanced", -3, -3]);
 });
 
-test("J. checker exact midpoint keeps Balanced selected and first", { skip: skipDom }, async function () {
+test("A/J. checker screenshot tie -2.25 / -1.75: Sharper -2.00/-1.50 is the selected Closer Match; Softer saves balanced", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
-  check(page, [-3.25], [-2.75]);
+  check(page, [-2.25], [-1.75]);
   await settle();
-  assert.deepEqual(cards(page), ["balanced -2.50/-2.00", "sharper -3.00/-2.50"]);
-  assert.equal(checkedStrategy(page), "balanced");
-  assert.deepEqual(cardTitles(page), ["Comfort / Balanced VisionRecommended", "Sharper / Closer to Your Prescription"]);
+  assert.deepEqual(cards(page), ["sharper -2.00/-1.50", "balanced -1.50/-1.00"]);
+  assert.equal(checkedStrategy(page), "sharper");
+  assert.deepEqual(cardTitles(page), ["Closer MatchRecommended", "Softer Option"]);
+  assert.match(page.container.querySelector('.oo-rx-checker__choice[data-strategy="sharper"]').textContent, /Equally close to your calculated underwater strength, and closer to your prescription\./);
+  choose(page, "balanced");
+  await settle();
+  assert.equal(shownPair(page), "-1.50/-1.00");
+  assert.equal(page.calls.length, 0);
+  apply(page);
+  await settle();
+  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["balanced", -1.5, -1]);
+
+  var fresh = await loadChecker(HANDLES.obsidian);
+  check(fresh, [-2.25], [-1.75]);
+  await settle();
+  apply(fresh);
+  await settle();
+  assert.deepEqual([confirms(fresh)[0].body.recommendationStrategy, confirms(fresh)[0].body.recommendedRight, confirms(fresh)[0].body.recommendedLeft], ["sharper", -2, -1.5]);
+});
+
+test("UI: checker result has the Suggested Lens Strength heading, one short line, the cards and the two accordions, with no duplicate summary", { skip: skipDom }, async function () {
+  var page = await loadChecker(HANDLES.obsidian);
+  check(page, [-2.25], [-1.75]);
+  await settle();
+  var result = page.container.querySelector("[data-checker-result]");
+  var text = result.textContent;
+  assert.equal(result.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength");
+  assert.equal(result.querySelector(".oo-rx-checker__choice-intro").textContent, "Choose the option you'd like us to use for this mask.");
+  assert.equal(result.querySelectorAll(".oo-rx-checker__choice-intro").length, 1);
+  assert.equal(result.querySelector(".oo-rx-checker__summary"), null, "no duplicate summary box");
+  ["Your recommended lenses", "YOUR RECOMMENDED LENSES", "We recommend the first option", "nothing is saved until you use it for this mask",
+    "Why did you choose these lens strengths for this mask?", "See each step for each eye", "Choose the lens option you'd like us to use"].forEach(function (needle) {
+    assert.equal(text.indexOf(needle), -1, "still rendered: " + needle);
+  });
+  var summaries = Array.prototype.map.call(result.querySelectorAll(".oo-rx-explain summary"), function (s) { return s.textContent.trim(); });
+  assert.deepEqual(summaries, ["How we calculated your lens strength", "Why is my mask lens different from my SPH?"]);
+  assert.equal(result.querySelector(".oo-rx-checker__strategy").getAttribute("aria-label"), "Choose the lens option you'd like us to use");
+
+  // One option: a single recommendation card, no radio, no duplicate box.
+  var single = await loadChecker(HANDLES.obsidian);
+  check(single, [-3.75, -0.75, 90], [-3.75, -0.75, 90]);
+  await settle();
+  var singleResult = single.container.querySelector("[data-checker-result]");
+  assert.equal(singleResult.querySelectorAll(".oo-rx-checker__choice-card--single").length, 1);
+  assert.equal(singleResult.querySelectorAll(".oo-rx-checker__choice-input").length, 0);
+  assert.equal(singleResult.querySelector(".oo-rx-checker__summary"), null);
+  assert.equal(singleResult.querySelector(".oo-rx-checker__choice-intro"), null, "no 'choose' line when there is nothing to choose");
+  assert.equal(shownPair(single), "-3.50/-3.50");
+  assert.match(singleResult.querySelector(".oo-rx-checker__choice-card--single").textContent, /Recommended/);
 });
 
 test("checker: the mask's own stock decides whether the second option is offered", { skip: skipDom }, async function () {
@@ -220,7 +271,7 @@ test("checker: the mask's own stock decides whether the second option is offered
   var lumix = await loadChecker(HANDLES.lumix);
   check(lumix, [-6.25], [-6.25]);
   await settle();
-  assert.deepEqual(cards(lumix), ["balanced -5.50/-5.50", "sharper -6.00/-6.00"]);
+  assert.deepEqual(cards(lumix), ["sharper -6.00/-6.00", "balanced -5.50/-5.50"], "the buildable tie-winning Sharper leads");
 
   var capped = await loadChecker(HANDLES.lumix);
   check(capped, [-6.75], [-6.75]);
@@ -312,7 +363,9 @@ test("checker: multiple named prescriptions keep independent values and selectio
   label.dispatchEvent(new page.win.Event("input"));
   check(page, [-3.25], [-2.75]);
   await settle();
-  assert.deepEqual(cards(page), ["balanced -2.50/-2.00", "sharper -3.00/-2.50"]);
+  assert.deepEqual(cards(page), ["sharper -3.00/-2.50", "balanced -2.50/-2.00"]);
+  choose(page, "balanced");
+  await settle();
   var tabs = Array.prototype.map.call(page.container.querySelectorAll(".oo-rx-checker__profile-tab"), function (tab) { return tab.textContent; });
   assert.deepEqual(tabs, ["James", "Airies"]);
 
@@ -320,6 +373,12 @@ test("checker: multiple named prescriptions keep independent values and selectio
   await settle();
   assert.equal(label.value, "James");
   assert.equal(shownPair(page), "-6.50/-7.50", "James keeps his Softer choice");
+  assert.equal(page.container.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength for James");
+  label.value = "James R";
+  label.dispatchEvent(new page.win.Event("input"));
+  assert.equal(page.container.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength for James R");
+  label.value = "James";
+  label.dispatchEvent(new page.win.Event("input"));
   assert.equal(checkedStrategy(page), "balanced");
   assert.equal(page.calls.length, 0, "switching prescriptions never saves");
 

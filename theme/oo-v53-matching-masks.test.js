@@ -257,24 +257,24 @@ test("normal pair with no second option: masks show immediately and nothing is s
   assert.equal(confirmCalls(page)[0].body.recommendationStrategy, "balanced");
 });
 
-test("exact midpoint: Comfort masks show at once, no See Matching Masks step, cards switch without saving", { skip: skipDom }, async function () {
+test("exact midpoint: the tie-winning Sharper masks show at once, no See Matching Masks step, cards switch without saving", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-3.25], [-2.75]);
   await settle();
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, false);
   assert.equal(page.doc.getElementById("oo-v52-midpoint-use"), null, "no See Matching Masks button");
-  assert.equal(page.doc.getElementById("oo-v52-midpoint-balanced").checked, true);
+  assert.equal(page.doc.getElementById("oo-v52-midpoint-sharper").checked, true, "an exact tie defaults to the stronger valid lens");
   assert.equal(page.doc.getElementById("oo-v52-products").hidden, false);
-  assert.deepEqual(cardPairs(page.doc), ["R -2.50L -2.00"]);
-
-  chooseCard(page.doc, "sharper");
-  await settle();
-  assert.equal(page.doc.getElementById("oo-v52-midpoint-sharper").checked, true);
   assert.deepEqual(cardPairs(page.doc), ["R -3.00L -2.50"]);
 
   chooseCard(page.doc, "balanced");
   await settle();
+  assert.equal(page.doc.getElementById("oo-v52-midpoint-balanced").checked, true);
   assert.deepEqual(cardPairs(page.doc), ["R -2.50L -2.00"]);
+
+  chooseCard(page.doc, "sharper");
+  await settle();
+  assert.deepEqual(cardPairs(page.doc), ["R -3.00L -2.50"]);
   for (var i = 0; i < 5; i += 1) chooseCard(page.doc, i % 2 ? "balanced" : "sharper");
   await settle();
   assert.equal(page.calls.length, 0, "no backend request while previewing");
@@ -308,9 +308,11 @@ test("exact midpoint: choosing a mask while Sharper is selected confirms Sharper
   assert.equal(eyeText(page.doc, "left"), "-2.50");
 });
 
-test("exact midpoint: choosing a mask while Comfort is selected confirms balanced", { skip: skipDom }, async function () {
+test("exact midpoint: choosing a mask after selecting the Softer Option confirms balanced", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-3.25], [-2.75]);
+  await settle();
+  chooseCard(page.doc, "balanced");
   await settle();
   page.doc.querySelector(".oo-v52-product-card__customize").click();
   await settle();
@@ -327,6 +329,9 @@ test("one-eye midpoints: only the midpoint eye changes in the Sharper pair", { s
     var c = cases[i];
     var page = await loadCalculator();
     calculate(page, c[0], c[1]);
+    await settle();
+    assert.deepEqual(cardPairs(page.doc), [c[3]], "the tie-winning Sharper pair is the default");
+    chooseCard(page.doc, "balanced");
     await settle();
     assert.deepEqual(cardPairs(page.doc), [c[2]]);
     chooseCard(page.doc, "sharper");

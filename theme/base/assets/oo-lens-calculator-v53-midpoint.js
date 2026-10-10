@@ -19,12 +19,14 @@
  * Sharper always takes priority; never more than two choices are offered.
  *
  * Default ranking (choice layer only; the V5.3 "balanced" result itself is
- * unchanged): when the Sharper pair is STRICTLY closer to the same V5.3
- * underwater-adjusted values than the primary pair (at least one eye strictly
- * closer, no eye farther), Sharper is presented first and selected by default
- * as the "Closer Match", with the primary pair offered as the "Softer
- * Option". On an exact tie the primary pair stays first and default. Closer
- * to your SPH and the high-CYL workflow always default to the primary pair.
+ * unchanged): the stocked option closest to the same V5.3 underwater-adjusted
+ * values is recommended; on an exact tie the stronger valid lens wins because
+ * it stays closer to the customer's prescription. Sharper is only offered when
+ * it is at least as close as the primary pair, so a valid Sharper pair is
+ * always presented first and selected by default as the "Closer Match", with
+ * the primary pair offered as the "Softer Option". sharperStrictlyCloser only
+ * changes the wording. Closer to your SPH and the high-CYL workflow always
+ * default to the primary pair.
  *
  * The
  * high-CYL workflow (lens-calculator-v52-high-cyl.js) keeps its own Balanced /
@@ -214,7 +216,8 @@
     var sharperLeft = left.alternativePower !== null ? left.alternativePower : left.balancedPower;
     // Every Sharper eye is at least as close as its primary lens and an eye
     // without one is unchanged, so the pair is strictly closer exactly when
-    // one Sharper eye is strictly closer. An exact tie keeps the primary pair.
+    // one Sharper eye is strictly closer; otherwise it is an exact tie, which
+    // the stronger (closer to prescription) pair also wins.
     var strictlyCloser = right.reason === "closer_to_target" || left.reason === "closer_to_target";
     return {
       available: true,
@@ -223,7 +226,7 @@
       balanced: pairOf(right.balancedPower, left.balancedPower),
       sharper: pairOf(sharperRight, sharperLeft),
       sharperStrictlyCloser: strictlyCloser,
-      defaultStrategy: strictlyCloser ? STRATEGY_SHARPER : STRATEGY_BALANCED
+      defaultStrategy: STRATEGY_SHARPER
     };
   }
 
@@ -373,6 +376,7 @@
     // Sharper strictly closer: presented first and selected by default.
     closerMatchTitle: "Closer Match",
     closerMatchCopy: "The closest stocked match to your calculated underwater strength.",
+    closerMatchTieCopy: "Equally close to your calculated underwater strength, and closer to your prescription.",
     softerTitle: "Softer Option",
     softerCopy: "A slightly softer correction if you prefer a more relaxed underwater feel.",
     closerTitle: "Closer to Your SPH",
@@ -381,15 +385,17 @@
     closerWeaker: "It is weaker than our calculated underwater recommendation.",
     closerMixed: "It is stronger than our calculated underwater recommendation for one eye and weaker for the other.",
     strongerThanSeNotice: "This option is also stronger than the spherical-equivalent estimate for this eye. It may feel over-corrected or cause visual fatigue for some people, particularly during longer dives or snorkelling sessions.",
-    choiceIntro: "We recommend the first option. You can also choose the second option below; the matching masks update straight away.",
-    checkerChoiceIntro: "We recommend the first option. You can also choose the second option; nothing is saved until you use it for this mask.",
+    suggestedTitle: "Suggested Lens Strength",
+    singleTitle: "Your lens strength",
+    choiceIntro: "Switch between the options to see which masks are available with each lens choice.",
+    checkerChoiceIntro: "Choose the option you'd like us to use for this mask.",
     highCylIntro: "Your prescription has higher astigmatism. A sphere-only mask lens cannot reproduce SPH, CYL and Axis separately, so there are two practical ways we can approximate your prescription. Choose the approach you prefer.",
     highCylBalancedTitle: "Balanced",
     highCylBalancedCopy: "Uses your SPH and CYL together to estimate your overall prescription strength.",
     highCylCloserTitle: "Closer to Your SPH",
     highCylCloserCopy: "Stays closer to the SPH number printed on your prescription, using less of the CYL adjustment.",
     explainerTitle: "How we calculated your mask lens",
-    explainerHint: "See each step for each eye",
+    checkerExplainerTitle: "How we calculated your lens strength",
     explainerIntro: "Your glasses prescription can correct Sphere (SPH), Cylinder (CYL) and Axis. Prescription mask lenses are sphere-only, so we work out a sphere-only strength, adjust it for underwater viewing and then select a stocked lens.",
     whyTitle: "Why is my mask lens different from my SPH?",
     whyBody: [
@@ -554,8 +560,13 @@
       model.nearbyLenses = [recommended, primary].map(function (power) {
         return { power: power, distance: distanceText(power, target) };
       });
-      model.closerMatchCopy = formatPower(recommended) + " is the closer stocked match to your calculated underwater strength. " +
-        formatPower(primary) + " remains available as a softer option.";
+      model.closerMatchTie = Math.abs(Math.abs(recommended - target) - Math.abs(primary - target)) < EPSILON;
+      model.closerMatchCopy = model.closerMatchTie
+        ? formatPower(recommended) + " and " + formatPower(primary) + " are equally close to your calculated underwater strength. " +
+          formatPower(recommended) + " stays closer to your prescription, so it is recommended. " +
+          formatPower(primary) + " remains available as a softer option."
+        : formatPower(recommended) + " is the closer stocked match to your calculated underwater strength. " +
+          formatPower(primary) + " remains available as a softer option.";
     }
 
     var differs = selected !== null && primary !== null && Math.abs(selected - primary) > EPSILON && !quarter;
@@ -573,8 +584,10 @@
         choiceLines.push(
           "You chose the Softer Option. " + formatPower(selected) + " D is the next weaker stocked lens. It is " +
           distanceText(selected, target) + " D from your calculated underwater strength (" + formatRounded(target) +
-          " D), while the closer match " + formatPower(recommended) + " D is " + distanceText(recommended, target) +
-          " D away, so it gives a slightly softer correction."
+          " D), while the Closer Match " + formatPower(recommended) + " D is " +
+          (model.closerMatchTie ? "also " + distanceText(recommended, target) + " D away and closer to your prescription"
+            : distanceText(recommended, target) + " D away") +
+          ", so it gives a slightly softer correction."
         );
       } else if (strategy === STRATEGY_SHARPER) {
         choiceLines.push(
@@ -656,7 +669,7 @@
     var balancedCopy = closerMatch ? COPY.softerCopy : COPY.balancedCopy;
     var alternativeCopy = alternativeStrategy === STRATEGY_CLOSER_TO_SPH
       ? (COPY.closerCopy + " " + closerToSphRelation(choice)).trim()
-      : (closerMatch ? COPY.closerMatchCopy : COPY.sharperCopy);
+      : (closerMatch ? (choice.sharperStrictlyCloser ? COPY.closerMatchCopy : COPY.closerMatchTieCopy) : COPY.sharperCopy);
     var balanced = {
       strategy: STRATEGY_BALANCED,
       title: strategyTitle(choice, STRATEGY_BALANCED),
@@ -797,7 +810,6 @@
     var summary = node(doc, "summary", "oo-rx-explain__summary");
     var summaryCopy = node(doc, "span", "oo-rx-explain__summary-copy");
     summaryCopy.appendChild(node(doc, "strong", "", settings.title || COPY.explainerTitle));
-    summaryCopy.appendChild(node(doc, "small", "", COPY.explainerHint));
     summary.appendChild(summaryCopy);
     summary.appendChild(node(doc, "span", "oo-rx-explain__chevron"));
     summary.lastChild.setAttribute("aria-hidden", "true");

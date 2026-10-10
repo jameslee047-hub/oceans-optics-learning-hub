@@ -946,13 +946,6 @@
       }
     }
 
-    function resultEye(label, value) {
-      var eye = el(doc, "div", "oo-rx-checker__result-eye");
-      eye.appendChild(el(doc, "span", "oo-rx-checker__result-eye-label", label));
-      eye.appendChild(el(doc, "span", "oo-rx-checker__result-eye-value", formatLensLabel(value)));
-      return eye;
-    }
-
     function choiceCopy(key, fallback) {
       return choiceApi && choiceApi.COPY && choiceApi.COPY[key] ? choiceApi.COPY[key] : fallback;
     }
@@ -963,7 +956,10 @@
     function renderChoiceCards(calculation, entries, legend, className) {
       var rec = calculation.activeRecommendation;
       var choiceSet = el(doc, "fieldset", "oo-rx-checker__strategy oo-rx-checker__strategy--midpoint" + (className ? " " + className : ""));
-      choiceSet.appendChild(el(doc, "legend", "", legend));
+      // Ordinary choices are labelled for assistive tech only; the visible
+      // heading and short intro already say what to do.
+      if (className) choiceSet.appendChild(el(doc, "legend", "", legend));
+      else choiceSet.setAttribute("aria-label", legend);
       var cards = el(doc, "div", "oo-rx-checker__choices");
       entries.forEach(function (entry) {
         var option = el(doc, "label", "oo-rx-checker__choice");
@@ -1019,6 +1015,25 @@
       return JSON.stringify([activePrescriptionId, calculation.entry, rec.recommendationStrategy, rec.recommendedRight, rec.recommendedLeft]);
     }
 
+    // One recommendation and nothing to choose: a single card, no radio.
+    function renderSingleCard(rec) {
+      var card = el(doc, "div", "oo-rx-checker__choice-card oo-rx-checker__choice-card--single");
+      var heading = el(doc, "span", "oo-rx-checker__choice-heading");
+      var title = el(doc, "span", "oo-rx-checker__choice-title", choiceCopy("singleTitle", "Your lens strength"));
+      title.appendChild(el(doc, "span", "oo-rx-checker__choice-badge", choiceCopy("recommendedBadge", "Recommended")));
+      heading.appendChild(title);
+      card.appendChild(heading);
+      var pair = el(doc, "span", "oo-rx-checker__choice-pair");
+      [["R", rec.recommendedRight], ["L", rec.recommendedLeft]].forEach(function (eye) {
+        var value = el(doc, "span", "oo-rx-checker__choice-eye");
+        value.appendChild(el(doc, "span", "oo-rx-checker__choice-eye-label", eye[0]));
+        value.appendChild(el(doc, "strong", "oo-rx-checker__choice-eye-value", formatLensLabel(eye[1])));
+        pair.appendChild(value);
+      });
+      card.appendChild(pair);
+      return card;
+    }
+
     function renderResult(calculation) {
       result.innerHTML = "";
       result.hidden = false;
@@ -1030,16 +1045,10 @@
       }
       var rec = calculation.activeRecommendation;
       var record = activeRecord();
-      var summary = el(doc, "div", "oo-rx-checker__summary");
-      var resultTitle = "Your recommended lenses";
+      // The option card(s) are the single visual source of the recommendation.
+      var resultTitle = choiceCopy("suggestedTitle", "Suggested Lens Strength");
       if (record && prescriptions.length > 1) resultTitle += " for " + (typedLabel() || "Prescription " + (prescriptions.indexOf(record) + 1));
-      summary.appendChild(el(doc, "div", "oo-rx-checker__result-title", resultTitle));
-      var values = el(doc, "div", "oo-rx-checker__result-values");
-      values.appendChild(resultEye("Right (OD)", rec.recommendedRight));
-      values.appendChild(el(doc, "span", "oo-rx-checker__result-divider", "|"));
-      values.appendChild(resultEye("Left (OS)", rec.recommendedLeft));
-      summary.appendChild(values);
-      result.appendChild(summary);
+      result.appendChild(el(doc, "h3", "oo-rx-checker__suggested-title", resultTitle));
 
       if (calculation.highCylinderPreview && offered) {
         result.appendChild(el(doc, "p", "oo-rx-checker__choice-intro", choiceCopy("highCylIntro", "")));
@@ -1067,6 +1076,8 @@
             notice: seNotice(calculation, offered.pair)
           }
         ], "Choose the lens option you'd like us to use"));
+      } else {
+        result.appendChild(renderSingleCard(rec));
       }
 
       if (choiceApi && typeof choiceApi.renderExplanation === "function") {
@@ -1078,7 +1089,7 @@
           recommendation: rec,
           highCylinderPreview: calculation.highCylinderPreview,
           choice: offered && !calculation.highCylinderPreview ? calculation.midpointChoice : null,
-          title: "Why did you choose these lens strengths for this mask?"
+          title: choiceCopy("checkerExplainerTitle", "How we calculated your lens strength")
         });
         Array.prototype.forEach.call(explanation.querySelectorAll("details"), function (details, index) {
           details.open = Boolean(openStates[index]);
@@ -1269,8 +1280,8 @@
       if (record) record.label = typedLabel();
       renderProfiles();
       if (state.calculation && !result.hidden) {
-        var title = result.querySelector(".oo-rx-checker__result-title");
-        if (title && prescriptions.length > 1) title.textContent = "Your recommended lenses for " + (typedLabel() || displayName(record));
+        var title = result.querySelector(".oo-rx-checker__suggested-title");
+        if (title && prescriptions.length > 1) title.textContent = choiceCopy("suggestedTitle", "Suggested Lens Strength") + " for " + (typedLabel() || displayName(record));
       }
     });
     if (addButton) addButton.addEventListener("click", addPrescription);

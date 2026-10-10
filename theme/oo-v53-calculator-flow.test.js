@@ -210,15 +210,92 @@ test("A. Daniel: choosing Softer shows -3.00/-3.00 masks and explains the softer
   assert.match(explain, /You chose the Softer Option\. -3\.00 D is the next weaker stocked lens\./);
 });
 
-test("C. exact midpoint -3.25 / -2.75 keeps Balanced first and default; Sharper -3.00/-2.50 stays optional", { skip: skipDom }, async function () {
+test("A. screenshot tie -2.25 / -1.75: Sharper -2.00/-1.50 wins the exact tie as the Closer Match; Softer -1.50/-1.00", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.25], [-2.75]);
+  calculate(page, [-2.25], [-1.75]);
   await settle();
-  assert.deepEqual(choiceOrder(page.doc), ["balanced* Comfort / Balanced Vision Recommended", "sharper Sharper / Closer to Your Prescription"]);
-  assert.deepEqual(cardPairs(page.doc), ["R -2.50L -2.00"]);
-  assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "balanced");
-  var explain = visibleText(page.doc, "#oo-v52-explain");
-  assert.equal(/Available nearby lenses/.test(explain), false);
+  assert.deepEqual(choiceOrder(page.doc), ["sharper* Closer Match Recommended", "balanced Softer Option"]);
+  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-right"), "-2.00");
+  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-left"), "-1.50");
+  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-right"), "-1.50");
+  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-left"), "-1.00");
+  // The tie is described truthfully: not "closer" to the underwater target.
+  assert.equal(text(page.doc, "oo-v52-midpoint-alternative-copy"), "Equally close to your calculated underwater strength, and closer to your prescription.");
+  assert.deepEqual(cardPairs(page.doc), ["R -2.00L -1.50"]);
+  var explain = visibleText(page.doc, "#oo-v52-explain").replace(/\s+/g, " ");
+  assert.ok(explain.indexOf("-2.00 distance 0.25 D") !== -1 && explain.indexOf("-1.50 distance 0.25 D") !== -1);
+  assert.ok(explain.indexOf("-2.00 and -1.50 are equally close to your calculated underwater strength. -2.00 stays closer to your prescription, so it is recommended. -1.50 remains available as a softer option.") !== -1);
+  assert.equal(/is the closer stocked match/.test(explain.split("Left Eye")[0]), false, "no false 'closer' claim on a tie");
+  assert.deepEqual(page.journey, [], "automatic selection is not a product click");
+
+  page.doc.querySelector(".oo-v52-product-card__customize").click();
+  await settle();
+  var confirms = confirmCalls(page);
+  assert.equal(confirms.length, 1);
+  assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["sharper", -2, -1.5]);
+});
+
+test("A. screenshot tie: choosing Softer shows -1.50/-1.00 masks and saves balanced", { skip: skipDom }, async function () {
+  var page = await loadCalculator();
+  calculate(page, [-2.25], [-1.75]);
+  await settle();
+  page.doc.getElementById("oo-v52-midpoint-balanced").click();
+  await settle();
+  assert.deepEqual(cardPairs(page.doc), ["R -1.50L -1.00"]);
+  assert.equal(page.calls.length, 0, "switching cards never saves");
+  assert.match(visibleText(page.doc, "#oo-v52-explain").replace(/\s+/g, " "), /while the Closer Match -2\.00 D is also 0\.25 D away and closer to your prescription/);
+  page.doc.querySelector(".oo-v52-product-card__customize").click();
+  await settle();
+  var confirms = confirmCalls(page);
+  assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["balanced", -1.5, -1]);
+});
+
+test("UI: the results area has one heading, one short line, the cards, two collapsed accordions, then Your Matching Masks", { skip: skipDom }, async function () {
+  var page = await loadCalculator();
+  calculate(page, [-2.25], [-1.75]);
+  await settle();
+  var result = page.doc.getElementById("oo-v52-result");
+  var visible = function (node) {
+    for (var n = node; n && n !== page.doc.body; n = n.parentElement) if (n.hidden) return false;
+    return true;
+  };
+  var visibleText = Array.prototype.filter.call(page.doc.querySelectorAll(".oo-v52 *"), function (n) { return visible(n) && !n.children.length; })
+    .map(function (n) { return n.textContent; }).join(" ");
+  ["We recommend the first option", "Choose the lens option you'd like us to use", "About Your Recommendation", "ABOUT YOUR RECOMMENDATION",
+    "Underwater, objects appear larger and closer through a dive mask", "See each step for each eye",
+    "We’ve used your prescription values"].forEach(function (needle) {
+    assert.equal(visibleText.indexOf(needle), -1, "still visible: " + needle);
+  });
+  assert.equal(page.doc.getElementById("oo-v52-guidance").hidden, true, "no standalone recommendation box for an ordinary result");
+  assert.equal(result.querySelector("h2").textContent, "Suggested Lens Strength");
+  assert.equal(visible(page.doc.getElementById("oo-v52-result-intro")), true);
+  assert.equal(text(page.doc, "oo-v52-result-intro"), "Switch between the options to see which masks are available with each lens choice.");
+  var summaries = Array.prototype.map.call(page.doc.querySelectorAll("#oo-v52-explain summary"), function (s) { return s.textContent.trim(); });
+  assert.deepEqual(summaries, ["How we calculated your mask lens", "Why is my mask lens different from my SPH?"]);
+  Array.prototype.forEach.call(page.doc.querySelectorAll("#oo-v52-explain details"), function (d) { assert.equal(d.open, false, "accordions start collapsed"); });
+  assert.match(page.doc.getElementById("oo-v52-explain").textContent, /Objects appear larger and closer when viewed underwater/, "the underwater concept lives in the accordion");
+  assert.equal(text(page.doc, "oo-v52-products-title"), "Your Matching Masks");
+  assert.equal(page.doc.querySelector(".oo-v52-products__intro").textContent, "All of the masks below are available with your selected lens strength. Choose the style and colour you prefer.");
+
+  // A single-result prescription has no options, so no "switch" line.
+  page.doc.getElementById("oo-v52-edit").click();
+  calculate(page, [-3.75, -0.75], [-3.75, -0.75]);
+  await settle();
+  assert.equal(page.doc.getElementById("oo-v52-result-intro").hidden, true);
+  assert.equal(page.doc.getElementById("oo-v52-guidance").hidden, true);
+});
+
+test("UI: genuine warnings still show (manual review, higher astigmatism caveat)", { skip: skipDom }, async function () {
+  var page = await loadCalculator();
+  calculate(page, [-0.25, -0.5], [-3]);
+  await settle();
+  assert.equal(page.doc.getElementById("oo-v52-guidance").hidden, false);
+  assert.match(page.doc.getElementById("oo-v52-guidance").textContent, /We need to review your right-eye prescription/);
+  var high = await loadCalculator();
+  calculate(high, [-2.75, -3.25], [-2, -3]);
+  await settle();
+  assert.equal(high.doc.getElementById("oo-v52-high-cyl").hidden, false);
+  assert.match(text(high.doc, "oo-v52-high-description"), /higher astigmatism/);
 });
 
 test("farsighted Closer to Your SPH: +3.00/-0.75 and +2.50/-0.50 offer +2.00/+2.00 then +3.00/+2.00 with an SE notice", { skip: skipDom }, async function () {
@@ -317,16 +394,25 @@ test("Edit Prescription after choosing Sharper: old option, pair and masks are c
   );
 });
 
-test("I. Edit Prescription to a tie case recalculates the default back to Balanced", { skip: skipDom }, async function () {
+test("L. Edit Prescription recalculates the default from the new prescription each time", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
   await settle();
-  assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "sharper");
-  page.doc.getElementById("oo-v52-edit").click();
-  calculate(page, [-3.25], [-2.75]);
+  page.doc.getElementById("oo-v52-midpoint-balanced").click();
   await settle();
   assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "balanced");
-  assert.deepEqual(cardPairs(page.doc), ["R -2.50L -2.00"]);
+  // To a prescription with no Sharper candidate: Balanced only.
+  page.doc.getElementById("oo-v52-edit").click();
+  calculate(page, [-3.75, -0.75], [-3.75, -0.75]);
+  await settle();
+  assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true);
+  assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "balanced");
+  // To an exact tie: the earlier Softer choice is not carried over.
+  page.doc.getElementById("oo-v52-edit").click();
+  calculate(page, [-2.25], [-1.75]);
+  await settle();
+  assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "sharper");
+  assert.deepEqual(cardPairs(page.doc), ["R -2.00L -1.50"]);
 });
 
 test("multiple prescriptions: an unsaved preview survives Add prescription, keeps its option and name, and switching never saves", { skip: skipDom }, async function () {

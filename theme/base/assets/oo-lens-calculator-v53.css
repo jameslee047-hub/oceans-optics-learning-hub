@@ -1017,7 +1017,9 @@
   text-align: center;
 }
 
-.oo-v52__result.has-high-cyl > .oo-v52__result-intro {
+/* The result intro is shown by the calculator script only when there are
+   two ordinary options to switch between. */
+.oo-v52__result-intro[hidden] {
   display: none;
 }
 

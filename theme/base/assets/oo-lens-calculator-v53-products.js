@@ -697,7 +697,7 @@
 
       section.hidden = false;
       if (benefits) benefits.hidden = false;
-      heading.textContent = "Recommended masks for " + active.displayLabel;
+      heading.textContent = profiles.length > 1 ? "Your Matching Masks for " + active.displayLabel : "Your Matching Masks";
       renderSwitcher(profiles, active);
       grid.innerHTML = "";
       var result = findCompatibleProducts(active.recommendedRight, active.recommendedLeft);

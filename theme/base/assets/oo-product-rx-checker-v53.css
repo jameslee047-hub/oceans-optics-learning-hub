@@ -758,6 +758,27 @@ body {
   padding: 10px;
 }
 
+.oo-rx-checker__suggested-title {
+  margin: 0 0 4px;
+  color: var(--oo-rx-blue);
+  font-size: 16px;
+  font-weight: 900;
+  line-height: 1.25;
+}
+
+.oo-rx-checker__suggested-title + .oo-rx-checker__choice-intro {
+  margin: 0 0 8px;
+}
+
+.oo-rx-checker__suggested-title + .oo-rx-checker__choice-card--single {
+  margin-top: 8px;
+}
+
+.oo-rx-checker__choice-card--single {
+  border-color: var(--oo-rx-orange);
+  background: #eef5fb;
+}
+
 .oo-rx-checker__choices {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));

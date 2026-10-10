@@ -254,7 +254,7 @@
 
           <section class="oo-v52__result" id="oo-v52-result" aria-live="polite" tabindex="-1" hidden>
             <h2>Suggested Lens Strength</h2>
-            <p class="oo-v52__result-intro">Based on the prescription above, these are the sphere-only mask lens strengths suggested for your selected calculation method.</p>
+            <p class="oo-v52__result-intro" id="oo-v52-result-intro" hidden>Switch between the options to see which masks are available with each lens choice.</p>
             <div class="oo-v52__result-values" id="oo-v52-result-values">
               <div class="oo-v52__result-eye">
                 <span>Right (OD)</span>
@@ -315,10 +315,7 @@
               <p class="oo-v52-sr-only" id="oo-v52-high-selection-status" aria-live="polite"></p>
             </div>
             <div class="oo-v52-high-cyl oo-v52-midpoint" id="oo-v52-midpoint" hidden>
-              <p class="oo-v52-high-cyl__intro" id="oo-v52-midpoint-description">We recommend the first option. You can also choose the second option below; the matching masks update straight away.</p>
-              <fieldset class="oo-v52-high-cyl__selector" aria-describedby="oo-v52-midpoint-description oo-v52-midpoint-next">
-                <legend>Choose the lens option you'd like us to use</legend>
-                <p class="oo-v52-high-cyl__next" id="oo-v52-midpoint-next">Masks matching your selected lenses are shown below. You can switch options before choosing a mask.</p>
+              <fieldset class="oo-v52-high-cyl__selector" aria-label="Lens strength options" aria-describedby="oo-v52-result-intro">
                 <div class="oo-v52-high-cyl__options">
                   <div class="oo-v52-high-cyl__choice">
                     <input class="oo-v52-high-cyl__input" type="radio" id="oo-v52-midpoint-balanced" name="oo-v52-midpoint-strategy" value="balanced" checked>
@@ -354,7 +351,6 @@
               <p class="oo-v52-sr-only" id="oo-v52-midpoint-selection-status" aria-live="polite"></p>
             </div>
             <div class="oo-v52-explain" id="oo-v52-explain" hidden></div>
-            <p class="oo-v52__result-benefit">Underwater, objects appear larger and closer through a dive mask, so we adjust your lens strength slightly for comfortable underwater vision.</p>
             <p class="oo-v52-rx__attached" id="oo-v52-rx-attached" hidden>Prescription saved</p>
           </section>
 
@@ -398,7 +394,7 @@
 
       <section class="oo-v52-products" id="oo-v52-products" aria-labelledby="oo-v52-products-title" hidden>
         <h2 id="oo-v52-products-title"></h2>
-        <p class="oo-v52-products__intro">Choose a mask that supports both suggested lens strengths, then select your preferred frame and seal colours.</p>
+        <p class="oo-v52-products__intro">All of the masks below are available with your selected lens strength. Choose the style and colour you prefer.</p>
         <div class="oo-v52-products__switcher" id="oo-v52-products-switcher" hidden></div>
         <p class="oo-v52-products__empty" id="oo-v52-products-empty" hidden></p>
         <div class="oo-v52-products__grid" id="oo-v52-products-grid"></div>

@@ -4,8 +4,6 @@
   var FRACTIONS = ["00", "25", "50", "75"];
   var SPHERE_MAX_INTEGER = 10;
   var CYLINDER_MAX_INTEGER = 9;
-  var STANDARD_GUIDANCE =
-    "We’ve used your prescription values to choose the closest practical underwater lens strength for each eye, helping give you a balanced overall correction underwater.";
   var BOTH_EYES_HIGH_CYL_GUIDANCE =
     "Your prescription includes higher astigmatism, so we’ve used a spherical-equivalent approach to balance your SPH and CYL values and choose the closest practical lens strength available.";
   var RIGHT_EYE_HIGH_CYL_GUIDANCE =
@@ -630,6 +628,8 @@
     updatePlanoNote();
     var showingComparison = Boolean(highCylinderPreview && highCylinderPreview.triggered && highCylinderPreview.available && !blocked);
     var showingMidpoint = Boolean(midpointChoice && midpointChoice.available);
+    var resultIntro = document.getElementById("oo-v52-result-intro");
+    if (resultIntro) resultIntro.hidden = !(showingMidpoint && !showingComparison);
 
     result.hidden = rightState.blocking && leftState.blocking;
     result.classList.toggle("has-high-cyl", showingComparison || showingMidpoint);
@@ -738,11 +738,11 @@
     } else if (leftState.higherCylinder) {
       appendGuidanceParagraph(content, LEFT_EYE_HIGH_CYL_GUIDANCE);
       appendGuidanceParagraph(content, HIGH_CYL_BENEFIT);
-    } else if (!rightState.blocking && !leftState.blocking) {
-      appendGuidanceParagraph(content, STANDARD_GUIDANCE);
     }
 
-    guidance.hidden = false;
+    // Only genuine review / higher-astigmatism guidance is shown; the
+    // recommendation itself is explained by the cards and the accordion.
+    guidance.hidden = !content.childNodes.length;
   }
 
   // Calculates the prescription in the form. Every successful result is

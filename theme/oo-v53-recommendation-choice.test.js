@@ -229,14 +229,33 @@ test("ranking B. -7.00/-0.75, -7.75/-1.25: default becomes Sharper -7.00/-8.00",
   assert.deepEqual(defaultOf(eye(-7, -0.75, 15), eye(-7.75, -1.25, 166)), ["sharper", "-7.00/-8.00", "sharper,balanced"]);
 });
 
-test("ranking C. exact midpoint -3.25 / -2.75: Balanced stays default, Sharper still offered", function () {
+test("ranking A2. screenshot tie -2.25 / -1.75: Sharper -2.00/-1.50 wins the exact tie; Softer -1.50/-1.00", function () {
+  var right = eye(-2.25);
+  var left = eye(-1.75);
+  assert.deepEqual([right.preSnapTarget, left.preSnapTarget], [-1.75, -1.25]);
+  assert.deepEqual(primary(right, left), ["-1.50", "-1.00"], "the engine pair is unchanged");
+  var choice = choiceFor(right, left);
+  assert.equal(choice.sharperStrictlyCloser, false, "an exact tie");
+  assert.deepEqual(defaultOf(right, left), ["sharper", "-2.00/-1.50", "sharper,balanced"]);
+  var entries = V53.choice.choiceEntries(choice, right, left);
+  assert.deepEqual(Array.from(entries, function (e) { return [e.title, e.badge, e.copy]; }), [
+    ["Closer Match", "Recommended", "Equally close to your calculated underwater strength, and closer to your prescription."],
+    ["Softer Option", "", "A slightly softer correction if you prefer a more relaxed underwater feel."]
+  ]);
+  var softer = V53.choice.recommendationSelection(choice, "balanced");
+  assert.deepEqual([softer.recommendationStrategy, softer.recommendedRight, softer.recommendedLeft], ["balanced", -1.5, -1]);
+  var model = V53.choice.explainEye(right, { strategy: "sharper", selectedPower: -2, recommendedPower: -2, defaultStrategy: "sharper" });
+  assert.equal(model.closerMatchTie, true);
+  assert.deepEqual(JSON.parse(JSON.stringify(model.nearbyLenses)), [{ power: -2, distance: "0.25" }, { power: -1.5, distance: "0.25" }]);
+  assert.equal(/is the closer stocked match/.test(model.closerMatchCopy), false, "no false 'closer' claim");
+});
+
+test("ranking C. exact midpoint -3.25 / -2.75: the stronger valid pair now wins the tie", function () {
   var right = eye(-3.25);
   var left = eye(-2.75);
   assert.deepEqual([right.preSnapTarget, left.preSnapTarget], [-2.75, -2.25]);
   assert.equal(choiceFor(right, left).sharperStrictlyCloser, false);
-  assert.deepEqual(defaultOf(right, left), ["balanced", "-2.50/-2.00", "balanced,sharper"]);
-  var entries = V53.choice.choiceEntries(choiceFor(right, left), right, left);
-  assert.deepEqual(Array.from(entries, function (e) { return e.title; }), [V53.choice.COPY.balancedTitle, V53.choice.COPY.sharperTitle]);
+  assert.deepEqual(defaultOf(right, left), ["sharper", "-3.00/-2.50", "sharper,balanced"]);
 });
 
 test("ranking: one eye strictly closer, other eye tied, makes the pair strictly closer; the unchanged eye stays identical", function () {
@@ -244,8 +263,10 @@ test("ranking: one eye strictly closer, other eye tied, makes the pair strictly 
   assert.deepEqual(defaultOf(eye(-7, -0.75, 15), eye(-3.75, -0.75)), ["sharper", "-7.00/-3.50", "sharper,balanced"]);
   // Right strictly closer, left an exact midpoint tie.
   assert.deepEqual(defaultOf(eye(-7, -0.75, 15), eye(-3.25)), ["sharper", "-7.00/-3.00", "sharper,balanced"]);
-  // Both eyes tie: Balanced.
-  assert.deepEqual(defaultOf(eye(-3.25), eye(-3.25)), ["balanced", "-2.50/-2.50", "balanced,sharper"]);
+  // Both eyes tie: the stronger valid pair wins.
+  assert.deepEqual(defaultOf(eye(-3.25), eye(-3.25)), ["sharper", "-3.00/-3.00", "sharper,balanced"]);
+  // One eye tie, the other with no Sharper lens: the unchanged eye stays identical.
+  assert.deepEqual(defaultOf(eye(-3.25), eye(-3.75, -0.75)), ["sharper", "-3.00/-3.50", "sharper,balanced"]);
 });
 
 test("ranking D. stronger candidate farther away: Balanced only", function () {
@@ -361,7 +382,14 @@ function checkPair(right, left, stats) {
     return Math.abs(pair.rightPower - right.preSnapTarget) + Math.abs(pair.leftPower - left.preSnapTarget);
   };
   var strictlyCloser = choice.alternativeStrategy === "sharper" && distance(choice.alternative) < distance(choice.balanced) - EPSILON;
-  assert.equal(choice.defaultStrategy, strictlyCloser ? "sharper" : "balanced");
+  if (choice.alternativeStrategy === "sharper") {
+    // Closest wins; an exact tie goes to the stronger valid (Sharper) pair.
+    assert.ok(distance(choice.alternative) <= distance(choice.balanced) + EPSILON, "Sharper is never farther");
+    assert.equal(choice.defaultStrategy, "sharper");
+    assert.equal(choice.sharperStrictlyCloser, strictlyCloser);
+  } else {
+    assert.equal(choice.defaultStrategy, "balanced");
+  }
   assert.equal(V53.choice.recommendationSelection(choice).recommendationStrategy, choice.defaultStrategy);
   if (choice.defaultStrategy === "sharper") {
     [["right", right], ["left", left]].forEach(function (entry) {
@@ -385,11 +413,13 @@ test("grid sweep: ordinary-myopia default-ranking statistics", function () {
   var sharper = 0;
   var strict = 0;
   var tie = 0;
+  var sharperDefault = 0;
   myopic.forEach(function (r) {
     var choice = checkPair(r, r, stats);
     if (choice.available && choice.alternativeStrategy === "sharper") {
       sharper += 1;
-      if (choice.defaultStrategy === "sharper") strict += 1;
+      if (choice.defaultStrategy === "sharper") sharperDefault += 1;
+      if (choice.sharperStrictlyCloser) strict += 1;
       else tie += 1;
     }
   });
@@ -402,9 +432,11 @@ test("grid sweep: ordinary-myopia default-ranking statistics", function () {
     ordinaryMyopicEyes: total,
     receivingSharper: sharper,
     receivingSharperPct: +(100 * sharper / total).toFixed(1),
-    sharperDefaultStrictlyCloser: strict,
-    sharperDefaultPct: +(100 * strict / total).toFixed(1),
-    exactTiesBalancedDefault: tie,
+    sharperDefault: sharperDefault,
+    sharperDefaultPct: +(100 * sharperDefault / total).toFixed(1),
+    strictCloser: strict,
+    strictCloserPct: +(100 * strict / total).toFixed(1),
+    exactTiesPromotedToSharper: tie,
     exactTiesPct: +(100 * tie / total).toFixed(1),
     maxStockSteps: maxSteps,
     protectedEyesSuppressed: protectedEyes.length
@@ -412,6 +444,7 @@ test("grid sweep: ordinary-myopia default-ranking statistics", function () {
   if (process.env.OO_SWEEP_REPORT) console.log(JSON.stringify(report));
   assert.ok(sharper > 0 && strict > 0 && tie > 0);
   assert.equal(strict + tie, sharper);
+  assert.equal(sharperDefault, sharper, "every offered Sharper pair is the default");
   assert.ok(maxSteps <= 1);
 });
 
