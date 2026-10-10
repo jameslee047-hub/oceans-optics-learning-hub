@@ -24,9 +24,14 @@
   var UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   var POWER_EPSILON = 1e-9;
   var UPLOAD_OBSERVER_PROPERTY = "__ooRxHandoffUploadObserver";
-  // Purchase sources accepted from the oo_source parameter. Only these exact
-  // values become the hidden _oo_source line-item property.
-  var ALLOWED_SOURCES = ["lens_calculator_v53"];
+  // Per page (window): the confirmed handoff whose properties belong on this
+  // product's add-to-cart line, and the one-time submit / history hooks.
+  var ACTIVE_PROPERTY = "__ooRxHandoffActive";
+  var HOOKS_PROPERTY = "__ooRxHandoffHooks";
+  // Purchase sources that may become the hidden _oo_source line-item property.
+  // Only these exact values are accepted, from the oo_source parameter or from
+  // an on-page tool; quiz_v53 is the Quiz / Face Fit handoff. Reserved: face_fit.
+  var ALLOWED_SOURCES = ["lens_calculator_v53", "product_rx_checker", "quiz_v53"];
   var FAILURE_MESSAGE = "We couldn't load your saved prescription. Please select your lens strengths or upload your prescription below.";
 
   function isUuid(value) {
@@ -262,19 +267,135 @@
     return input;
   }
 
+  function viewOf(node) {
+    var doc = node && (node.ownerDocument || (node.defaultView ? node : null));
+    return doc && doc.defaultView ? doc.defaultView : null;
+  }
+
   function removeInjectedProperties(form) {
     Array.from(form.querySelectorAll('input[data-oo-rx-handoff-property="true"]')).forEach(function (input) {
       input.remove();
     });
+    // A failed or cleared handoff must never be re-applied at submit time.
+    var view = viewOf(form);
+    if (view) view[ACTIVE_PROPERTY] = null;
+  }
+
+  // The shared storefront journey (window.OOSourceJourney, defined in the
+  // oo-quiz-attribution snippet), when the page has it.
+  function sourceJourney(doc) {
+    var view = doc && doc.defaultView;
+    var journey = view && view.OOSourceJourney;
+    return journey && typeof journey.record === "function" ? journey : null;
+  }
+
+  // The hidden line-item properties for a confirmed handoff, in order.
+  function handoffProperties(doc, summary, source) {
+    var properties = [["properties[_oo_rx_config]", summary.configId]];
+    if (ALLOWED_SOURCES.indexOf(source) >= 0) {
+      // _oo_source stays the tool that applied this config (conversion
+      // source). The journey first records that tool, so earlier tools are
+      // kept in the first-source and history properties alongside it.
+      properties.push(["properties[_oo_source]", source]);
+      var journey = sourceJourney(doc);
+      if (journey) {
+        var view = journey.record(source);
+        if (view && view.first_source) {
+          properties.push(["properties[_oo_first_source]", view.first_source]);
+        }
+        if (view && view.source_history_text) {
+          properties.push(["properties[_oo_source_history]", view.source_history_text]);
+        }
+      }
+    }
+    if (summary.prescriptionLabel) {
+      properties.push(["properties[Prescription]", summary.prescriptionLabel]);
+    }
+    return properties;
+  }
+
+  function writeProperties(doc, form, properties) {
+    properties.forEach(function (entry) {
+      upsertHiddenProperty(doc, form, entry[0], entry[1]);
+    });
   }
 
   function injectShopifyProperties(doc, form, summary, source) {
-    upsertHiddenProperty(doc, form, "properties[_oo_rx_config]", summary.configId);
-    if (ALLOWED_SOURCES.indexOf(source) >= 0) {
-      upsertHiddenProperty(doc, form, "properties[_oo_source]", source);
+    var properties = handoffProperties(doc, summary, source);
+    writeProperties(doc, form, properties);
+    return properties;
+  }
+
+  function productIdOf(form) {
+    var input = form && typeof form.querySelector === "function" ? form.querySelector('input[name="product-id"]') : null;
+    return input ? String(input.value || "") : null;
+  }
+
+  // Whether a submitted form is this product's own add-to-cart form (never a
+  // quick-add or recommendation form for another product).
+  function isActiveProductForm(doc, form, active) {
+    if (!form || !active || form.tagName !== "FORM") return false;
+    if (!/\/cart\/add/.test(String(form.getAttribute("action") || ""))) return false;
+    var productId = productIdOf(form);
+    if (active.productId) return productId === active.productId;
+    return form === findProductForm(doc);
+  }
+
+  // Keeps oo_rx / oo_source on this product's URL. The theme rewrites the URL
+  // to "?variant=<id>" when the colour changes, which dropped the handoff, so
+  // a reload, back/forward or restored tab came back without it and the
+  // customer's re-selected lenses were added with no durable config. Only the
+  // URL is kept; the summary is fetched and validated again on every load.
+  function withHandoffParameters(view, url) {
+    var active = view[ACTIVE_PROPERTY];
+    if (!active || url === undefined || url === null) return url;
+    try {
+      var next = new view.URL(String(url), view.location.href);
+      if (next.origin !== view.location.origin || next.pathname !== active.pathname) return url;
+      if (next.searchParams.has("oo_rx")) return url;
+      next.searchParams.set("oo_rx", active.configId);
+      if (active.source) next.searchParams.set("oo_source", active.source);
+      return next.pathname + next.search + next.hash;
+    } catch (error) {
+      return url;
     }
-    if (summary.prescriptionLabel) {
-      upsertHiddenProperty(doc, form, "properties[Prescription]", summary.prescriptionLabel);
+  }
+
+  function installHooks(doc) {
+    var view = doc && doc.defaultView;
+    if (!view || view[HOOKS_PROPERTY]) return;
+    view[HOOKS_PROPERTY] = true;
+    // Capture phase on the document runs before the theme's own submit
+    // handler builds FormData from the form, so the exact form being sent
+    // carries the properties even if Avis or the theme re-rendered it.
+    doc.addEventListener("submit", function (event) {
+      var active = view[ACTIVE_PROPERTY];
+      if (isActiveProductForm(doc, event.target, active)) writeProperties(doc, event.target, active.properties);
+    }, true);
+    var history = view.history;
+    if (!history) return;
+    ["replaceState", "pushState"].forEach(function (method) {
+      var original = history[method];
+      if (typeof original !== "function") return;
+      history[method] = function (state, title, url) {
+        return original.call(this, state, title, withHandoffParameters(view, url));
+      };
+    });
+  }
+
+  function activateHandoff(doc, form, summary, source, properties) {
+    var view = doc && doc.defaultView;
+    if (!view || !view.location) return;
+    view[ACTIVE_PROPERTY] = {
+      configId: summary.configId,
+      source: ALLOWED_SOURCES.indexOf(source) >= 0 ? source : null,
+      properties: properties,
+      productId: productIdOf(form),
+      pathname: view.location.pathname
+    };
+    installHooks(doc);
+    if (view.history && typeof view.history.replaceState === "function") {
+      view.history.replaceState(view.history.state, "", view.location.pathname + view.location.search + view.location.hash);
     }
   }
 
@@ -407,7 +528,8 @@
     var safeSummary = validateSummary(summary, summary && summary.configId);
     var selection = applyAvisValues(controls, safeSummary);
     try {
-      injectShopifyProperties(doc, controls.form, safeSummary, source);
+      var properties = injectShopifyProperties(doc, controls.form, safeSummary, source);
+      activateHandoff(doc, controls.form, safeSummary, source, properties);
       setUploadSuppressed(controls, true);
       suppressLateUploadControls(controls);
       renderSuccess(doc, controls, safeSummary);
@@ -476,6 +598,10 @@
     waitForAvisControls: waitForAvisControls,
     applyAvisValues: applyAvisValues,
     injectShopifyProperties: injectShopifyProperties,
+    handoffProperties: handoffProperties,
+    isActiveProductForm: isActiveProductForm,
+    withHandoffParameters: withHandoffParameters,
+    sourceJourney: sourceJourney,
     removeInjectedProperties: removeInjectedProperties,
     setUploadSuppressed: setUploadSuppressed,
     suppressLateUploadControls: suppressLateUploadControls,
