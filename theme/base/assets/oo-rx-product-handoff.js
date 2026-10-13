@@ -28,6 +28,18 @@
   // product's add-to-cart line, and the one-time submit / history hooks.
   var ACTIVE_PROPERTY = "__ooRxHandoffActive";
   var HOOKS_PROPERTY = "__ooRxHandoffHooks";
+  // Avis can render long after DOMContentLoaded on slow mobile connections;
+  // giving up early left the customer choosing lenses with no saved config.
+  var AVIS_WAIT_MS = 120000;
+  // Retry delays for transient summary failures (network, 408, 429, 5xx).
+  var SUMMARY_RETRY_DELAYS = [700, 2000];
+  // Per tab: "<pathname>|<configId>" handoffs already added to the cart.
+  // Opaque ids only; it never activates a handoff, it only stops a completed
+  // one being attached to a later mask with different lenses.
+  var ADDED_STORAGE_KEY = "oo_rx_handoff_added";
+  var ADDED_LIMIT = 20;
+  // Quiz attribution parameters kept beside oo_rx on this product's URL.
+  var KEPT_PARAMETERS = ["quiz_session_id", "quiz_product_id"];
   // Purchase sources that may become the hidden _oo_source line-item property.
   // Only these exact values are accepted, from the oo_source parameter or from
   // an on-page tool; quiz_v53 is the Quiz / Face Fit handoff. Reserved: face_fit.
@@ -314,10 +326,111 @@
     return properties;
   }
 
+  function isInjected(input) {
+    return input.getAttribute("data-oo-rx-handoff-property") === "true";
+  }
+
+  // Writes exactly this handoff's properties: one input per name, and no
+  // property left over from an earlier handoff on the same form (a config
+  // with no label must not keep the previous config's Prescription label).
+  // Safe to repeat; a second call changes nothing.
   function writeProperties(doc, form, properties) {
-    properties.forEach(function (entry) {
-      upsertHiddenProperty(doc, form, entry[0], entry[1]);
+    var names = properties.map(function (entry) { return entry[0]; });
+    Array.from(form.querySelectorAll('input[data-oo-rx-handoff-property="true"]')).forEach(function (input) {
+      if (names.indexOf(input.name) === -1) input.remove();
     });
+    properties.forEach(function (entry) {
+      var input = upsertHiddenProperty(doc, form, entry[0], entry[1]);
+      Array.from(form.querySelectorAll('input[name="' + entry[0] + '"]')).forEach(function (other) {
+        if (other !== input && (isInjected(other) || /^properties\[_oo_/.test(other.name))) other.remove();
+      });
+    });
+  }
+
+  // Removes every OO handoff property from the form, keeping the handoff.
+  function clearProperties(form) {
+    Array.from(form.querySelectorAll("input")).forEach(function (input) {
+      if (isInjected(input) || /^properties\[_oo_/.test(input.name)) input.remove();
+    });
+  }
+
+  // The lens pair the form will submit, from Avis' property mirrors (the last
+  // input wins, as in the cart request). null for an eye with no value.
+  function formLensPair(form) {
+    function read(name) {
+      var inputs = Array.from(form.querySelectorAll('input[name="properties[' + name + ']"]'));
+      return inputs.length ? parseAvisPower(inputs[inputs.length - 1].value) : null;
+    }
+    return { right: read("(OD) Right"), left: read("(OS) Left") };
+  }
+
+  function differs(actual, expected) {
+    return actual !== null && Math.abs(actual - expected) >= POWER_EPSILON;
+  }
+
+  function pairDiffers(pair, active) {
+    return differs(pair.right, active.right) || differs(pair.left, active.left);
+  }
+
+  // Whether the active handoff belongs on this submission. Until this config
+  // has been added to the cart from this product, it always does (the
+  // customer arrived with it, even if they adjust a lens). Once it has been
+  // added, it only follows the same lenses again: a different pair is a
+  // different mask, and must not inherit the completed handoff.
+  function handoffAppliesTo(form, active) {
+    if (!active) return false;
+    if (!active.added) return true;
+    return !pairDiffers(formLensPair(form), active);
+  }
+
+  function addedKey(pathname, configId) {
+    return String(pathname) + "|" + String(configId);
+  }
+
+  function readAdded(view) {
+    try {
+      var list = JSON.parse(view.sessionStorage.getItem(ADDED_STORAGE_KEY) || "[]");
+      return Array.isArray(list) ? list.filter(function (item) { return typeof item === "string"; }) : [];
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function wasAdded(view, pathname, configId) {
+    return readAdded(view).indexOf(addedKey(pathname, configId)) !== -1;
+  }
+
+  function markAdded(view, active) {
+    if (!view || !active) return;
+    active.added = true;
+    try {
+      var key = addedKey(active.pathname, active.configId);
+      var list = readAdded(view).filter(function (item) { return item !== key; });
+      list.push(key);
+      view.sessionStorage.setItem(ADDED_STORAGE_KEY, JSON.stringify(list.slice(-ADDED_LIMIT)));
+    } catch (error) {
+      // Storage unavailable: the in-page state still applies.
+    }
+  }
+
+  function isCartAddUrl(view, input) {
+    var raw = typeof input === "string" ? input : (input && input.url) || "";
+    try {
+      var url = new view.URL(String(raw), view.location.href);
+      return url.origin === view.location.origin && /^\/cart\/add(\.js)?$/.test(url.pathname);
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // The config a cart-add request carries, when the request is a FormData
+  // POST (the theme and Avis product form path).
+  function requestConfigId(view, input, init) {
+    if (!isCartAddUrl(view, input)) return null;
+    var body = init && init.body;
+    if (!body || typeof body.get !== "function") return null;
+    var value = body.get("properties[_oo_rx_config]");
+    return typeof value === "string" ? value : null;
   }
 
   function injectShopifyProperties(doc, form, summary, source) {
@@ -355,6 +468,9 @@
       if (next.searchParams.has("oo_rx")) return url;
       next.searchParams.set("oo_rx", active.configId);
       if (active.source) next.searchParams.set("oo_source", active.source);
+      Object.keys(active.keptParameters || {}).forEach(function (name) {
+        if (!next.searchParams.has(name)) next.searchParams.set(name, active.keptParameters[name]);
+      });
       return next.pathname + next.search + next.hash;
     } catch (error) {
       return url;
@@ -370,8 +486,38 @@
     // carries the properties even if Avis or the theme re-rendered it.
     doc.addEventListener("submit", function (event) {
       var active = view[ACTIVE_PROPERTY];
-      if (isActiveProductForm(doc, event.target, active)) writeProperties(doc, event.target, active.properties);
+      if (!isActiveProductForm(doc, event.target, active)) return;
+      if (handoffAppliesTo(event.target, active)) writeProperties(doc, event.target, active.properties);
+      else clearProperties(event.target);
     }, true);
+    // A lens change after this config was added to the cart: say whether the
+    // saved prescription will follow these lenses. Avis updates its mirrors
+    // in its own change handler, so read them after it.
+    doc.addEventListener("change", function (event) {
+      var name = event.target && event.target.name;
+      if (name !== "(OD) Right" && name !== "(OS) Left") return;
+      view.setTimeout(function () { refreshStatus(doc); }, 0);
+    }, true);
+    // Records a confirmed cart add of this config (response OK). A failed or
+    // interrupted add keeps the handoff exactly as it was for the retry.
+    if (typeof view.fetch === "function") {
+      var originalFetch = view.fetch;
+      view.fetch = function (input, init) {
+        var result = originalFetch.apply(this, arguments);
+        try {
+          var active = view[ACTIVE_PROPERTY];
+          var configId = active && requestConfigId(view, input, init);
+          if (configId && configId === active.configId && result && typeof result.then === "function") {
+            result.then(function (response) {
+              if (response && response.ok && view[ACTIVE_PROPERTY] === active) markAdded(view, active);
+            }, function () {});
+          }
+        } catch (error) {
+          // Never interfere with the request itself.
+        }
+        return result;
+      };
+    }
     var history = view.history;
     if (!history) return;
     ["replaceState", "pushState"].forEach(function (method) {
@@ -383,7 +529,21 @@
     });
   }
 
-  function activateHandoff(doc, form, summary, source, properties) {
+  function keptParameters(search) {
+    var params = new URLSearchParams(search || "");
+    var kept = {};
+    KEPT_PARAMETERS.forEach(function (name) {
+      var value = params.get(name);
+      if (value) kept[name] = value;
+    });
+    return kept;
+  }
+
+  // fromUrl: the handoff came from this page's oo_rx (arrival, reload,
+  // back/forward). If this tab already added that config from this product,
+  // it resumes as added. An on-page apply (Product Rx Checker) is always a
+  // fresh, explicit handoff.
+  function activateHandoff(doc, form, summary, source, properties, fromUrl) {
     var view = doc && doc.defaultView;
     if (!view || !view.location) return;
     view[ACTIVE_PROPERTY] = {
@@ -391,7 +551,12 @@
       source: ALLOWED_SOURCES.indexOf(source) >= 0 ? source : null,
       properties: properties,
       productId: productIdOf(form),
-      pathname: view.location.pathname
+      pathname: view.location.pathname,
+      right: summary.recommendedRight,
+      left: summary.recommendedLeft,
+      summary: summary,
+      keptParameters: keptParameters(view.location.search),
+      added: Boolean(fromUrl) && wasAdded(view, view.location.pathname, summary.configId)
     };
     installHooks(doc);
     if (view.history && typeof view.history.replaceState === "function") {
@@ -456,7 +621,15 @@
     return observer;
   }
 
-  function statusModel(summary) {
+  var SOURCE_NOTES = {
+    lens_calculator_v53: "Prescription entered in the Lens Calculator.",
+    quiz_v53: "Prescription entered in the Quiz.",
+    product_rx_checker: "Prescription entered on this page."
+  };
+  var PENDING_MESSAGE = "Loading your saved prescription…";
+  var NOT_ATTACHED_MESSAGE = "Your saved prescription is already in your cart with different lens strengths, so it won't be added to this mask. Choose the saved strengths again to use it.";
+
+  function statusModel(summary, source) {
     return {
       title: summary.prescriptionAttached ? "Prescription already attached" : "Prescription loaded",
       label: summary.prescriptionLabel ? "Prescription loaded: " + summary.prescriptionLabel : null,
@@ -464,7 +637,7 @@
       left: formatPower(summary.recommendedLeft),
       note: summary.prescriptionAttached
         ? "Your prescription file is already attached. No need to upload it again."
-        : "Prescription entered in the Lens Calculator."
+        : SOURCE_NOTES[source] || SOURCE_NOTES.lens_calculator_v53
     };
   }
 
@@ -481,8 +654,38 @@
     return status;
   }
 
-  function renderSuccess(doc, controls, summary) {
-    var model = statusModel(summary);
+  function renderMessage(doc, controls, className, role, message) {
+    var status = ensureStatus(doc, controls);
+    status.className = "oo-rx-handoff-status " + className;
+    status.setAttribute("role", role);
+    status.textContent = message;
+    return status;
+  }
+
+  function renderPending(doc, controls) {
+    renderMessage(doc, controls, "is-pending", "status", PENDING_MESSAGE);
+  }
+
+  // After an add of this config, keeps the status honest about whether the
+  // current lens choice will carry the saved prescription.
+  function refreshStatus(doc) {
+    var view = doc && doc.defaultView;
+    var active = view && view[ACTIVE_PROPERTY];
+    var status = doc.getElementById("oo-rx-handoff-status");
+    if (!active || !active.added || !status) return;
+    var controls = findAvisControls(doc) || active.controls;
+    if (!controls) return;
+    var pair = { right: parseAvisPower(controls.right.value), left: parseAvisPower(controls.left.value) };
+    var released = pairDiffers(pair, active);
+    if (released && !status.classList.contains("is-released")) {
+      renderMessage(doc, controls, "is-released", "status", NOT_ATTACHED_MESSAGE);
+    } else if (!released && status.classList.contains("is-released")) {
+      renderSuccess(doc, controls, active.summary, active.source);
+    }
+  }
+
+  function renderSuccess(doc, controls, summary, source) {
+    var model = statusModel(summary, source);
     var status = ensureStatus(doc, controls);
     status.className = "oo-rx-handoff-status is-success";
     status.setAttribute("role", "status");
@@ -518,21 +721,21 @@
   }
 
   function renderFailure(doc, controls) {
-    var status = ensureStatus(doc, controls);
-    status.className = "oo-rx-handoff-status is-error";
-    status.setAttribute("role", "alert");
-    status.textContent = FAILURE_MESSAGE;
+    renderMessage(doc, controls, "is-error", "alert", FAILURE_MESSAGE);
   }
 
-  function applyConfirmedHandoff(doc, controls, summary, source) {
+  // options.fromUrl: applied from this page's oo_rx link (see activateHandoff).
+  function applyConfirmedHandoff(doc, controls, summary, source, options) {
     var safeSummary = validateSummary(summary, summary && summary.configId);
     var selection = applyAvisValues(controls, safeSummary);
     try {
       var properties = injectShopifyProperties(doc, controls.form, safeSummary, source);
-      activateHandoff(doc, controls.form, safeSummary, source, properties);
+      activateHandoff(doc, controls.form, safeSummary, source, properties, Boolean(options && options.fromUrl));
+      var view = doc.defaultView;
+      if (view && view[ACTIVE_PROPERTY]) view[ACTIVE_PROPERTY].controls = controls;
       setUploadSuppressed(controls, true);
       suppressLateUploadControls(controls);
-      renderSuccess(doc, controls, safeSummary);
+      renderSuccess(doc, controls, safeSummary, source);
       return safeSummary;
     } catch (error) {
       selection.rollback();
@@ -542,19 +745,38 @@
     }
   }
 
-  async function fetchSummary(fetchImpl, configId, backendUrl) {
-    var response = await fetchImpl(
-      String(backendUrl || BACKEND_URL).replace(/\/$/, "") +
-        "/api/rx-config/" + encodeURIComponent(configId) + "/summary",
-      {
-        method: "GET",
-        headers: { Accept: "application/json" },
-        credentials: "omit",
-        cache: "no-store"
+  function delay(ms) {
+    return new Promise(function (resolve) { setTimeout(resolve, ms); });
+  }
+
+  function isTransientStatus(status) {
+    return status === 408 || status === 429 || status >= 500;
+  }
+
+  // Transient failures (network, 408, 429, 5xx) are retried; a definitive
+  // answer (404, draft, mismatched id) is not.
+  async function fetchSummary(fetchImpl, configId, backendUrl, retryDelays) {
+    var delays = Array.isArray(retryDelays) ? retryDelays : SUMMARY_RETRY_DELAYS;
+    var url = String(backendUrl || BACKEND_URL).replace(/\/$/, "") +
+      "/api/rx-config/" + encodeURIComponent(configId) + "/summary";
+    for (var attempt = 0; ; attempt += 1) {
+      var response = null;
+      var transient = false;
+      try {
+        response = await fetchImpl(url, {
+          method: "GET",
+          headers: { Accept: "application/json" },
+          credentials: "omit",
+          cache: "no-store"
+        });
+        transient = !response || (!response.ok && isTransientStatus(response.status));
+      } catch (error) {
+        transient = true;
       }
-    );
-    if (!response || !response.ok) throw new Error("The saved prescription could not be loaded.");
-    return validateSummary(await response.json(), configId);
+      if (response && response.ok) return validateSummary(await response.json(), configId);
+      if (!transient || attempt >= delays.length) throw new Error("The saved prescription could not be loaded.");
+      await delay(delays[attempt]);
+    }
   }
 
   async function start(doc, options) {
@@ -564,12 +786,18 @@
     var configId = readConfigId(search);
     var source = readSource(search);
     var controls;
+    // The summary loads while Avis renders, instead of after it.
+    var settled = false;
+    var summaryRequest = isUuid(configId)
+      ? fetchSummary(settings.fetch, configId, settings.backendUrl, settings.retryDelays)
+      : Promise.reject(new Error("The saved prescription link is invalid."));
+    summaryRequest.then(function () { settled = true; }, function () { settled = true; });
 
     try {
-      controls = await waitForAvisControls(doc, settings.timeoutMs);
-      if (!isUuid(configId)) throw new Error("The saved prescription link is invalid.");
-      var summary = await fetchSummary(settings.fetch, configId, settings.backendUrl);
-      applyConfirmedHandoff(doc, controls, summary, source);
+      controls = await waitForAvisControls(doc, typeof settings.timeoutMs === "number" ? settings.timeoutMs : AVIS_WAIT_MS);
+      if (!settled) renderPending(doc, controls);
+      var summary = await summaryRequest;
+      applyConfirmedHandoff(doc, controls, summary, source, { fromUrl: true });
       return { state: "confirmed", summary: summary, source: source };
     } catch (error) {
       if (controls) {
@@ -603,6 +831,14 @@
     withHandoffParameters: withHandoffParameters,
     sourceJourney: sourceJourney,
     removeInjectedProperties: removeInjectedProperties,
+    writeProperties: writeProperties,
+    formLensPair: formLensPair,
+    handoffAppliesTo: handoffAppliesTo,
+    wasAdded: wasAdded,
+    ADDED_STORAGE_KEY: ADDED_STORAGE_KEY,
+    AVIS_WAIT_MS: AVIS_WAIT_MS,
+    NOT_ATTACHED_MESSAGE: NOT_ATTACHED_MESSAGE,
+    PENDING_MESSAGE: PENDING_MESSAGE,
     setUploadSuppressed: setUploadSuppressed,
     suppressLateUploadControls: suppressLateUploadControls,
     statusModel: statusModel,

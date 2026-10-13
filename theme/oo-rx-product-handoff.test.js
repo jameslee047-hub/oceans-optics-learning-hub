@@ -208,6 +208,7 @@ test("only the durable config and useful label are injected", function () {
       var match = selector.match(/name="([^"]+)"/);
       return match ? inputs.find(function (input) { return input.name === match[1]; }) || null : null;
     },
+    querySelectorAll: function () { return []; },
     appendChild: function (input) { inputs.push(input); }
   };
   var doc = {
@@ -229,6 +230,7 @@ test("blank labels are omitted and upload wrappers are only visually suppressed"
   var inputs = [];
   var form = {
     querySelector: function () { return null; },
+    querySelectorAll: function () { return []; },
     appendChild: function (input) { inputs.push(input); }
   };
   var doc = {
@@ -358,8 +360,11 @@ function propertyForm() {
         var match = selector.match(/name="([^"]+)"/);
         return match ? inputs.find(function (input) { return input.name === match[1]; }) || null : null;
       },
-      querySelectorAll: function () {
-        return inputs.filter(function (input) { return input["data-oo-rx-handoff-property"] === "true"; });
+      querySelectorAll: function (selector) {
+        var match = selector.match(/name="([^"]+)"/);
+        return inputs.filter(function (input) {
+          return match ? input.name === match[1] : input["data-oo-rx-handoff-property"] === "true";
+        });
       },
       appendChild: function (input) {
         input.remove = function () { inputs.splice(inputs.indexOf(input), 1); };
@@ -368,7 +373,10 @@ function propertyForm() {
     },
     doc: {
       createElement: function () {
-        return { setAttribute: function (name, value) { this[name] = value; } };
+        return {
+          setAttribute: function (name, value) { this[name] = value; },
+          getAttribute: function (name) { return this[name] === undefined ? null : this[name]; }
+        };
       }
     }
   };
@@ -432,8 +440,9 @@ test("direct product visits without oo_rx never classify traffic as calculator-o
 
 test("source is applied only inside the confirmed handoff path", function () {
   var source = require("node:fs").readFileSync(require.resolve("./base/assets/oo-rx-product-handoff.js"), "utf8");
-  assert.match(source, /var summary = await fetchSummary\(settings\.fetch, configId, settings\.backendUrl\);\s+applyConfirmedHandoff\(doc, controls, summary, source\);/);
-  assert.match(source, /var properties = injectShopifyProperties\(doc, controls\.form, safeSummary, source\);\s+activateHandoff\(doc, controls\.form, safeSummary, source, properties\);\s+setUploadSuppressed/);
+  assert.match(source, /var summary = await summaryRequest;\s+applyConfirmedHandoff\(doc, controls, summary, source, \{ fromUrl: true \}\);/);
+  assert.match(source, /var summaryRequest = isUuid\(configId\)\s+\? fetchSummary\(settings\.fetch, configId, settings\.backendUrl, settings\.retryDelays\)/);
+  assert.match(source, /var properties = injectShopifyProperties\(doc, controls\.form, safeSummary, source\);\s+activateHandoff\(doc, controls\.form, safeSummary, source, properties, Boolean\(options && options\.fromUrl\)\);/);
   assert.match(source, /catch \(error\) \{\s+selection\.rollback\(\);\s+removeInjectedProperties\(controls\.form\);/);
 });
 
