@@ -14,6 +14,7 @@
     "This gives you the best overall match from our available sphere-only corrective lenses.";
   var activeRecommendation = null;
   var customerStrategySelected = false;
+  var strategySelectionEvidence = null;
   var currentHighCylinderPreview = null;
   // Optional second recommendation (Sharper or Closer to Your SPH) from the
   // shared choice layer; never shown with high CYL.
@@ -464,6 +465,7 @@
     var selection = module.recommendationSelection(currentMidpointChoice, strategy);
     setActiveRecommendation(selection, false);
     customerStrategySelected = true;
+    strategySelectionEvidence = "customer_explicit";
     syncMidpointControls(selection.recommendationStrategy);
     if (announce) {
       document.getElementById("oo-v52-midpoint-selection-status").textContent =
@@ -536,8 +538,9 @@
     var midpoint = pendingCalculation.midpointChoice;
     var pairText = function (right, left) { return { right: String(right), left: String(left) }; };
     var optionsShown = null;
-    if (midpoint && midpoint.balanced && midpoint.sharper) {
-      optionsShown = { closer_to_sph: pairText(midpoint.sharper.right, midpoint.sharper.left), balanced: pairText(midpoint.balanced.right, midpoint.balanced.left) };
+    var midpointSharper = midpoint && (midpoint.alternative || midpoint.sharper);
+    if (midpoint && midpoint.balanced && midpointSharper) {
+      optionsShown = { closer_to_sph: pairText(midpointSharper.right, midpointSharper.left), balanced: pairText(midpoint.balanced.right, midpoint.balanced.left) };
     } else if (high && high.available) {
       optionsShown = { closer_to_sph: pairText(high.alternative.right, high.alternative.left), balanced: pairText(high.balanced.right, high.balanced.left) };
     }
@@ -553,7 +556,7 @@
       recommendedValues: optionsShown ? optionsShown.closer_to_sph : pairText(active.recommendedRight, active.recommendedLeft),
       selectedStrategy: selectedStrategy,
       selectedRecommendation: selectedStrategy ? pairText(active.recommendedRight, active.recommendedLeft) : null,
-      selectionEvidence: selectedStrategy ? "customer_explicit" : null,
+      selectionEvidence: selectedStrategy ? (strategySelectionEvidence || "customer_explicit") : null,
       finalProductSelection: null,
       manualOverride: false
     };
@@ -796,6 +799,7 @@
     clearError();
     pendingCalculation = null;
     customerStrategySelected = false;
+    strategySelectionEvidence = null;
 
     if (!window.OOLensCalculatorV53) {
       showError("The calculator could not load. Please refresh and try again.");
@@ -823,6 +827,9 @@
         var defaultSelection = choiceModule().recommendationSelection(midpointChoice, midpointChoice.alternativeStrategy || "sharper");
         setActiveRecommendation(defaultSelection, false);
         resetMidpointControls();
+        syncMidpointControls(defaultSelection.recommendationStrategy);
+        customerStrategySelected = true;
+        strategySelectionEvidence = "default_recommendation";
       } else if (!showingHighCylinderSelection && successful) {
         setActiveRecommendation({
           recommendationStrategy: "balanced",

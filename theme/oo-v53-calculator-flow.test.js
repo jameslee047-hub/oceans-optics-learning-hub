@@ -160,6 +160,63 @@ test("B. -7.00/-0.75 and -7.75/-1.25: strictly closer Sharper -7.00/-8.00 is the
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
 });
 
+test("default selects the recommended Sharper option for the #336254 and #336246 fixtures", { skip: skipDom }, async function () {
+  var page = await loadCalculator();
+  var sharper = page.doc.getElementById("oo-v52-midpoint-sharper");
+  var balanced = page.doc.getElementById("oo-v52-midpoint-balanced");
+
+  calculate(page, [4, -0.75], [4.25, -0.75]);
+  await settle();
+  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-right"), "+4.00");
+  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-left"), "+4.00");
+  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-right"), "+3.00");
+  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-left"), "+3.00");
+  assert.equal(sharper.checked, true, "Sharper — Recommended is checked on initial display");
+  assert.equal(balanced.checked, false);
+  assert.deepEqual(cardPairs(page.doc), ["R +4.00L +4.00"]);
+
+  page.doc.querySelector(".oo-v52-product-card__customize").click();
+  await settle();
+  var firstConfirm = confirmCalls(page)[0];
+  assert.deepEqual(firstConfirm.body.v53Snapshot.optionsShown, {
+    closer_to_sph: { right: "+4.00", left: "+4.00" },
+    balanced: { right: "+3.00", left: "+3.00" }
+  });
+  assert.equal(firstConfirm.body.v53Snapshot.recommendedStrategy, "closer_to_sph");
+  assert.equal(firstConfirm.body.v53Snapshot.selectedStrategy, "closer_to_sph", JSON.stringify(firstConfirm.body.v53Snapshot));
+  assert.equal(firstConfirm.body.v53Snapshot.selectionEvidence, "default_recommendation");
+
+  var togglePage = await loadCalculator();
+  calculate(togglePage, [4, -0.75], [4.25, -0.75]);
+  await settle();
+  var toggleBalanced = togglePage.doc.getElementById("oo-v52-midpoint-balanced");
+  var toggleSharper = togglePage.doc.getElementById("oo-v52-midpoint-sharper");
+  toggleBalanced.click();
+  await settle();
+  assert.equal(toggleBalanced.checked, true, "Balanced can be selected");
+  assert.equal(toggleSharper.checked, false);
+  assert.equal(togglePage.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "balanced");
+  toggleSharper.click();
+  await settle();
+  assert.equal(toggleSharper.checked, true, "Sharper can be selected again");
+  assert.equal(toggleBalanced.checked, false);
+  togglePage.doc.querySelector(".oo-v52-product-card__customize").click();
+  await settle();
+  var explicitConfirm = confirmCalls(togglePage)[0];
+  assert.equal(explicitConfirm.body.v53Snapshot.selectedStrategy, "closer_to_sph");
+  assert.equal(explicitConfirm.body.v53Snapshot.selectionEvidence, "customer_explicit");
+
+  var page336246 = await loadCalculator();
+  calculate(page336246, [-3.5, -2], [-5, -1.5]);
+  await settle();
+  assert.equal(text(page336246.doc, "oo-v52-midpoint-sharper-right"), "-4.00");
+  assert.equal(text(page336246.doc, "oo-v52-midpoint-sharper-left"), "-5.50");
+  assert.equal(text(page336246.doc, "oo-v52-midpoint-balanced-right"), "-4.00");
+  assert.equal(text(page336246.doc, "oo-v52-midpoint-balanced-left"), "-5.00");
+  assert.equal(page336246.doc.getElementById("oo-v52-midpoint-sharper").checked, true, "Sharper is the default for the #336246 fixture too");
+  assert.equal(page336246.doc.getElementById("oo-v52-midpoint-balanced").checked, false);
+});
+
 test("A. Daniel -3.75/-0.25, -3.50/-0.75: Closer Match -3.50/-3.50 is default, explained, and saved as sharper with no change", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
