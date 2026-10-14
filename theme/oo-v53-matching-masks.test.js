@@ -65,6 +65,37 @@ test("product card lens labels are unchanged", function () {
   assert.equal(Products.formatLensLabel(-2.5), "-2.50");
 });
 
+test("historical V5.3 snapshot stays with the calculator product handoff URL", function () {
+  var snapshot = {
+    schemaVersion: "1", calculatorVersion: "5.3.0-experimental", source: "calculator",
+    optionsShown: { closer_to_sph: { right: "-4.00", left: "-5.50" }, balanced: { right: "-4.00", left: "-5.00" } },
+    recommendedStrategy: "closer_to_sph", recommendedValues: { right: "-4.00", left: "-5.50" },
+    selectedStrategy: "closer_to_sph", selectedRecommendation: { right: "-4.00", left: "-5.50" },
+    selectionEvidence: "customer_explicit", finalProductSelection: null, manualOverride: false
+  };
+  var profile = savedProfile("sharper", -4, -5.5);
+  profile.v53Snapshot = snapshot;
+  var url = new URL(Products.prepareProductPageUrl(profile, OBSIDIAN, Products.defaultVariant(OBSIDIAN)));
+  assert.deepEqual(JSON.parse(url.searchParams.get("_oo_v53_snapshot")), snapshot);
+  assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
+});
+
+test("calculator snapshot is attached as a bounded hidden property on its mask line", function () {
+  var snapshot = {
+    schemaVersion: "1", calculatorVersion: "5.3.0-experimental", source: "calculator",
+    optionsShown: { closer_to_sph: { right: "-4.00", left: "-5.50" }, balanced: { right: "-4.00", left: "-5.00" } },
+    recommendedStrategy: "closer_to_sph", recommendedValues: { right: "-4.00", left: "-5.50" },
+    selectedStrategy: "closer_to_sph", selectedRecommendation: { right: "-4.00", left: "-5.50" },
+    selectionEvidence: "customer_explicit", finalProductSelection: null, manualOverride: false
+  };
+  var profile = savedProfile("sharper", -4, -5.5);
+  profile.v53Snapshot = snapshot;
+  var result = Products.prepareCartSubmission(profile, OBSIDIAN, Products.defaultVariant(OBSIDIAN));
+  assert.equal(result.fields["properties[_oo_v53_snapshot]"], JSON.stringify(snapshot));
+  assert.equal(result.fields["properties[_oo_rx_config]"], CONFIG_ID);
+  assert.equal(result.fields["properties[(OD) Right]"], "-4.00");
+});
+
 test("a preview profile is not a durable profile and cannot reach Shopify on its own", function () {
   var preview = previewProfile("balanced", -2.5, -2);
   assert.equal(Products.isPreviewProfile(preview), true);

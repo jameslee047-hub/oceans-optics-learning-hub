@@ -39,7 +39,7 @@
   var ADDED_STORAGE_KEY = "oo_rx_handoff_added";
   var ADDED_LIMIT = 20;
   // Quiz attribution parameters kept beside oo_rx on this product's URL.
-  var KEPT_PARAMETERS = ["quiz_session_id", "quiz_product_id"];
+  var KEPT_PARAMETERS = ["quiz_session_id", "quiz_product_id", "_oo_v53_snapshot"];
   // Purchase sources that may become the hidden _oo_source line-item property.
   // Only these exact values are accepted, from the oo_source parameter or from
   // an on-page tool; quiz_v53 is the Quiz / Face Fit handoff. Reserved: face_fit.
@@ -322,6 +322,19 @@
     }
     if (summary.prescriptionLabel) {
       properties.push(["properties[Prescription]", summary.prescriptionLabel]);
+    }
+    // The calculator/quiz creates this immutable historical snapshot before
+    // navigating to the mask. Keep it on the line item; final lens selectors
+    // remain the ordinary (OD)/(OS) properties supplied by the product form.
+    var view = doc && doc.defaultView;
+    var snapshot = new URLSearchParams(view && view.location ? view.location.search || "" : "").get("_oo_v53_snapshot");
+    if (snapshot && snapshot.length <= 4000) {
+      try {
+        var parsed = JSON.parse(snapshot);
+        if (parsed && /^5\.3(?:\.|$)/.test(String(parsed.calculatorVersion || ""))) {
+          properties.push(["properties[_oo_v53_snapshot]", snapshot]);
+        }
+      } catch (error) {}
     }
     return properties;
   }

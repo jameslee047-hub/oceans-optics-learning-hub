@@ -415,6 +415,7 @@
       recommendationStrategy: profile.recommendationStrategy,
       recommendedRight: profile.recommendedRight,
       recommendedLeft: profile.recommendedLeft,
+      v53Snapshot: profile.calculation && profile.calculation.v53Snapshot || null,
       prescriptionAttached: profile.prescriptionAttached
     } : null;
   }
@@ -526,10 +527,11 @@
 
   function buildConfirmationPayload(prescription, calculation, prescriptionLabel) {
     var active = calculation && calculation.activeRecommendation;
-    var recommendationStrategy = active ? active.recommendationStrategy : "balanced";
-    if (RECOMMENDATION_STRATEGIES.indexOf(recommendationStrategy) === -1) {
+    var activeStrategy = active ? active.recommendationStrategy : "balanced";
+    if (RECOMMENDATION_STRATEGIES.indexOf(activeStrategy) === -1) {
       throw new Error("A valid recommendation strategy is required.");
     }
+    var recommendationStrategy = activeStrategy === "balanced" ? "balanced" : "closer_to_sph";
     var recommendedRight = active
       ? recommendationNumber({ recommendation: active.recommendedRight }, "right-eye")
       : recommendationNumber(calculation.rightResult, "right-eye");
@@ -543,7 +545,8 @@
       recommendedRight: recommendedRight,
       recommendedLeft: recommendedLeft,
       calculatorVersion: String(calculation.rightResult.version || "5.3.0-experimental"),
-      recommendationStrategy: recommendationStrategy
+      recommendationStrategy: recommendationStrategy,
+      v53Snapshot: calculation.v53Snapshot || null
     }, prescriptionLabel);
   }
 

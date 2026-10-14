@@ -13,6 +13,7 @@
   var HIGH_CYL_BENEFIT =
     "This gives you the best overall match from our available sphere-only corrective lenses.";
   var activeRecommendation = null;
+  var customerStrategySelected = false;
   var currentHighCylinderPreview = null;
   // Optional second recommendation (Sharper or Closer to Your SPH) from the
   // shared choice layer; never shown with high CYL.
@@ -322,7 +323,7 @@
       summary.textContent = "";
       return;
     }
-    var name = recommendation.recommendationStrategy === "closer_to_sph" ? "Closer to Your SPH" : "Balanced";
+    var name = recommendation.recommendationStrategy === "closer_to_sph" ? "Sharper" : "Balanced";
     summary.textContent = "Selected: " + name + ". Right " + recommendation.displayRight + ", left " + recommendation.displayLeft + ".";
   }
 
@@ -335,7 +336,7 @@
     }
 
     if (announce && currentHighCylinderPreview && recommendation) {
-      var strategyName = recommendation.recommendationStrategy === "closer_to_sph" ? "Closer to Your SPH" : "Balanced";
+      var strategyName = recommendation.recommendationStrategy === "closer_to_sph" ? "Sharper" : "Balanced";
       document.getElementById("oo-v52-high-selection-status").textContent =
         strategyName + " selected. Right " + recommendation.displayRight +
         ", left " + recommendation.displayLeft + ".";
@@ -362,6 +363,7 @@
       strategy
     );
     setActiveRecommendation(selection, announce !== false);
+    customerStrategySelected = true;
     syncHighCylinderControls(selection.recommendationStrategy);
     previewSelection();
     return getActiveRecommendation();
@@ -377,7 +379,7 @@
   function resetHighCylinderControls() {
     var balanced = document.getElementById("oo-v52-high-balanced");
     var alternative = document.getElementById("oo-v52-high-alternative");
-    balanced.checked = true;
+    balanced.checked = false;
     balanced.disabled = false;
     alternative.checked = false;
     alternative.disabled = false;
@@ -406,6 +408,7 @@
     if (blocked || !window.OOV52HighCylinder) return null;
     var preview = window.OOV52HighCylinder.calculatePairAlternative(rightResult, leftResult);
     if (!preview.triggered || !preview.available) return preview;
+    if (String(preview.balanced.right) === String(preview.alternative.right) && String(preview.balanced.left) === String(preview.alternative.left)) return null;
 
     setResultText("oo-v52-high-balanced-right", preview.balanced.right);
     setResultText("oo-v52-high-balanced-left", preview.balanced.left);
@@ -422,7 +425,7 @@
       })));
     }
     currentHighCylinderPreview = preview;
-    setActiveRecommendation(window.OOV52HighCylinder.recommendationSelection(preview, window.OOV52HighCylinder.STRATEGY_BALANCED), false);
+    setActiveRecommendation(window.OOV52HighCylinder.recommendationSelection(preview, window.OOV52HighCylinder.STRATEGY_CLOSER_TO_SPH), false);
 
     standard.hidden = true;
     comparison.hidden = false;
@@ -460,6 +463,7 @@
     if (!currentMidpointChoice || !module) return null;
     var selection = module.recommendationSelection(currentMidpointChoice, strategy);
     setActiveRecommendation(selection, false);
+    customerStrategySelected = true;
     syncMidpointControls(selection.recommendationStrategy);
     if (announce) {
       document.getElementById("oo-v52-midpoint-selection-status").textContent =
@@ -487,7 +491,7 @@
     if (!balanced || !alternative) return;
     balanced.disabled = false;
     alternative.disabled = false;
-    balanced.checked = true;
+    balanced.checked = false;
     alternative.checked = false;
     document.getElementById("oo-v52-midpoint-selection-status").textContent = "";
     setNotice("oo-v52-midpoint-alternative-notice", "");
@@ -504,6 +508,7 @@
   // which the Rx status already reports with a retry).
   function commitPreviewedRecommendation(expected) {
     if (!pendingCalculation) return Promise.resolve(null);
+    if ((currentMidpointChoice || (currentHighCylinderPreview && currentHighCylinderPreview.available)) && !customerStrategySelected) return Promise.resolve(null);
     var active = getActiveRecommendation();
     if (
       !active || !expected ||
@@ -527,6 +532,31 @@
     }
 
     pendingCalculation.activeRecommendation = active;
+    var high = pendingCalculation.highCylinderPreview;
+    var midpoint = pendingCalculation.midpointChoice;
+    var pairText = function (right, left) { return { right: String(right), left: String(left) }; };
+    var optionsShown = null;
+    if (midpoint && midpoint.balanced && midpoint.sharper) {
+      optionsShown = { closer_to_sph: pairText(midpoint.sharper.right, midpoint.sharper.left), balanced: pairText(midpoint.balanced.right, midpoint.balanced.left) };
+    } else if (high && high.available) {
+      optionsShown = { closer_to_sph: pairText(high.alternative.right, high.alternative.left), balanced: pairText(high.balanced.right, high.balanced.left) };
+    }
+    var choiceRequired = Boolean(optionsShown &&
+      (optionsShown.closer_to_sph.right !== optionsShown.balanced.right || optionsShown.closer_to_sph.left !== optionsShown.balanced.left));
+    var selectedStrategy = choiceRequired ? (active.recommendationStrategy === "balanced" ? "balanced" : "closer_to_sph") : null;
+    pendingCalculation.v53Snapshot = {
+      schemaVersion: "1",
+      calculatorVersion: String((window.OOLensCalculatorV53 && window.OOLensCalculatorV53.VERSION) || "5.3"),
+      source: "calculator",
+      optionsShown: optionsShown,
+      recommendedStrategy: optionsShown ? "closer_to_sph" : (active.recommendationStrategy === "balanced" ? "balanced" : "closer_to_sph"),
+      recommendedValues: optionsShown ? optionsShown.closer_to_sph : pairText(active.recommendedRight, active.recommendedLeft),
+      selectedStrategy: selectedStrategy,
+      selectedRecommendation: selectedStrategy ? pairText(active.recommendedRight, active.recommendedLeft) : null,
+      selectionEvidence: selectedStrategy ? "customer_explicit" : null,
+      finalProductSelection: null,
+      manualOverride: false
+    };
     document.querySelectorAll(".oo-v52-high-cyl__input").forEach(function (input) {
       input.disabled = true;
     });
@@ -596,6 +626,17 @@
       setNotice("oo-v52-midpoint-alternative-notice", module.seNoticeFor(module.eyesStrongerThanSE(rightResult, leftResult, choice.alternative || choice.sharper)));
       return;
     }
+    // The candidate calculation decides validity and values. The storefront
+    // recommendation is stable: when two distinct pairs exist, Sharper is the
+    // highlighted option, while neither radio is selected until interaction.
+    entries.sort(function (a, b) {
+      return a.strategy === "balanced" ? 1 : (b.strategy === "balanced" ? -1 : 0);
+    });
+    entries.forEach(function (entry, index) {
+      entry.title = entry.strategy === "balanced" ? "Balanced" : "Sharper";
+      entry.recommended = index === 0;
+      entry.badge = index === 0 ? "Recommended" : "";
+    });
     entries.forEach(function (entry) {
       var input = entry.strategy === "balanced" ? balancedInput : alternativeInput;
       var label = input.parentNode.querySelector(".oo-v52-high-cyl__option");
@@ -754,6 +795,7 @@
     options = options || {};
     clearError();
     pendingCalculation = null;
+    customerStrategySelected = false;
 
     if (!window.OOLensCalculatorV53) {
       showError("The calculator could not load. Please refresh and try again.");
@@ -778,9 +820,9 @@
       var showingMidpointSelection = Boolean(midpointChoice && successful && !showingHighCylinderSelection);
       if (showingMidpointSelection) {
         // The choice's default: Sharper when strictly closer, else balanced.
-        var defaultSelection = choiceModule().recommendationSelection(midpointChoice);
+        var defaultSelection = choiceModule().recommendationSelection(midpointChoice, midpointChoice.alternativeStrategy || "sharper");
         setActiveRecommendation(defaultSelection, false);
-        syncMidpointControls(defaultSelection.recommendationStrategy);
+        resetMidpointControls();
       } else if (!showingHighCylinderSelection && successful) {
         setActiveRecommendation({
           recommendationStrategy: "balanced",

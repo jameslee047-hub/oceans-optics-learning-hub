@@ -235,6 +235,10 @@
   <meta name="robots" content="noindex, nofollow">
 {% endif %}
 
+{%- if request.page_type == 'product' -%}
+  {{ 'oo-rx-product-handoff.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+
 </head>
 
 <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements }}{% endif %}">
@@ -320,6 +324,10 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 {% render 'oo-quiz-attribution' %}
+
+{%- if request.page_type == 'product' -%}
+  <script src="{{ 'oo-rx-product-handoff.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
 
 </body>
 </html>

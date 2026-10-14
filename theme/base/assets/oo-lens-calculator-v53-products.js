@@ -329,6 +329,14 @@
     return url.toString();
   }
 
+  function withV53Snapshot(urlValue, snapshot) {
+    if (!snapshot) return urlValue;
+    var url = new URL(urlValue);
+    var serialized = JSON.stringify(snapshot);
+    if (serialized.length <= 3000) url.searchParams.set("_oo_v53_snapshot", serialized);
+    return url.toString();
+  }
+
   // A midpoint pair shown before the customer chooses a mask. Choosing a mask
   // confirms it (once), then continues with the confirmed profile.
   function isPreviewProfile(profile) {
@@ -369,7 +377,7 @@
 
   function prepareProductPageUrl(profile, product, variant) {
     var commerce = resolveCommerceVariant(profile, product, variant);
-    return buildProductDetailsUrl(commerce.variant.url, profile.configId, PURCHASE_SOURCE);
+    return withV53Snapshot(buildProductDetailsUrl(commerce.variant.url, profile.configId, PURCHASE_SOURCE), profile.v53Snapshot);
   }
 
   // The storefront journey (window.OOSourceJourney from the quiz attribution
@@ -398,6 +406,10 @@
       "properties[_oo_source]": PURCHASE_SOURCE,
       "properties[_has_apo]": "true"
     };
+    if (profile.v53Snapshot) {
+      var snapshot = JSON.stringify(profile.v53Snapshot);
+      if (snapshot.length <= 4000) fields["properties[_oo_v53_snapshot]"] = snapshot;
+    }
     if (journeyView && journeyView.first_source) fields["properties[_oo_first_source]"] = journeyView.first_source;
     if (journeyView && journeyView.source_history_text) fields["properties[_oo_source_history]"] = journeyView.source_history_text;
     var label = typeof profile.label === "string" ? profile.label.trim() : "";
