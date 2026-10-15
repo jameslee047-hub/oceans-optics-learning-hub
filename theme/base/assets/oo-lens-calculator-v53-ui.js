@@ -503,6 +503,13 @@
     return Number.isFinite(Number(a)) && Math.abs(Number(a) - Number(b)) < 1e-9;
   }
 
+  // The saved profile stores the canonical strategy (Sharper is saved as
+  // closer_to_sph, matching the confirmation payload), while the on-page
+  // choice may still name it "sharper". Both describe the same selection.
+  function canonicalStrategy(strategy) {
+    return strategy === "balanced" ? "balanced" : "closer_to_sph";
+  }
+
   // Called when the customer chooses a mask from a previewed pair. Confirms
   // exactly the selected strategy and OD/OS pair through the existing
   // oo:v52:calculated save, once. Resolves to the saved profile, or null when
@@ -514,7 +521,7 @@
     var active = getActiveRecommendation();
     if (
       !active || !expected ||
-      active.recommendationStrategy !== expected.recommendationStrategy ||
+      canonicalStrategy(active.recommendationStrategy) !== canonicalStrategy(expected.recommendationStrategy) ||
       !samePower(active.recommendedRight, expected.recommendedRight) ||
       !samePower(active.recommendedLeft, expected.recommendedLeft)
     ) {

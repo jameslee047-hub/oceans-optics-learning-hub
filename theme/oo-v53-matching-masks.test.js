@@ -327,7 +327,7 @@ test("exact midpoint: choosing a mask while Sharper is selected confirms Sharper
   var confirms = confirmCalls(page);
   assert.equal(confirms.length, 1);
   assert.equal(page.calls.filter(function (call) { return /\/manual\/init$/.test(call.url); }).length, 1);
-  assert.equal(confirms[0].body.recommendationStrategy, "sharper");
+  assert.equal(confirms[0].body.recommendationStrategy, "closer_to_sph", "Sharper is saved under its canonical id");
   assert.equal(confirms[0].body.recommendedRight, -3);
   assert.equal(confirms[0].body.recommendedLeft, -2.5);
   assert.equal(page.opened.length, 1);
@@ -372,7 +372,7 @@ test("one-eye midpoints: only the midpoint eye changes in the Sharper pair", { s
     page.doc.querySelector(".oo-v52-product-card__customize").click();
     await settle();
     assert.equal(confirmCalls(page).length, 1);
-    assert.equal(confirmCalls(page)[0].body.recommendationStrategy, "sharper");
+    assert.equal(confirmCalls(page)[0].body.recommendationStrategy, "closer_to_sph");
     assert.equal(confirmCalls(page)[0].body.recommendedRight, c[4]);
     assert.equal(confirmCalls(page)[0].body.recommendedLeft, c[5]);
   }

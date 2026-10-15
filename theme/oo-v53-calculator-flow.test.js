@@ -66,7 +66,7 @@ function loadCalculator() {
   });
 }
 
-function setEye(doc, side, sphere, cylinder) {
+function setEye(doc, side, sphere, cylinder, axisValue) {
   var eye = doc.querySelector('[data-eye="' + side + '"]');
   [["sphere", sphere], ["cylinder", cylinder || 0]].forEach(function (entry) {
     var field = entry[0];
@@ -86,14 +86,14 @@ function setEye(doc, side, sphere, cylinder) {
   });
   if (cylinder) {
     var axis = eye.querySelector('.oo-v52__axis[data-field="axis"]');
-    axis.value = "90";
+    axis.value = String(axisValue || 90);
     axis.dispatchEvent(new doc.defaultView.Event("change"));
   }
 }
 
 function calculate(page, right, left) {
-  setEye(page.doc, "right", right[0], right[1]);
-  setEye(page.doc, "left", left[0], left[1]);
+  setEye(page.doc, "right", right[0], right[1], right[2]);
+  setEye(page.doc, "left", left[0], left[1], left[2]);
   page.doc.getElementById("oo-v52-form").dispatchEvent(new page.win.Event("submit", { cancelable: true }));
 }
 
@@ -215,6 +215,103 @@ test("default selects the recommended Sharper option for the #336254 and #336246
   assert.equal(text(page336246.doc, "oo-v52-midpoint-balanced-left"), "-5.00");
   assert.equal(page336246.doc.getElementById("oo-v52-midpoint-sharper").checked, true, "Sharper is the default for the #336246 fixture too");
   assert.equal(page336246.doc.getElementById("oo-v52-midpoint-balanced").checked, false);
+});
+
+test("#336262 -1.00/-0.75 x170, -1.75: the default Sharper -1.00/-1.50 saves without a click; Balanced and Sharper again save as explicit", { skip: skipDom }, async function () {
+  function choiceState(page) {
+    return {
+      sharper: page.doc.getElementById("oo-v52-midpoint-sharper").checked,
+      balanced: page.doc.getElementById("oo-v52-midpoint-balanced").checked,
+      sharperRight: text(page.doc, "oo-v52-midpoint-sharper-right"),
+      sharperLeft: text(page.doc, "oo-v52-midpoint-sharper-left"),
+      balancedRight: text(page.doc, "oo-v52-midpoint-balanced-right"),
+      balancedLeft: text(page.doc, "oo-v52-midpoint-balanced-left")
+    };
+  }
+  async function chooseMask(page) {
+    page.doc.querySelector(".oo-v52-product-card__customize").click();
+    await settle();
+    await settle();
+    var confirms = confirmCalls(page);
+    assert.equal(confirms.length, 1, "the selected pair is confirmed once");
+    assert.equal(page.opened.length, 1);
+    assert.notEqual(page.opened[0].closed, true, "the product window stays open");
+    var url = new URL(page.opened[0].location.href);
+    assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
+    assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
+    assert.doesNotMatch(page.doc.body.textContent, /couldn't save this prescription yet/);
+    return confirms[0].body;
+  }
+  var options = {
+    closer_to_sph: { right: "-1.00", left: "-1.50" },
+    balanced: { right: "-1.00", left: "-1.00" }
+  };
+
+  var page = await loadCalculator();
+  calculate(page, [-1, -0.75, 170], [-1.75, 0]);
+  await settle();
+  assert.deepEqual(choiceState(page), {
+    sharper: true, balanced: false,
+    sharperRight: "-1.00", sharperLeft: "-1.50", balancedRight: "-1.00", balancedLeft: "-1.00"
+  }, "Sharper — Recommended is selected on first display");
+  assert.deepEqual(cardPairs(page.doc), ["R -1.00L -1.50"]);
+  assert.equal(page.calls.length, 0, "nothing saves before a mask is chosen");
+  var body = await chooseMask(page);
+  assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["closer_to_sph", -1, -1.5]);
+  assert.deepEqual(body.right, { sph: -1, cyl: 0.75, cylSign: "-", axis: 170 });
+  assert.deepEqual(body.v53Snapshot.optionsShown, options);
+  assert.equal(body.v53Snapshot.recommendedStrategy, "closer_to_sph");
+  assert.equal(body.v53Snapshot.selectedStrategy, "closer_to_sph");
+  assert.equal(body.v53Snapshot.selectionEvidence, "default_recommendation");
+  assert.deepEqual([Number(body.v53Snapshot.selectedRecommendation.right), Number(body.v53Snapshot.selectedRecommendation.left)], [-1, -1.5]);
+  var snapshot = JSON.parse(new URL(page.opened[0].location.href).searchParams.get("_oo_v53_snapshot"));
+  assert.equal(snapshot.selectionEvidence, "default_recommendation");
+
+  var balancedPage = await loadCalculator();
+  calculate(balancedPage, [-1, -0.75, 170], [-1.75, 0]);
+  await settle();
+  balancedPage.doc.getElementById("oo-v52-midpoint-balanced").click();
+  await settle();
+  assert.deepEqual(cardPairs(balancedPage.doc), ["R -1.00L -1.00"]);
+  body = await chooseMask(balancedPage);
+  assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", -1, -1]);
+  assert.equal(body.v53Snapshot.selectedStrategy, "balanced");
+  assert.equal(body.v53Snapshot.selectionEvidence, "customer_explicit");
+
+  var againPage = await loadCalculator();
+  calculate(againPage, [-1, -0.75, 170], [-1.75, 0]);
+  await settle();
+  againPage.doc.getElementById("oo-v52-midpoint-balanced").click();
+  await settle();
+  againPage.doc.getElementById("oo-v52-midpoint-sharper").click();
+  await settle();
+  assert.equal(choiceState(againPage).sharper, true);
+  assert.deepEqual(cardPairs(againPage.doc), ["R -1.00L -1.50"]);
+  body = await chooseMask(againPage);
+  assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["closer_to_sph", -1, -1.5]);
+  assert.equal(body.v53Snapshot.selectedStrategy, "closer_to_sph");
+  assert.equal(body.v53Snapshot.selectionEvidence, "customer_explicit");
+});
+
+test("#336254 and #336246 defaults save the Sharper pair without a click", { skip: skipDom }, async function () {
+  var cases = [
+    [[4, -0.75], [4.25, -0.75], "R +4.00L +4.00", 4, 4],
+    [[-3.5, -2], [-5, -1.5], "R -4.00L -5.50", -4, -5.5]
+  ];
+  for (var i = 0; i < cases.length; i += 1) {
+    var page = await loadCalculator();
+    calculate(page, cases[i][0], cases[i][1]);
+    await settle();
+    assert.equal(page.doc.getElementById("oo-v52-midpoint-sharper").checked, true);
+    assert.deepEqual(cardPairs(page.doc), [cases[i][2]]);
+    page.doc.querySelector(".oo-v52-product-card__customize").click();
+    await settle();
+    await settle();
+    var confirms = confirmCalls(page);
+    assert.equal(confirms.length, 1, cases[i][2]);
+    assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["closer_to_sph", cases[i][3], cases[i][4]]);
+    assert.equal(confirms[0].body.v53Snapshot.selectionEvidence, "default_recommendation");
+  }
 });
 
 test("A. Daniel -3.75/-0.25, -3.50/-0.75: Closer Match -3.50/-3.50 is default, explained, and saved as sharper with no change", { skip: skipDom }, async function () {
