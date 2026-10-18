@@ -152,17 +152,20 @@ function cardTitles(page) {
   });
 }
 
-test("J. checker -7 case: strictly closer Sharper is the selected Closer Match; switching never saves; Use these lenses confirms the selected pair once", { skip: skipDom }, async function () {
+test("J. checker -7 case: Balanced -6.50/-7.50 is Recommended and selected; the Alternative stays visible; Use these lenses confirms the selected pair once", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();
-  assert.deepEqual(cards(page), ["sharper -7.00/-8.00", "balanced -6.50/-7.50"]);
-  assert.deepEqual(cardTitles(page), ["Closer MatchRecommended", "Softer Option"]);
-  assert.equal(checkedStrategy(page), "sharper");
+  assert.deepEqual(cards(page), ["balanced -6.50/-7.50", "sharper -7.00/-8.00"]);
+  assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"]);
+  assert.equal(checkedStrategy(page), "balanced");
+  assert.equal(shownPair(page), "-6.50/-7.50");
+  choose(page, "sharper");
+  await settle();
   assert.equal(shownPair(page), "-7.00/-8.00");
+  assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"], "Balanced keeps its badge while the Alternative is selected");
   choose(page, "balanced");
   await settle();
-  assert.equal(shownPair(page), "-6.50/-7.50");
   choose(page, "sharper");
   await settle();
   assert.equal(page.calls.length, 0, "switching options never saves");
@@ -170,86 +173,89 @@ test("J. checker -7 case: strictly closer Sharper is the selected Closer Match; 
   await settle();
   var saved = confirms(page);
   assert.equal(saved.length, 1);
-  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["sharper", -7, -8]);
+  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["closer_to_sph", -7, -8]);
   assert.equal(page.applied.length, 1);
   assert.equal(page.applied[0].source, "product_rx_checker");
   assert.equal(page.applied[0].summary.recommendedRight, -7);
   assert.equal(page.applied[0].summary.recommendedLeft, -8);
   assert.deepEqual(page.journey, ["product_rx_checker"]);
-  assert.match(page.container.querySelector(".oo-rx-explain").textContent, /How we calculated your lens strength/);
+  assert.match(page.container.querySelector(".oo-rx-explain").textContent, /See how we calculated this/);
 });
 
-test("J. checker Daniel: Closer Match -3.50/-3.50 selected by default; Use these lenses with no change saves sharper", { skip: skipDom }, async function () {
+test("J. checker Daniel: Balanced -3.00/-3.00 selected by default; Use these lenses with no change saves balanced", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-3.75, -0.25, 35], [-3.5, -0.75, 175]);
   await settle();
-  assert.deepEqual(cards(page), ["sharper -3.50/-3.50", "balanced -3.00/-3.00"]);
-  assert.equal(checkedStrategy(page), "sharper");
-  assert.equal(shownPair(page), "-3.50/-3.50");
+  assert.deepEqual(cards(page), ["balanced -3.00/-3.00", "sharper -3.50/-3.50"]);
+  assert.equal(checkedStrategy(page), "balanced");
+  assert.equal(shownPair(page), "-3.00/-3.00");
   var explain = page.container.querySelector(".oo-rx-explain").textContent;
-  assert.match(explain, /-3\.50 is the closer stocked match to your calculated underwater strength\. -3\.00 remains available as a softer option\./);
+  assert.match(explain, /This is our recommended all round option\./);
   assert.equal(page.calls.length, 0);
   assert.deepEqual(page.journey, [], "automatic default selection is not a product click");
   apply(page);
   await settle();
   var saved = confirms(page);
   assert.equal(saved.length, 1);
-  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["sharper", -3.5, -3.5]);
+  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["balanced", -3, -3]);
   assert.deepEqual(page.journey, ["product_rx_checker"]);
 });
 
-test("J. checker Daniel: choosing Softer confirms balanced -3.00/-3.00", { skip: skipDom }, async function () {
+test("J. checker Daniel: choosing the Alternative confirms closer_to_sph -3.50/-3.50", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-3.75, -0.25, 35], [-3.5, -0.75, 175]);
   await settle();
-  choose(page, "balanced");
+  choose(page, "sharper");
   await settle();
-  assert.equal(shownPair(page), "-3.00/-3.00");
+  assert.equal(shownPair(page), "-3.50/-3.50");
   apply(page);
   await settle();
-  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["balanced", -3, -3]);
+  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", -3.5, -3.5]);
 });
 
-test("A/J. checker screenshot tie -2.25 / -1.75: Sharper -2.00/-1.50 is the selected Closer Match; Softer saves balanced", { skip: skipDom }, async function () {
+test("A/J. checker screenshot tie -2.25 / -1.75: Balanced -1.50/-1.00 is the default; the Alternative -2.00/-1.50 saves closer_to_sph", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-2.25], [-1.75]);
   await settle();
-  assert.deepEqual(cards(page), ["sharper -2.00/-1.50", "balanced -1.50/-1.00"]);
-  assert.equal(checkedStrategy(page), "sharper");
-  assert.deepEqual(cardTitles(page), ["Closer MatchRecommended", "Softer Option"]);
-  assert.match(page.container.querySelector('.oo-rx-checker__choice[data-strategy="sharper"]').textContent, /Equally close to your calculated underwater strength, and closer to your prescription\./);
-  choose(page, "balanced");
+  assert.deepEqual(cards(page), ["balanced -1.50/-1.00", "sharper -2.00/-1.50"]);
+  assert.equal(checkedStrategy(page), "balanced");
+  assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"]);
+  assert.match(page.container.querySelector('.oo-rx-checker__choice[data-strategy="sharper"]').textContent, /Another valid lens option calculated from your prescription\. This gives a stronger correction than Balanced\./);
+  choose(page, "sharper");
   await settle();
-  assert.equal(shownPair(page), "-1.50/-1.00");
+  assert.equal(shownPair(page), "-2.00/-1.50");
   assert.equal(page.calls.length, 0);
   apply(page);
   await settle();
-  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["balanced", -1.5, -1]);
+  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", -2, -1.5]);
 
   var fresh = await loadChecker(HANDLES.obsidian);
   check(fresh, [-2.25], [-1.75]);
   await settle();
   apply(fresh);
   await settle();
-  assert.deepEqual([confirms(fresh)[0].body.recommendationStrategy, confirms(fresh)[0].body.recommendedRight, confirms(fresh)[0].body.recommendedLeft], ["sharper", -2, -1.5]);
+  assert.deepEqual([confirms(fresh)[0].body.recommendationStrategy, confirms(fresh)[0].body.recommendedRight, confirms(fresh)[0].body.recommendedLeft], ["balanced", -1.5, -1]);
 });
 
-test("UI: checker result has the Suggested Lens Strength heading, one short line, the cards and the two accordions, with no duplicate summary", { skip: skipDom }, async function () {
+test("UI: checker result has the heading, the why block, the cards, what to expect and one collapsed maths section", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-2.25], [-1.75]);
   await settle();
   var result = page.container.querySelector("[data-checker-result]");
   var text = result.textContent;
   assert.equal(result.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength");
-  assert.equal(result.querySelector(".oo-rx-checker__choice-intro").textContent, "Choose the option you'd like us to use for this mask.");
-  assert.equal(result.querySelectorAll(".oo-rx-checker__choice-intro").length, 1);
+  assert.equal(result.querySelector(".oo-rx-why__title").textContent, "Why are my mask lenses different from my glasses?");
+  assert.equal(result.querySelectorAll(".oo-rx-why__copy").length, 3);
+  assert.equal(result.querySelector(".oo-rx-checker__choice-intro"), null);
   assert.equal(result.querySelector(".oo-rx-checker__summary"), null, "no duplicate summary box");
-  ["Your recommended lenses", "YOUR RECOMMENDED LENSES", "We recommend the first option", "nothing is saved until you use it for this mask",
-    "Why did you choose these lens strengths for this mask?", "See each step for each eye", "Choose the lens option you'd like us to use"].forEach(function (needle) {
+  ["Your recommended lenses", "We recommend the first option", "How we calculated your lens strength",
+    "Why is my mask lens different from my SPH?", "Closer Match", "Softer Option", "Sharper", "Comfort"].forEach(function (needle) {
     assert.equal(text.indexOf(needle), -1, "still rendered: " + needle);
   });
   var summaries = Array.prototype.map.call(result.querySelectorAll(".oo-rx-explain summary"), function (s) { return s.textContent.trim(); });
-  assert.deepEqual(summaries, ["How we calculated your lens strength", "Why is my mask lens different from my SPH?"]);
+  assert.deepEqual(summaries, ["See how we calculated this"]);
+  assert.equal(result.querySelectorAll(".oo-rx-expect").length, 1);
+  assert.equal(result.querySelectorAll(".oo-rx-checker__choice-notice").length, 0, "no warning boxes");
   assert.equal(result.querySelector(".oo-rx-checker__strategy").getAttribute("aria-label"), "Choose the lens option you'd like us to use");
 
   // One option: a single recommendation card, no radio, no duplicate box.
@@ -260,18 +266,19 @@ test("UI: checker result has the Suggested Lens Strength heading, one short line
   assert.equal(singleResult.querySelectorAll(".oo-rx-checker__choice-card--single").length, 1);
   assert.equal(singleResult.querySelectorAll(".oo-rx-checker__choice-input").length, 0);
   assert.equal(singleResult.querySelector(".oo-rx-checker__summary"), null);
-  assert.equal(singleResult.querySelector(".oo-rx-checker__choice-intro"), null, "no 'choose' line when there is nothing to choose");
+  assert.equal(singleResult.querySelectorAll(".oo-rx-expect").length, 0, "nothing to choose, so no selected-option text");
   assert.equal(shownPair(single), "-3.50/-3.50");
   assert.match(singleResult.querySelector(".oo-rx-checker__choice-card--single").textContent, /Recommended/);
 });
 
 test("checker: the mask's own stock decides whether the second option is offered", { skip: skipDom }, async function () {
-  // Lumix stocks -1.50 to -6.00: Sharper -6.00/-6.00 is buildable for
-  // -6.25/-6.25 (primary -5.50), but not the -6.50 Sharper of -7.00/-7.00.
+  // Lumix stocks -1.50 to -6.00: the Alternative -6.00/-6.00 is buildable for
+  // -6.25/-6.25 (Balanced -5.50), but not the -6.50 Alternative of -7.00/-7.00.
   var lumix = await loadChecker(HANDLES.lumix);
   check(lumix, [-6.25], [-6.25]);
   await settle();
-  assert.deepEqual(cards(lumix), ["sharper -6.00/-6.00", "balanced -5.50/-5.50"], "the buildable tie-winning Sharper leads");
+  assert.deepEqual(cards(lumix), ["balanced -5.50/-5.50", "sharper -6.00/-6.00"], "Balanced leads, the buildable Alternative follows");
+  assert.equal(checkedStrategy(lumix), "balanced");
 
   var capped = await loadChecker(HANDLES.lumix);
   check(capped, [-6.75], [-6.75]);
@@ -280,8 +287,6 @@ test("checker: the mask's own stock decides whether the second option is offered
   assert.equal(shownPair(capped), "-6.00/-6.00");
   assert.ok(capped.container.querySelector(".oo-rx-checker__apply"));
 
-  // A strictly closer Sharper (-6.50, target -6.375) this mask cannot build is
-  // never the default: the buildable V5.3 pair is shown and saved as balanced.
   var unbuildable = await loadChecker(HANDLES.lumix);
   check(unbuildable, [-6.75, -0.25, 90], [-6.75, -0.25, 90]);
   await settle();
@@ -292,15 +297,50 @@ test("checker: the mask's own stock decides whether the second option is offered
   assert.deepEqual([confirms(unbuildable)[0].body.recommendationStrategy, confirms(unbuildable)[0].body.recommendedRight], ["balanced", -6]);
 });
 
-test("checker: farsighted Closer to Your SPH preference on the farsighted mask", { skip: skipDom }, async function () {
+test("checker: exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110 on the farsighted mask: Balanced +3/+2 default, Alternative +4/+3, evidence and handoff follow the selection", { skip: skipDom }, async function () {
+  var page = await loadChecker(HANDLES.farsighted);
+  check(page, [4, -2, 75], [3, -1.25, 110]);
+  await settle();
+  assert.deepEqual(cards(page), ["balanced +3.00/+2.00", "closer_to_sph +4.00/+3.00"]);
+  assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"]);
+  assert.equal(checkedStrategy(page), "balanced");
+  var calc = function () { return page.container.ooRxChecker.state.calculation; };
+  assert.equal(calc().selectionEvidence, "default_recommendation");
+  var text = function () { return page.container.querySelector("[data-checker-result]").textContent.replace(/\s+/g, " "); };
+  assert.match(text(), /This is our recommended all round option\./);
+  ["Glasses prescription:+4.00 / -2.00", "Sphere only strength:+3.00", "Underwater adjusted strength:+2.50", "Closest available mask lens:+3.00",
+    "Glasses prescription:+3.00 / -1.25", "Sphere only strength:+2.38", "Underwater adjusted strength:+1.88", "Closest available mask lens:+2.00"].forEach(function (needle) {
+    assert.ok(text().indexOf(needle) !== -1, "missing: " + needle);
+  });
+
+  choose(page, "closer_to_sph");
+  await settle();
+  assert.equal(shownPair(page), "+4.00/+3.00");
+  assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"]);
+  assert.equal(calc().selectionEvidence, "customer_explicit");
+  assert.match(text(), /This gives a stronger correction than Balanced\. Balanced remains our recommended all round option\./);
+  assert.ok(text().indexOf("Alternative mask lens:+4.00") !== -1);
+  choose(page, "balanced");
+  await settle();
+  assert.equal(shownPair(page), "+3.00/+2.00");
+  assert.equal(calc().selectionEvidence, "customer_explicit", "never reverts to default_recommendation");
+  choose(page, "closer_to_sph");
+  await settle();
+  apply(page);
+  await settle();
+  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", 4, 3]);
+  assert.deepEqual([page.applied[0].summary.recommendedRight, page.applied[0].summary.recommendedLeft], [4, 3], "handoff uses the current selected pair");
+});
+
+test("checker: farsighted alternative +3.00/-0.75, +2.50/-0.50 on the farsighted mask", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.farsighted);
   check(page, [3, -0.75, 90], [2.5, -0.5, 90]);
   await settle();
   assert.deepEqual(cards(page), ["balanced +2.00/+2.00", "closer_to_sph +3.00/+2.00"]);
-  assert.equal(checkedStrategy(page), "balanced", "the farsighted preference is never the default");
+  assert.equal(checkedStrategy(page), "balanced");
   var closer = page.container.querySelector('.oo-rx-checker__choice[data-strategy="closer_to_sph"]');
-  assert.match(closer.textContent, /stronger than our calculated underwater recommendation/);
-  assert.match(closer.querySelector(".oo-rx-checker__choice-notice").textContent, /stronger than the spherical-equivalent estimate/);
+  assert.match(closer.textContent, /The right lens is stronger than Balanced\./);
+  assert.equal(closer.querySelector(".oo-rx-checker__choice-notice"), null, "no separate warning box");
   choose(page, "closer_to_sph");
   await settle();
   apply(page);
@@ -308,7 +348,7 @@ test("checker: farsighted Closer to Your SPH preference on the farsighted mask",
   assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", 3, 2]);
 });
 
-test("checker: high CYL keeps Balanced and Closer to Your SPH only", { skip: skipDom }, async function () {
+test("checker: high CYL shows Balanced (Recommended, selected) and Alternative", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-3, -3.5, 90], [-3, -3.5, 90]);
   await settle();
@@ -316,7 +356,7 @@ test("checker: high CYL keeps Balanced and Closer to Your SPH only", { skip: ski
   assert.equal(options.length, 2);
   assert.match(options[0], /^balanced /);
   assert.match(options[1], /^closer_to_sph /);
-  assert.equal(/sharper/.test(options.join(" ")), false);
+  assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"]);
   assert.equal(checkedStrategy(page), "balanced");
 });
 
@@ -332,14 +372,13 @@ test("checker: editing a checked prescription clears its result and option until
   assert.match(page.container.querySelector("[data-checker-status]").textContent, /changed/);
   page.doc.querySelector("[data-checker-form]").dispatchEvent(new page.win.Event("submit", { cancelable: true }));
   await settle();
-  // The default is recalculated from the new prescription (right -6.00 is
-  // exact -5.50 stock; left keeps its strictly closer -8.00).
-  assert.deepEqual(cards(page), ["sharper -5.50/-8.00", "balanced -5.50/-7.50"]);
-  assert.equal(checkedStrategy(page), "sharper");
+  // The default is recalculated from the new prescription: Balanced again.
+  assert.deepEqual(cards(page), ["balanced -5.50/-7.50", "sharper -5.50/-8.00"]);
+  assert.equal(checkedStrategy(page), "balanced");
   apply(page);
   await settle();
   assert.equal(confirms(page).length, 1);
-  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.right.sph, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["sharper", -6, -5.5, -8]);
+  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.right.sph, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["balanced", -6, -5.5, -7.5]);
 });
 
 test("checker: multiple named prescriptions keep independent values and selections; switching never saves", { skip: skipDom }, async function () {
@@ -349,8 +388,8 @@ test("checker: multiple named prescriptions keep independent values and selectio
   label.dispatchEvent(new page.win.Event("input"));
   check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();
-  assert.equal(checkedStrategy(page), "sharper", "James defaults to the Closer Match");
-  choose(page, "balanced");
+  assert.equal(checkedStrategy(page), "balanced", "James defaults to Balanced");
+  choose(page, "sharper");
   await settle();
   var bar = page.container.querySelector("[data-checker-profiles]");
   assert.equal(bar.hidden, false, "Add another prescription is offered after a result");
@@ -363,28 +402,27 @@ test("checker: multiple named prescriptions keep independent values and selectio
   label.dispatchEvent(new page.win.Event("input"));
   check(page, [-3.25], [-2.75]);
   await settle();
-  assert.deepEqual(cards(page), ["sharper -3.00/-2.50", "balanced -2.50/-2.00"]);
-  choose(page, "balanced");
-  await settle();
+  assert.deepEqual(cards(page), ["balanced -2.50/-2.00", "sharper -3.00/-2.50"]);
+  assert.equal(checkedStrategy(page), "balanced");
   var tabs = Array.prototype.map.call(page.container.querySelectorAll(".oo-rx-checker__profile-tab"), function (tab) { return tab.textContent; });
   assert.deepEqual(tabs, ["James", "Airies"]);
 
   page.container.querySelector('.oo-rx-checker__profile-tab[data-prescription-id="rx-1"]').click();
   await settle();
   assert.equal(label.value, "James");
-  assert.equal(shownPair(page), "-6.50/-7.50", "James keeps his Softer choice");
+  assert.equal(shownPair(page), "-7.00/-8.00", "James keeps his Alternative choice");
   assert.equal(page.container.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength for James");
   label.value = "James R";
   label.dispatchEvent(new page.win.Event("input"));
   assert.equal(page.container.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength for James R");
   label.value = "James";
   label.dispatchEvent(new page.win.Event("input"));
-  assert.equal(checkedStrategy(page), "balanced");
+  assert.equal(checkedStrategy(page), "sharper");
   assert.equal(page.calls.length, 0, "switching prescriptions never saves");
 
   page.container.querySelector('.oo-rx-checker__profile-tab[data-prescription-id="rx-2"]').click();
   await settle();
-  assert.equal(shownPair(page), "-2.50/-2.00", "Airies keeps Comfort");
+  assert.equal(shownPair(page), "-2.50/-2.00", "Airies keeps Balanced");
   apply(page);
   await settle();
   var saved = confirms(page);
@@ -396,14 +434,17 @@ test("checker: multiple named prescriptions keep independent values and selectio
   await settle();
   assert.equal(page.container.querySelectorAll(".oo-rx-checker__profile-tab").length, 0);
   assert.equal(label.value, "James");
-  assert.equal(shownPair(page), "-6.50/-7.50");
+  assert.equal(shownPair(page), "-7.00/-8.00");
 });
 
-test("checker: customer-facing copy has no em dashes", { skip: skipDom }, async function () {
+test("checker: customer-facing copy has no hyphens, en dashes or em dashes", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-3, -3.5, 90], [-3, -3.5, 90]);
   await settle();
-  assert.equal(/—/.test(page.container.textContent), false);
+  var resultCopy = page.container.querySelector("[data-checker-result]").textContent.replace(/[+-]\d+\.\d\d/g, "");
+  assert.equal(/[\u2013\u2014]/.test(resultCopy), false);
+  var hyphen = resultCopy.match(/.{0,30}[A-Za-z]-[A-Za-z].{0,30}/);
+  assert.equal(hyphen, null, "hyphen in result copy: " + (hyphen && hyphen[0]));
   var midpoint = await loadChecker(HANDLES.obsidian);
   check(midpoint, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();

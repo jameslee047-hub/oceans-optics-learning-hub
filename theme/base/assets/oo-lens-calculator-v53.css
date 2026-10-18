@@ -3014,3 +3014,49 @@
   font-weight: 700;
   line-height: 1.45;
 }
+
+/* Compact "How we calculated your lenses" pathway (one per eye). */
+.oo-rx-explain__pathway {
+  display: grid;
+  gap: 4px;
+}
+
+.oo-rx-explain__value--lens {
+  margin-top: 2px;
+  padding-top: 6px;
+  border-top: 1px solid #d3e2f2;
+}
+
+/* "Why are my mask lenses different from my glasses?" and the selected
+   option's "What to expect underwater" (shared copy across all tools). */
+.oo-rx-why,
+.oo-rx-expect {
+  display: grid;
+  gap: 6px;
+  margin: 0 0 12px;
+}
+
+.oo-rx-expect {
+  margin: 12px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #f0f6ff;
+}
+
+.oo-rx-why__title,
+.oo-rx-expect__title {
+  margin: 0;
+  color: #023059;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.3;
+}
+
+.oo-rx-why__copy,
+.oo-rx-expect__copy {
+  margin: 0;
+  color: #405c73;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}

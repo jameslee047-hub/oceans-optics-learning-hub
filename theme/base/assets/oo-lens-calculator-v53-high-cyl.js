@@ -190,14 +190,14 @@
 
   var STRATEGY_SUMMARY_NAMES = {};
   STRATEGY_SUMMARY_NAMES[STRATEGY_BALANCED] = "Balanced";
-  STRATEGY_SUMMARY_NAMES[STRATEGY_CLOSER_TO_SPH] = "Closer to your SPH";
+  STRATEGY_SUMMARY_NAMES[STRATEGY_CLOSER_TO_SPH] = "Alternative";
 
   // Customer-facing summary of a recommendationSelection() result. Formatting
   // only: it uses the selection's own display values and calculates nothing.
   function selectionSummary(selection) {
     if (!selection || !Object.prototype.hasOwnProperty.call(STRATEGY_SUMMARY_NAMES, selection.recommendationStrategy)) return "";
     return "Selected: " + STRATEGY_SUMMARY_NAMES[selection.recommendationStrategy] +
-      " \u2014 R " + selection.displayRight + " / L " + selection.displayLeft;
+      ": R " + selection.displayRight + " / L " + selection.displayLeft;
   }
 
   return {

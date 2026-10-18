@@ -254,7 +254,8 @@
 
           <section class="oo-v52__result" id="oo-v52-result" aria-live="polite" tabindex="-1" hidden>
             <h2>Suggested Lens Strength</h2>
-            <p class="oo-v52__result-intro" id="oo-v52-result-intro" hidden>Switch between the options to see which masks are available with each lens choice.</p>
+            <p class="oo-v52__result-intro" id="oo-v52-result-intro" hidden></p>
+            <div class="oo-v52-why" id="oo-v52-why" hidden></div>
             <div class="oo-v52__result-values" id="oo-v52-result-values">
               <div class="oo-v52__result-eye">
                 <span>Right (OD)</span>
@@ -267,7 +268,7 @@
               </div>
             </div>
             <div class="oo-v52-high-cyl" id="oo-v52-high-cyl" hidden>
-              <p class="oo-v52-high-cyl__intro" id="oo-v52-high-description">Your prescription has higher astigmatism. A sphere-only mask lens cannot reproduce SPH, CYL and Axis separately, so there are two practical ways we can approximate your prescription. Choose the approach you prefer.</p>
+              <p class="oo-v52-high-cyl__intro" id="oo-v52-high-description" hidden></p>
               <fieldset class="oo-v52-high-cyl__selector" aria-describedby="oo-v52-high-description oo-v52-high-next">
                 <legend>Choose the lens approach you'd like us to use</legend>
                 <p class="oo-v52-high-cyl__next" id="oo-v52-high-next">Masks matching your selected lenses are shown below. You can switch approaches before choosing a mask.</p>
@@ -276,21 +277,21 @@
                     <input class="oo-v52-high-cyl__input" type="radio" id="oo-v52-high-balanced" name="oo-v52-high-strategy" value="balanced">
                     <label class="oo-v52-high-cyl__option" for="oo-v52-high-balanced">
                       <span class="oo-v52-high-cyl__option-heading">
-                        <span class="oo-v52-high-cyl__option-title">Balanced</span>
+                        <span class="oo-v52-high-cyl__option-title">Balanced <span class="oo-v52-high-cyl__badge">Recommended</span></span>
                         <span class="oo-v52-high-cyl__indicator" aria-hidden="true"></span>
                       </span>
                       <span class="oo-v52-high-cyl__pair">
                         <span><span>R</span><strong id="oo-v52-high-balanced-right">--</strong></span>
                         <span><span>L</span><strong id="oo-v52-high-balanced-left">--</strong></span>
                       </span>
-                      <span class="oo-v52-high-cyl__copy">Uses your SPH and CYL together to estimate your overall prescription strength.</span>
+                      <span class="oo-v52-high-cyl__copy">Our recommended all round option, adjusted for comfortable underwater vision.</span>
                     </label>
                   </div>
                   <div class="oo-v52-high-cyl__choice">
                     <input class="oo-v52-high-cyl__input" type="radio" id="oo-v52-high-alternative" name="oo-v52-high-strategy" value="closer_to_sph">
                     <label class="oo-v52-high-cyl__option" for="oo-v52-high-alternative">
                       <span class="oo-v52-high-cyl__option-heading">
-                        <span class="oo-v52-high-cyl__option-title">Sharper <span class="oo-v52-high-cyl__badge">Recommended</span></span>
+                        <span class="oo-v52-high-cyl__option-title">Alternative</span>
                         <span class="oo-v52-high-cyl__indicator" aria-hidden="true"></span>
                       </span>
                       <span class="oo-v52-high-cyl__pair">
@@ -305,7 +306,7 @@
                           <small id="oo-v52-high-alternative-left-note" hidden></small>
                         </span>
                       </span>
-                      <span class="oo-v52-high-cyl__copy">Stays closer to the SPH number printed on your prescription, using less of the CYL adjustment.</span>
+                      <span class="oo-v52-high-cyl__copy">Another valid lens option calculated from your prescription.</span>
                       <span class="oo-v52-high-cyl__notice" id="oo-v52-high-alternative-notice" hidden></span>
                     </label>
                   </div>
@@ -321,28 +322,28 @@
                     <input class="oo-v52-high-cyl__input" type="radio" id="oo-v52-midpoint-balanced" name="oo-v52-midpoint-strategy" value="balanced">
                     <label class="oo-v52-high-cyl__option" for="oo-v52-midpoint-balanced">
                       <span class="oo-v52-high-cyl__option-heading">
-                        <span class="oo-v52-high-cyl__option-title">Balanced</span>
+                        <span class="oo-v52-high-cyl__option-title">Balanced <span class="oo-v52-high-cyl__badge">Recommended</span></span>
                         <span class="oo-v52-high-cyl__indicator" aria-hidden="true"></span>
                       </span>
                       <span class="oo-v52-high-cyl__pair">
                         <span><span>R</span><strong id="oo-v52-midpoint-balanced-right">--</strong></span>
                         <span><span>L</span><strong id="oo-v52-midpoint-balanced-left">--</strong></span>
                       </span>
-                      <span class="oo-v52-high-cyl__copy">Designed around our calculated underwater-adjusted strength. This option prioritises comfortable, balanced underwater vision.</span>
+                      <span class="oo-v52-high-cyl__copy">Our recommended all round option, adjusted for comfortable underwater vision.</span>
                     </label>
                   </div>
                   <div class="oo-v52-high-cyl__choice">
                     <input class="oo-v52-high-cyl__input" type="radio" id="oo-v52-midpoint-sharper" name="oo-v52-midpoint-strategy" value="sharper">
                     <label class="oo-v52-high-cyl__option" for="oo-v52-midpoint-sharper">
                       <span class="oo-v52-high-cyl__option-heading">
-                        <span class="oo-v52-high-cyl__option-title" id="oo-v52-midpoint-alternative-title">Sharper <span class="oo-v52-high-cyl__badge">Recommended</span></span>
+                        <span class="oo-v52-high-cyl__option-title" id="oo-v52-midpoint-alternative-title">Alternative</span>
                         <span class="oo-v52-high-cyl__indicator" aria-hidden="true"></span>
                       </span>
                       <span class="oo-v52-high-cyl__pair">
                         <span><span>R</span><strong id="oo-v52-midpoint-sharper-right">--</strong></span>
                         <span><span>L</span><strong id="oo-v52-midpoint-sharper-left">--</strong></span>
                       </span>
-                      <span class="oo-v52-high-cyl__copy" id="oo-v52-midpoint-alternative-copy">This stocked lens sits closer to your calculated underwater-adjusted strength than the softer option. It may provide more distance detail while remaining within your overall calculated prescription strength.</span>
+                      <span class="oo-v52-high-cyl__copy" id="oo-v52-midpoint-alternative-copy">Another valid lens option calculated from your prescription.</span>
                       <span class="oo-v52-high-cyl__notice" id="oo-v52-midpoint-alternative-notice" hidden></span>
                     </label>
                   </div>

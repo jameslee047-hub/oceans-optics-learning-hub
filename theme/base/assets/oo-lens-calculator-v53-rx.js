@@ -1268,11 +1268,7 @@
       elements.profileSummaryLabel.textContent = profile.displayLabel;
       elements.profileSummaryRight.textContent = "R " + formatPower(profile.recommendedRight);
       elements.profileSummaryLeft.textContent = "L " + formatPower(profile.recommendedLeft);
-      elements.profileSummaryStrategy.textContent = profile.recommendationStrategy === "closer_to_sph"
-        ? "Closer to Your SPH"
-        : profile.recommendationStrategy === "sharper"
-          ? "Sharper"
-          : "Balanced";
+      elements.profileSummaryStrategy.textContent = profile.recommendationStrategy === "balanced" ? "Balanced" : "Alternative";
       elements.profileSummary.hidden = false;
     }
 

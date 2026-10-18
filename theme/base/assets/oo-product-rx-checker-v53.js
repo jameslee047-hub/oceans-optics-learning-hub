@@ -8,7 +8,9 @@
   root.OOProductRxChecker = api;
   var mount = function () {
     Array.prototype.forEach.call(root.document.querySelectorAll("[data-oo-product-rx-checker]"), function (container) {
-      api.mount(container, {
+      // Kept on the element so the selected option and its selection evidence
+      // can be inspected (tests, support) without a second global.
+      container.ooRxChecker = api.mount(container, {
         root: root,
         engine: root.OOLensCalculatorV53,
         highCyl: root.OOV52HighCylinder,
@@ -216,6 +218,9 @@
       calculation.midpointChoice = choice.available ? choice : null;
     }
     calculation.activeRecommendation = selectStrategy(calculation, highCyl, defaultStrategy(calculation, midpoint), midpoint);
+    // Recommended and selected are separate: Balanced starts selected as the
+    // default recommendation; any card click is an explicit customer choice.
+    calculation.selectionEvidence = calculation.highCylinderPreview || calculation.midpointChoice ? "default_recommendation" : null;
     calculation.successful = true;
     return calculation;
   }
@@ -246,11 +251,10 @@
     return { strategy: strategy, pair: alternative };
   }
 
-  // Same ranking as the Lens Calculator: a strictly closer Sharper pair is the
-  // default (Closer Match); otherwise the V5.3 balanced pair.
-  function defaultStrategy(calculation, midpoint) {
-    if (!calculation.midpointChoice || !midpoint || typeof midpoint.defaultStrategyOf !== "function") return "balanced";
-    return midpoint.defaultStrategyOf(calculation.midpointChoice);
+  // Same policy as the Lens Calculator and the Quiz: Balanced is always the
+  // Recommended, initially selected option.
+  function defaultStrategy() {
+    return "balanced";
   }
 
   function selectStrategy(calculation, highCyl, strategy, midpoint) {
@@ -973,6 +977,7 @@
         radio.setAttribute("aria-label", entry.title + (entry.badge ? ", " + entry.badge : "") + ": right " + entry.pair.right + ", left " + entry.pair.left);
         radio.addEventListener("change", function () {
           calculation.activeRecommendation = selectStrategy(calculation, highCyl, entry.strategy, midpoint);
+          calculation.selectionEvidence = "customer_explicit";
           renderResult(calculation);
         });
         option.appendChild(radio);
@@ -1043,36 +1048,40 @@
       if (calculation.midpointChoice && !offered && calculation.activeRecommendation.recommendationStrategy !== "balanced") {
         calculation.activeRecommendation = selectStrategy(calculation, highCyl, "balanced", midpoint);
       }
+      if (!offered) calculation.selectionEvidence = null;
       var rec = calculation.activeRecommendation;
       var record = activeRecord();
       // The option card(s) are the single visual source of the recommendation.
       var resultTitle = choiceCopy("suggestedTitle", "Suggested Lens Strength");
       if (record && prescriptions.length > 1) resultTitle += " for " + (typedLabel() || "Prescription " + (prescriptions.indexOf(record) + 1));
       result.appendChild(el(doc, "h3", "oo-rx-checker__suggested-title", resultTitle));
+      if (choiceApi && typeof choiceApi.renderWhy === "function") result.appendChild(choiceApi.renderWhy(doc));
 
       if (calculation.highCylinderPreview && offered) {
-        result.appendChild(el(doc, "p", "oo-rx-checker__choice-intro", choiceCopy("highCylIntro", "")));
-        result.appendChild(renderChoiceCards(calculation, [
-          { strategy: "balanced", title: choiceCopy("highCylBalancedTitle", "Balanced"), badge: choiceCopy("recommendedBadge", "Recommended"), pair: calculation.highCylinderPreview.balanced, copy: choiceCopy("highCylBalancedCopy", "") },
-          { strategy: "closer_to_sph", title: choiceCopy("highCylCloserTitle", "Closer to Your SPH"), pair: calculation.highCylinderPreview.alternative, copy: choiceCopy("highCylCloserCopy", ""), notice: seNotice(calculation, calculation.highCylinderPreview.alternative) }
-        ], "Choose the lens approach you'd like us to use", "oo-rx-checker__strategy--high-cyl"));
+        result.appendChild(renderChoiceCards(calculation, choiceApi && typeof choiceApi.choiceEntries === "function"
+          ? choiceApi.choiceEntries(null, calculation.rightResult, calculation.leftResult, {
+            balanced: calculation.highCylinderPreview.balanced,
+            alternative: calculation.highCylinderPreview.alternative,
+            alternativeStrategy: "closer_to_sph"
+          })
+          : [
+            { strategy: "balanced", title: "Balanced", badge: "Recommended", pair: calculation.highCylinderPreview.balanced, copy: choiceCopy("highCylBalancedCopy", "") },
+            { strategy: "closer_to_sph", title: "Alternative", pair: calculation.highCylinderPreview.alternative, copy: choiceCopy("highCylCloserCopy", ""), notice: seNotice(calculation, calculation.highCylinderPreview.alternative) }
+          ], "Choose the lens approach you'd like us to use", "oo-rx-checker__strategy--high-cyl"));
       } else if (calculation.midpointChoice && offered) {
         var choice = calculation.midpointChoice;
-        var closer = offered.strategy === "closer_to_sph";
-        var relation = closer && choiceApi && typeof choiceApi.closerToSphRelation === "function" ? " " + choiceApi.closerToSphRelation(choice) : "";
-        result.appendChild(el(doc, "p", "oo-rx-checker__choice-intro", choiceCopy("checkerChoiceIntro", "")));
         var entries = choiceApi && typeof choiceApi.choiceEntries === "function"
           ? choiceApi.choiceEntries(choice, calculation.rightResult, calculation.leftResult)
           : null;
         if (entries && entries.length) {
           result.appendChild(renderChoiceCards(calculation, entries, "Choose the lens option you'd like us to use"));
         } else result.appendChild(renderChoiceCards(calculation, [
-          { strategy: "balanced", title: choiceCopy("balancedTitle", "Comfort / Balanced Vision"), badge: choiceCopy("recommendedBadge", "Recommended"), pair: choice.balanced, copy: choiceCopy("balancedCopy", "") },
+          { strategy: "balanced", title: "Balanced", badge: choiceCopy("recommendedBadge", "Recommended"), pair: choice.balanced, copy: choiceCopy("balancedCopy", "") },
           {
             strategy: offered.strategy,
-            title: closer ? choiceCopy("closerTitle", "Closer to Your SPH") : choiceCopy("sharperTitle", "Sharper / Closer to Your Prescription"),
+            title: "Alternative",
             pair: offered.pair,
-            copy: (closer ? choiceCopy("closerCopy", "") + relation : choiceCopy("sharperCopy", "")).trim(),
+            copy: choiceCopy("alternativeCopy", ""),
             notice: seNotice(calculation, offered.pair)
           }
         ], "Choose the lens option you'd like us to use"));
@@ -1089,7 +1098,7 @@
           recommendation: rec,
           highCylinderPreview: calculation.highCylinderPreview,
           choice: offered && !calculation.highCylinderPreview ? calculation.midpointChoice : null,
-          title: choiceCopy("checkerExplainerTitle", "How we calculated your lens strength")
+          title: choiceCopy("checkerExplainerTitle", "See how we calculated this")
         });
         Array.prototype.forEach.call(explanation.querySelectorAll("details"), function (details, index) {
           details.open = Boolean(openStates[index]);

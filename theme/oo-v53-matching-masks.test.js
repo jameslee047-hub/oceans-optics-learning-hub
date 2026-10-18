@@ -288,19 +288,15 @@ test("normal pair with no second option: masks show immediately and nothing is s
   assert.equal(confirmCalls(page)[0].body.recommendationStrategy, "balanced");
 });
 
-test("exact midpoint: the tie-winning Sharper masks show at once, no See Matching Masks step, cards switch without saving", { skip: skipDom }, async function () {
+test("exact midpoint: Balanced masks show at once with the Alternative visible, no See Matching Masks step, cards switch without saving", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-3.25], [-2.75]);
   await settle();
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, false);
   assert.equal(page.doc.getElementById("oo-v52-midpoint-use"), null, "no See Matching Masks button");
-  assert.equal(page.doc.getElementById("oo-v52-midpoint-sharper").checked, true, "an exact tie defaults to the stronger valid lens");
+  assert.equal(page.doc.getElementById("oo-v52-midpoint-balanced").checked, true, "Balanced is selected by default");
+  assert.equal(page.doc.getElementById("oo-v52-midpoint-sharper").checked, false);
   assert.equal(page.doc.getElementById("oo-v52-products").hidden, false);
-  assert.deepEqual(cardPairs(page.doc), ["R -3.00L -2.50"]);
-
-  chooseCard(page.doc, "balanced");
-  await settle();
-  assert.equal(page.doc.getElementById("oo-v52-midpoint-balanced").checked, true);
   assert.deepEqual(cardPairs(page.doc), ["R -2.50L -2.00"]);
 
   chooseCard(page.doc, "sharper");
@@ -312,7 +308,7 @@ test("exact midpoint: the tie-winning Sharper masks show at once, no See Matchin
   assert.equal(page.doc.querySelectorAll(".oo-v52-products__grid").length, 1);
 });
 
-test("exact midpoint: choosing a mask while Sharper is selected confirms Sharper once", { skip: skipDom }, async function () {
+test("exact midpoint: choosing a mask while the Alternative is selected confirms it once", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-3.25], [-2.75]);
   await settle();
@@ -327,7 +323,7 @@ test("exact midpoint: choosing a mask while Sharper is selected confirms Sharper
   var confirms = confirmCalls(page);
   assert.equal(confirms.length, 1);
   assert.equal(page.calls.filter(function (call) { return /\/manual\/init$/.test(call.url); }).length, 1);
-  assert.equal(confirms[0].body.recommendationStrategy, "closer_to_sph", "Sharper is saved under its canonical id");
+  assert.equal(confirms[0].body.recommendationStrategy, "closer_to_sph", "the Alternative is saved under its canonical id");
   assert.equal(confirms[0].body.recommendedRight, -3);
   assert.equal(confirms[0].body.recommendedLeft, -2.5);
   assert.equal(page.opened.length, 1);
@@ -339,7 +335,7 @@ test("exact midpoint: choosing a mask while Sharper is selected confirms Sharper
   assert.equal(eyeText(page.doc, "left"), "-2.50");
 });
 
-test("exact midpoint: choosing a mask after selecting the Softer Option confirms balanced", { skip: skipDom }, async function () {
+test("exact midpoint: choosing a mask after selecting Balanced again confirms balanced", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-3.25], [-2.75]);
   await settle();
@@ -354,17 +350,14 @@ test("exact midpoint: choosing a mask after selecting the Softer Option confirms
   assert.equal(confirms[0].body.recommendedLeft, -2);
 });
 
-test("one-eye midpoints: only the midpoint eye changes in the Sharper pair", { skip: skipDom }, async function () {
+test("one-eye midpoints: only the midpoint eye changes in the Alternative pair", { skip: skipDom }, async function () {
   var cases = [[[-3.25], [-3], "R -2.50L -2.50", "R -3.00L -2.50", -3, -2.5], [[-1.25], [-1.75], "R -1.00L -1.00", "R -1.00L -1.50", -1, -1.5]];
   for (var i = 0; i < cases.length; i += 1) {
     var c = cases[i];
     var page = await loadCalculator();
     calculate(page, c[0], c[1]);
     await settle();
-    assert.deepEqual(cardPairs(page.doc), [c[3]], "the tie-winning Sharper pair is the default");
-    chooseCard(page.doc, "balanced");
-    await settle();
-    assert.deepEqual(cardPairs(page.doc), [c[2]]);
+    assert.deepEqual(cardPairs(page.doc), [c[2]], "Balanced is the default");
     chooseCard(page.doc, "sharper");
     await settle();
     assert.deepEqual(cardPairs(page.doc), [c[3]]);

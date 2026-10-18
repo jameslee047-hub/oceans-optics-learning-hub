@@ -16,8 +16,8 @@
   var customerStrategySelected = false;
   var strategySelectionEvidence = null;
   var currentHighCylinderPreview = null;
-  // Optional second recommendation (Sharper or Closer to Your SPH) from the
-  // shared choice layer; never shown with high CYL.
+  // Optional second recommendation from the shared choice layer, always shown
+  // to customers as "Alternative"; never shown with high CYL.
   var currentMidpointChoice = null;
   // Every successful calculation is previewed (matching masks shown, nothing
   // saved) until the customer chooses a mask (commitPreviewedRecommendation).
@@ -281,8 +281,18 @@
     return window.OOV53RecommendationChoice || window.OOV53MidpointChoice || null;
   }
 
-  // Shared "How we calculated your mask lens" / "Why is my mask lens
-  // different from my SPH?" panels (oo-lens-calculator-v53-midpoint.js).
+  // Shared "Why are my mask lenses different from my glasses?" block above
+  // the cards, and the "What to expect underwater" / "See how we calculated
+  // this" panel below them (oo-lens-calculator-v53-midpoint.js).
+  function renderWhy(show) {
+    var why = document.getElementById("oo-v52-why");
+    var module = choiceModule();
+    if (!why) return;
+    why.innerHTML = "";
+    why.hidden = !(show && module && typeof module.renderWhy === "function");
+    if (!why.hidden) why.appendChild(module.renderWhy(document));
+  }
+
   function renderCalculationDetails(calculation, resetDisclosure) {
     var container = document.getElementById("oo-v52-explain");
     var module = choiceModule();
@@ -290,8 +300,10 @@
     if (!calculation || !calculation.successful || !module || typeof module.renderExplanation !== "function") {
       container.hidden = true;
       container.innerHTML = "";
+      renderWhy(false);
       return;
     }
+    renderWhy(true);
     var wasOpen = Array.prototype.map.call(container.querySelectorAll("details"), function (details) {
       return details.open;
     });
@@ -324,7 +336,7 @@
       summary.textContent = "";
       return;
     }
-    var name = recommendation.recommendationStrategy === "closer_to_sph" ? "Sharper" : "Balanced";
+    var name = recommendation.recommendationStrategy === "closer_to_sph" ? "Alternative" : "Balanced";
     summary.textContent = "Selected: " + name + ". Right " + recommendation.displayRight + ", left " + recommendation.displayLeft + ".";
   }
 
@@ -337,7 +349,7 @@
     }
 
     if (announce && currentHighCylinderPreview && recommendation) {
-      var strategyName = recommendation.recommendationStrategy === "closer_to_sph" ? "Sharper" : "Balanced";
+      var strategyName = recommendation.recommendationStrategy === "closer_to_sph" ? "Alternative" : "Balanced";
       document.getElementById("oo-v52-high-selection-status").textContent =
         strategyName + " selected. Right " + recommendation.displayRight +
         ", left " + recommendation.displayLeft + ".";
@@ -354,7 +366,7 @@
     note.hidden = !eyePreview.alternativeNote;
   }
 
-  // Choosing Balanced or Closer to Your SPH switches the previewed pair, and
+  // Choosing Balanced or Alternative switches the previewed pair, and
   // its matching masks are shown straight away. Nothing is saved until the
   // customer chooses a mask (commitPreviewedRecommendation).
   function selectHighCylinderStrategy(strategy, announce) {
@@ -365,6 +377,7 @@
     );
     setActiveRecommendation(selection, announce !== false);
     customerStrategySelected = true;
+    strategySelectionEvidence = "customer_explicit";
     syncHighCylinderControls(selection.recommendationStrategy);
     previewSelection();
     return getActiveRecommendation();
@@ -419,14 +432,21 @@
     setAlternativeNote("left", preview.eyes.left);
     resetHighCylinderControls();
     var module = choiceModule();
-    if (module && typeof module.eyesStrongerThanSE === "function") {
-      setNotice("oo-v52-high-alternative-notice", module.seNoticeFor(module.eyesStrongerThanSE(rightResult, leftResult, {
-        rightPower: Number(preview.alternative.right),
-        leftPower: Number(preview.alternative.left)
-      })));
+    if (module && typeof module.choiceEntries === "function") {
+      var entries = module.choiceEntries(null, rightResult, leftResult, {
+        balanced: preview.balanced,
+        alternative: preview.alternative,
+        alternativeStrategy: "closer_to_sph"
+      });
+      var alternativeLabel = document.getElementById("oo-v52-high-alternative").parentNode;
+      alternativeLabel.querySelector(".oo-v52-high-cyl__option-title").textContent = entries[1].title;
+      var alternativeCopy = alternativeLabel.querySelector(".oo-v52-high-cyl__copy");
+      if (alternativeCopy) alternativeCopy.textContent = entries[1].copy;
+      setNotice("oo-v52-high-alternative-notice", entries[1].notice);
     }
     currentHighCylinderPreview = preview;
-    setActiveRecommendation(window.OOV52HighCylinder.recommendationSelection(preview, window.OOV52HighCylinder.STRATEGY_CLOSER_TO_SPH), false);
+    // Balanced is the Recommended option and is selected automatically.
+    setActiveRecommendation(window.OOV52HighCylinder.recommendationSelection(preview, window.OOV52HighCylinder.STRATEGY_BALANCED), false);
 
     standard.hidden = true;
     comparison.hidden = false;
@@ -480,8 +500,11 @@
   // A strategy that is no longer offered falls back to the primary pair.
   function selectStrategy(strategy) {
     if (currentHighCylinderPreview && strategy === "closer_to_sph") return selectHighCylinderStrategy(strategy, false);
-    if (currentMidpointChoice && (strategy === "balanced" || strategy === (currentMidpointChoice.alternativeStrategy || "sharper"))) {
-      return selectMidpointStrategy(strategy, false);
+    if (currentMidpointChoice && strategy) {
+      // Saved profiles store the canonical id (closer_to_sph) for either
+      // on-page alternative, so map it back to the alternative on show.
+      var alternative = currentMidpointChoice.alternativeStrategy || "sharper";
+      return selectMidpointStrategy(strategy === "balanced" ? "balanced" : alternative, false);
     }
     previewSelection();
     return getActiveRecommendation();
@@ -559,8 +582,8 @@
       calculatorVersion: String((window.OOLensCalculatorV53 && window.OOLensCalculatorV53.VERSION) || "5.3"),
       source: "calculator",
       optionsShown: optionsShown,
-      recommendedStrategy: optionsShown ? "closer_to_sph" : (active.recommendationStrategy === "balanced" ? "balanced" : "closer_to_sph"),
-      recommendedValues: optionsShown ? optionsShown.closer_to_sph : pairText(active.recommendedRight, active.recommendedLeft),
+      recommendedStrategy: optionsShown ? "balanced" : (active.recommendationStrategy === "balanced" ? "balanced" : "closer_to_sph"),
+      recommendedValues: optionsShown ? optionsShown.balanced : pairText(active.recommendedRight, active.recommendedLeft),
       selectedStrategy: selectedStrategy,
       selectedRecommendation: selectedStrategy ? pairText(active.recommendedRight, active.recommendedLeft) : null,
       selectionEvidence: selectedStrategy ? (strategySelectionEvidence || "customer_explicit") : null,
@@ -619,34 +642,12 @@
     return choice;
   }
 
-  // Titles, badge, copy and order of the two option cards: the recommended
-  // (default) card comes first. A strictly closer Sharper pair leads as the
-  // Closer Match, with the V5.3 pair second as the Softer Option.
+  // Titles, badge, copy and order of the two option cards, from the shared
+  // choice module: Balanced (Recommended) first, then Alternative.
   function renderMidpointCards(module, choice, rightResult, leftResult) {
     var balancedInput = document.getElementById("oo-v52-midpoint-balanced");
     var alternativeInput = document.getElementById("oo-v52-midpoint-sharper");
-    var entries = typeof module.choiceEntries === "function" ? module.choiceEntries(choice, rightResult, leftResult) : null;
-    if (!entries) {
-      var strategy = alternativeInput.value;
-      setResultText("oo-v52-midpoint-alternative-title", choiceTitle(strategy));
-      var copy = strategy === module.STRATEGY_CLOSER_TO_SPH
-        ? module.COPY.closerCopy + " " + module.closerToSphRelation(choice)
-        : module.COPY.sharperCopy;
-      setResultText("oo-v52-midpoint-alternative-copy", copy.trim());
-      setNotice("oo-v52-midpoint-alternative-notice", module.seNoticeFor(module.eyesStrongerThanSE(rightResult, leftResult, choice.alternative || choice.sharper)));
-      return;
-    }
-    // The candidate calculation decides validity and values. The storefront
-    // recommendation is stable: when two distinct pairs exist, Sharper is the
-    // highlighted option, while neither radio is selected until interaction.
-    entries.sort(function (a, b) {
-      return a.strategy === "balanced" ? 1 : (b.strategy === "balanced" ? -1 : 0);
-    });
-    entries.forEach(function (entry, index) {
-      entry.title = entry.strategy === "balanced" ? "Balanced" : "Sharper";
-      entry.recommended = index === 0;
-      entry.badge = index === 0 ? "Recommended" : "";
-    });
+    var entries = module.choiceEntries(choice, rightResult, leftResult);
     entries.forEach(function (entry) {
       var input = entry.strategy === "balanced" ? balancedInput : alternativeInput;
       var label = input.parentNode.querySelector(".oo-v52-high-cyl__option");
@@ -663,7 +664,7 @@
       if (copyNode) copyNode.textContent = entry.copy;
       if (entry.strategy !== "balanced") setNotice("oo-v52-midpoint-alternative-notice", entry.notice);
     });
-    var first = (entries[0].strategy === "balanced" ? balancedInput : alternativeInput).parentNode;
+    var first = balancedInput.parentNode;
     if (first.parentNode.firstElementChild !== first) first.parentNode.insertBefore(first, first.parentNode.firstElementChild);
   }
 
@@ -680,7 +681,7 @@
     var showingComparison = Boolean(highCylinderPreview && highCylinderPreview.triggered && highCylinderPreview.available && !blocked);
     var showingMidpoint = Boolean(midpointChoice && midpointChoice.available);
     var resultIntro = document.getElementById("oo-v52-result-intro");
-    if (resultIntro) resultIntro.hidden = !(showingMidpoint && !showingComparison);
+    if (resultIntro) resultIntro.hidden = true;
 
     result.hidden = rightState.blocking && leftState.blocking;
     result.classList.toggle("has-high-cyl", showingComparison || showingMidpoint);
@@ -830,11 +831,16 @@
       var midpointChoice = lastMidpointChoice && lastMidpointChoice.available ? lastMidpointChoice : null;
       var showingMidpointSelection = Boolean(midpointChoice && successful && !showingHighCylinderSelection);
       if (showingMidpointSelection) {
-        // The choice's default: Sharper when strictly closer, else balanced.
-        var defaultSelection = choiceModule().recommendationSelection(midpointChoice, midpointChoice.alternativeStrategy || "sharper");
+        // Balanced is the Recommended option and is selected automatically;
+        // the Alternative stays visible as the optional second choice.
+        var defaultSelection = choiceModule().recommendationSelection(midpointChoice, "balanced");
         setActiveRecommendation(defaultSelection, false);
         resetMidpointControls();
         syncMidpointControls(defaultSelection.recommendationStrategy);
+        customerStrategySelected = true;
+        strategySelectionEvidence = "default_recommendation";
+      } else if (showingHighCylinderSelection) {
+        syncHighCylinderControls("balanced");
         customerStrategySelected = true;
         strategySelectionEvidence = "default_recommendation";
       } else if (!showingHighCylinderSelection && successful) {
@@ -865,7 +871,7 @@
 
       if (successful) {
         pendingCalculation = calculation;
-        if (options.strategy && options.strategy !== getActiveRecommendation().recommendationStrategy) {
+        if (options.strategy && canonicalStrategy(options.strategy) !== canonicalStrategy(getActiveRecommendation().recommendationStrategy)) {
           selectStrategy(options.strategy);
         } else {
           previewSelection();
@@ -1001,6 +1007,7 @@
   }
 
   function hideExplanation() {
+    renderWhy(false);
     var container = document.getElementById("oo-v52-explain");
     if (!container) return;
     container.hidden = true;
