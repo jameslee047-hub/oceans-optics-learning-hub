@@ -281,16 +281,38 @@
     return window.OOV53RecommendationChoice || window.OOV53MidpointChoice || null;
   }
 
-  // Shared "Why are my mask lenses different from my glasses?" block above
-  // the cards, and the "What to expect underwater" / "See how we calculated
-  // this" panel below them (oo-lens-calculator-v53-midpoint.js).
-  function renderWhy(show) {
-    var why = document.getElementById("oo-v52-why");
-    var module = choiceModule();
-    if (!why) return;
-    why.innerHTML = "";
-    why.hidden = !(show && module && typeof module.renderWhy === "function");
-    if (!why.hidden) why.appendChild(module.renderWhy(document));
+  // Result first: the cards, then "What to expect underwater", then two
+  // collapsed accordions. "Why are my mask lenses different from my
+  // glasses?" uses the shared copy and the same details/summary pattern as
+  // "See how we calculated this" (oo-lens-calculator-v53-midpoint.js).
+  function whyAccordion(module) {
+    var copy = module && module.COPY;
+    if (!copy || !copy.whyTitle || !copy.whyBody) return null;
+    var details = document.createElement("details");
+    details.className = "oo-rx-explain__details oo-rx-explain__details--why";
+    var summary = document.createElement("summary");
+    summary.className = "oo-rx-explain__summary";
+    var summaryCopy = document.createElement("span");
+    summaryCopy.className = "oo-rx-explain__summary-copy";
+    var title = document.createElement("strong");
+    title.textContent = copy.whyTitle;
+    summaryCopy.appendChild(title);
+    summary.appendChild(summaryCopy);
+    var chevron = document.createElement("span");
+    chevron.className = "oo-rx-explain__chevron";
+    chevron.setAttribute("aria-hidden", "true");
+    summary.appendChild(chevron);
+    details.appendChild(summary);
+    var body = document.createElement("div");
+    body.className = "oo-rx-explain__body";
+    copy.whyBody.forEach(function (text) {
+      var paragraph = document.createElement("p");
+      paragraph.className = "oo-rx-explain__copy";
+      paragraph.textContent = text;
+      body.appendChild(paragraph);
+    });
+    details.appendChild(body);
+    return details;
   }
 
   function renderCalculationDetails(calculation, resetDisclosure) {
@@ -300,10 +322,8 @@
     if (!calculation || !calculation.successful || !module || typeof module.renderExplanation !== "function") {
       container.hidden = true;
       container.innerHTML = "";
-      renderWhy(false);
       return;
     }
-    renderWhy(true);
     var wasOpen = Array.prototype.map.call(container.querySelectorAll("details"), function (details) {
       return details.open;
     });
@@ -319,6 +339,8 @@
         ? calculation.highCylinderPreview
         : null
     });
+    var why = whyAccordion(module);
+    if (why) explanation.insertBefore(why, explanation.querySelector(".oo-rx-explain__details"));
     container.innerHTML = "";
     container.appendChild(explanation);
     if (!resetDisclosure) {
@@ -1008,7 +1030,6 @@
   }
 
   function hideExplanation() {
-    renderWhy(false);
     var container = document.getElementById("oo-v52-explain");
     if (!container) return;
     container.hidden = true;

@@ -990,6 +990,29 @@
       return choiceApi && choiceApi.COPY && choiceApi.COPY[key] ? choiceApi.COPY[key] : fallback;
     }
 
+    // "Why are my mask lenses different from my glasses?" as a collapsed
+    // accordion, with the shared copy and the same details/summary pattern
+    // as "See how we calculated this" (same markup as the Lens Calculator).
+    function whyAccordion(api) {
+      var copy = api && api.COPY;
+      if (!copy || !copy.whyTitle || !copy.whyBody) return null;
+      var details = el(doc, "details", "oo-rx-explain__details oo-rx-explain__details--why");
+      var summary = el(doc, "summary", "oo-rx-explain__summary");
+      var summaryCopy = el(doc, "span", "oo-rx-explain__summary-copy");
+      summaryCopy.appendChild(el(doc, "strong", "", copy.whyTitle));
+      summary.appendChild(summaryCopy);
+      var chevron = el(doc, "span", "oo-rx-explain__chevron");
+      chevron.setAttribute("aria-hidden", "true");
+      summary.appendChild(chevron);
+      details.appendChild(summary);
+      var body = el(doc, "div", "oo-rx-explain__body");
+      copy.whyBody.forEach(function (text) {
+        body.appendChild(el(doc, "p", "oo-rx-explain__copy", text));
+      });
+      details.appendChild(body);
+      return details;
+    }
+
     // Side-by-side option cards, as on the full Lens Calculator. Choosing a
     // card only changes the selected pair; nothing is saved until "Use these
     // lenses for this mask".
@@ -1091,7 +1114,6 @@
       var resultTitle = choiceCopy("suggestedTitle", "Suggested Lens Strength");
       if (record && prescriptions.length > 1) resultTitle += " for " + (typedLabel() || "Prescription " + (prescriptions.indexOf(record) + 1));
       result.appendChild(el(doc, "h3", "oo-rx-checker__suggested-title", resultTitle));
-      if (choiceApi && typeof choiceApi.renderWhy === "function") result.appendChild(choiceApi.renderWhy(doc));
 
       if (calculation.highCylinderPreview && offered) {
         result.appendChild(renderChoiceCards(calculation, choiceApi && typeof choiceApi.choiceEntries === "function"
@@ -1136,6 +1158,10 @@
           choice: offered && !calculation.highCylinderPreview ? calculation.midpointChoice : null,
           title: choiceCopy("checkerExplainerTitle", "See how we calculated this")
         });
+        // Result first: "Why are my mask lenses different from my glasses?"
+        // sits below "What to expect underwater" as a collapsed accordion.
+        var why = whyAccordion(choiceApi);
+        if (why) explanation.insertBefore(why, explanation.querySelector(".oo-rx-explain__details"));
         Array.prototype.forEach.call(explanation.querySelectorAll("details"), function (details, index) {
           details.open = Boolean(openStates[index]);
           details.addEventListener("toggle", function () {

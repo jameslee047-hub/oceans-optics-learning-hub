@@ -146,6 +146,29 @@ function checkedStrategy(page) {
   return input ? input.value : null;
 }
 
+// Result first: option cards, then "What to expect underwater", then the two
+// collapsed accordions ("Why ...", then "See how we calculated this").
+function assertResultFirstOrder(root, cardsSelector) {
+  var cards = root.querySelector(cardsSelector);
+  var expect = root.querySelector(".oo-rx-expect");
+  var accordions = Array.prototype.slice.call(root.querySelectorAll(".oo-rx-explain details"));
+  assert.ok(cards, "cards rendered");
+  assert.deepEqual(accordions.map(function (d) { return d.querySelector("summary").textContent.trim(); }),
+    ["Why are my mask lenses different from my glasses?", "See how we calculated this"]);
+  accordions.forEach(function (d) { assert.equal(d.open, false, "accordions start collapsed"); });
+  var sequence = [cards, expect].concat(accordions).filter(Boolean);
+  for (var i = 1; i < sequence.length; i += 1) {
+    assert.ok(sequence[i - 1].compareDocumentPosition(sequence[i]) & 4, "information order " + i);
+  }
+  var whyBody = Array.prototype.map.call(accordions[0].querySelectorAll(".oo-rx-explain__copy"), function (p) { return p.textContent; });
+  assert.deepEqual(whyBody, [
+    "Underwater, your mask and the water make things look bigger and closer, a little like zooming in.",
+    "Because of this, you usually do not need quite as much prescription correction as you do on land.",
+    "We adjust your prescription for this underwater effect, then choose the closest available lens for your mask."
+  ]);
+  return { cards: cards, expect: expect, accordions: accordions };
+}
+
 function cardTitles(page) {
   return Array.prototype.map.call(page.container.querySelectorAll(".oo-rx-checker__choice-title"), function (node) {
     return node.textContent.replace(/\s+/g, " ").trim();
@@ -244,8 +267,9 @@ test("UI: checker result has the heading, the why block, the cards, what to expe
   var result = page.container.querySelector("[data-checker-result]");
   var text = result.textContent;
   assert.equal(result.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength");
-  assert.equal(result.querySelector(".oo-rx-why__title").textContent, "Why are my mask lenses different from my glasses?");
-  assert.equal(result.querySelectorAll(".oo-rx-why__copy").length, 3);
+  assertResultFirstOrder(result, ".oo-rx-checker__choices");
+  assert.ok(result.querySelector(".oo-rx-checker__suggested-title").compareDocumentPosition(result.querySelector(".oo-rx-checker__choices")) & 4, "cards follow the heading directly");
+  assert.equal(result.querySelector(".oo-rx-why"), null, "no explanation block above the cards");
   assert.equal(result.querySelector(".oo-rx-checker__choice-intro"), null);
   assert.equal(result.querySelector(".oo-rx-checker__summary"), null, "no duplicate summary box");
   ["Your recommended lenses", "We recommend the first option", "How we calculated your lens strength",
@@ -253,7 +277,7 @@ test("UI: checker result has the heading, the why block, the cards, what to expe
     assert.equal(text.indexOf(needle), -1, "still rendered: " + needle);
   });
   var summaries = Array.prototype.map.call(result.querySelectorAll(".oo-rx-explain summary"), function (s) { return s.textContent.trim(); });
-  assert.deepEqual(summaries, ["See how we calculated this"]);
+  assert.deepEqual(summaries, ["Why are my mask lenses different from my glasses?", "See how we calculated this"]);
   assert.equal(result.querySelectorAll(".oo-rx-expect").length, 1);
   assert.equal(result.querySelectorAll(".oo-rx-checker__choice-notice").length, 0, "no warning boxes");
   assert.equal(result.querySelector(".oo-rx-checker__strategy").getAttribute("aria-label"), "Choose the lens option you'd like us to use");

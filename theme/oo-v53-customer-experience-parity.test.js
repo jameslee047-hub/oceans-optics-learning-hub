@@ -113,7 +113,7 @@ function mainState(page) {
       pair: [page.doc.getElementById("oo-v52-midpoint-" + prefix + "-right").textContent, page.doc.getElementById("oo-v52-midpoint-" + prefix + "-left").textContent]
     };
   });
-  return { cards: cards, expectation: clean(page.doc.querySelector("#oo-v52-explain .oo-rx-expect__copy").textContent), why: clean(page.doc.getElementById("oo-v52-why").textContent) };
+  return { cards: cards, expectation: clean(page.doc.querySelector("#oo-v52-explain .oo-rx-expect__copy").textContent), why: clean(page.doc.querySelector("#oo-v52-explain .oo-rx-explain__details--why").textContent), order: Array.prototype.map.call(page.doc.querySelectorAll("#oo-v52-explain > .oo-rx-explain > *"), function (n) { return n.className; }) };
 }
 
 function checkerState(page) {
@@ -129,7 +129,7 @@ function checkerState(page) {
       pair: Array.prototype.map.call(card.querySelectorAll(".oo-rx-checker__choice-eye-value"), function (n) { return n.textContent; })
     };
   });
-  return { cards: cards, expectation: clean(container.querySelector(".oo-rx-expect__copy").textContent), why: clean(container.querySelector(".oo-rx-why").textContent) };
+  return { cards: cards, expectation: clean(container.querySelector(".oo-rx-expect__copy").textContent), why: clean(container.querySelector(".oo-rx-explain__details--why").textContent), order: Array.prototype.map.call(container.querySelectorAll(".oo-rx-explain > *"), function (n) { return n.className; }) };
 }
 
 var FIXTURES = [
@@ -162,6 +162,8 @@ FIXTURES.forEach(function (fixture) {
     assert.deepEqual(c.cards, m.cards, "the Product Calculator matches the Main Calculator exactly");
     assert.equal(c.expectation, m.expectation);
     assert.equal(c.why, m.why);
+    assert.deepEqual(m.order, ["oo-rx-expect", "oo-rx-explain__details oo-rx-explain__details--why", "oo-rx-explain__details"], "Main: what to expect, why, maths");
+    assert.deepEqual(c.order, m.order, "the Product Calculator uses the same information order");
 
     // Switch both to the Alternative and back.
     main.doc.getElementById("oo-v52-midpoint-sharper").click();

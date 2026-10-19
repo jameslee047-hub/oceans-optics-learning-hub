@@ -119,6 +119,29 @@ function visibleText(doc, selector) {
   return Array.prototype.map.call(doc.querySelectorAll(selector), function (node) { return node.textContent; }).join(" ");
 }
 
+// Result first: option cards, then "What to expect underwater", then the two
+// collapsed accordions ("Why ...", then "See how we calculated this").
+function assertResultFirstOrder(root, cardsSelector) {
+  var cards = root.querySelector(cardsSelector);
+  var expect = root.querySelector(".oo-rx-expect");
+  var accordions = Array.prototype.slice.call(root.querySelectorAll(".oo-rx-explain details"));
+  assert.ok(cards, "cards rendered");
+  assert.deepEqual(accordions.map(function (d) { return d.querySelector("summary").textContent.trim(); }),
+    ["Why are my mask lenses different from my glasses?", "See how we calculated this"]);
+  accordions.forEach(function (d) { assert.equal(d.open, false, "accordions start collapsed"); });
+  var sequence = [cards, expect].concat(accordions).filter(Boolean);
+  for (var i = 1; i < sequence.length; i += 1) {
+    assert.ok(sequence[i - 1].compareDocumentPosition(sequence[i]) & 4, "information order " + i);
+  }
+  var whyBody = Array.prototype.map.call(accordions[0].querySelectorAll(".oo-rx-explain__copy"), function (p) { return p.textContent; });
+  assert.deepEqual(whyBody, [
+    "Underwater, your mask and the water make things look bigger and closer, a little like zooming in.",
+    "Because of this, you usually do not need quite as much prescription correction as you do on land.",
+    "We adjust your prescription for this underwater effect, then choose the closest available lens for your mask."
+  ]);
+  return { cards: cards, expect: expect, accordions: accordions };
+}
+
 function choiceOrder(doc) {
   return Array.prototype.map.call(doc.querySelectorAll("#oo-v52-midpoint .oo-v52-high-cyl__choice"), function (choice) {
     var input = choice.querySelector("input");
@@ -328,9 +351,8 @@ test("exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110: Balanced +3/+2 selected,
   assert.deepEqual([text(page.doc, "oo-v52-midpoint-balanced-right"), text(page.doc, "oo-v52-midpoint-balanced-left")], ["+3.00", "+2.00"]);
   assert.deepEqual([text(page.doc, "oo-v52-midpoint-sharper-right"), text(page.doc, "oo-v52-midpoint-sharper-left")], ["+4.00", "+3.00"]);
   assert.deepEqual(cardPairs(page.doc), ["R +3.00L +2.00"]);
-  var why = page.doc.getElementById("oo-v52-why");
-  assert.equal(why.hidden, false);
-  assert.equal(why.querySelector(".oo-rx-why__title").textContent, "Why are my mask lenses different from my glasses?");
+  assert.equal(page.doc.getElementById("oo-v52-why"), null, "no explanation block above the cards");
+  assertResultFirstOrder(page.doc.getElementById("oo-v52-result"), "#oo-v52-midpoint");
   var explain = function () { return visibleText(page.doc, "#oo-v52-explain").replace(/\s+/g, " "); };
   assert.match(explain(), /What to expect underwater\s*This is our recommended all round option\./);
   ["Right eye", "Glasses prescription:+4.00 / -2.00", "Sphere only strength:+3.00", "Underwater adjusted strength:+2.50", "Closest available mask lens:+3.00",
@@ -338,8 +360,8 @@ test("exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110: Balanced +3/+2 selected,
     "Prescription mask lenses come in fixed strengths, so the final lens may not exactly match the calculated number."].forEach(function (needle) {
     assert.ok(explain().indexOf(needle) !== -1, "missing: " + needle);
   });
-  assert.equal(page.doc.querySelector("#oo-v52-explain details").open, false, "the maths starts collapsed");
-  assert.equal(page.doc.querySelectorAll("#oo-v52-explain details").length, 1, "one optional maths section");
+  assert.equal(page.doc.querySelector("#oo-v52-explain details.oo-rx-explain__details--why").open, false, "the why accordion starts collapsed");
+  assert.equal(page.doc.querySelectorAll("#oo-v52-explain details").length, 2, "two optional accordions");
 
   page.doc.getElementById("oo-v52-midpoint-sharper").click();
   await settle();
@@ -463,22 +485,21 @@ test("UI: the results area has one heading, the why block, the cards, what to ex
   assert.equal(page.doc.getElementById("oo-v52-guidance").hidden, true, "no standalone recommendation box for an ordinary result");
   assert.equal(result.querySelector("h2").textContent, "Suggested Lens Strength");
   assert.equal(page.doc.getElementById("oo-v52-result-intro").hidden, true);
-  assert.equal(visible(page.doc.getElementById("oo-v52-why")), true);
-  assert.equal(page.doc.querySelectorAll("#oo-v52-why .oo-rx-why__copy").length, 3);
+  assertResultFirstOrder(result, "#oo-v52-midpoint");
   var summaries = Array.prototype.map.call(page.doc.querySelectorAll("#oo-v52-explain summary"), function (s) { return s.textContent.trim(); });
-  assert.deepEqual(summaries, ["See how we calculated this"]);
+  assert.deepEqual(summaries, ["Why are my mask lenses different from my glasses?", "See how we calculated this"]);
   Array.prototype.forEach.call(page.doc.querySelectorAll("#oo-v52-explain details"), function (d) { assert.equal(d.open, false, "the maths starts collapsed"); });
   assert.equal(page.doc.querySelectorAll("#oo-v52-explain .oo-rx-expect").length, 1, "one selected-option explanation");
   assert.equal(page.doc.querySelectorAll(".oo-rx-explain__warning").length, 0, "no warning boxes");
   assert.equal(text(page.doc, "oo-v52-products-title"), "Your Matching Masks");
   assert.equal(page.doc.querySelector(".oo-v52-products__intro").textContent, "All of the masks below are available with your selected lens strength. Choose the style and colour you prefer.");
 
-  // A single-result prescription has no options: the why block and maths
-  // remain, but no "What to expect" choice text.
+  // A single-result prescription has no options: both accordions remain,
+  // but no "What to expect" choice text.
   page.doc.getElementById("oo-v52-edit").click();
   calculate(page, [-3.75, -0.75], [-3.75, -0.75]);
   await settle();
-  assert.equal(page.doc.getElementById("oo-v52-why").hidden, false);
+  assert.equal(page.doc.querySelectorAll("#oo-v52-explain details").length, 2);
   assert.equal(page.doc.querySelectorAll("#oo-v52-explain .oo-rx-expect").length, 0);
   assert.equal(page.doc.getElementById("oo-v52-guidance").hidden, true);
 });
@@ -493,7 +514,7 @@ test("UI: genuine warnings still show (manual review); high CYL shows Balanced s
   calculate(high, [-2.75, -3.25], [-2, -3]);
   await settle();
   assert.equal(high.doc.getElementById("oo-v52-high-cyl").hidden, false);
-  assert.equal(high.doc.getElementById("oo-v52-why").hidden, false);
+  assertResultFirstOrder(high.doc.getElementById("oo-v52-result"), "#oo-v52-high-cyl");
   assert.equal(high.doc.getElementById("oo-v52-high-balanced").checked, true, "Balanced is selected automatically");
   assert.equal(high.doc.getElementById("oo-v52-high-alternative").checked, false);
   assert.match(high.doc.getElementById("oo-v52-high-balanced").parentNode.textContent, /Balanced\s*Recommended/);
@@ -577,7 +598,7 @@ test("Edit Prescription after choosing the Alternative: old option, pair and mas
   assert.equal(page.doc.getElementById("oo-v52-result").hidden, true);
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true);
   assert.equal(page.doc.getElementById("oo-v52-explain").hidden, true);
-  assert.equal(page.doc.getElementById("oo-v52-why").hidden, true);
+  assert.equal(page.doc.querySelectorAll("#oo-v52-explain details").length, 0, "no stale accordions");
   assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation(), null);
   staleCta.click();
   await settle();
