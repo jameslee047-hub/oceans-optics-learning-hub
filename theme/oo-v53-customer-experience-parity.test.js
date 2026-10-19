@@ -200,5 +200,11 @@ FIXTURES.forEach(function (fixture) {
     assert.equal(mainConfirm.v53Snapshot.recommendedStrategy, "balanced");
     assert.equal(mainConfirm.v53Snapshot.selectedStrategy, "closer_to_sph");
     assert.equal(mainConfirm.v53Snapshot.selectionEvidence, "customer_explicit");
+    assert.deepEqual(mainConfirm.v53Snapshot.optionLabelsShown, { balanced: "Balanced", closer_to_sph: "Alternative" });
+    var checkerSnapshot = JSON.parse(JSON.stringify(checker.applied[0].v53Snapshot));
+    ["optionsShown", "optionLabelsShown", "recommendedStrategy", "recommendedValues", "selectedStrategy", "selectionEvidence"].forEach(function (field) {
+      assert.deepEqual(checkerSnapshot[field], mainConfirm.v53Snapshot[field], "checker snapshot " + field + " matches the Main Calculator");
+    });
+    assert.deepEqual([Number(checkerSnapshot.selectedRecommendation.right), Number(checkerSnapshot.selectedRecommendation.left)], alternative);
   });
 });

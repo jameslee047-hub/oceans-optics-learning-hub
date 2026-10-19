@@ -582,6 +582,7 @@
       calculatorVersion: String((window.OOLensCalculatorV53 && window.OOLensCalculatorV53.VERSION) || "5.3"),
       source: "calculator",
       optionsShown: optionsShown,
+      optionLabelsShown: optionsShown && choiceModule() ? choiceModule().optionLabelsShown() : null,
       recommendedStrategy: optionsShown ? "balanced" : (active.recommendationStrategy === "balanced" ? "balanced" : "closer_to_sph"),
       recommendedValues: optionsShown ? optionsShown.balanced : pairText(active.recommendedRight, active.recommendedLeft),
       selectedStrategy: selectedStrategy,

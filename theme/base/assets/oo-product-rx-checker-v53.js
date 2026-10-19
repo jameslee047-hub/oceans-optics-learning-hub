@@ -350,25 +350,61 @@
   }
 
   // Product link carrying only the opaque confirmed configuration and source.
-  function alternativeProductUrl(products, product, configId) {
+  // The customer's V5.3 snapshot travels with the confirmed config, exactly
+  // as the Lens Calculator and the Quiz hand it to a product page.
+  function alternativeProductUrl(products, product, configId, snapshot) {
     var variant = products.defaultVariant(product);
     var url = new URL(variant ? variant.url : product.variantMap[0].url);
     if (RX_CONFIG_ID_PATTERN.test(String(configId || "").trim())) {
       url.searchParams.set("oo_rx", String(configId).trim().toLowerCase());
       url.searchParams.set("oo_source", SOURCE);
+      var text = snapshot ? JSON.stringify(snapshot) : "";
+      if (text && text.length <= 4000) url.searchParams.set("_oo_v53_snapshot", text);
     }
     return url.toString();
   }
 
   // The summary object the product-page handoff validates and applies to Avis.
-  function handoffSummary(configId, recommendation, label, prescriptionAttached) {
+  // v53Snapshot is always explicit, so a snapshot left in the page URL by an
+  // earlier tool is never attached to this config.
+  function handoffSummary(configId, recommendation, label, prescriptionAttached, snapshot) {
     return {
       configId: String(configId).toLowerCase(),
       status: "confirmed",
       recommendedRight: recommendation.recommendedRight,
       recommendedLeft: recommendation.recommendedLeft,
       prescriptionAttached: Boolean(prescriptionAttached),
-      prescriptionLabel: label || null
+      prescriptionLabel: label || null,
+      v53Snapshot: snapshot || null
+    };
+  }
+
+  // The V5.3 customer evidence for what this mask showed, in the same shape as
+  // the Lens Calculator and the Quiz snapshots. offered is this mask's
+  // offeredAlternative() (null when one pair was shown); labels are the
+  // option labels shown (presentation evidence only).
+  function v53SnapshotFor(calculation, offered, labels) {
+    var rec = calculation && calculation.activeRecommendation;
+    if (!rec) return null;
+    var pairText = function (pair) { return { right: String(pair.right), left: String(pair.left) }; };
+    var primary = calculation.highCylinderPreview
+      ? calculation.highCylinderPreview.balanced
+      : calculation.midpointChoice ? calculation.midpointChoice.balanced : null;
+    var optionsShown = offered && primary ? { closer_to_sph: pairText(offered.pair), balanced: pairText(primary) } : null;
+    var selected = optionsShown ? (rec.recommendationStrategy === "balanced" ? "balanced" : "closer_to_sph") : null;
+    return {
+      schemaVersion: "1",
+      calculatorVersion: String((calculation.rightResult && calculation.rightResult.version) || "5.3.0-experimental"),
+      source: SOURCE,
+      optionsShown: optionsShown,
+      optionLabelsShown: optionsShown ? labels || null : null,
+      recommendedStrategy: optionsShown ? "balanced" : (rec.recommendationStrategy === "balanced" ? "balanced" : "closer_to_sph"),
+      recommendedValues: optionsShown ? optionsShown.balanced : { right: String(rec.displayRight), left: String(rec.displayLeft) },
+      selectedStrategy: selected,
+      selectedRecommendation: selected ? optionsShown[selected] : null,
+      selectionEvidence: selected ? (calculation.selectionEvidence || "customer_explicit") : null,
+      finalProductSelection: null,
+      manualOverride: false
     };
   }
 
@@ -1189,7 +1225,7 @@
         setStatus("busy", "Saving your prescription for " + candidate.name + "…");
         var configId = await ensureConfirmed(calculation);
         recordCheckerUse();
-        root.location.assign(alternativeProductUrl(products, candidate, configId));
+        root.location.assign(alternativeProductUrl(products, candidate, configId, calculation.v53Snapshot));
       } catch (error) {
         link.removeAttribute("aria-disabled");
         link.textContent = "View Product";
@@ -1203,6 +1239,13 @@
     // lens approach. A confirmed record is never changed; a different entry or
     // approach gets a new record.
     async function ensureConfirmed(calculation) {
+      // Recorded for the options this mask actually showed, every time (a
+      // reused confirmed config still carries the current selection evidence).
+      calculation.v53Snapshot = v53SnapshotFor(
+        calculation,
+        offeredAlternative(calculation, product, products.supportsPower),
+        choiceApi && typeof choiceApi.optionLabelsShown === "function" ? choiceApi.optionLabelsShown() : null
+      );
       var label = labelInput.value.trim() || null;
       var entry = readEntry();
       var key = JSON.stringify([entry, calculation.activeRecommendation.recommendationStrategy, label]);
@@ -1230,7 +1273,7 @@
       try {
         setStatus("busy", "Saving your prescription…");
         var configId = await ensureConfirmed(calculation);
-        var summary = handoffSummary(configId, calculation.activeRecommendation, label, state.source === "uploaded");
+        var summary = handoffSummary(configId, calculation.activeRecommendation, label, state.source === "uploaded", calculation.v53Snapshot);
         setStatus("busy", "Adding your lenses to this mask…");
         var handoffApi = handoff || root.OORxProductHandoff;
         if (!handoffApi) throw new Error("This page couldn't apply your lenses. Please refresh and try again.");
@@ -1338,6 +1381,7 @@
     calculate: calculate,
     selectStrategy: selectStrategy,
     defaultStrategy: defaultStrategy,
+    v53SnapshotFor: v53SnapshotFor,
     offeredAlternative: offeredAlternative,
     buildability: buildability,
     handoffSummary: handoffSummary,

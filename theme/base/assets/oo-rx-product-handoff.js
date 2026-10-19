@@ -77,6 +77,19 @@
     return Object.is(power, -0) ? 0 : power;
   }
 
+  // A V5.3 snapshot as the bounded JSON text stored on the line item, or null.
+  function snapshotText(value) {
+    if (!value) return null;
+    var text = typeof value === "string" ? value : JSON.stringify(value);
+    if (!text || text.length > 4000) return null;
+    try {
+      var parsed = JSON.parse(text);
+      return parsed && /^5\.3(?:\.|$)/.test(String(parsed.calculatorVersion || "")) ? text : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
   function validateSummary(payload, requestedId) {
     if (!payload || typeof payload !== "object") throw new Error("The saved prescription response is invalid.");
     var configId = String(payload.configId || "").trim().toLowerCase();
@@ -91,7 +104,7 @@
       ? payload.prescriptionLabel.trim()
       : "";
 
-    return {
+    var summary = {
       configId: configId,
       status: "confirmed",
       recommendedRight: finitePower(payload.recommendedRight, "Right lens"),
@@ -99,6 +112,11 @@
       prescriptionAttached: payload.prescriptionAttached,
       prescriptionLabel: label || null
     };
+    // An in-page tool (the Product Rx Checker) supplies the snapshot for the
+    // config it has just confirmed; it replaces any snapshot left in the URL
+    // by an earlier tool, so evidence never crosses configs.
+    if (Object.prototype.hasOwnProperty.call(payload, "v53Snapshot")) summary.v53Snapshot = snapshotText(payload.v53Snapshot);
+    return summary;
   }
 
   function parseAvisPower(value) {
@@ -324,18 +342,14 @@
       properties.push(["properties[Prescription]", summary.prescriptionLabel]);
     }
     // The calculator/quiz creates this immutable historical snapshot before
-    // navigating to the mask. Keep it on the line item; final lens selectors
-    // remain the ordinary (OD)/(OS) properties supplied by the product form.
+    // navigating to the mask (URL); the Product Rx Checker passes its own with
+    // the summary. Keep it on the line item; final lens selectors remain the
+    // ordinary (OD)/(OS) properties supplied by the product form.
     var view = doc && doc.defaultView;
-    var snapshot = new URLSearchParams(view && view.location ? view.location.search || "" : "").get("_oo_v53_snapshot");
-    if (snapshot && snapshot.length <= 4000) {
-      try {
-        var parsed = JSON.parse(snapshot);
-        if (parsed && /^5\.3(?:\.|$)/.test(String(parsed.calculatorVersion || ""))) {
-          properties.push(["properties[_oo_v53_snapshot]", snapshot]);
-        }
-      } catch (error) {}
-    }
+    var snapshot = Object.prototype.hasOwnProperty.call(summary, "v53Snapshot")
+      ? summary.v53Snapshot
+      : snapshotText(new URLSearchParams(view && view.location ? view.location.search || "" : "").get("_oo_v53_snapshot"));
+    if (snapshot) properties.push(["properties[_oo_v53_snapshot]", snapshot]);
     return properties;
   }
 

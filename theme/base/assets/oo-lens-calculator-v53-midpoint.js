@@ -574,6 +574,12 @@
     return "";
   }
 
+  // Presentation evidence for V5.3 snapshots: the label each canonical
+  // strategy was shown under. Display only; logic always uses the ids.
+  function optionLabelsShown() {
+    return { balanced: BALANCED_TITLE, closer_to_sph: ALTERNATIVE_TITLE };
+  }
+
   // Customer-facing title of one strategy: always Balanced or Alternative.
   function strategyTitle(choice, strategy) {
     return strategyName(strategy);
@@ -755,6 +761,7 @@
     recommendationSelection: recommendationSelection,
     defaultStrategyOf: defaultStrategyOf,
     strategyTitle: strategyTitle,
+    optionLabelsShown: optionLabelsShown,
     choiceEntries: choiceEntries,
     explainEye: explainEye,
     explanationModel: explanationModel,
