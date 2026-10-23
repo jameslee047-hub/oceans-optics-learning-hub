@@ -288,29 +288,39 @@ test("normal pair with no second option: masks show immediately and nothing is s
   assert.equal(confirmCalls(page)[0].body.recommendationStrategy, "balanced");
 });
 
-test("exact midpoint: Balanced masks show at once with the Alternative visible, no See Matching Masks step, cards switch without saving", { skip: skipDom }, async function () {
+test("two options (Daniel, target -3.375, no tie): Balanced masks show at once with the Alternative visible, no See Matching Masks step, cards switch without saving", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.25], [-2.75]);
+  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
   await settle();
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, false);
   assert.equal(page.doc.getElementById("oo-v52-midpoint-use"), null, "no See Matching Masks button");
   assert.equal(page.doc.getElementById("oo-v52-midpoint-balanced").checked, true, "Balanced is selected by default");
   assert.equal(page.doc.getElementById("oo-v52-midpoint-sharper").checked, false);
   assert.equal(page.doc.getElementById("oo-v52-products").hidden, false);
-  assert.deepEqual(cardPairs(page.doc), ["R -2.50L -2.00"]);
+  assert.deepEqual(cardPairs(page.doc), ["R -3.00L -3.00"]);
 
   chooseCard(page.doc, "sharper");
   await settle();
-  assert.deepEqual(cardPairs(page.doc), ["R -3.00L -2.50"]);
+  assert.deepEqual(cardPairs(page.doc), ["R -3.50L -3.50"]);
   for (var i = 0; i < 5; i += 1) chooseCard(page.doc, i % 2 ? "balanced" : "sharper");
   await settle();
   assert.equal(page.calls.length, 0, "no backend request while previewing");
   assert.equal(page.doc.querySelectorAll(".oo-v52-products__grid").length, 1);
 });
 
-test("exact midpoint: choosing a mask while the Alternative is selected confirms it once", { skip: skipDom }, async function () {
+test("exact midpoint -3.25 / -2.75 (targets -2.75 / -2.25): both ties resolve toward SE, so one pair -3.00/-2.50 with no second option", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-3.25], [-2.75]);
+  await settle();
+  assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true);
+  assert.deepEqual(cardPairs(page.doc), ["R -3.00L -2.50"]);
+  assert.equal(eyeText(page.doc, "right"), "-3.00");
+  assert.equal(eyeText(page.doc, "left"), "-2.50");
+});
+
+test("two options: choosing a mask while the Alternative is selected confirms it once", { skip: skipDom }, async function () {
+  var page = await loadCalculator();
+  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
   await settle();
   chooseCard(page.doc, "sharper");
   await settle();
@@ -324,20 +334,22 @@ test("exact midpoint: choosing a mask while the Alternative is selected confirms
   assert.equal(confirms.length, 1);
   assert.equal(page.calls.filter(function (call) { return /\/manual\/init$/.test(call.url); }).length, 1);
   assert.equal(confirms[0].body.recommendationStrategy, "closer_to_sph", "the Alternative is saved under its canonical id");
-  assert.equal(confirms[0].body.recommendedRight, -3);
-  assert.equal(confirms[0].body.recommendedLeft, -2.5);
+  assert.equal(confirms[0].body.recommendedRight, -3.5);
+  assert.equal(confirms[0].body.recommendedLeft, -3.5);
   assert.equal(page.opened.length, 1);
   var url = new URL(page.opened[0].location.href);
   assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
-  assert.deepEqual(cardPairs(page.doc), ["R -3.00L -2.50"]);
-  assert.equal(eyeText(page.doc, "right"), "-3.00");
-  assert.equal(eyeText(page.doc, "left"), "-2.50");
+  assert.deepEqual(cardPairs(page.doc), ["R -3.50L -3.50"]);
+  assert.equal(eyeText(page.doc, "right"), "-3.50");
+  assert.equal(eyeText(page.doc, "left"), "-3.50");
 });
 
-test("exact midpoint: choosing a mask after selecting Balanced again confirms balanced", { skip: skipDom }, async function () {
+test("two options: choosing a mask after selecting Balanced again confirms balanced", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.25], [-2.75]);
+  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  await settle();
+  chooseCard(page.doc, "sharper");
   await settle();
   chooseCard(page.doc, "balanced");
   await settle();
@@ -346,28 +358,28 @@ test("exact midpoint: choosing a mask after selecting Balanced again confirms ba
   var confirms = confirmCalls(page);
   assert.equal(confirms.length, 1);
   assert.equal(confirms[0].body.recommendationStrategy, "balanced");
-  assert.equal(confirms[0].body.recommendedRight, -2.5);
-  assert.equal(confirms[0].body.recommendedLeft, -2);
+  assert.equal(confirms[0].body.recommendedRight, -3);
+  assert.equal(confirms[0].body.recommendedLeft, -3);
 });
 
-test("one-eye midpoints: only the midpoint eye changes in the Alternative pair", { skip: skipDom }, async function () {
-  var cases = [[[-3.25], [-3], "R -2.50L -2.50", "R -3.00L -2.50", -3, -2.5], [[-1.25], [-1.75], "R -1.00L -1.00", "R -1.00L -1.50", -1, -1.5]];
+test("one-eye exact ties: only the tie eye moves toward its SE and the result converges (no second option)", { skip: skipDom }, async function () {
+  // [-3.25] target -2.75 is a tie (-2.50 / -3.00) -> -3.00; [-3] target -2.50 is exact stock.
+  // [-1.25] is the plano-to-first-minus gap (-1.00, unchanged); [-1.75] target -1.25 is a tie -> -1.50.
+  var cases = [[[-3.25], [-3], "R -3.00L -2.50", -3, -2.5], [[-1.25], [-1.75], "R -1.00L -1.50", -1, -1.5]];
   for (var i = 0; i < cases.length; i += 1) {
     var c = cases[i];
     var page = await loadCalculator();
     calculate(page, c[0], c[1]);
     await settle();
-    assert.deepEqual(cardPairs(page.doc), [c[2]], "Balanced is the default");
-    chooseCard(page.doc, "sharper");
-    await settle();
-    assert.deepEqual(cardPairs(page.doc), [c[3]]);
+    assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true);
+    assert.deepEqual(cardPairs(page.doc), [c[2]]);
     assert.equal(page.calls.length, 0);
     page.doc.querySelector(".oo-v52-product-card__customize").click();
     await settle();
     assert.equal(confirmCalls(page).length, 1);
-    assert.equal(confirmCalls(page)[0].body.recommendationStrategy, "closer_to_sph");
-    assert.equal(confirmCalls(page)[0].body.recommendedRight, c[4]);
-    assert.equal(confirmCalls(page)[0].body.recommendedLeft, c[5]);
+    assert.equal(confirmCalls(page)[0].body.recommendationStrategy, "balanced");
+    assert.equal(confirmCalls(page)[0].body.recommendedRight, c[3]);
+    assert.equal(confirmCalls(page)[0].body.recommendedLeft, c[4]);
   }
 });
 
@@ -407,7 +419,8 @@ test("protected low-minus pairs keep the normal flow without a choice", { skip: 
   calculate(page, [-0.75], [-1.75]);
   await settle();
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true);
-  assert.deepEqual(cardPairs(page.doc), ["R -1.00L -1.00"]);
+  // Right SE -0.75 keeps its protected low-minus -1.00; left target -1.25 is an exact tie -> -1.50.
+  assert.deepEqual(cardPairs(page.doc), ["R -1.00L -1.50"]);
   assert.equal(page.calls.length, 0);
   page.doc.querySelector(".oo-v52-product-card__customize").click();
   await settle();

@@ -134,9 +134,9 @@ function checkerState(page) {
 
 var FIXTURES = [
   { name: "exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110", right: [4, -2, 75], left: [3, -1.25, 110], handle: "rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask", balanced: ["+3.00", "+2.00"], alternative: ["+4.00", "+3.00"] },
-  { name: "#336262", right: [-1, -0.75, 170], left: [-1.75, 0], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-1.00", "-1.00"], alternative: ["-1.00", "-1.50"] },
+  { name: "Daniel (non tie)", right: [-3.75, -0.25, 35], left: [-3.5, -0.75, 175], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-3.00", "-3.00"], alternative: ["-3.50", "-3.50"] },
   { name: "#336254", right: [4, -0.75, 100], left: [4.25, -0.75, 105], handle: "rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask", balanced: ["+3.00", "+3.00"], alternative: ["+4.00", "+4.00"] },
-  { name: "#336246", right: [-3.5, -2, 10], left: [-5, -1.5, 175], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-4.00", "-5.00"], alternative: ["-4.00", "-5.50"] }
+  { name: "-7 case (non tie)", right: [-7, -0.75, 15], left: [-7.75, -1.25, 166], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-6.50", "-7.50"], alternative: ["-7.00", "-8.00"] }
 ];
 
 FIXTURES.forEach(function (fixture) {
@@ -208,5 +208,46 @@ FIXTURES.forEach(function (fixture) {
       assert.deepEqual(checkerSnapshot[field], mainConfirm.v53Snapshot[field], "checker snapshot " + field + " matches the Main Calculator");
     });
     assert.deepEqual([Number(checkerSnapshot.selectedRecommendation.right), Number(checkerSnapshot.selectedRecommendation.left)], alternative);
+  });
+});
+
+// 5.3.1 exact stock ties that converge: both surfaces show the same single
+// pair and save the same single-option snapshot.
+var CONVERGED = [
+  { name: "#336262", right: [-1, -0.75, 170], left: [-1.75, 0], pair: ["-1.00", "-1.50"] },
+  { name: "#336246", right: [-3.5, -2, 10], left: [-5, -1.5, 175], pair: ["-4.00", "-5.50"] },
+  { name: "#336314", right: [-2, 0.5, 144], left: [-2.5, 0.75, 156], pair: ["-1.50", "-1.50"] }
+];
+CONVERGED.forEach(function (fixture) {
+  test("parity converged " + fixture.name + ": Main and Product show one pair " + fixture.pair.join("/") + " and save the same single-option snapshot", { skip: skipDom }, async function () {
+    var handle = "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling";
+    var main = await loadMain();
+    setMainEye(main.doc, "right", fixture.right[0], fixture.right[1], fixture.right[2]);
+    setMainEye(main.doc, "left", fixture.left[0], fixture.left[1], fixture.left[2]);
+    main.doc.getElementById("oo-v52-form").dispatchEvent(new main.win.Event("submit", { cancelable: true }));
+    await settle();
+    var checker = await loadChecker(handle);
+    setCheckerEye(checker, "right", fixture.right[0], fixture.right[1], fixture.right[2]);
+    setCheckerEye(checker, "left", fixture.left[0], fixture.left[1], fixture.left[2]);
+    checker.doc.querySelector("[data-checker-form]").dispatchEvent(new checker.win.Event("submit", { cancelable: true }));
+    await settle();
+    assert.equal(main.doc.getElementById("oo-v52-midpoint").hidden, true);
+    assert.deepEqual([main.doc.getElementById("oo-v52-result-right").textContent, main.doc.getElementById("oo-v52-result-left").textContent], fixture.pair);
+    var container = checker.doc.querySelector("[data-oo-product-rx-checker]");
+    assert.equal(container.querySelectorAll(".oo-rx-checker__choice").length, 0);
+    assert.deepEqual(Array.prototype.map.call(container.querySelectorAll(".oo-rx-checker__choice-card--single .oo-rx-checker__choice-eye-value"), function (n) { return n.textContent; }), fixture.pair);
+    main.doc.querySelector(".oo-v52-product-card__customize").click();
+    container.querySelector(".oo-rx-checker__apply").click();
+    await settle();
+    await settle();
+    var mainBody = main.calls.filter(function (call) { return /\/confirm$/.test(call.url); })[0].body;
+    var checkerBody = checker.calls.filter(function (call) { return /\/confirm$/.test(call.url); })[0].body;
+    [mainBody, checkerBody].forEach(function (body) {
+      assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced"].concat(fixture.pair.map(Number), ["5.3.1"]));
+      assert.equal(body.v53Snapshot.optionsShown, null);
+      assert.equal(body.v53Snapshot.selectionEvidence, null);
+      assert.equal(body.v53Snapshot.calculatorVersion, "5.3.1");
+    });
+    assert.deepEqual([checker.applied[0].recommendedRight, checker.applied[0].recommendedLeft], fixture.pair.map(Number));
   });
 });

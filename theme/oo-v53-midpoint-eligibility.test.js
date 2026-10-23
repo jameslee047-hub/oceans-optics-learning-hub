@@ -55,28 +55,35 @@ function offered(choice) {
   };
 }
 
-test("1. -1.25 / -1.75: the SE -1.25 eye does not block the other eye's midpoint", function () {
+// 5.3.1: an exact midpoint tie now resolves to the stocked lens closer to the
+// original SE, so the lens that used to be the Sharper option becomes the
+// primary result and no Sharper alternative remains for that eye.
+function convergedTie(right, left, primary) {
+  var choice = pairChoice(right, left);
+  assert.equal(choice.available, false, "no Sharper option: " + choice.reason);
+  assert.equal(choice.reason, "no_midpoint_alternative");
+  assert.deepEqual([right.recommendation, left.recommendation], primary);
+}
+
+test("1. -1.25 / -1.75: the SE -1.25 gap eye keeps -1.00; the -1.75 tie eye now takes -1.50 itself", function () {
   var right = eye("-1.25");
   var left = eye("-1.75");
-  // Normal V5.3 pathway for both eyes (SE stronger than -1.00).
   assert.equal(right.lowMinusChoice, false);
-  assert.equal(right.recommendation, "-1.00");
-  assert.equal(left.recommendation, "-1.00");
-  var choice = pairChoice(right, left);
-  assert.deepEqual(offered(choice), { comfort: ["-1.00", "-1.00"], sharper: ["-1.00", "-1.50"] });
-  assert.equal(choice.eyes.right.alternativePower, null, "the -1.25 eye keeps its own lens");
+  assert.equal(right.stockRule, "plano-to-first-minus-gap");
+  assert.equal(left.stockRule, "exact-stock-tie-closer-to-se");
+  convergedTie(right, left, ["-1.00", "-1.50"]);
 });
 
 test("1b. the same pair mirrored: -1.75 / -1.25", function () {
-  assert.deepEqual(offered(pairChoice(eye("-1.75"), eye("-1.25"))), { comfort: ["-1.00", "-1.00"], sharper: ["-1.50", "-1.00"] });
+  convergedTie(eye("-1.75"), eye("-1.25"), ["-1.50", "-1.00"]);
 });
 
-test("2. existing one-eye midpoint -3.25 / -3.00 is unchanged", function () {
-  assert.deepEqual(offered(pairChoice(eye("-3.25"), eye("-3.00"))), { comfort: ["-2.50", "-2.50"], sharper: ["-3.00", "-2.50"] });
+test("2. one-eye midpoint -3.25 / -3.00: the tie eye resolves to -3.00 (closer to SE -3.25)", function () {
+  convergedTie(eye("-3.25"), eye("-3.00"), ["-3.00", "-2.50"]);
 });
 
-test("3. existing two-eye midpoint -3.25 / -2.75 is unchanged", function () {
-  assert.deepEqual(offered(pairChoice(eye("-3.25"), eye("-2.75"))), { comfort: ["-2.50", "-2.00"], sharper: ["-3.00", "-2.50"] });
+test("3. two-eye midpoint -3.25 / -2.75: both ties resolve toward SE, -3.00 / -2.50", function () {
+  convergedTie(eye("-3.25"), eye("-2.75"), ["-3.00", "-2.50"]);
 });
 
 test("4. genuine protected low-minus (SE -1.00 to -0.50) still suppresses Sharper", function () {
@@ -121,7 +128,9 @@ test("8. farsighted behaviour is unchanged", function () {
 test("no Sharper lens ever exceeds its eye's SE, and no protected eye appears in an offered pair", function () {
   var eyes = [];
   for (var hundredths = -1000; hundredths <= 600; hundredths += 25) {
-    ["0.00", "-0.50", "-1.00", "-1.50", "-2.00"].forEach(function (cyl) {
+    // Quarter-diopter CYL gives targets off the stock midpoints (strictly
+    // closer Sharper cases); half-diopter CYL gives exact ties.
+    ["0.00", "-0.25", "-0.50", "-0.75", "-1.00", "-1.25", "-1.50", "-2.00"].forEach(function (cyl) {
       var sphere = (hundredths > 0 ? "+" : "") + (hundredths / 100).toFixed(2);
       var result = eye(sphere, cyl);
       if (result.valid) eyes.push(result);
@@ -140,6 +149,9 @@ test("no Sharper lens ever exceeds its eye's SE, and no protected eye appears in
         assert.notEqual(result.lowMinusChoice, true);
         assert.notEqual(result.manualReview, true);
         assert.notEqual(Number(result.finalStockPower), 0);
+        if (result.stockRule === "exact-stock-tie-closer-to-se") {
+          assert.equal(sharper, choice.balanced[entry[1] + "Power"], "a resolved tie eye keeps its lens");
+        }
         if (result.stockRule === "plano-to-first-minus-gap") {
           assert.ok(result.sphericalEquivalent < -1, "gap eye with SE -1.00 or weaker must stay protected");
           assert.equal(sharper, choice.balanced[entry[1] + "Power"], "a gap eye keeps its lens");

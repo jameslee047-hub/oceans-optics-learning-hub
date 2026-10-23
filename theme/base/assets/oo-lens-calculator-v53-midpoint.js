@@ -63,6 +63,8 @@
   var HIGH_CYL_THRESHOLD = 3;
   var LOW_MINUS_CHOICE_RULE = "low-minus-choice";
   var PLANO_GAP_RULE = "plano-to-first-minus-gap";
+  // Engine 5.3.1: an exact stock tie resolved toward the original SE.
+  var EXACT_STOCK_TIE_RULE = "exact-stock-tie-closer-to-se";
   // The engine's protected low-minus zone ends at an SE of -1.00 (its weakest
   // minus lens). An eye with a stronger SE that lands in the plano-to-first-
   // minus gap (e.g. SE -1.25, target -0.75 -> -1.00) follows the normal V5.3
@@ -294,9 +296,17 @@
     };
   }
 
+  function tieResolvedTowardSE(result) {
+    return Boolean(result && result.stockRule === EXACT_STOCK_TIE_RULE);
+  }
+
   /**
    * The one optional second recommendation for an ordinary (non-high-CYL)
    * pair: Sharper when available, otherwise Closer to your SPH, otherwise none.
+   * When an eye's exact stock tie was resolved toward the original SE (engine
+   * 5.3.1), the pair does not fall back to Closer to your SPH: the lens that
+   * used to be the Sharper option is now the primary pair, so the result
+   * converges instead of surfacing a different, unrelated alternative.
    */
   function calculatePairRecommendationChoice(rightResult, leftResult, options) {
     var settings = options || {};
@@ -315,6 +325,9 @@
       };
     }
     var closer = calculatePairCloserToSphPreference(rightResult, leftResult, settings);
+    if (closer.available && (tieResolvedTowardSE(rightResult) || tieResolvedTowardSE(leftResult))) {
+      return { available: false, reason: "exact_tie_resolved", eyes: closer.eyes };
+    }
     if (closer.available) {
       return {
         available: true,

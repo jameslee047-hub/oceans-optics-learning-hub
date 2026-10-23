@@ -236,33 +236,24 @@ test("J. checker Daniel: choosing the Alternative confirms closer_to_sph -3.50/-
   assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", -3.5, -3.5]);
 });
 
-test("A/J. checker screenshot tie -2.25 / -1.75: Balanced -1.50/-1.00 is the default; the Alternative -2.00/-1.50 saves closer_to_sph", { skip: skipDom }, async function () {
+test("A/J. checker exact ties -2.25 / -1.75 (5.3.1): both resolve toward SE, one pair -2.00/-1.50, saved as balanced with no choice evidence", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-2.25], [-1.75]);
   await settle();
-  assert.deepEqual(cards(page), ["balanced -1.50/-1.00", "sharper -2.00/-1.50"]);
-  assert.equal(checkedStrategy(page), "balanced");
-  assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"]);
-  assert.match(page.container.querySelector('.oo-rx-checker__choice[data-strategy="sharper"]').textContent, /Another valid lens option calculated from your prescription\. This gives a stronger correction than Balanced\./);
-  choose(page, "sharper");
-  await settle();
+  assert.deepEqual(cards(page), [], "converged: no option cards");
   assert.equal(shownPair(page), "-2.00/-1.50");
-  assert.equal(page.calls.length, 0);
   apply(page);
   await settle();
-  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", -2, -1.5]);
-
-  var fresh = await loadChecker(HANDLES.obsidian);
-  check(fresh, [-2.25], [-1.75]);
-  await settle();
-  apply(fresh);
-  await settle();
-  assert.deepEqual([confirms(fresh)[0].body.recommendationStrategy, confirms(fresh)[0].body.recommendedRight, confirms(fresh)[0].body.recommendedLeft], ["balanced", -1.5, -1]);
+  var body = confirms(page)[0].body;
+  assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", -2, -1.5]);
+  assert.equal(body.calculatorVersion, "5.3.1");
+  var snapshot = JSON.parse(JSON.stringify(page.applied[0].summary.v53Snapshot));
+  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.1", null, null, null]);
 });
 
 test("UI: checker result has the heading, the why block, the cards, what to expect and one collapsed maths section", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
-  check(page, [-2.25], [-1.75]);
+  check(page, [-3.75, -0.25, 35], [-3.5, -0.75, 175]);
   await settle();
   var result = page.container.querySelector("[data-checker-result]");
   var text = result.textContent;
@@ -296,21 +287,36 @@ test("UI: checker result has the heading, the why block, the cards, what to expe
 });
 
 test("checker: the mask's own stock decides whether the second option is offered", { skip: skipDom }, async function () {
-  // Lumix stocks -1.50 to -6.00: the Alternative -6.00/-6.00 is buildable for
-  // -6.25/-6.25 (Balanced -5.50), but not the -6.50 Alternative of -7.00/-7.00.
+  // Lumix stocks -1.50 to -6.00. -6.00/-0.75 (target -5.875, no tie): Balanced
+  // -5.50 and the strictly closer Alternative -6.00 are both buildable.
   var lumix = await loadChecker(HANDLES.lumix);
-  check(lumix, [-6.25], [-6.25]);
+  check(lumix, [-6, -0.75, 90], [-6, -0.75, 90]);
   await settle();
   assert.deepEqual(cards(lumix), ["balanced -5.50/-5.50", "sharper -6.00/-6.00"], "Balanced leads, the buildable Alternative follows");
   assert.equal(checkedStrategy(lumix), "balanced");
 
+  // -6.25/-6.25 (target -5.75) is an exact tie: 5.3.1 resolves it to -6.00,
+  // which converges and is still buildable on Lumix.
+  var tie = await loadChecker(HANDLES.lumix);
+  check(tie, [-6.25], [-6.25]);
+  await settle();
+  assert.deepEqual(cards(tie), []);
+  assert.equal(shownPair(tie), "-6.00/-6.00");
+  assert.ok(tie.container.querySelector(".oo-rx-checker__apply"));
+
+  // -6.75/-6.75 (target -6.25) is an exact tie that now resolves to -6.50,
+  // beyond Lumix stock: the checker says so and offers masks that can build it.
   var capped = await loadChecker(HANDLES.lumix);
   check(capped, [-6.75], [-6.75]);
   await settle();
-  assert.deepEqual(cards(capped), [], "no option this mask cannot supply");
-  assert.equal(shownPair(capped), "-6.00/-6.00");
-  assert.ok(capped.container.querySelector(".oo-rx-checker__apply"));
+  assert.deepEqual(cards(capped), []);
+  assert.equal(shownPair(capped), "-6.50/-6.50");
+  assert.equal(capped.container.querySelector(".oo-rx-checker__apply"), null);
+  assert.equal(capped.container.querySelector(".oo-rx-checker__notice").dataset.reason, "range");
+  assert.ok(capped.container.querySelector('[data-catalog-product="obsidian-nearsighted"]'), "Obsidian (to -9.00) is offered instead");
 
+  // -6.75/-0.25 (target -6.375) is NOT a tie: Balanced stays -6.00 and the
+  // -6.50 Alternative this mask cannot build is never offered.
   var unbuildable = await loadChecker(HANDLES.lumix);
   check(unbuildable, [-6.75, -0.25, 90], [-6.75, -0.25, 90]);
   await settle();
@@ -424,9 +430,9 @@ test("checker: multiple named prescriptions keep independent values and selectio
   assert.equal(label.value, "");
   label.value = "Airies";
   label.dispatchEvent(new page.win.Event("input"));
-  check(page, [-3.25], [-2.75]);
+  check(page, [-3.75, -0.25, 35], [-3.5, -0.75, 175]);
   await settle();
-  assert.deepEqual(cards(page), ["balanced -2.50/-2.00", "sharper -3.00/-2.50"]);
+  assert.deepEqual(cards(page), ["balanced -3.00/-3.00", "sharper -3.50/-3.50"]);
   assert.equal(checkedStrategy(page), "balanced");
   var tabs = Array.prototype.map.call(page.container.querySelectorAll(".oo-rx-checker__profile-tab"), function (tab) { return tab.textContent; });
   assert.deepEqual(tabs, ["James", "Airies"]);
@@ -446,12 +452,12 @@ test("checker: multiple named prescriptions keep independent values and selectio
 
   page.container.querySelector('.oo-rx-checker__profile-tab[data-prescription-id="rx-2"]').click();
   await settle();
-  assert.equal(shownPair(page), "-2.50/-2.00", "Airies keeps Balanced");
+  assert.equal(shownPair(page), "-3.00/-3.00", "Airies keeps Balanced");
   apply(page);
   await settle();
   var saved = confirms(page);
   assert.equal(saved.length, 1);
-  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft, saved[0].body.prescriptionLabel], ["balanced", -2.5, -2, "Airies"]);
+  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft, saved[0].body.prescriptionLabel], ["balanced", -3, -3, "Airies"]);
   assert.equal(page.applied[0].summary.prescriptionLabel, "Airies");
 
   page.container.querySelector('.oo-rx-checker__profile-remove[data-prescription-id="rx-2"]').click();

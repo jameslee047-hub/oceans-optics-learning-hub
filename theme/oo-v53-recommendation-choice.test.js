@@ -13,7 +13,7 @@ var path = require("node:path");
 var vm = require("node:vm");
 
 var ASSETS = path.join(__dirname, "base", "assets");
-var PROTECTED_ENGINE_SHA256 = "12d0731877e6b12e9d2a88845c5e930fef26ea9621275ef45e30d7ee04f95b65";
+var PROTECTED_ENGINE_SHA256 = "9b042428019e8aad0ecbf36cb2cb8bbf3600dfe327be4128110ff3ad70f29e34";
 var EPSILON = 1e-6;
 
 function loadModules() {
@@ -81,13 +81,15 @@ test("A. broadened Sharper: -7.00/-0.75 x015, -7.75/-1.25 x166", function () {
   assert.deepEqual([selection.recommendationStrategy, selection.recommendedRight, selection.recommendedLeft], ["sharper", -7, -8]);
 });
 
-test("B. exact midpoint -3.25 / -2.75 is unchanged", function () {
+test("B. exact midpoint -3.25 / -2.75 (5.3.1): both ties resolve toward SE, -3.00 / -2.50, and the pair converges", function () {
   var right = eye(-3.25);
   var left = eye(-2.75);
-  assert.deepEqual(primary(right, left), ["-2.50", "-2.00"]);
-  assert.deepEqual(second(choiceFor(right, left)), ["sharper", "-3.00", "-2.50"]);
-  var compat = V53.choice.calculatePairMidpointChoice(right, left, {});
-  assert.deepEqual([compat.sharper.right, compat.sharper.left], ["-3.00", "-2.50"], "compatibility API (Quiz) gives the same pair");
+  assert.deepEqual([right.preSnapTarget, left.preSnapTarget], [-2.75, -2.25]);
+  assert.deepEqual(primary(right, left), ["-3.00", "-2.50"]);
+  assert.deepEqual([right.stockRule, left.stockRule], ["exact-stock-tie-closer-to-se", "exact-stock-tie-closer-to-se"]);
+  // Nothing else to offer: the closer-to-SPH preference matches the resolved lenses.
+  assert.deepEqual(second(choiceFor(right, left)), ["none", "no_alternative"]);
+  assert.equal(V53.choice.calculatePairMidpointChoice(right, left, {}).available, false, "compatibility API (Quiz) agrees");
 });
 
 test("C. one-eye Sharper changes only the qualifying eye", function () {
@@ -97,11 +99,12 @@ test("C. one-eye Sharper changes only the qualifying eye", function () {
   assert.deepEqual(second(choiceFor(right, left)), ["sharper", "-7.00", "-3.50"]);
 });
 
-test("D. recent low-region fix -1.25 / -1.75 is intact", function () {
+test("D. low region -1.25 / -1.75: the gap eye keeps -1.00; the tie eye resolves to -1.50; converged", function () {
   var right = eye(-1.25);
   var left = eye(-1.75);
-  assert.deepEqual(primary(right, left), ["-1.00", "-1.00"]);
-  assert.deepEqual(second(choiceFor(right, left)), ["sharper", "-1.00", "-1.50"]);
+  assert.deepEqual(primary(right, left), ["-1.00", "-1.50"]);
+  assert.equal(right.stockRule, "plano-to-first-minus-gap");
+  assert.deepEqual(second(choiceFor(right, left)), ["none", "no_alternative"]);
 });
 
 test("E. primary already closer: no Sharper (target -3.625 is nearer -3.50)", function () {
@@ -197,38 +200,37 @@ test("ranking B. -7.00/-0.75, -7.75/-1.25: Balanced -6.50/-7.50 default, Sharper
   assert.deepEqual(second(choiceFor(eye(-7, -0.75, 15), eye(-7.75, -1.25, 166))), ["sharper", "-7.00", "-8.00"]);
 });
 
-test("ranking A2. screenshot tie -2.25 / -1.75: Balanced -1.50/-1.00 default; Alternative -2.00/-1.50", function () {
+test("ranking A2. exact ties -2.25 / -1.75 (targets -1.75 / -1.25) resolve to -2.00 / -1.50; no second option", function () {
   var right = eye(-2.25);
   var left = eye(-1.75);
   assert.deepEqual([right.preSnapTarget, left.preSnapTarget], [-1.75, -1.25]);
-  assert.deepEqual(primary(right, left), ["-1.50", "-1.00"], "the engine pair is unchanged");
-  var choice = choiceFor(right, left);
-  assert.equal(choice.sharperStrictlyCloser, false, "an exact tie");
-  assert.deepEqual(second(choice), ["sharper", "-2.00", "-1.50"]);
-  assert.deepEqual(defaultOf(right, left), ["balanced", "-1.50/-1.00", "balanced,sharper"]);
-  var entries = V53.choice.choiceEntries(choice, right, left);
-  assert.deepEqual(Array.from(entries, function (e) { return [e.title, e.badge]; }), [["Balanced", "Recommended"], ["Alternative", ""]]);
-  var model = V53.choice.explanationModel({ rightResult: right, leftResult: left, recommendation: V53.choice.recommendationSelection(choice, "sharper"), choice: choice });
-  assert.equal(model.expectation, "This gives a stronger correction than Balanced. Balanced remains our recommended all round option.");
+  assert.deepEqual(primary(right, left), ["-2.00", "-1.50"]);
+  assert.deepEqual(defaultOf(right, left), ["balanced", "-2.00/-1.50", "no second option"]);
+  // Proof of the tie: both bracketing lenses are 0.25 D from the target, and the winner is nearer the SE.
+  var tie = right.tieCandidates;
+  assert.deepEqual(JSON.parse(JSON.stringify(tie.map(function (c) { return [c.power, c.distanceFromTarget, c.distanceFromSE]; }))), [[-1.5, 0.25, 0.75], [-2, 0.25, 0.25]]);
 });
 
-test("ranking C. exact midpoint -3.25 / -2.75: Balanced default, the stronger valid pair stays offered", function () {
+test("ranking C. exact midpoint -3.25 / -2.75: the primary pair is the former stronger pair; nothing else is offered", function () {
   var right = eye(-3.25);
   var left = eye(-2.75);
   assert.deepEqual([right.preSnapTarget, left.preSnapTarget], [-2.75, -2.25]);
-  assert.equal(choiceFor(right, left).sharperStrictlyCloser, false);
-  assert.deepEqual(defaultOf(right, left), ["balanced", "-2.50/-2.00", "balanced,sharper"]);
-  assert.deepEqual(second(choiceFor(right, left)), ["sharper", "-3.00", "-2.50"]);
+  assert.deepEqual(defaultOf(right, left), ["balanced", "-3.00/-2.50", "no second option"]);
 });
 
-test("ranking: one eye strictly closer, other eye tied: Balanced is default; the unchanged eye stays identical in Sharper", function () {
-  [[eye(-7, -0.75, 15), eye(-3.75, -0.75), "-6.50/-3.50", "-7.00", "-3.50"],
-   [eye(-7, -0.75, 15), eye(-3.25), "-6.50/-2.50", "-7.00", "-3.00"],
-   [eye(-3.25), eye(-3.25), "-2.50/-2.50", "-3.00", "-3.00"],
-   [eye(-3.25), eye(-3.75, -0.75), "-2.50/-3.50", "-3.00", "-3.50"]].forEach(function (c) {
-    assert.deepEqual(defaultOf(c[0], c[1]), ["balanced", c[2], "balanced,sharper"]);
-    assert.deepEqual(second(choiceFor(c[0], c[1])), ["sharper", c[3], c[4]]);
-  });
+test("ranking: one eye strictly closer, other eye tied: Balanced is default; a tie eye keeps its resolved lens in the Alternative", function () {
+  // Strictly closer Sharper eye (-7.00/-0.75, target -6.375) still offers -7.00.
+  assert.deepEqual(defaultOf(eye(-7, -0.75, 15), eye(-3.75, -0.75)), ["balanced", "-6.50/-3.50", "balanced,sharper"]);
+  assert.deepEqual(second(choiceFor(eye(-7, -0.75, 15), eye(-3.75, -0.75))), ["sharper", "-7.00", "-3.50"]);
+  // Tie eye -3.25 resolves to -3.00 in Balanced and keeps it in the Alternative.
+  assert.deepEqual(defaultOf(eye(-7, -0.75, 15), eye(-3.25)), ["balanced", "-6.50/-3.00", "balanced,sharper"]);
+  assert.deepEqual(second(choiceFor(eye(-7, -0.75, 15), eye(-3.25))), ["sharper", "-7.00", "-3.00"]);
+  // Only tie eyes (or a tie eye plus no Sharper): converged, no fallback alternative.
+  assert.deepEqual(defaultOf(eye(-3.25), eye(-3.25)), ["balanced", "-3.00/-3.00", "no second option"]);
+  assert.deepEqual(defaultOf(eye(-3.25), eye(-3.75, -0.75)), ["balanced", "-3.00/-3.50", "no second option"]);
+  assert.deepEqual(second(choiceFor(eye(-3.25), eye(-3.75, -0.75))), ["none", "no_alternative"]);
+  // #336314: here the closer-to-SPH fallback WOULD offer R -2.00 / L -1.50, so the tie rule suppresses it.
+  assert.deepEqual(second(choiceFor(eye(-2, 0.5, 144), eye(-2.5, 0.75, 156))), ["none", "exact_tie_resolved"]);
 });
 
 test("ranking D. stronger candidate farther away: Balanced only", function () {
@@ -400,13 +402,16 @@ test("grid sweep: ordinary-myopia default-ranking statistics", function () {
     balancedDefault: balancedDefault,
     strictCloser: strict,
     strictCloserPct: +(100 * strict / total).toFixed(1),
-    exactTiesPromotedToSharper: tie,
+    exactTiesLeftForSharper: tie,
     exactTiesPct: +(100 * tie / total).toFixed(1),
     maxStockSteps: maxSteps,
     protectedEyesSuppressed: protectedEyes.length
   };
   if (process.env.OO_SWEEP_REPORT) console.log(JSON.stringify(report));
-  assert.ok(sharper > 0 && strict > 0 && tie > 0);
+  // 5.3.1: an exact tie is resolved in the primary lens, so no Sharper pair
+  // is ever an exact tie; strictly closer Sharper pairs are still offered.
+  assert.ok(sharper > 0 && strict > 0);
+  assert.equal(tie, 0, "no exact tie is left for Sharper");
   assert.equal(strict + tie, sharper);
   assert.equal(balancedDefault, sharper, "Balanced is the default for every offered Sharper pair");
   assert.ok(maxSteps <= 1);

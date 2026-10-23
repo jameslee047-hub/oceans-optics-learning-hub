@@ -43,7 +43,16 @@
  * SE exactly -0.50 stays manual review; SE closer to zero stays 0.00; SE
  * stronger than -1.00 uses the unchanged minus selection.
  *
- * Version: 5.3.0-experimental
+ * EXACT STOCK TIE (5.3.1, 2026-10-22): when the underwater-adjusted target
+ * lies exactly halfway between two stocked lenses, the lens CLOSER TO THE
+ * ORIGINAL SPHERICAL EQUIVALENT wins (resolveExactStockTie). The 0.50 D
+ * underwater adjustment stays the intended reduction; an exact stock tie no
+ * longer removes a further 0.25 D on top of it. One sign-independent rule
+ * for minus and plus. Only a genuine mathematical tie changes anything: the
+ * directional minus rule still applies to every non-tie target, and the
+ * low-minus, plano gap and plano crossover rules run first, unchanged.
+ *
+ * Version: 5.3.1
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
  */
@@ -81,7 +90,7 @@
   // ==========================================================================
 
   var V53_CONFIG = {
-    version: "5.3.0-experimental",
+    version: "5.3.1",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE
@@ -358,6 +367,30 @@
       stockCandidates: stockCandidates,
       rejectedStrongerCandidates: stockCandidates.filter(function (candidate) { return !candidate.eligible; })
     };
+  }
+
+  /**
+   * Exact stock tie rule (5.3.1). `selected` is the power the ordinary rule
+   * chose and `other` the bracketing stock power on the other side of the
+   * target. Only when both are EXACTLY equally distant from the target
+   * (within EPSILON; stock powers and targets are exact quarter/eighth
+   * diopter values) does the candidate closer to the original spherical
+   * equivalent `se` win. If they are also equally distant from `se`, the
+   * existing choice is kept, so results stay deterministic. Sign independent.
+   *
+   * @returns {{power:number, tieCandidates:Array|null}}
+   */
+  function resolveExactStockTie(selected, other, target, se) {
+    if (selected === null || other === null || other === undefined) return { power: selected, tieCandidates: null };
+    if (Math.abs(other - selected) < EPSILON) return { power: selected, tieCandidates: null };
+    var selectedDistance = Math.abs(selected - target);
+    var otherDistance = Math.abs(other - target);
+    if (Math.abs(selectedDistance - otherDistance) >= EPSILON) return { power: selected, tieCandidates: null };
+    var tieCandidates = [selected, other].map(function (power) {
+      return { power: power, distanceFromTarget: Math.abs(power - target), distanceFromSE: Math.abs(power - se) };
+    });
+    var power = tieCandidates[1].distanceFromSE < tieCandidates[0].distanceFromSE - EPSILON ? other : selected;
+    return { power: power, tieCandidates: tieCandidates };
   }
 
   /**
@@ -642,6 +675,7 @@
   // ==========================================================================
 
   var PLUS_NEAREST_STOCK_RULE = "plus-nearest-stock";
+  var EXACT_STOCK_TIE_RULE = "exact-stock-tie-closer-to-se";
 
   function plusNearestStockSelection(target, se, availablePowers) {
     var corrective = weakestCorrectivePower(availablePowers);
@@ -655,10 +689,15 @@
 
     var nearest = nearestAvailablePowerTowardZero(target, availablePowers);
     var power = nearest.power;
+    var tieCandidates = null;
     if (nearest.tieCandidates) {
-      nearest.tieCandidates.forEach(function (candidate) {
-        if (Math.abs(candidate.power) > Math.abs(power) + EPSILON) power = candidate.power;
-      });
+      // Exact tie: the candidate closer to the original SE wins (5.3.1). For
+      // plus this is the stronger lens, as before.
+      var tied = nearest.tieCandidates.map(function (candidate) { return candidate.power; });
+      var other = tied.filter(function (candidate) { return Math.abs(candidate - power) >= EPSILON; })[0];
+      var tie = resolveExactStockTie(power, other === undefined ? null : other, target, se);
+      power = tie.power;
+      tieCandidates = tie.tieCandidates;
     }
     var ordered = availablePowers.slice().sort(function (a, b) {
       return Math.abs(a - target) - Math.abs(b - target) || Math.abs(a) - Math.abs(b);
@@ -674,11 +713,11 @@
       reason:
         "Farsighted stock selection: the nearest stocked plus power to the continuous target (" +
         formatSigned(target) +
-        ") is selected; an exact tie goes to the stronger lens. Final stock power: " +
+        ") is selected; an exact tie goes to the lens closer to the original spherical equivalent. Final stock power: " +
         formatSigned(power) +
         ".",
       candidates: null,
-      tieCandidates: nearest.tieCandidates,
+      tieCandidates: tieCandidates,
       stockCandidates: stockCandidates,
       rejectedStrongerCandidates: null
     };
@@ -715,14 +754,25 @@
     }
 
     var selection = directionalStockPowerTowardZero(target, availablePowers);
+    // Exact stock tie (5.3.1): the rejected stronger bracketing lens wins only
+    // when it is exactly as close to the target as the directional choice and
+    // closer to the original SE. Every non-tie target keeps the directional rule.
+    var rejectedStronger = (selection.rejectedStrongerCandidates || [])[0];
+    var tie = resolveExactStockTie(selection.power, rejectedStronger ? rejectedStronger.power : null, target, se);
+    var tieWonByStronger = tie.tieCandidates && Math.abs(tie.power - selection.power) >= EPSILON;
     return {
-      power: selection.power,
+      power: tie.power,
       stockStatus: "OK",
-      reason: null,
+      rule: tieWonByStronger ? EXACT_STOCK_TIE_RULE : undefined,
+      reason: tieWonByStronger
+        ? "Exact stock tie: the continuous target (" + formatSigned(target) + ") is exactly halfway between " +
+          formatSigned(selection.power) + " and " + formatSigned(tie.power) + ", so " + formatSigned(tie.power) +
+          " is selected because it is closer to the original spherical equivalent (" + se.toFixed(3) + ")."
+        : null,
       candidates: null,
-      tieCandidates: null,
+      tieCandidates: tie.tieCandidates,
       stockCandidates: selection.stockCandidates,
-      rejectedStrongerCandidates: selection.rejectedStrongerCandidates
+      rejectedStrongerCandidates: tieWonByStronger ? [] : selection.rejectedStrongerCandidates
     };
   }
 
@@ -800,7 +850,7 @@
 
     var selection = selectStockPower(preSnapTarget, se, availablePowers);
     var ooAdjustment = baseAdjustment;
-    if (selection.rule === "plano-to-first-minus-gap" || selection.rule === PLUS_NEAREST_STOCK_RULE || selection.rule === LOW_MINUS_CHOICE_RULE) {
+    if (selection.rule === "plano-to-first-minus-gap" || selection.rule === PLUS_NEAREST_STOCK_RULE || selection.rule === LOW_MINUS_CHOICE_RULE || selection.rule === EXACT_STOCK_TIE_RULE) {
       ooAdjustment += " V5.3 " + selection.reason;
     } else if (selection.reason) {
       ooAdjustment +=
@@ -1125,6 +1175,8 @@
     lowMinusSofterAlternative: lowMinusSofterAlternative,
     LOW_MINUS_CHOICE_RULE: LOW_MINUS_CHOICE_RULE,
     PLUS_NEAREST_STOCK_RULE: PLUS_NEAREST_STOCK_RULE,
+    EXACT_STOCK_TIE_RULE: EXACT_STOCK_TIE_RULE,
+    resolveExactStockTie: resolveExactStockTie,
     computeContinuousTarget: computeContinuousTarget,
     nextWeakerAvailablePower: nextWeakerAvailablePower,
     weakestCorrectivePower: weakestCorrectivePower,
