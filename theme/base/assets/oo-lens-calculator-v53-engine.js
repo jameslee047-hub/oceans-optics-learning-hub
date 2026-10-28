@@ -42,7 +42,14 @@
  * to minus and plus. The low-minus, plano gap and plano crossover rules still
  * run first, unchanged.
  *
- * Version: 5.3.2
+ * MIXED-SIGN PLANO FALLBACK (5.3.3, 2026-10-28): after both eyes complete
+ * the unchanged Balanced calculation, a minus/plus pair that no current mask
+ * can build may fall back to plano in both eyes. The fallback applies only
+ * when plano is strictly closer than the selected stock lens to each eye's
+ * continuous underwater target. It is all-or-nothing: no one-eye compromise
+ * is introduced and the normal per-eye calculation remains unchanged.
+ *
+ * Version: 5.3.3
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
  */
@@ -80,7 +87,7 @@
   // ==========================================================================
 
   var V53_CONFIG = {
-    version: "5.3.2",
+    version: "5.3.3",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE
@@ -1067,17 +1074,96 @@
     };
   }
 
+  var MIXED_SIGN_PLANO_FALLBACK_RULE = "mixed-sign-plano-fallback";
+
+  function isMixedSignPair(rightPower, leftPower) {
+    var right = Number(rightPower);
+    var left = Number(leftPower);
+    if (!Number.isFinite(right) || !Number.isFinite(left)) return false;
+    return (right < -EPSILON && left > EPSILON) || (right > EPSILON && left < -EPSILON);
+  }
+
+  // Current mask families are stocked as either minus-or-plano or
+  // plus-or-plano. None can combine a minus lens with a plus lens.
+  function pairBuildableOnAnyCurrentMask(rightPower, leftPower) {
+    return rightPower !== null && rightPower !== undefined && leftPower !== null && leftPower !== undefined &&
+      Number.isFinite(Number(rightPower)) && Number.isFinite(Number(leftPower)) &&
+      !isMixedSignPair(rightPower, leftPower);
+  }
+
+  function planoStrictlyCloserToTarget(result) {
+    var target = result && Number(result.preSnapTarget);
+    var selected = result && Number(result.finalStockPower);
+    if (!Number.isFinite(target) || !Number.isFinite(selected)) return false;
+    return Math.abs(target) < Math.abs(target - selected) - EPSILON;
+  }
+
+  function planoFallbackEye(result) {
+    var adjusted = Object.assign({}, result);
+    adjusted.normalFinalStockPower = result.finalStockPower;
+    adjusted.normalRecommendation = result.recommendation;
+    adjusted.normalStockRule = result.stockRule;
+    adjusted.normalLowMinusChoice = result.lowMinusChoice;
+    adjusted.normalAlternativePower = result.alternativePower;
+    adjusted.normalOOAdjustment = result.ooAdjustment;
+    adjusted.finalStockPower = 0;
+    adjusted.recommendation = "0.00";
+    adjusted.stockRule = MIXED_SIGN_PLANO_FALLBACK_RULE;
+    adjusted.lowMinusChoice = false;
+    adjusted.alternativePower = null;
+    adjusted.ooAdjustment = result.ooAdjustment +
+      " V5.3.3 pair-level buildability fallback: plano is strictly closer to this eye's continuous underwater target.";
+    adjusted.effectiveWeakeningFromReference = Math.round(Math.abs(result.sphericalEquivalent) * 1e6) / 1e6;
+    return adjusted;
+  }
+
+  function mixedSignPlanoFallback(right, left) {
+    var normalRight = right && right.finalStockPower;
+    var normalLeft = left && left.finalStockPower;
+    var detected = Boolean(right && left && right.valid && left.valid &&
+      isMixedSignPair(normalRight, normalLeft) &&
+      !pairBuildableOnAnyCurrentMask(normalRight, normalLeft));
+    var rightPlanoCloser = detected && planoStrictlyCloserToTarget(right);
+    var leftPlanoCloser = detected && planoStrictlyCloserToTarget(left);
+    var applied = Boolean(detected && rightPlanoCloser && leftPlanoCloser);
+    return {
+      rule: MIXED_SIGN_PLANO_FALLBACK_RULE,
+      detected: detected,
+      applied: applied,
+      normalPair: detected ? { right: normalRight, left: normalLeft } : null,
+      finalPair: applied ? { right: 0, left: 0 } : null,
+      comparisons: detected ? {
+        right: {
+          target: right.preSnapTarget,
+          planoDistance: Math.abs(right.preSnapTarget),
+          selectedDistance: Math.abs(right.preSnapTarget - normalRight),
+          planoStrictlyCloser: rightPlanoCloser
+        },
+        left: {
+          target: left.preSnapTarget,
+          planoDistance: Math.abs(left.preSnapTarget),
+          selectedDistance: Math.abs(left.preSnapTarget - normalLeft),
+          planoStrictlyCloser: leftPlanoCloser
+        }
+      } : null
+    };
+  }
+
   function calculatePrescriptionPairV53(rawRightInput, rawLeftInput) {
-    var right = calculateEyeRecommendationV53(rawRightInput, "Right (OD)");
-    var left = calculateEyeRecommendationV53(rawLeftInput, "Left (OS)");
-    var errors = [].concat(right.errors || [], left.errors || []);
-    var valid = right.valid && left.valid;
+    var normalRight = calculateEyeRecommendationV53(rawRightInput, "Right (OD)");
+    var normalLeft = calculateEyeRecommendationV53(rawLeftInput, "Left (OS)");
+    var errors = [].concat(normalRight.errors || [], normalLeft.errors || []);
+    var valid = normalRight.valid && normalLeft.valid;
+    var fallback = mixedSignPlanoFallback(normalRight, normalLeft);
+    var right = fallback.applied ? planoFallbackEye(normalRight) : normalRight;
+    var left = fallback.applied ? planoFallbackEye(normalLeft) : normalLeft;
     return {
       right: right,
       left: left,
       valid: valid,
       errors: errors,
-      softerAlternative: valid ? lowMinusSofterAlternative(right, left) : null
+      softerAlternative: valid && !fallback.applied ? lowMinusSofterAlternative(right, left) : null,
+      mixedSignPlanoFallback: fallback
     };
   }
 
@@ -1162,6 +1248,11 @@
     plusNearestStockSelection: plusNearestStockSelection,
     lowMinusChoiceSelection: lowMinusChoiceSelection,
     lowMinusSofterAlternative: lowMinusSofterAlternative,
+    isMixedSignPair: isMixedSignPair,
+    pairBuildableOnAnyCurrentMask: pairBuildableOnAnyCurrentMask,
+    planoStrictlyCloserToTarget: planoStrictlyCloserToTarget,
+    mixedSignPlanoFallback: mixedSignPlanoFallback,
+    MIXED_SIGN_PLANO_FALLBACK_RULE: MIXED_SIGN_PLANO_FALLBACK_RULE,
     LOW_MINUS_CHOICE_RULE: LOW_MINUS_CHOICE_RULE,
     PLUS_NEAREST_STOCK_RULE: PLUS_NEAREST_STOCK_RULE,
     EXACT_STOCK_TIE_RULE: EXACT_STOCK_TIE_RULE,

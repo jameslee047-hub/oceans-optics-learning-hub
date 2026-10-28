@@ -1,6 +1,6 @@
 "use strict";
 
-// V5.3.2 nearest-stock regression fix. Ordinary eyes choose the stocked lens
+// V5.3.2 nearest-stock regression fix, retained by V5.3.3. Ordinary eyes choose the stocked lens
 // nearest the underwater target; only an exact midpoint is resolved toward the
 // original spherical equivalent. Special low-minus / plano safety rules remain.
 // Runs the storefront assets exactly as Shopify loads them.
@@ -28,9 +28,9 @@ function eye(sphere, cylinder, axis) {
 }
 function plain(value) { return JSON.parse(JSON.stringify(value)); }
 
-test("calculator version is 5.3.2 (snapshot schemaVersion is unaffected)", function () {
-  assert.equal(V53.VERSION, "5.3.2");
-  assert.equal(eye(-2).version, "5.3.2");
+test("calculator version is 5.3.3 (snapshot schemaVersion is unaffected)", function () {
+  assert.equal(V53.VERSION, "5.3.3");
+  assert.equal(eye(-2).version, "5.3.3");
 });
 
 test("#336314 OD -2.00 / +0.50 x144, OS -2.50 / +0.75 x156: right tie -1.00 / -1.50 resolves to -1.50; Balanced and Alternative converge to -1.50 / -1.50", function () {

@@ -841,8 +841,9 @@
       var rightInput = rawPrescriptionFor(document.querySelector('[data-eye="right"]'));
       var leftInput = rawPrescriptionFor(document.querySelector('[data-eye="left"]'));
 
-      var rightResult = window.OOLensCalculatorV53.calculateEyeRecommendationV53(rightInput, "Right (OD)");
-      var leftResult = window.OOLensCalculatorV53.calculateEyeRecommendationV53(leftInput, "Left (OS)");
+      var pairResult = window.OOLensCalculatorV53.calculatePrescriptionPairV53(rightInput, leftInput);
+      var rightResult = pairResult.right;
+      var leftResult = pairResult.left;
 
       var highCylinderPreview = showResults(rightResult, leftResult);
       var showingHighCylinderSelection = Boolean(
@@ -883,6 +884,7 @@
         prescription: confirmedPrescriptionFromRaw(rightInput, leftInput),
         rightResult: rightResult,
         leftResult: leftResult,
+        mixedSignPlanoFallback: pairResult.mixedSignPlanoFallback,
         highCylinderPreview: highCylinderPreview,
         midpointChoice: showingMidpointSelection ? midpointChoice : null,
         activeRecommendation: getActiveRecommendation()
