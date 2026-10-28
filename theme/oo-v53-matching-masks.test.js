@@ -288,20 +288,20 @@ test("normal pair with no second option: masks show immediately and nothing is s
   assert.equal(confirmCalls(page)[0].body.recommendationStrategy, "balanced");
 });
 
-test("two options (Daniel, target -3.375, no tie): Balanced masks show at once with the Alternative visible, no See Matching Masks step, cards switch without saving", { skip: skipDom }, async function () {
+test("two options: nearest Balanced masks show at once with a printed-SPH Alternative", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, false);
   assert.equal(page.doc.getElementById("oo-v52-midpoint-use"), null, "no See Matching Masks button");
   assert.equal(page.doc.getElementById("oo-v52-midpoint-balanced").checked, true, "Balanced is selected by default");
   assert.equal(page.doc.getElementById("oo-v52-midpoint-sharper").checked, false);
   assert.equal(page.doc.getElementById("oo-v52-products").hidden, false);
-  assert.deepEqual(cardPairs(page.doc), ["R -3.00L -3.00"]);
+  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -8.00"]);
 
   chooseCard(page.doc, "sharper");
   await settle();
-  assert.deepEqual(cardPairs(page.doc), ["R -3.50L -3.50"]);
+  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -7.50"]);
   for (var i = 0; i < 5; i += 1) chooseCard(page.doc, i % 2 ? "balanced" : "sharper");
   await settle();
   assert.equal(page.calls.length, 0, "no backend request while previewing");
@@ -320,7 +320,7 @@ test("exact midpoint -3.25 / -2.75 (targets -2.75 / -2.25): both ties resolve to
 
 test("two options: choosing a mask while the Alternative is selected confirms it once", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
   chooseCard(page.doc, "sharper");
   await settle();
@@ -334,20 +334,20 @@ test("two options: choosing a mask while the Alternative is selected confirms it
   assert.equal(confirms.length, 1);
   assert.equal(page.calls.filter(function (call) { return /\/manual\/init$/.test(call.url); }).length, 1);
   assert.equal(confirms[0].body.recommendationStrategy, "closer_to_sph", "the Alternative is saved under its canonical id");
-  assert.equal(confirms[0].body.recommendedRight, -3.5);
-  assert.equal(confirms[0].body.recommendedLeft, -3.5);
+  assert.equal(confirms[0].body.recommendedRight, -7);
+  assert.equal(confirms[0].body.recommendedLeft, -7.5);
   assert.equal(page.opened.length, 1);
   var url = new URL(page.opened[0].location.href);
   assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
-  assert.deepEqual(cardPairs(page.doc), ["R -3.50L -3.50"]);
-  assert.equal(eyeText(page.doc, "right"), "-3.50");
-  assert.equal(eyeText(page.doc, "left"), "-3.50");
+  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -7.50"]);
+  assert.equal(eyeText(page.doc, "right"), "-7.00");
+  assert.equal(eyeText(page.doc, "left"), "-7.50");
 });
 
 test("two options: choosing a mask after selecting Balanced again confirms balanced", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
   chooseCard(page.doc, "sharper");
   await settle();
@@ -358,8 +358,8 @@ test("two options: choosing a mask after selecting Balanced again confirms balan
   var confirms = confirmCalls(page);
   assert.equal(confirms.length, 1);
   assert.equal(confirms[0].body.recommendationStrategy, "balanced");
-  assert.equal(confirms[0].body.recommendedRight, -3);
-  assert.equal(confirms[0].body.recommendedLeft, -3);
+  assert.equal(confirms[0].body.recommendedRight, -7);
+  assert.equal(confirms[0].body.recommendedLeft, -8);
 });
 
 test("one-eye exact ties: only the tie eye moves toward its SE and the result converges (no second option)", { skip: skipDom }, async function () {

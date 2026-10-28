@@ -9,22 +9,9 @@
  *
  * V5.3 keeps V5.2's normalization, sphere-only references, continuous
  * 0.50D underwater adjustment toward zero, CYL bands and warnings, and
- * plano-crossover handling. Its only methodology change is the ordinary
- * stock selection performed after the continuous target is calculated.
- *
- * Instead of selecting the nearest stocked power and using toward zero only
- * as an exact-tie rule, V5.3 excludes any candidate whose absolute power is
- * stronger than the continuous target. It then selects the closest eligible
- * stocked power. Exact stock targets remain exact. This directional snap is
- * sign-safe because eligibility is expressed as:
- *
- *   abs(stock power) <= abs(continuous target)
- *
- * The stock grid can make the total difference between the sphere-only
- * reference and final stock lens exceed 0.75D. For example, reference
- * -7.875 becomes target -7.375 after the 0.50D adjustment, then snaps to
- * -7.00 because -7.50 is stronger than the target: an effective 0.875D
- * weakening from the original reference.
+ * plano-crossover handling. Ordinary stock selection is nearest to the
+ * continuous target. Only an exact stock midpoint is resolved by the
+ * candidate closer to the original spherical equivalent.
  *
  * FARSIGHTED STOCK (revised 2026-09-30): for positive (hyperopic)
  * prescriptions the directional rule above no longer applies. Farsighted
@@ -43,16 +30,19 @@
  * SE exactly -0.50 stays manual review; SE closer to zero stays 0.00; SE
  * stronger than -1.00 uses the unchanged minus selection.
  *
- * EXACT STOCK TIE (5.3.1, 2026-10-22): when the underwater-adjusted target
+ * NEAREST STOCK REGRESSION FIX (5.3.2, 2026-10-28): 5.3.1 still used the
+ * older directional minus selector for non-ties, excluding a closer stocked
+ * lens whenever it was stronger than the continuous target. That contradicted
+ * the Balanced policy and made, for example, target -1.375 select -1.00 over
+ * the nearer -1.50. Ordinary minus selection now chooses the nearest stocked
+ * lens first, matching plus selection. When the underwater-adjusted target
  * lies exactly halfway between two stocked lenses, the lens CLOSER TO THE
  * ORIGINAL SPHERICAL EQUIVALENT wins (resolveExactStockTie). The 0.50 D
- * underwater adjustment stays the intended reduction; an exact stock tie no
- * longer removes a further 0.25 D on top of it. One sign-independent rule
- * for minus and plus. Only a genuine mathematical tie changes anything: the
- * directional minus rule still applies to every non-tie target, and the
- * low-minus, plano gap and plano crossover rules run first, unchanged.
+ * underwater adjustment stays unchanged. One sign-independent rule applies
+ * to minus and plus. The low-minus, plano gap and plano crossover rules still
+ * run first, unchanged.
  *
- * Version: 5.3.1
+ * Version: 5.3.2
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
  */
@@ -90,7 +80,7 @@
   // ==========================================================================
 
   var V53_CONFIG = {
-    version: "5.3.1",
+    version: "5.3.2",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE
@@ -726,7 +716,7 @@
   /**
    * Unified final stock-power selector used by every V5.3 CYL band. Chooses
    * between the plano-crossover comparison (see above) and ordinary
-   * directional stock selection, based on whether SE actually falls
+   * nearest stock selection, based on whether SE actually falls
    * inside the plano-crossover zone for its refractive side.
    *
    * @param {number} target - the band's continuous pre-snap target
@@ -753,26 +743,35 @@
       return crossover;
     }
 
-    var selection = directionalStockPowerTowardZero(target, availablePowers);
-    // Exact stock tie (5.3.1): the rejected stronger bracketing lens wins only
-    // when it is exactly as close to the target as the directional choice and
-    // closer to the original SE. Every non-tie target keeps the directional rule.
-    var rejectedStronger = (selection.rejectedStrongerCandidates || [])[0];
-    var tie = resolveExactStockTie(selection.power, rejectedStronger ? rejectedStronger.power : null, target, se);
-    var tieWonByStronger = tie.tieCandidates && Math.abs(tie.power - selection.power) >= EPSILON;
+    var nearest = nearestAvailablePowerTowardZero(target, availablePowers);
+    var power = nearest.power;
+    var tieCandidates = null;
+    if (nearest.tieCandidates) {
+      var tied = nearest.tieCandidates.map(function (candidate) { return candidate.power; });
+      var other = tied.filter(function (candidate) { return Math.abs(candidate - power) >= EPSILON; })[0];
+      var tie = resolveExactStockTie(power, other === undefined ? null : other, target, se);
+      power = tie.power;
+      tieCandidates = tie.tieCandidates;
+    }
+    var ordered = availablePowers.slice().sort(function (a, b) {
+      return Math.abs(a - target) - Math.abs(b - target) || Math.abs(a) - Math.abs(b);
+    });
+    var stockCandidates = ordered.slice(0, 2).map(function (candidate) {
+      return { power: candidate, distanceFromTarget: Math.abs(candidate - target) };
+    });
     return {
-      power: tie.power,
+      power: power,
       stockStatus: "OK",
-      rule: tieWonByStronger ? EXACT_STOCK_TIE_RULE : undefined,
-      reason: tieWonByStronger
+      rule: tieCandidates ? EXACT_STOCK_TIE_RULE : undefined,
+      reason: tieCandidates
         ? "Exact stock tie: the continuous target (" + formatSigned(target) + ") is exactly halfway between " +
-          formatSigned(selection.power) + " and " + formatSigned(tie.power) + ", so " + formatSigned(tie.power) +
+          formatSigned(tieCandidates[0].power) + " and " + formatSigned(tieCandidates[1].power) + ", so " + formatSigned(power) +
           " is selected because it is closer to the original spherical equivalent (" + se.toFixed(3) + ")."
         : null,
       candidates: null,
-      tieCandidates: tie.tieCandidates,
-      stockCandidates: selection.stockCandidates,
-      rejectedStrongerCandidates: tieWonByStronger ? [] : selection.rejectedStrongerCandidates
+      tieCandidates: tieCandidates,
+      stockCandidates: stockCandidates,
+      rejectedStrongerCandidates: []
     };
   }
 
@@ -860,17 +859,7 @@
         selection.reason;
     } else {
       var rejected = selection.rejectedStrongerCandidates || [];
-      ooAdjustment +=
-        " V5.3 directional stock selection: only powers with absolute power no greater than the continuous target are eligible." +
-        (rejected.length
-          ? " Rejected stronger candidate" +
-            (rejected.length === 1 ? " " : "s ") +
-            rejected.map(function (c) { return formatSigned(c.power); }).join(" and ") +
-            "."
-          : "") +
-        " Final stock power: " +
-        formatSigned(selection.power) +
-        ".";
+      ooAdjustment += " Final stock power: " + formatSigned(selection.power) + ".";
     }
 
     return {

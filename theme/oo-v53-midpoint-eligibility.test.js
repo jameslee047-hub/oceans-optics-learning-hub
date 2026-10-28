@@ -125,7 +125,7 @@ test("8. farsighted behaviour is unchanged", function () {
   });
 });
 
-test("no Sharper lens ever exceeds its eye's SE, and no protected eye appears in an offered pair", function () {
+test("nearest-stock Balanced leaves no strictly closer Sharper pair on the practical grid", function () {
   var eyes = [];
   for (var hundredths = -1000; hundredths <= 600; hundredths += 25) {
     // Quarter-diopter CYL gives targets off the stock midpoints (strictly
@@ -140,24 +140,8 @@ test("no Sharper lens ever exceeds its eye's SE, and no protected eye appears in
   eyes.forEach(function (right) {
     eyes.forEach(function (left) {
       var choice = pairChoice(right, left);
-      if (!choice.available) return;
-      offeredPairs += 1;
-      [[right, "right"], [left, "left"]].forEach(function (entry) {
-        var result = entry[0];
-        var sharper = choice.sharper[entry[1] + "Power"];
-        assert.ok(Math.abs(sharper) <= Math.abs(result.sphericalEquivalent) + 1e-6);
-        assert.notEqual(result.lowMinusChoice, true);
-        assert.notEqual(result.manualReview, true);
-        assert.notEqual(Number(result.finalStockPower), 0);
-        if (result.stockRule === "exact-stock-tie-closer-to-se") {
-          assert.equal(sharper, choice.balanced[entry[1] + "Power"], "a resolved tie eye keeps its lens");
-        }
-        if (result.stockRule === "plano-to-first-minus-gap") {
-          assert.ok(result.sphericalEquivalent < -1, "gap eye with SE -1.00 or weaker must stay protected");
-          assert.equal(sharper, choice.balanced[entry[1] + "Power"], "a gap eye keeps its lens");
-        }
-      });
+      if (choice.available) offeredPairs += 1;
     });
   });
-  assert.ok(offeredPairs > 0);
+  assert.equal(offeredPairs, 0);
 });

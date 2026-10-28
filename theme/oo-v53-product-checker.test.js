@@ -175,65 +175,65 @@ function cardTitles(page) {
   });
 }
 
-test("J. checker -7 case: Balanced -6.50/-7.50 is Recommended and selected; the Alternative stays visible; Use these lenses confirms the selected pair once", { skip: skipDom }, async function () {
+test("J. checker -7 case: nearest Balanced -7.00/-8.00 leads; printed-SPH Alternative -7.00/-7.50 remains optional", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();
-  assert.deepEqual(cards(page), ["balanced -6.50/-7.50", "sharper -7.00/-8.00"]);
+  assert.deepEqual(cards(page), ["balanced -7.00/-8.00", "closer_to_sph -7.00/-7.50"]);
   assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"]);
   assert.equal(checkedStrategy(page), "balanced");
-  assert.equal(shownPair(page), "-6.50/-7.50");
-  choose(page, "sharper");
-  await settle();
   assert.equal(shownPair(page), "-7.00/-8.00");
+  choose(page, "closer_to_sph");
+  await settle();
+  assert.equal(shownPair(page), "-7.00/-7.50");
   assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"], "Balanced keeps its badge while the Alternative is selected");
   choose(page, "balanced");
   await settle();
-  choose(page, "sharper");
+  choose(page, "closer_to_sph");
   await settle();
   assert.equal(page.calls.length, 0, "switching options never saves");
   apply(page);
   await settle();
   var saved = confirms(page);
   assert.equal(saved.length, 1);
-  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["closer_to_sph", -7, -8]);
+  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["closer_to_sph", -7, -7.5]);
   assert.equal(page.applied.length, 1);
   assert.equal(page.applied[0].source, "product_rx_checker");
   assert.equal(page.applied[0].summary.recommendedRight, -7);
-  assert.equal(page.applied[0].summary.recommendedLeft, -8);
+  assert.equal(page.applied[0].summary.recommendedLeft, -7.5);
   assert.deepEqual(page.journey, ["product_rx_checker"]);
   assert.match(page.container.querySelector(".oo-rx-explain").textContent, /See how we calculated this/);
 });
 
-test("J. checker Daniel: Balanced -3.00/-3.00 selected by default; Use these lenses with no change saves balanced", { skip: skipDom }, async function () {
+test("J. checker Daniel converges on nearest Balanced -3.50/-3.50", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-3.75, -0.25, 35], [-3.5, -0.75, 175]);
   await settle();
-  assert.deepEqual(cards(page), ["balanced -3.00/-3.00", "sharper -3.50/-3.50"]);
-  assert.equal(checkedStrategy(page), "balanced");
-  assert.equal(shownPair(page), "-3.00/-3.00");
+  assert.deepEqual(cards(page), []);
+  assert.equal(checkedStrategy(page), null);
+  assert.equal(shownPair(page), "-3.50/-3.50");
   var explain = page.container.querySelector(".oo-rx-explain").textContent;
-  assert.match(explain, /This is our recommended all round option\./);
+  assert.doesNotMatch(explain, /This is our recommended all round option\./);
   assert.equal(page.calls.length, 0);
   assert.deepEqual(page.journey, [], "automatic default selection is not a product click");
   apply(page);
   await settle();
   var saved = confirms(page);
   assert.equal(saved.length, 1);
-  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["balanced", -3, -3]);
+  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["balanced", -3.5, -3.5]);
   assert.deepEqual(page.journey, ["product_rx_checker"]);
 });
 
-test("J. checker Daniel: choosing the Alternative confirms closer_to_sph -3.50/-3.50", { skip: skipDom }, async function () {
+test("J. checker two-option minus case confirms its printed-SPH Alternative", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
-  check(page, [-3.75, -0.25, 35], [-3.5, -0.75, 175]);
+  check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();
-  choose(page, "sharper");
+  choose(page, "closer_to_sph");
   await settle();
-  assert.equal(shownPair(page), "-3.50/-3.50");
+  assert.equal(shownPair(page), "-7.00/-7.50");
   apply(page);
   await settle();
-  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", -3.5, -3.5]);
+  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", -7, -7.5]);
 });
 
 test("A/J. checker exact ties -2.25 / -1.75 (5.3.1): both resolve toward SE, one pair -2.00/-1.50, saved as balanced with no choice evidence", { skip: skipDom }, async function () {
@@ -246,14 +246,14 @@ test("A/J. checker exact ties -2.25 / -1.75 (5.3.1): both resolve toward SE, one
   await settle();
   var body = confirms(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", -2, -1.5]);
-  assert.equal(body.calculatorVersion, "5.3.1");
+  assert.equal(body.calculatorVersion, "5.3.2");
   var snapshot = JSON.parse(JSON.stringify(page.applied[0].summary.v53Snapshot));
-  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.1", null, null, null]);
+  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.2", null, null, null]);
 });
 
 test("UI: checker result has the heading, the why block, the cards, what to expect and one collapsed maths section", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
-  check(page, [-3.75, -0.25, 35], [-3.5, -0.75, 175]);
+  check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();
   var result = page.container.querySelector("[data-checker-result]");
   var text = result.textContent;
@@ -287,13 +287,12 @@ test("UI: checker result has the heading, the why block, the cards, what to expe
 });
 
 test("checker: the mask's own stock decides whether the second option is offered", { skip: skipDom }, async function () {
-  // Lumix stocks -1.50 to -6.00. -6.00/-0.75 (target -5.875, no tie): Balanced
-  // -5.50 and the strictly closer Alternative -6.00 are both buildable.
+  // Lumix stocks -1.50 to -6.00. Nearest-stock Balanced is exact -6.00 here.
   var lumix = await loadChecker(HANDLES.lumix);
   check(lumix, [-6, -0.75, 90], [-6, -0.75, 90]);
   await settle();
-  assert.deepEqual(cards(lumix), ["balanced -5.50/-5.50", "sharper -6.00/-6.00"], "Balanced leads, the buildable Alternative follows");
-  assert.equal(checkedStrategy(lumix), "balanced");
+  assert.deepEqual(cards(lumix), []);
+  assert.equal(shownPair(lumix), "-6.00/-6.00");
 
   // -6.25/-6.25 (target -5.75) is an exact tie: 5.3.1 resolves it to -6.00,
   // which converges and is still buildable on Lumix.
@@ -315,10 +314,10 @@ test("checker: the mask's own stock decides whether the second option is offered
   assert.equal(capped.container.querySelector(".oo-rx-checker__notice").dataset.reason, "range");
   assert.ok(capped.container.querySelector('[data-catalog-product="obsidian-nearsighted"]'), "Obsidian (to -9.00) is offered instead");
 
-  // -6.75/-0.25 (target -6.375) is NOT a tie: Balanced stays -6.00 and the
-  // -6.50 Alternative this mask cannot build is never offered.
+  // +0.75 CYL gives SE -6.375 / target -5.875: Balanced -6.00 is buildable,
+  // while the printed-SPH preference -6.50 is outside this mask's stock.
   var unbuildable = await loadChecker(HANDLES.lumix);
-  check(unbuildable, [-6.75, -0.25, 90], [-6.75, -0.25, 90]);
+  check(unbuildable, [-6.75, 0.75, 90], [-6.75, 0.75, 90]);
   await settle();
   assert.deepEqual(cards(unbuildable), []);
   assert.equal(shownPair(unbuildable), "-6.00/-6.00");
@@ -394,7 +393,7 @@ test("checker: editing a checked prescription clears its result and option until
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();
-  choose(page, "sharper");
+  choose(page, "closer_to_sph");
   await settle();
   setEye(page, "right", -6);
   await settle();
@@ -403,12 +402,12 @@ test("checker: editing a checked prescription clears its result and option until
   page.doc.querySelector("[data-checker-form]").dispatchEvent(new page.win.Event("submit", { cancelable: true }));
   await settle();
   // The default is recalculated from the new prescription: Balanced again.
-  assert.deepEqual(cards(page), ["balanced -5.50/-7.50", "sharper -5.50/-8.00"]);
+  assert.deepEqual(cards(page), ["balanced -5.50/-8.00", "closer_to_sph -6.00/-7.50"]);
   assert.equal(checkedStrategy(page), "balanced");
   apply(page);
   await settle();
   assert.equal(confirms(page).length, 1);
-  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.right.sph, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["balanced", -6, -5.5, -7.5]);
+  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.right.sph, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["balanced", -6, -5.5, -8]);
 });
 
 test("checker: multiple named prescriptions keep independent values and selections; switching never saves", { skip: skipDom }, async function () {
@@ -419,7 +418,7 @@ test("checker: multiple named prescriptions keep independent values and selectio
   check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();
   assert.equal(checkedStrategy(page), "balanced", "James defaults to Balanced");
-  choose(page, "sharper");
+  choose(page, "closer_to_sph");
   await settle();
   var bar = page.container.querySelector("[data-checker-profiles]");
   assert.equal(bar.hidden, false, "Add another prescription is offered after a result");
@@ -430,9 +429,9 @@ test("checker: multiple named prescriptions keep independent values and selectio
   assert.equal(label.value, "");
   label.value = "Airies";
   label.dispatchEvent(new page.win.Event("input"));
-  check(page, [-3.75, -0.25, 35], [-3.5, -0.75, 175]);
+  check(page, [-3, 0, 90], [-3, 0, 90]);
   await settle();
-  assert.deepEqual(cards(page), ["balanced -3.00/-3.00", "sharper -3.50/-3.50"]);
+  assert.deepEqual(cards(page), ["balanced -2.50/-2.50", "closer_to_sph -3.00/-3.00"]);
   assert.equal(checkedStrategy(page), "balanced");
   var tabs = Array.prototype.map.call(page.container.querySelectorAll(".oo-rx-checker__profile-tab"), function (tab) { return tab.textContent; });
   assert.deepEqual(tabs, ["James", "Airies"]);
@@ -440,31 +439,31 @@ test("checker: multiple named prescriptions keep independent values and selectio
   page.container.querySelector('.oo-rx-checker__profile-tab[data-prescription-id="rx-1"]').click();
   await settle();
   assert.equal(label.value, "James");
-  assert.equal(shownPair(page), "-7.00/-8.00", "James keeps his Alternative choice");
+  assert.equal(shownPair(page), "-7.00/-7.50", "James keeps his Alternative choice");
   assert.equal(page.container.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength for James");
   label.value = "James R";
   label.dispatchEvent(new page.win.Event("input"));
   assert.equal(page.container.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength for James R");
   label.value = "James";
   label.dispatchEvent(new page.win.Event("input"));
-  assert.equal(checkedStrategy(page), "sharper");
+  assert.equal(checkedStrategy(page), "closer_to_sph");
   assert.equal(page.calls.length, 0, "switching prescriptions never saves");
 
   page.container.querySelector('.oo-rx-checker__profile-tab[data-prescription-id="rx-2"]').click();
   await settle();
-  assert.equal(shownPair(page), "-3.00/-3.00", "Airies keeps Balanced");
+  assert.equal(shownPair(page), "-2.50/-2.50", "Airies keeps Balanced");
   apply(page);
   await settle();
   var saved = confirms(page);
   assert.equal(saved.length, 1);
-  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft, saved[0].body.prescriptionLabel], ["balanced", -3, -3, "Airies"]);
+  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft, saved[0].body.prescriptionLabel], ["balanced", -2.5, -2.5, "Airies"]);
   assert.equal(page.applied[0].summary.prescriptionLabel, "Airies");
 
   page.container.querySelector('.oo-rx-checker__profile-remove[data-prescription-id="rx-2"]').click();
   await settle();
   assert.equal(page.container.querySelectorAll(".oo-rx-checker__profile-tab").length, 0);
   assert.equal(label.value, "James");
-  assert.equal(shownPair(page), "-7.00/-8.00");
+  assert.equal(shownPair(page), "-7.00/-7.50");
 });
 
 test("checker: customer-facing copy has no hyphens, en dashes or em dashes", { skip: skipDom }, async function () {

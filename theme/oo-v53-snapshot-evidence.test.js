@@ -141,7 +141,7 @@ test("checker: a default Balanced selection is saved with the same per-mask evid
   await settle();
   var expected = {
     schemaVersion: "1",
-    calculatorVersion: "5.3.1",
+    calculatorVersion: "5.3.2",
     source: "product_rx_checker",
     optionsShown: FIXTURE_OPTIONS,
     optionLabelsShown: LABELS,
@@ -179,9 +179,9 @@ test("checker: an explicit Alternative selection is saved as closer_to_sph / cus
 
 test("checker: when this mask shows one pair (second option not buildable), no options, labels or selection are recorded", { skip: skipDom }, async function () {
   var page = await loadChecker(LUMIX);
-  // -6.75/-0.25: target -6.375 (not a tie). Balanced -6.00 is buildable on
-  // Lumix; the strictly closer -6.50 Alternative is not, so one pair is shown.
-  check(page, [-6.75, -0.25, 90], [-6.75, -0.25, 90]);
+  // -6.75/+0.75: SE -6.375, target -5.875. Balanced -6.00 is buildable on
+  // Lumix; the printed-SPH Alternative -6.50 is not, so one pair is shown.
+  check(page, [-6.75, 0.75, 90], [-6.75, 0.75, 90]);
   await settle();
   page.container.querySelector(".oo-rx-checker__apply").click();
   await settle();

@@ -154,9 +154,9 @@ async function assertSingleResult(page, right, left) {
   await settle();
   var body = confirmCalls(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", Number(right), Number(left)]);
-  assert.equal(body.calculatorVersion, "5.3.1");
+  assert.equal(body.calculatorVersion, "5.3.2");
   var snap = body.v53Snapshot;
-  assert.equal(snap.calculatorVersion, "5.3.1");
+  assert.equal(snap.calculatorVersion, "5.3.2");
   assert.equal(snap.schemaVersion, "1");
   assert.equal(snap.optionsShown, null);
   assert.equal(snap.optionLabelsShown, null);
@@ -175,25 +175,25 @@ function choiceOrder(doc) {
   });
 }
 
-test("B. -7.00/-0.75 and -7.75/-1.25: Balanced -6.50/-7.50 is Recommended and selected; Alternative -7.00/-8.00 stays visible and saves explicitly", { skip: skipDom }, async function () {
+test("B. -7.00/-0.75 and -7.75/-1.25: nearest Balanced -7.00/-8.00 leads; Alternative -7.00/-7.50 stays optional", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, false);
-  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-right"), "-6.50");
-  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-left"), "-7.50");
+  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-right"), "-7.00");
+  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-left"), "-8.00");
   assert.equal(text(page.doc, "oo-v52-midpoint-sharper-right"), "-7.00");
-  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-left"), "-8.00");
-  assert.equal(page.doc.getElementById("oo-v52-midpoint-sharper").value, "sharper");
-  assert.deepEqual(choiceOrder(page.doc), ["balanced* Balanced Recommended", "sharper Alternative"]);
+  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-left"), "-7.50");
+  assert.equal(page.doc.getElementById("oo-v52-midpoint-sharper").value, "closer_to_sph");
+  assert.deepEqual(choiceOrder(page.doc), ["balanced* Balanced Recommended", "closer_to_sph Alternative"]);
   assert.equal(page.doc.getElementById("oo-v52-midpoint-alternative-notice").hidden, true, "no separate warning box");
-  assert.deepEqual(cardPairs(page.doc), ["R -6.50L -7.50"], "masks follow the default Balanced pair straight away");
+  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -8.00"], "masks follow the default Balanced pair straight away");
   assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "balanced");
 
   page.doc.getElementById("oo-v52-midpoint-sharper").click();
   await settle();
-  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -8.00"]);
-  assert.deepEqual(choiceOrder(page.doc), ["balanced Balanced Recommended", "sharper* Alternative"], "Balanced keeps its badge while the Alternative is selected");
+  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -7.50"]);
+  assert.deepEqual(choiceOrder(page.doc), ["balanced Balanced Recommended", "closer_to_sph* Alternative"], "Balanced keeps its badge while the Alternative is selected");
   assert.equal(page.calls.length, 0, "switching cards never saves");
   page.doc.querySelector(".oo-v52-product-card__customize").click();
   await settle();
@@ -201,7 +201,7 @@ test("B. -7.00/-0.75 and -7.75/-1.25: Balanced -6.50/-7.50 is Recommended and se
   assert.equal(confirms.length, 1);
   assert.deepEqual(
     [confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft],
-    ["closer_to_sph", -7, -8]
+    ["closer_to_sph", -7, -7.5]
   );
   assert.equal(confirms[0].body.v53Snapshot.selectionEvidence, "customer_explicit");
   assert.deepEqual(confirms[0].body.right, { sph: -7, cyl: 0.75, cylSign: "-", axis: 90 });
@@ -236,7 +236,7 @@ test("default selects Balanced for #336254 (two options); #336246 now converges 
   assert.deepEqual(firstConfirm.body.v53Snapshot.recommendedValues, { right: "+3.00", left: "+3.00" });
   assert.equal(firstConfirm.body.v53Snapshot.selectedStrategy, "balanced", JSON.stringify(firstConfirm.body.v53Snapshot));
   assert.equal(firstConfirm.body.v53Snapshot.selectionEvidence, "default_recommendation");
-  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.1");
+  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.2");
 
   var togglePage = await loadCalculator();
   calculate(togglePage, [4, -0.75], [4.25, -0.75]);
@@ -277,7 +277,7 @@ test("#336262 -1.00/-0.75 x170, -1.75: the left exact tie resolves to -1.50 (clo
   assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
   var snapshot = JSON.parse(url.searchParams.get("_oo_v53_snapshot"));
-  assert.equal(snapshot.calculatorVersion, "5.3.1");
+  assert.equal(snapshot.calculatorVersion, "5.3.2");
   assert.equal(snapshot.selectionEvidence, null);
 });
 
@@ -361,48 +361,48 @@ test("exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110: Balanced +3/+2 selected,
   assert.equal(hyphen, null, "no hyphens in customer copy: " + (hyphen && hyphen[0]));
 });
 
-test("A. Daniel -3.75/-0.25, -3.50/-0.75: Balanced -3.00/-3.00 is the default; the Alternative -3.50/-3.50 saves as closer_to_sph", { skip: skipDom }, async function () {
+test("A. a two-option minus case saves its printed-SPH Alternative explicitly", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
-  assert.deepEqual(choiceOrder(page.doc), ["balanced* Balanced Recommended", "sharper Alternative"]);
-  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-right"), "-3.50");
-  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-left"), "-3.50");
-  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-right"), "-3.00");
-  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-left"), "-3.00");
-  assert.equal(text(page.doc, "oo-v52-midpoint-alternative-copy"), "Another valid lens option calculated from your prescription. This gives a stronger correction than Balanced.");
+  assert.deepEqual(choiceOrder(page.doc), ["balanced* Balanced Recommended", "closer_to_sph Alternative"]);
+  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-right"), "-7.00");
+  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-left"), "-7.50");
+  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-right"), "-7.00");
+  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-left"), "-8.00");
+  assert.equal(text(page.doc, "oo-v52-midpoint-alternative-copy"), "Another valid lens option calculated from your prescription. The left lens is softer than Balanced.");
   var balancedCopy = page.doc.getElementById("oo-v52-midpoint-balanced").parentNode.querySelector(".oo-v52-high-cyl__copy").textContent;
   assert.equal(balancedCopy, "Our recommended all round option, adjusted for comfortable underwater vision.");
-  assert.deepEqual(cardPairs(page.doc), ["R -3.00L -3.00"]);
+  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -8.00"]);
   assert.deepEqual(page.journey, [], "automatic default selection is not a product click");
 
   page.doc.getElementById("oo-v52-midpoint-sharper").click();
   await settle();
-  assert.match(text(page.doc, "oo-v52-midpoint-selection-status"), /^Alternative selected\. Right -3\.50, left -3\.50\.$/);
+  assert.match(text(page.doc, "oo-v52-midpoint-selection-status"), /^Alternative selected\. Right -7\.00, left -7\.50\.$/);
   page.doc.querySelector(".oo-v52-product-card__customize").click();
   await settle();
   var confirms = confirmCalls(page);
   assert.equal(confirms.length, 1);
   assert.deepEqual(
     [confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft],
-    ["closer_to_sph", -3.5, -3.5]
+    ["closer_to_sph", -7, -7.5]
   );
   assert.ok(page.journey.indexOf("lens_calculator_v53") !== -1);
 });
 
-test("A. Daniel: choosing Balanced again announces it and saves balanced", { skip: skipDom }, async function () {
+test("A. choosing Balanced again announces the current nearest-stock pair", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
   page.doc.getElementById("oo-v52-midpoint-sharper").click();
   await settle();
   page.doc.getElementById("oo-v52-midpoint-balanced").click();
   await settle();
-  assert.deepEqual(cardPairs(page.doc), ["R -3.00L -3.00"]);
+  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -8.00"]);
   assert.equal(page.calls.length, 0);
-  assert.match(text(page.doc, "oo-v52-midpoint-selection-status"), /^Balanced selected\. Right -3\.00, left -3\.00\.$/);
+  assert.match(text(page.doc, "oo-v52-midpoint-selection-status"), /^Balanced selected\. Right -7\.00, left -8\.00\.$/);
   var explain = visibleText(page.doc, "#oo-v52-explain").replace(/\s+/g, " ");
-  assert.ok(explain.indexOf("Closest available mask lens:-3.00") !== -1);
+  assert.ok(explain.indexOf("Closest available mask lens:-7.00") !== -1);
 });
 
 test("A. exact ties -2.25 / -1.75 (targets -1.75 / -1.25): both resolve toward SE, so the result converges to -2.00/-1.50", { skip: skipDom }, async function () {
@@ -413,25 +413,25 @@ test("A. exact ties -2.25 / -1.75 (targets -1.75 / -1.25): both resolve toward S
   await assertSingleResult(page, "-2.00", "-1.50");
 });
 
-test("non tie myopia keeps its two options: Daniel -3.75/-0.25, -3.50/-0.75 (target -3.375) Balanced -3.00/-3.00, Alternative -3.50/-3.50", { skip: skipDom }, async function () {
+test("non-tie myopia can keep a printed-SPH Alternative after nearest-stock Balanced", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
-  assert.deepEqual(choiceOrder(page.doc), ["balanced* Balanced Recommended", "sharper Alternative"]);
+  assert.deepEqual(choiceOrder(page.doc), ["balanced* Balanced Recommended", "closer_to_sph Alternative"]);
   page.doc.getElementById("oo-v52-midpoint-sharper").click();
   await settle();
-  assert.deepEqual(cardPairs(page.doc), ["R -3.50L -3.50"]);
+  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -7.50"]);
   assert.equal(page.calls.length, 0, "switching cards never saves");
   page.doc.querySelector(".oo-v52-product-card__customize").click();
   await settle();
   var confirms = confirmCalls(page);
-  assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["closer_to_sph", -3.5, -3.5]);
-  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.1");
+  assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["closer_to_sph", -7, -7.5]);
+  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.2");
 });
 
 test("UI: the results area has one heading, the why block, the cards, what to expect, one collapsed maths section, then Your Matching Masks", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
   var result = page.doc.getElementById("oo-v52-result");
   var visible = function (node) {
@@ -575,30 +575,30 @@ test("Edit Prescription after choosing the Alternative: old option, pair and mas
   await settle();
   // The default is recalculated from the NEW prescription: Balanced again,
   // with the new Alternative pair visible.
-  assert.deepEqual(choiceOrder(page.doc), ["balanced* Balanced Recommended", "sharper Alternative"]);
-  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-right"), "-5.50");
-  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-left"), "-8.00");
+  assert.deepEqual(choiceOrder(page.doc), ["balanced* Balanced Recommended", "closer_to_sph Alternative"]);
+  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-right"), "-6.00");
+  assert.equal(text(page.doc, "oo-v52-midpoint-sharper-left"), "-7.50");
   assert.equal(text(page.doc, "oo-v52-midpoint-balanced-right"), "-5.50");
-  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-left"), "-7.50");
-  assert.deepEqual(cardPairs(page.doc), ["R -5.50L -7.50"]);
+  assert.equal(text(page.doc, "oo-v52-midpoint-balanced-left"), "-8.00");
+  assert.deepEqual(cardPairs(page.doc), ["R -5.50L -8.00"]);
   page.doc.querySelector(".oo-v52-product-card__customize").click();
   await settle();
   var confirms = confirmCalls(page);
   assert.equal(confirms.length, 1);
   assert.deepEqual(
     [confirms[0].body.recommendationStrategy, confirms[0].body.right.sph, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft],
-    ["balanced", -6, -5.5, -7.5]
+    ["balanced", -6, -5.5, -8]
   );
   assert.equal(confirms[0].body.v53Snapshot.selectionEvidence, "default_recommendation", "a new calculation starts from the default again");
 });
 
 test("L. Edit Prescription recalculates the default from the new prescription each time", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
   page.doc.getElementById("oo-v52-midpoint-sharper").click();
   await settle();
-  assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "sharper");
+  assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "closer_to_sph");
   page.doc.getElementById("oo-v52-edit").click();
   calculate(page, [-3.75, -0.75], [-3.75, -0.75]);
   await settle();
@@ -636,7 +636,7 @@ test("multiple prescriptions: an unsaved preview survives Add prescription, keep
   doc.querySelector('.oo-v52-profiles__tab[data-profile-id="prescription-1"]').click();
   await settle();
   assert.equal(doc.getElementById("oo-v52-midpoint-sharper").checked, true, "James keeps the Alternative");
-  assert.deepEqual(cardPairs(doc), ["R -7.00L -8.00"]);
+  assert.deepEqual(cardPairs(doc), ["R -7.00L -7.50"]);
   assert.equal(doc.getElementById("oo-v52-rx-label").value, "James");
   assert.equal(page.calls.length, 0, "switching prescriptions never saves");
 
@@ -646,7 +646,7 @@ test("multiple prescriptions: an unsaved preview survives Add prescription, keep
   assert.equal(confirms.length, 1);
   assert.deepEqual(
     [confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft, confirms[0].body.prescriptionLabel],
-    ["closer_to_sph", -7, -8, "James"]
+    ["closer_to_sph", -7, -7.5, "James"]
   );
   var profiles = page.win.OOV52CalculatorUI.getPrescriptionProfiles();
   assert.deepEqual(JSON.parse(JSON.stringify(profiles.map(function (p) { return [p.localId, p.status, p.displayLabel]; }))), [
@@ -673,27 +673,27 @@ test("multiple prescriptions: an unsaved preview survives Add prescription, keep
 test("multiple prescriptions: an Alternative choice is restored on switching back, not reset to the Balanced default", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   var doc = page.doc;
-  doc.getElementById("oo-v52-rx-label").value = "Daniel";
-  calculate(page, [-3.75, -0.25], [-3.5, -0.75]);
+  doc.getElementById("oo-v52-rx-label").value = "James";
+  calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
   doc.getElementById("oo-v52-midpoint-sharper").click();
   await settle();
   doc.getElementById("oo-v52-add-prescription").click();
   await settle();
   doc.getElementById("oo-v52-rx-label").value = "Second";
-  calculate(page, [-7, -0.75], [-7.75, -1.25]);
+  calculate(page, [3, -0.75], [2.5, -0.5]);
   await settle();
   assert.equal(doc.getElementById("oo-v52-midpoint-balanced").checked, true, "the new prescription gets its own Balanced default");
   doc.querySelector('.oo-v52-profiles__tab[data-profile-id="prescription-1"]').click();
   await settle();
-  assert.equal(doc.getElementById("oo-v52-midpoint-sharper").checked, true, "Daniel keeps the Alternative");
-  assert.deepEqual(cardPairs(doc), ["R -3.50L -3.50"]);
+  assert.equal(doc.getElementById("oo-v52-midpoint-sharper").checked, true, "James keeps the Alternative");
+  assert.deepEqual(cardPairs(doc), ["R -7.00L -7.50"]);
   assert.equal(page.calls.length, 0);
   doc.querySelector(".oo-v52-product-card__customize").click();
   await settle();
   assert.deepEqual(
     [confirmCalls(page)[0].body.recommendationStrategy, confirmCalls(page)[0].body.recommendedRight, confirmCalls(page)[0].body.prescriptionLabel],
-    ["closer_to_sph", -3.5, "Daniel"]
+    ["closer_to_sph", -7, "James"]
   );
 });
 

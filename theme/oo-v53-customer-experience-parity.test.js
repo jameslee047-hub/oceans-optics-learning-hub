@@ -134,9 +134,9 @@ function checkerState(page) {
 
 var FIXTURES = [
   { name: "exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110", right: [4, -2, 75], left: [3, -1.25, 110], handle: "rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask", balanced: ["+3.00", "+2.00"], alternative: ["+4.00", "+3.00"] },
-  { name: "Daniel (non tie)", right: [-3.75, -0.25, 35], left: [-3.5, -0.75, 175], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-3.00", "-3.00"], alternative: ["-3.50", "-3.50"] },
+  { name: "ordinary printed-SPH preference", right: [-3, 0, 90], left: [-3, 0, 90], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-2.50", "-2.50"], alternative: ["-3.00", "-3.00"] },
   { name: "#336254", right: [4, -0.75, 100], left: [4.25, -0.75, 105], handle: "rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask", balanced: ["+3.00", "+3.00"], alternative: ["+4.00", "+4.00"] },
-  { name: "-7 case (non tie)", right: [-7, -0.75, 15], left: [-7.75, -1.25, 166], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-6.50", "-7.50"], alternative: ["-7.00", "-8.00"] }
+  { name: "-7 case (non tie)", right: [-7, -0.75, 15], left: [-7.75, -1.25, 166], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-7.00", "-8.00"], alternative: ["-7.00", "-7.50"] }
 ];
 
 FIXTURES.forEach(function (fixture) {
@@ -243,10 +243,10 @@ CONVERGED.forEach(function (fixture) {
     var mainBody = main.calls.filter(function (call) { return /\/confirm$/.test(call.url); })[0].body;
     var checkerBody = checker.calls.filter(function (call) { return /\/confirm$/.test(call.url); })[0].body;
     [mainBody, checkerBody].forEach(function (body) {
-      assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced"].concat(fixture.pair.map(Number), ["5.3.1"]));
+      assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced"].concat(fixture.pair.map(Number), ["5.3.2"]));
       assert.equal(body.v53Snapshot.optionsShown, null);
       assert.equal(body.v53Snapshot.selectionEvidence, null);
-      assert.equal(body.v53Snapshot.calculatorVersion, "5.3.1");
+      assert.equal(body.v53Snapshot.calculatorVersion, "5.3.2");
     });
     assert.deepEqual([checker.applied[0].recommendedRight, checker.applied[0].recommendedLeft], fixture.pair.map(Number));
   });
