@@ -429,20 +429,23 @@ test("failed or cleared handoffs remove the injected source with the durable con
 });
 
 test("direct product visits without oo_rx never classify traffic as calculator-origin", async function () {
-  var touched = false;
-  var result = await Handoff.start({ get defaultView() { touched = true; return null; } }, {
-    search: "?variant=50148668899661&oo_source=lens_calculator_v53",
-    fetch: function () { throw new Error("must not fetch"); }
-  });
-  assert.equal(result.state, "idle");
-  assert.equal(touched, false);
+  // Only a remembered Quiz handoff (none here) is ever looked at without oo_rx.
+  var storage = { getItem: function () { return null; }, setItem: function () { throw new Error("must not write"); }, removeItem: function () {} };
+  var docs = [{ defaultView: null }, { defaultView: { localStorage: storage } }];
+  for (var i = 0; i < docs.length; i += 1) {
+    var result = await Handoff.start(docs[i], {
+      search: "?variant=50148668899661&oo_source=lens_calculator_v53",
+      fetch: function () { throw new Error("must not fetch"); }
+    });
+    assert.equal(result.state, "idle");
+  }
 });
 
 test("source is applied only inside the confirmed handoff path", function () {
   var source = require("node:fs").readFileSync(require.resolve("./base/assets/oo-rx-product-handoff.js"), "utf8");
   assert.match(source, /var summary = await summaryRequest;\s+applyConfirmedHandoff\(doc, controls, summary, source, \{ fromUrl: true \}\);/);
   assert.match(source, /var summaryRequest = isUuid\(configId\)\s+\? fetchSummary\(settings\.fetch, configId, settings\.backendUrl, settings\.retryDelays\)/);
-  assert.match(source, /var properties = injectShopifyProperties\(doc, controls\.form, safeSummary, source\);\s+activateHandoff\(doc, controls\.form, safeSummary, source, properties, Boolean\(options && options\.fromUrl\)\);/);
+  assert.match(source, /var properties = injectShopifyProperties\(doc, controls\.form, safeSummary, source\);\s+activateHandoff\(doc, controls\.form, safeSummary, source, properties, Boolean\(options && options\.fromUrl\), options && options\.keptParameters\);/);
   assert.match(source, /catch \(error\) \{\s+selection\.rollback\(\);\s+removeInjectedProperties\(controls\.form\);/);
 });
 

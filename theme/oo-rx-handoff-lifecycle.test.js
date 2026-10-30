@@ -31,7 +31,7 @@ var ASSETS = path.join(__dirname, "base", "assets");
 var SCRIPT = fs.readFileSync(path.join(ASSETS, "oo-rx-product-handoff.js"), "utf8");
 var Products = require("./base/assets/oo-lens-calculator-v53-products.js");
 
-var FAR = { path: "/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask", productId: "10484822835533", variant: "53151486476621", pink: "53151486509389", powers: ["+1.00", "+1.50", "+2.00", "+2.50", "+3.00", "+3.50"] };
+var FAR = { path: "/products/rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask", productId: "10484822835533", variant: "53151486476621", pink: "53151486509389", powers: ["+1.00", "+1.50", "+2.00", "+2.50", "+3.00", "+3.50", "+4.00"] };
 var MYO = { path: "/products/the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", productId: "8721512489293", variant: "50148668899661", pink: "50148668932429", powers: ["0 (No correction)", "-1.00", "-1.50", "-2.00", "-2.50", "-3.00", "-3.50", "-4.00"] };
 
 var CFG = {
@@ -41,7 +41,8 @@ var CFG = {
   sharper: "c65844d4-4a10-449d-a3bd-ec95a0c84db4",
   balanced: "1b1e7b51-3b0c-4c55-9d3e-4f3a0c0d2e11",
   minus: "0d7c2a90-5b7e-4a52-8f39-5e0b5f2f6a01",
-  checker: "7adf6f8a-1f62-4e2e-9d06-5f5348997a43"
+  checker: "7adf6f8a-1f62-4e2e-9d06-5f5348997a43",
+  q336414: "e829428e-7971-45f0-aaee-9ca69cf6aae8"
 };
 var SUMMARIES = {};
 SUMMARIES[CFG.calcA] = { recommendedRight: 2, recommendedLeft: 2, prescriptionLabel: "Mine" };
@@ -50,6 +51,7 @@ SUMMARIES[CFG.quiz] = { recommendedRight: 2.5, recommendedLeft: 2.5, prescriptio
 SUMMARIES[CFG.sharper] = { recommendedRight: -3.5, recommendedLeft: -2.5, prescriptionLabel: null };
 SUMMARIES[CFG.balanced] = { recommendedRight: -3, recommendedLeft: -2, prescriptionLabel: null };
 SUMMARIES[CFG.minus] = { recommendedRight: -2, recommendedLeft: -2, prescriptionLabel: null };
+SUMMARIES[CFG.q336414] = { recommendedRight: 4, recommendedLeft: 4, prescriptionLabel: null };
 
 function summaryFor(id) {
   return Object.assign({ configId: id, status: "confirmed", prescriptionAttached: false }, SUMMARIES[id]);
@@ -142,14 +144,20 @@ function installTheme(win, page) {
   });
 }
 
-// One browser tab: the Shopify cart and sessionStorage outlive page loads.
-function newTab() {
-  var tab = { session: {}, items: [], failNext: 0, history: [] };
-  tab.storage = {
-    getItem: function (key) { return Object.prototype.hasOwnProperty.call(tab.session, key) ? tab.session[key] : null; },
-    setItem: function (key, value) { tab.session[key] = String(value); },
-    removeItem: function (key) { delete tab.session[key]; }
+function memoryStorage(values) {
+  return {
+    getItem: function (key) { return Object.prototype.hasOwnProperty.call(values, key) ? values[key] : null; },
+    setItem: function (key, value) { values[key] = String(value); },
+    removeItem: function (key) { delete values[key]; }
   };
+}
+
+// One browser tab: the Shopify cart, sessionStorage and the origin's
+// localStorage outlive page loads.
+function newTab() {
+  var tab = { session: {}, local: {}, items: [], failNext: 0, history: [] };
+  tab.storage = memoryStorage(tab.session);
+  tab.localStorage = memoryStorage(tab.local);
   return tab;
 }
 
@@ -163,6 +171,7 @@ function load(tab, product, search, settings) {
   var win = dom.window;
   var page = { tab: tab, win: win, doc: win.document, product: product, summaries: [], cartAdds: [] };
   Object.defineProperty(win, "sessionStorage", { value: tab.storage, configurable: true });
+  Object.defineProperty(win, "localStorage", { value: tab.localStorage, configurable: true });
   win.HTMLElement.prototype.scrollIntoView = function () {};
   win.fetch = function (url, init) {
     url = String(url);
@@ -179,6 +188,11 @@ function load(tab, product, search, settings) {
       return Promise.resolve(body
         ? { ok: true, status: 200, json: function () { return Promise.resolve(body); } }
         : { ok: false, status: 404, json: function () { return Promise.resolve({}); } });
+    }
+    if (url === "/cart.js") {
+      page.cartReads = (page.cartReads || 0) + 1;
+      var cart = { items: tab.items.map(function (line) { return { id: line.id, properties: line.properties }; }) };
+      return Promise.resolve({ ok: true, status: 200, json: function () { return Promise.resolve(cart); } });
     }
     if (url === "/cart/add") {
       var properties = {};
@@ -745,4 +759,157 @@ test("attribution alone never activates a prescription", { skip: skipDom }, asyn
   choose(page, "(OS) Left", "+2.00");
   await addToCart(page);
   assert.deepEqual(oo(tab.items[0]), { config: null, source: null });
+});
+
+// --- Quiz handoff persistence: browse away and come back (#336414) ----------
+
+var SESSION_336414 = "qs_1793301954965_tbfyi1";
+var SNAPSHOT_336414 = JSON.stringify({
+  schemaVersion: "1", calculatorVersion: "5.3.3", source: "quiz", optionsShown: null,
+  recommendedStrategy: "balanced", recommendedValues: { right: "+4.00", left: "+4.00" },
+  selectedStrategy: null, selectedRecommendation: null, selectionEvidence: null,
+  finalProductSelection: null, manualOverride: false
+});
+
+// What the store's Quiz attribution snippet keeps for the current Quiz session.
+function quizAttribution(tab, sessionId) {
+  tab.local.oo_quiz_attribution = JSON.stringify({ quiz_session_id: sessionId, quiz_captured_at: new Date().toISOString() });
+}
+
+function quizArrival(tab, product, configId, sessionId) {
+  quizAttribution(tab, sessionId);
+  return open(tab, product, quizSearch(product, configId, sessionId) + "&_oo_v53_snapshot=" + encodeURIComponent(SNAPSHOT_336414));
+}
+
+function remembered(tab) {
+  return tab.local.oo_rx_quiz_handoff ? JSON.parse(tab.local.oo_rx_quiz_handoff) : null;
+}
+
+test("#336414: Quiz handoff, browse away without adding, return through a plain product URL: the mask line still gets the config", { skip: skipDom }, async function () {
+  var tab = newTab();
+  var handoff = await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
+  assert.equal(statusClass(handoff), "is-success");
+  var record = remembered(tab);
+  assert.deepEqual(Object.keys(record).sort(), ["calculatorVersion", "configId", "confirmedAt", "expiresAt", "quizProductId", "quizSessionId", "recommendedLeft", "recommendedRight", "snapshot", "source", "version"]);
+  assert.deepEqual([record.quizSessionId, record.configId, record.source, record.recommendedRight, record.recommendedLeft, record.calculatorVersion],
+    [SESSION_336414, CFG.q336414, "quiz_v53", 4, 4, "5.3.3"]);
+  assert.equal(Date.parse(record.expiresAt) - Date.parse(record.confirmedAt), 72 * 60 * 60 * 1000);
+  assert.doesNotMatch(tab.local.oo_rx_quiz_handoff, /"(sph|cyl|cylSign|axis|confirmedRx|editToken|labelEditToken|prescriptionLabel)"/, "no prescription values, labels or tokens are stored");
+  assert.equal(tab.items.length, 0, "the customer leaves without adding");
+
+  // A nearsighted mask cannot take +4.00/+4.00: nothing is fetched or attached.
+  var other = await open(tab, MYO, "?variant=" + MYO.variant);
+  await settle(60);
+  assert.deepEqual(other.summaries, []);
+  assert.equal(statusClass(other), null);
+  assert.deepEqual(injected(other), []);
+
+  // Back to the farsighted mask from a collection: plain URL, no oo_rx.
+  var back = await open(tab, FAR, "?variant=" + FAR.pink);
+  await settle(60);
+  assert.deepEqual(back.summaries, [CFG.q336414], "the remembered config is validated again");
+  assert.equal(statusClass(back), "is-success");
+  assert.match(back.doc.getElementById("oo-rx-handoff-status").textContent, /entered in the Quiz/);
+  var params = urlParams(back);
+  assert.deepEqual([params.get("oo_rx"), params.get("oo_source"), params.get("quiz_session_id")], [CFG.q336414, "quiz_v53", SESSION_336414],
+    "the restored handoff is kept on the URL like a Quiz arrival");
+  await addToCart(back);
+  assert.equal(tab.items.length, 1);
+  assert.deepEqual(oo(tab.items[0]), { config: CFG.q336414, source: "quiz_v53" });
+  assert.equal(lenses(tab.items[0]), "+4.00/+4.00");
+  assert.equal(tab.items[0].properties._oo_v53_snapshot, SNAPSHOT_336414);
+  assert.equal(tab.items[0].properties._oo_first_source, "quiz_v53");
+});
+
+test("normal Quiz handoff add is unchanged, and a later plain visit never puts the same config on a second mask", { skip: skipDom }, async function () {
+  var tab = newTab();
+  var handoff = await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
+  await addToCart(handoff);
+  assert.deepEqual(oo(tab.items[0]), { config: CFG.q336414, source: "quiz_v53" });
+  var second = await open(tab, FAR, "?variant=" + FAR.pink);
+  await settle(60);
+  assert.equal(second.cartReads, 1, "the cart is checked");
+  assert.deepEqual(second.summaries, [], "already on a cart line: not restored");
+  assert.equal(statusClass(second), null);
+  choose(second, "(OD) Right", "+3.00");
+  choose(second, "(OS) Left", "+3.00");
+  await addToCart(second);
+  assert.deepEqual(tab.items.map(oo).reverse(), [
+    { config: CFG.q336414, source: "quiz_v53" },
+    { config: null, source: null }
+  ]);
+});
+
+test("replaced line: the Quiz line is removed and the mask added again from a plain page gets the config back", { skip: skipDom }, async function () {
+  var tab = newTab();
+  var handoff = await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
+  await addToCart(handoff);
+  tab.items = [];
+  var again = await open(tab, FAR, "?variant=" + FAR.pink);
+  await settle(60);
+  assert.equal(statusClass(again), "is-success");
+  await addToCart(again);
+  assert.deepEqual(oo(tab.items[0]), { config: CFG.q336414, source: "quiz_v53" });
+});
+
+test("a new Quiz session supersedes the remembered handoff, and an expired one is never reused", { skip: skipDom }, async function () {
+  var tab = newTab();
+  await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
+  quizAttribution(tab, "qs_1793400000000_newone");
+  var newSession = await open(tab, FAR, "?variant=" + FAR.variant);
+  await settle(60);
+  assert.deepEqual(newSession.summaries, []);
+  assert.equal(remembered(tab), null, "the stale session's handoff is cleared");
+
+  await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
+  var record = remembered(tab);
+  record.expiresAt = new Date(Date.now() - 1000).toISOString();
+  tab.local.oo_rx_quiz_handoff = JSON.stringify(record);
+  var expired = await open(tab, FAR, "?variant=" + FAR.variant);
+  await settle(60);
+  assert.deepEqual(expired.summaries, []);
+  assert.equal(remembered(tab), null);
+  await addToCart(expired);
+  assert.deepEqual(oo(tab.items[0]), { config: null, source: null });
+});
+
+test("another tool's handoff supersedes a remembered Quiz handoff; calculator handoffs are never remembered", { skip: skipDom }, async function () {
+  var tab = newTab();
+  await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
+  await open(tab, FAR, handoffSearch(FAR, CFG.calcA, "lens_calculator_v53"));
+  assert.equal(remembered(tab), null);
+  var plain = await open(tab, FAR, "?variant=" + FAR.variant);
+  await settle(60);
+  assert.deepEqual(plain.summaries, []);
+  assert.equal(statusClass(plain), null);
+});
+
+test("a remembered config that no longer validates attaches nothing and shows no error", { skip: skipDom }, async function () {
+  var tab = newTab();
+  await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
+  var failing = await open(tab, FAR, "?variant=" + FAR.variant, { summaryFailures: 3 });
+  await settle(400);
+  assert.equal(statusClass(failing), null, "no failure message on a plain visit");
+  assert.deepEqual(injected(failing), []);
+  await addToCart(failing);
+  assert.deepEqual(oo(tab.items[0]), { config: null, source: null });
+});
+
+test("a product page without lens selectors (accessory) is never given the remembered config", { skip: skipDom }, async function () {
+  var tab = newTab();
+  await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
+  var dom = new JSDOM('<!doctype html><body><form method="post" action="/cart/add" data-type="add-to-cart-form"><input type="hidden" name="id" value="48991665717581"></form></body>', {
+    url: "https://oceansoptics.com/products/2l-dry-bag?variant=48991665717581", runScripts: "outside-only"
+  });
+  Object.defineProperty(dom.window, "localStorage", { value: tab.localStorage, configurable: true });
+  var fetched = [];
+  var Handoff = require("./base/assets/oo-rx-product-handoff.js");
+  var result = await Handoff.start(dom.window.document, {
+    search: dom.window.location.search,
+    fetch: function (url) { fetched.push(String(url)); return Promise.reject(new Error("must not fetch")); },
+    timeoutMs: 50
+  });
+  assert.deepEqual([result.state, result.reason], ["idle", "no_lens_selectors"]);
+  assert.deepEqual(fetched, []);
+  assert.equal(dom.window.document.querySelectorAll('input[name^="properties[_oo"]').length, 0);
 });

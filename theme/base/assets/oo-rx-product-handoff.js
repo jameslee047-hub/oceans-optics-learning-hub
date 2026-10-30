@@ -40,6 +40,18 @@
   var ADDED_LIMIT = 20;
   // Quiz attribution parameters kept beside oo_rx on this product's URL.
   var KEPT_PARAMETERS = ["quiz_session_id", "quiz_product_id", "_oo_v53_snapshot"];
+  // Per browser (all tabs): the last confirmed Quiz handoff, so a customer who
+  // leaves the Quiz's product page and comes back to a compatible Rx mask
+  // through ordinary navigation still gets that durable config on the line.
+  // Opaque ids, the recommended pair and timestamps only; never prescription
+  // values. It applies only while the store's current Quiz session (the Quiz
+  // attribution snippet's oo_quiz_attribution) is the same session, expires,
+  // and is replaced by any newer Quiz session or other tool's handoff.
+  var QUIZ_HANDOFF_STORAGE_KEY = "oo_rx_quiz_handoff";
+  var QUIZ_ATTRIBUTION_STORAGE_KEY = "oo_quiz_attribution";
+  var QUIZ_HANDOFF_TTL_MS = 72 * 60 * 60 * 1000;
+  var QUIZ_SESSION_PATTERN = /^qs_\d{10,16}_[a-z0-9]{4,16}$/;
+  var QUIZ_SOURCE = "quiz_v53";
   // Purchase sources that may become the hidden _oo_source line-item property.
   // Only these exact values are accepted, from the oo_source parameter or from
   // an on-page tool; quiz_v53 is the Quiz / Face Fit handoff. Reserved: face_fit.
@@ -569,8 +581,9 @@
   // fromUrl: the handoff came from this page's oo_rx (arrival, reload,
   // back/forward). If this tab already added that config from this product,
   // it resumes as added. An on-page apply (Product Rx Checker) is always a
-  // fresh, explicit handoff.
-  function activateHandoff(doc, form, summary, source, properties, fromUrl) {
+  // fresh, explicit handoff. kept: the Quiz parameters to keep on the URL
+  // when they are not on it (a restored Quiz handoff).
+  function activateHandoff(doc, form, summary, source, properties, fromUrl, kept) {
     var view = doc && doc.defaultView;
     if (!view || !view.location) return;
     view[ACTIVE_PROPERTY] = {
@@ -582,7 +595,7 @@
       right: summary.recommendedRight,
       left: summary.recommendedLeft,
       summary: summary,
-      keptParameters: keptParameters(view.location.search),
+      keptParameters: kept || keptParameters(view.location.search),
       added: Boolean(fromUrl) && wasAdded(view, view.location.pathname, summary.configId)
     };
     installHooks(doc);
@@ -757,7 +770,7 @@
     var selection = applyAvisValues(controls, safeSummary);
     try {
       var properties = injectShopifyProperties(doc, controls.form, safeSummary, source);
-      activateHandoff(doc, controls.form, safeSummary, source, properties, Boolean(options && options.fromUrl));
+      activateHandoff(doc, controls.form, safeSummary, source, properties, Boolean(options && options.fromUrl), options && options.keptParameters);
       var view = doc.defaultView;
       if (view && view[ACTIVE_PROPERTY]) view[ACTIVE_PROPERTY].controls = controls;
       setUploadSuppressed(controls, true);
@@ -806,10 +819,178 @@
     }
   }
 
+  // --- Quiz handoff persistence ---------------------------------------------
+
+  function localStore(view) {
+    try {
+      return view && view.localStorage ? view.localStorage : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function nowMs(settings) {
+    return settings && typeof settings.now === "function" ? Number(settings.now()) : Date.now();
+  }
+
+  // The Quiz session the store currently attributes to (Quiz attribution
+  // snippet), or null.
+  function currentQuizSessionId(view) {
+    var store = localStore(view);
+    if (!store) return null;
+    try {
+      var data = JSON.parse(store.getItem(QUIZ_ATTRIBUTION_STORAGE_KEY) || "null");
+      var value = data && typeof data.quiz_session_id === "string" ? data.quiz_session_id.trim() : "";
+      return QUIZ_SESSION_PATTERN.test(value) ? value : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function clearQuizHandoff(view) {
+    var store = localStore(view);
+    if (!store) return;
+    try { store.removeItem(QUIZ_HANDOFF_STORAGE_KEY); } catch (error) { /* Storage unavailable. */ }
+  }
+
+  function calculatorVersionOf(snapshot) {
+    if (!snapshot) return null;
+    try {
+      var version = String(JSON.parse(snapshot).calculatorVersion || "");
+      return version && version.length <= 40 ? version : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  // Remembers a confirmed Quiz handoff from this page's link. Only a Quiz link
+  // carrying its own valid session is remembered.
+  function saveQuizHandoff(view, summary, search, settings) {
+    var store = localStore(view);
+    if (!store || !summary) return null;
+    var params = new URLSearchParams(search || "");
+    var sessionId = String(params.get("quiz_session_id") || "").trim();
+    if (!QUIZ_SESSION_PATTERN.test(sessionId)) return null;
+    var productId = String(params.get("quiz_product_id") || "").trim().slice(0, 120) || null;
+    var snapshot = snapshotText(params.get("_oo_v53_snapshot"));
+    var savedAt = nowMs(settings);
+    var record = {
+      version: 1,
+      quizSessionId: sessionId,
+      configId: summary.configId,
+      source: QUIZ_SOURCE,
+      quizProductId: productId,
+      recommendedRight: summary.recommendedRight,
+      recommendedLeft: summary.recommendedLeft,
+      calculatorVersion: calculatorVersionOf(snapshot),
+      snapshot: snapshot,
+      confirmedAt: new Date(savedAt).toISOString(),
+      expiresAt: new Date(savedAt + QUIZ_HANDOFF_TTL_MS).toISOString()
+    };
+    try {
+      store.setItem(QUIZ_HANDOFF_STORAGE_KEY, JSON.stringify(record));
+      return record;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  // The remembered Quiz handoff, while it is valid for the store's current
+  // Quiz session; an expired or superseded one is removed.
+  function readQuizHandoff(view, settings) {
+    var store = localStore(view);
+    if (!store) return null;
+    var record = null;
+    try { record = JSON.parse(store.getItem(QUIZ_HANDOFF_STORAGE_KEY) || "null"); } catch (error) { record = null; }
+    if (!record) return null;
+    var expiresAt = Date.parse(record.expiresAt);
+    var valid = record.version === 1 &&
+      record.source === QUIZ_SOURCE &&
+      typeof record.quizSessionId === "string" && QUIZ_SESSION_PATTERN.test(record.quizSessionId) &&
+      isUuid(record.configId) &&
+      Number.isFinite(expiresAt) && expiresAt > nowMs(settings) &&
+      record.quizSessionId === currentQuizSessionId(view);
+    if (!valid) {
+      clearQuizHandoff(view);
+      return null;
+    }
+    return record;
+  }
+
+  // Whether this product's lens selectors offer both eyes of the pair.
+  function offersPair(controls, right, left) {
+    try {
+      return Boolean(findPowerOption(controls.right, right) && findPowerOption(controls.left, left));
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // Every _oo_rx_config already on a cart line (including bundle components).
+  async function cartConfigIds(fetchImpl) {
+    var response = await fetchImpl("/cart.js", { method: "GET", headers: { Accept: "application/json" }, credentials: "same-origin", cache: "no-store" });
+    if (!response || !response.ok) throw new Error("The cart could not be read.");
+    var cart = await response.json();
+    var ids = [];
+    (function collect(items) {
+      (Array.isArray(items) ? items : []).forEach(function (item) {
+        var value = item && item.properties && item.properties._oo_rx_config;
+        if (typeof value === "string" && isUuid(value)) ids.push(value.trim().toLowerCase());
+        collect(item && (item.item_components || item.components));
+      });
+    })(cart && cart.items);
+    return ids;
+  }
+
+  // A product page reached without oo_rx: re-apply the remembered Quiz handoff
+  // only on an Rx mask whose lens selectors offer the saved pair, only while
+  // no cart line carries that config yet, and only once the public summary
+  // confirms it again. Anything else stays silent and attaches nothing.
+  async function restoreQuizHandoff(doc, settings) {
+    var view = doc && doc.defaultView;
+    var record = readQuizHandoff(view, settings);
+    if (!record) return { state: "idle" };
+    var controls;
+    try {
+      controls = await waitForAvisControls(doc, typeof settings.timeoutMs === "number" ? settings.timeoutMs : AVIS_WAIT_MS);
+    } catch (error) {
+      return { state: "idle", reason: "no_lens_selectors" };
+    }
+    if (!offersPair(controls, record.recommendedRight, record.recommendedLeft)) {
+      return { state: "idle", reason: "incompatible_product" };
+    }
+    try {
+      if ((await cartConfigIds(settings.fetch)).indexOf(record.configId) !== -1) {
+        return { state: "idle", reason: "already_in_cart" };
+      }
+    } catch (error) {
+      return { state: "idle", reason: "cart_unavailable" };
+    }
+    var summary;
+    try {
+      summary = await fetchSummary(settings.fetch, record.configId, settings.backendUrl, settings.retryDelays);
+    } catch (error) {
+      return { state: "idle", reason: "summary_unavailable" };
+    }
+    if (!offersPair(controls, summary.recommendedRight, summary.recommendedLeft)) {
+      return { state: "idle", reason: "incompatible_product" };
+    }
+    summary.v53Snapshot = record.snapshot || null;
+    var kept = { quiz_session_id: record.quizSessionId };
+    if (record.quizProductId) kept.quiz_product_id = record.quizProductId;
+    if (record.snapshot) kept._oo_v53_snapshot = record.snapshot;
+    try {
+      applyConfirmedHandoff(doc, controls, summary, QUIZ_SOURCE, { fromUrl: false, keptParameters: kept });
+    } catch (error) {
+      return { state: "idle", reason: "apply_failed" };
+    }
+    return { state: "restored", summary: summary, source: QUIZ_SOURCE };
+  }
+
   async function start(doc, options) {
     var settings = options || {};
     var search = settings.search || "";
-    if (!hasConfigParameter(search)) return { state: "idle" };
+    if (!hasConfigParameter(search)) return restoreQuizHandoff(doc, settings);
     var configId = readConfigId(search);
     var source = readSource(search);
     var controls;
@@ -825,6 +1006,10 @@
       if (!settled) renderPending(doc, controls);
       var summary = await summaryRequest;
       applyConfirmedHandoff(doc, controls, summary, source, { fromUrl: true });
+      // Remember a Quiz handoff for later compatible visits; any other
+      // tool's handoff supersedes a remembered Quiz one.
+      if (source === QUIZ_SOURCE) saveQuizHandoff(doc.defaultView, summary, search, settings);
+      else clearQuizHandoff(doc.defaultView);
       return { state: "confirmed", summary: summary, source: source };
     } catch (error) {
       if (controls) {
@@ -832,6 +1017,9 @@
         setUploadSuppressed(controls, false);
         renderFailure(doc, controls);
       }
+      // A remembered Quiz handoff whose own link no longer validates is dropped.
+      var remembered = readQuizHandoff(doc.defaultView, settings);
+      if (remembered && remembered.configId === configId) clearQuizHandoff(doc.defaultView);
       return { state: "fallback", error: error };
     }
   }
@@ -841,6 +1029,11 @@
     FAILURE_MESSAGE: FAILURE_MESSAGE,
     ALLOWED_SOURCES: ALLOWED_SOURCES.slice(),
     readSource: readSource,
+    QUIZ_HANDOFF_STORAGE_KEY: QUIZ_HANDOFF_STORAGE_KEY,
+    QUIZ_HANDOFF_TTL_MS: QUIZ_HANDOFF_TTL_MS,
+    readQuizHandoff: readQuizHandoff,
+    saveQuizHandoff: saveQuizHandoff,
+    restoreQuizHandoff: restoreQuizHandoff,
     isUuid: isUuid,
     readConfigId: readConfigId,
     hasConfigParameter: hasConfigParameter,
