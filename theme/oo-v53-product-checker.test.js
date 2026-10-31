@@ -269,9 +269,9 @@ test("A/J. checker exact ties -2.25 / -1.75 (5.3.1): both resolve toward SE, one
   await settle();
   var body = confirms(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", -2, -1.5]);
-  assert.equal(body.calculatorVersion, "5.3.3");
+  assert.equal(body.calculatorVersion, "5.3.4");
   var snapshot = JSON.parse(JSON.stringify(page.applied[0].summary.v53Snapshot));
-  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.3", null, null, null]);
+  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.4", null, null, null]);
 });
 
 test("UI: checker result has the heading, the why block, the cards, what to expect and one collapsed maths section", { skip: skipDom }, async function () {

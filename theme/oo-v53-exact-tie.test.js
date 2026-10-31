@@ -1,6 +1,6 @@
 "use strict";
 
-// V5.3.2 nearest-stock regression fix, retained by V5.3.3. Ordinary eyes choose the stocked lens
+// V5.3.2 nearest-stock regression fix, retained by V5.3.4. Ordinary eyes choose the stocked lens
 // nearest the underwater target; only an exact midpoint is resolved toward the
 // original spherical equivalent. Special low-minus / plano safety rules remain.
 // Runs the storefront assets exactly as Shopify loads them.
@@ -28,9 +28,9 @@ function eye(sphere, cylinder, axis) {
 }
 function plain(value) { return JSON.parse(JSON.stringify(value)); }
 
-test("calculator version is 5.3.3 (snapshot schemaVersion is unaffected)", function () {
-  assert.equal(V53.VERSION, "5.3.3");
-  assert.equal(eye(-2).version, "5.3.3");
+test("calculator version is 5.3.4 (snapshot schemaVersion is unaffected)", function () {
+  assert.equal(V53.VERSION, "5.3.4");
+  assert.equal(eye(-2).version, "5.3.4");
 });
 
 test("#336314 OD -2.00 / +0.50 x144, OS -2.50 / +0.75 x156: right tie -1.00 / -1.50 resolves to -1.50; Balanced and Alternative converge to -1.50 / -1.50", function () {
@@ -95,7 +95,7 @@ test("non-tie ordinary results use nearest stock while protected rules remain", 
   assert.equal(eye(5).recommendation, "+5.00");
   assert.equal(eye(0.75).recommendation, "+1.00");
   assert.equal(eye(0.25).recommendation, "0.00");
-  assert.equal(eye(0.5).recommendation, null, "SE +0.50 stays manual review");
+  assert.equal(eye(0.5).recommendation, "0.00", "5.3.4: SE +0.50 has an exact plano target");
   // Plano and plano to first minus gap.
   assert.equal(eye(0).recommendation, "0.00");
   assert.equal(eye(-0.25).recommendation, "0.00");

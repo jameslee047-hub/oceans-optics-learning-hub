@@ -21,8 +21,9 @@
  * tie (target exactly halfway between two stocked plus powers) goes to
  * the STRONGER lens, farther from zero (revised 2026-10-04).
  * A separate low-plus guard, decided on SE, keeps plano from being an
- * ordinary stock step: SE below +0.50 -> 0.00, exactly +0.50 -> manual
- * review, above +0.50 up to +1.00 -> +1.00. Minus selection is unchanged.
+ * ordinary stock step: SE below +0.50 -> 0.00, exactly +0.50 -> 0.00
+ * (manual review before 5.3.4), above +0.50 up to +1.00 -> +1.00. Minus
+ * selection is unchanged.
  *
  * LOW-MINUS CHOICE (2026-10-02): myopic SE beyond -0.50 up to -1.00 gets
  * -1.00 as the primary recommendation with 0.00 as a softer alternative
@@ -49,7 +50,13 @@
  * continuous underwater target. It is all-or-nothing: no one-eye compromise
  * is introduced and the normal per-eye calculation remains unchanged.
  *
- * Version: 5.3.3
+ * LOW-PLUS EXACT BOUNDARY (5.3.4, 2026-10-31): an SE of exactly +0.50 has a
+ * continuous underwater target of exactly 0.00, so it now selects plano
+ * instead of manual review. This applies to the spherical equivalent only; the
+ * high-CYL quarter-CYL Alternative reference keeps the 5.3.3 behaviour. Every
+ * other SE, including SE -0.50, is unchanged.
+ *
+ * Version: 5.3.4
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
  */
@@ -87,7 +94,7 @@
   // ==========================================================================
 
   var V53_CONFIG = {
-    version: "5.3.3",
+    version: "5.3.4",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE
@@ -659,9 +666,9 @@
   //
   // LOW-PLUS GUARD (SE up to +1.00): plano is not treated as an ordinary
   // stock step. The existing SE-based plano crossover decides:
-  //   SE below +0.50            -> 0.00
-  //   SE exactly +0.50          -> manual review
+  //   SE up to +0.50            -> 0.00
   //   SE above +0.50 to +1.00   -> +1.00
+  // (5.3.4: SE exactly +0.50 was manual review; its target is exactly plano.)
   // so a farsighted customer in this range keeps correction, and the
   // recommendation never drops from +1.00 back to plano as SE increases.
   //
@@ -674,10 +681,26 @@
   var PLUS_NEAREST_STOCK_RULE = "plus-nearest-stock";
   var EXACT_STOCK_TIE_RULE = "exact-stock-tie-closer-to-se";
 
-  function plusNearestStockSelection(target, se, availablePowers) {
+  function plusNearestStockSelection(target, se, availablePowers, options) {
     var corrective = weakestCorrectivePower(availablePowers);
     if (se <= corrective + EPSILON) {
       var lowPlus = resolvePlanoCrossover(se, target, corrective);
+      // 5.3.4: SE exactly +0.50 is equidistant from plano and +1.00, but its
+      // underwater target is exactly plano, so plano is selected as for any
+      // lower SE. Only the spherical equivalent path: the high-CYL quarter-CYL
+      // reference keeps the 5.3.3 review (exactLowPlusReview). The minus SE
+      // -0.50 review is not affected.
+      var keepReview = Boolean(options && options.exactLowPlusReview);
+      if (!keepReview && lowPlus.stockStatus === "PLANO_CROSSOVER_REVIEW" && Math.abs(target) < EPSILON) {
+        lowPlus.power = 0;
+        lowPlus.stockStatus = "OK";
+        lowPlus.reason =
+          "Spherical equivalent (" +
+          se.toFixed(3) +
+          ") is equidistant between plano (0.00) and the weakest corrective stock power (" +
+          formatSigned(corrective) +
+          "), and its continuous underwater target is exactly plano, so plano (0.00) is selected.";
+      }
       lowPlus.tieCandidates = null;
       lowPlus.stockCandidates = null;
       lowPlus.rejectedStrongerCandidates = null;
@@ -731,14 +754,14 @@
    * @param {number[]} availablePowers - one refractive-type catalog, must include 0.00
    * @returns {{power: number|null, stockStatus: string, reason: string|null, candidates: Array|null}}
    */
-  function selectStockPower(target, se, availablePowers) {
+  function selectStockPower(target, se, availablePowers, options) {
     var lowMinus = lowMinusChoiceSelection(target, se, availablePowers);
     if (lowMinus) return lowMinus;
 
     var planoGap = planoToFirstMinusGapSelection(target, availablePowers);
     if (planoGap) return planoGap;
 
-    if (se > EPSILON) return plusNearestStockSelection(target, se, availablePowers);
+    if (se > EPSILON) return plusNearestStockSelection(target, se, availablePowers, options);
 
     var corrective = weakestCorrectivePower(availablePowers);
 
@@ -838,7 +861,7 @@
    * @param {number} se - spherical equivalent (signed; negative = myopic side)
    * @returns {{preSnapTarget:number, finalPower:number|null, ooAdjustment:string, stockStatus:string, planoCrossoverCandidates:Array|null, tieCandidates:Array|null, underwaterAdjustmentApplied:number}}
    */
-  function computeV53Recommendation(se) {
+  function computeV53Recommendation(se, options) {
     var availablePowers = se < 0 ? V53_CONFIG.myopiaAvailablePowers : V53_CONFIG.hyperopiaAvailablePowers;
     var preSnapTarget = computeContinuousTarget(se);
     var configuredAdjustment = V53_CONFIG.underwaterAdjustmentD;
@@ -854,7 +877,7 @@
       "separately, never this adjustment. This is an experimental Oceans Optics empirical underwater adjustment " +
       "and is NOT currently claimed to be a universal physical constant.";
 
-    var selection = selectStockPower(preSnapTarget, se, availablePowers);
+    var selection = selectStockPower(preSnapTarget, se, availablePowers, options);
     var ooAdjustment = baseAdjustment;
     if (selection.rule === "plano-to-first-minus-gap" || selection.rule === PLUS_NEAREST_STOCK_RULE || selection.rule === LOW_MINUS_CHOICE_RULE || selection.rule === EXACT_STOCK_TIE_RULE) {
       ooAdjustment += " V5.3 " + selection.reason;
@@ -909,7 +932,9 @@
       },
       closerToSph: {
         reference: closerToSphReference,
-        recommendation: computeV53Recommendation(closerToSphReference)
+        // 5.3.4: the exact SE +0.50 plano rule is not applied to this
+        // reference, so the high-CYL Alternative is unchanged from 5.3.3.
+        recommendation: computeV53Recommendation(closerToSphReference, { exactLowPlusReview: true })
       }
     };
   }

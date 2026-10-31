@@ -154,9 +154,9 @@ async function assertSingleResult(page, right, left) {
   await settle();
   var body = confirmCalls(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", Number(right), Number(left)]);
-  assert.equal(body.calculatorVersion, "5.3.3");
+  assert.equal(body.calculatorVersion, "5.3.4");
   var snap = body.v53Snapshot;
-  assert.equal(snap.calculatorVersion, "5.3.3");
+  assert.equal(snap.calculatorVersion, "5.3.4");
   assert.equal(snap.schemaVersion, "1");
   assert.equal(snap.optionsShown, null);
   assert.equal(snap.optionLabelsShown, null);
@@ -236,7 +236,7 @@ test("default selects Balanced for #336254 (two options); #336246 now converges 
   assert.deepEqual(firstConfirm.body.v53Snapshot.recommendedValues, { right: "+3.00", left: "+3.00" });
   assert.equal(firstConfirm.body.v53Snapshot.selectedStrategy, "balanced", JSON.stringify(firstConfirm.body.v53Snapshot));
   assert.equal(firstConfirm.body.v53Snapshot.selectionEvidence, "default_recommendation");
-  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.3");
+  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.4");
 
   var togglePage = await loadCalculator();
   calculate(togglePage, [4, -0.75], [4.25, -0.75]);
@@ -277,7 +277,7 @@ test("#336262 -1.00/-0.75 x170, -1.75: the left exact tie resolves to -1.50 (clo
   assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
   var snapshot = JSON.parse(url.searchParams.get("_oo_v53_snapshot"));
-  assert.equal(snapshot.calculatorVersion, "5.3.3");
+  assert.equal(snapshot.calculatorVersion, "5.3.4");
   assert.equal(snapshot.selectionEvidence, null);
 });
 
@@ -426,7 +426,7 @@ test("non-tie myopia can keep a printed-SPH Alternative after nearest-stock Bala
   await settle();
   var confirms = confirmCalls(page);
   assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["closer_to_sph", -7, -7.5]);
-  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.3");
+  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.4");
 });
 
 test("UI: the results area has one heading, the why block, the cards, what to expect, one collapsed maths section, then Your Matching Masks", { skip: skipDom }, async function () {
