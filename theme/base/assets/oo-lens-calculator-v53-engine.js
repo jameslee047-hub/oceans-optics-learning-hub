@@ -21,8 +21,9 @@
  * tie (target exactly halfway between two stocked plus powers) goes to
  * the STRONGER lens, farther from zero (revised 2026-10-04).
  * A separate low-plus guard, decided on SE, keeps plano from being an
- * ordinary stock step: SE below +0.50 -> 0.00, exactly +0.50 -> manual
- * review, above +0.50 up to +1.00 -> +1.00. Minus selection is unchanged.
+ * ordinary stock step: SE below +0.50 -> 0.00, exactly +0.50 -> 0.00
+ * (manual review before 5.3.4), above +0.50 up to +1.00 -> +1.00. Minus
+ * selection is unchanged.
  *
  * LOW-MINUS CHOICE (2026-10-02): myopic SE beyond -0.50 up to -1.00 gets
  * -1.00 as the primary recommendation with 0.00 as a softer alternative
@@ -42,7 +43,26 @@
  * to minus and plus. The low-minus, plano gap and plano crossover rules still
  * run first, unchanged.
  *
- * Version: 5.3.2
+ * MIXED-SIGN PLANO FALLBACK (5.3.3, 2026-10-28): after both eyes complete
+ * the unchanged Balanced calculation, a minus/plus pair that no current mask
+ * can build may fall back to plano in both eyes. The fallback applies only
+ * when plano is strictly closer than the selected stock lens to each eye's
+ * continuous underwater target. It is all-or-nothing: no one-eye compromise
+ * is introduced and the normal per-eye calculation remains unchanged.
+ *
+ * LOW-PLUS EXACT BOUNDARY (5.3.4, 2026-10-31): an SE of exactly +0.50 has a
+ * continuous underwater target of exactly 0.00, so it now selects plano
+ * instead of manual review. This applies to the spherical equivalent only; the
+ * high-CYL quarter-CYL Alternative reference keeps the 5.3.3 behaviour. Every
+ * other SE, including SE -0.50, is unchanged.
+ *
+ * LOW-MINUS EXACT BOUNDARY (5.3.5, 2026-11-02): the mirror case. An SE of
+ * exactly -0.50 also has a continuous underwater target of exactly 0.00, so
+ * it now selects plano instead of manual review. Again this applies to the
+ * spherical equivalent only; the high-CYL quarter-CYL Alternative reference
+ * keeps the 5.3.4 behaviour. Every other SE is unchanged.
+ *
+ * Version: 5.3.5
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
  */
@@ -80,7 +100,7 @@
   // ==========================================================================
 
   var V53_CONFIG = {
-    version: "5.3.2",
+    version: "5.3.5",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE
@@ -610,7 +630,9 @@
   // (-1.00), the primary recommendation is -1.00 so a customer with real
   // myopia keeps correction, and 0.00 is reported as a softer alternative.
   //   SE closer to zero than -0.50   -> unchanged (0.00)
-  //   SE exactly -0.50               -> unchanged (manual review)
+  //   SE exactly -0.50               -> unchanged here; plano since 5.3.5
+  //                                     (manual review before), see
+  //                                     selectStockPower
   //   SE beyond -0.50 to -1.00       -> -1.00, softer alternative 0.00
   //   SE stronger than -1.00         -> unchanged minus selection
   // ==========================================================================
@@ -652,9 +674,9 @@
   //
   // LOW-PLUS GUARD (SE up to +1.00): plano is not treated as an ordinary
   // stock step. The existing SE-based plano crossover decides:
-  //   SE below +0.50            -> 0.00
-  //   SE exactly +0.50          -> manual review
+  //   SE up to +0.50            -> 0.00
   //   SE above +0.50 to +1.00   -> +1.00
+  // (5.3.4: SE exactly +0.50 was manual review; its target is exactly plano.)
   // so a farsighted customer in this range keeps correction, and the
   // recommendation never drops from +1.00 back to plano as SE increases.
   //
@@ -667,10 +689,26 @@
   var PLUS_NEAREST_STOCK_RULE = "plus-nearest-stock";
   var EXACT_STOCK_TIE_RULE = "exact-stock-tie-closer-to-se";
 
-  function plusNearestStockSelection(target, se, availablePowers) {
+  function plusNearestStockSelection(target, se, availablePowers, options) {
     var corrective = weakestCorrectivePower(availablePowers);
     if (se <= corrective + EPSILON) {
       var lowPlus = resolvePlanoCrossover(se, target, corrective);
+      // 5.3.4: SE exactly +0.50 is equidistant from plano and +1.00, but its
+      // underwater target is exactly plano, so plano is selected as for any
+      // lower SE. Only the spherical equivalent path: the high-CYL quarter-CYL
+      // reference keeps the 5.3.3 review (exactLowPlusReview). The minus SE
+      // -0.50 mirror is handled in selectStockPower (5.3.5).
+      var keepReview = Boolean(options && options.exactLowPlusReview);
+      if (!keepReview && lowPlus.stockStatus === "PLANO_CROSSOVER_REVIEW" && Math.abs(target) < EPSILON) {
+        lowPlus.power = 0;
+        lowPlus.stockStatus = "OK";
+        lowPlus.reason =
+          "Spherical equivalent (" +
+          se.toFixed(3) +
+          ") is equidistant between plano (0.00) and the weakest corrective stock power (" +
+          formatSigned(corrective) +
+          "), and its continuous underwater target is exactly plano, so plano (0.00) is selected.";
+      }
       lowPlus.tieCandidates = null;
       lowPlus.stockCandidates = null;
       lowPlus.rejectedStrongerCandidates = null;
@@ -724,19 +762,34 @@
    * @param {number[]} availablePowers - one refractive-type catalog, must include 0.00
    * @returns {{power: number|null, stockStatus: string, reason: string|null, candidates: Array|null}}
    */
-  function selectStockPower(target, se, availablePowers) {
+  function selectStockPower(target, se, availablePowers, options) {
     var lowMinus = lowMinusChoiceSelection(target, se, availablePowers);
     if (lowMinus) return lowMinus;
 
     var planoGap = planoToFirstMinusGapSelection(target, availablePowers);
     if (planoGap) return planoGap;
 
-    if (se > EPSILON) return plusNearestStockSelection(target, se, availablePowers);
+    if (se > EPSILON) return plusNearestStockSelection(target, se, availablePowers, options);
 
     var corrective = weakestCorrectivePower(availablePowers);
 
     if (Math.abs(se) < Math.abs(corrective) - EPSILON) {
       var crossover = resolvePlanoCrossover(se, target, corrective);
+      // 5.3.5: SE exactly -0.50 is equidistant from plano and -1.00, but its
+      // underwater target is exactly plano, so plano is selected as for any
+      // SE closer to zero. Only the spherical equivalent path: the high-CYL
+      // quarter-CYL reference keeps the 5.3.4 review (exactLowMinusReview).
+      var keepMinusReview = Boolean(options && options.exactLowMinusReview);
+      if (!keepMinusReview && crossover.stockStatus === "PLANO_CROSSOVER_REVIEW" && Math.abs(target) < EPSILON) {
+        crossover.power = 0;
+        crossover.stockStatus = "OK";
+        crossover.reason =
+          "Spherical equivalent (" +
+          se.toFixed(3) +
+          ") is equidistant between plano (0.00) and the weakest corrective stock power (" +
+          formatSigned(corrective) +
+          "), and its continuous underwater target is exactly plano, so plano (0.00) is selected.";
+      }
       crossover.tieCandidates = null;
       crossover.stockCandidates = null;
       crossover.rejectedStrongerCandidates = null;
@@ -831,7 +884,7 @@
    * @param {number} se - spherical equivalent (signed; negative = myopic side)
    * @returns {{preSnapTarget:number, finalPower:number|null, ooAdjustment:string, stockStatus:string, planoCrossoverCandidates:Array|null, tieCandidates:Array|null, underwaterAdjustmentApplied:number}}
    */
-  function computeV53Recommendation(se) {
+  function computeV53Recommendation(se, options) {
     var availablePowers = se < 0 ? V53_CONFIG.myopiaAvailablePowers : V53_CONFIG.hyperopiaAvailablePowers;
     var preSnapTarget = computeContinuousTarget(se);
     var configuredAdjustment = V53_CONFIG.underwaterAdjustmentD;
@@ -847,7 +900,7 @@
       "separately, never this adjustment. This is an experimental Oceans Optics empirical underwater adjustment " +
       "and is NOT currently claimed to be a universal physical constant.";
 
-    var selection = selectStockPower(preSnapTarget, se, availablePowers);
+    var selection = selectStockPower(preSnapTarget, se, availablePowers, options);
     var ooAdjustment = baseAdjustment;
     if (selection.rule === "plano-to-first-minus-gap" || selection.rule === PLUS_NEAREST_STOCK_RULE || selection.rule === LOW_MINUS_CHOICE_RULE || selection.rule === EXACT_STOCK_TIE_RULE) {
       ooAdjustment += " V5.3 " + selection.reason;
@@ -902,7 +955,10 @@
       },
       closerToSph: {
         reference: closerToSphReference,
-        recommendation: computeV53Recommendation(closerToSphReference)
+        // 5.3.4 / 5.3.5: the exact SE +0.50 and -0.50 plano rules are not
+        // applied to this reference, so the high-CYL Alternative is unchanged
+        // from 5.3.3.
+        recommendation: computeV53Recommendation(closerToSphReference, { exactLowPlusReview: true, exactLowMinusReview: true })
       }
     };
   }
@@ -1067,17 +1123,96 @@
     };
   }
 
+  var MIXED_SIGN_PLANO_FALLBACK_RULE = "mixed-sign-plano-fallback";
+
+  function isMixedSignPair(rightPower, leftPower) {
+    var right = Number(rightPower);
+    var left = Number(leftPower);
+    if (!Number.isFinite(right) || !Number.isFinite(left)) return false;
+    return (right < -EPSILON && left > EPSILON) || (right > EPSILON && left < -EPSILON);
+  }
+
+  // Current mask families are stocked as either minus-or-plano or
+  // plus-or-plano. None can combine a minus lens with a plus lens.
+  function pairBuildableOnAnyCurrentMask(rightPower, leftPower) {
+    return rightPower !== null && rightPower !== undefined && leftPower !== null && leftPower !== undefined &&
+      Number.isFinite(Number(rightPower)) && Number.isFinite(Number(leftPower)) &&
+      !isMixedSignPair(rightPower, leftPower);
+  }
+
+  function planoStrictlyCloserToTarget(result) {
+    var target = result && Number(result.preSnapTarget);
+    var selected = result && Number(result.finalStockPower);
+    if (!Number.isFinite(target) || !Number.isFinite(selected)) return false;
+    return Math.abs(target) < Math.abs(target - selected) - EPSILON;
+  }
+
+  function planoFallbackEye(result) {
+    var adjusted = Object.assign({}, result);
+    adjusted.normalFinalStockPower = result.finalStockPower;
+    adjusted.normalRecommendation = result.recommendation;
+    adjusted.normalStockRule = result.stockRule;
+    adjusted.normalLowMinusChoice = result.lowMinusChoice;
+    adjusted.normalAlternativePower = result.alternativePower;
+    adjusted.normalOOAdjustment = result.ooAdjustment;
+    adjusted.finalStockPower = 0;
+    adjusted.recommendation = "0.00";
+    adjusted.stockRule = MIXED_SIGN_PLANO_FALLBACK_RULE;
+    adjusted.lowMinusChoice = false;
+    adjusted.alternativePower = null;
+    adjusted.ooAdjustment = result.ooAdjustment +
+      " V5.3.3 pair-level buildability fallback: plano is strictly closer to this eye's continuous underwater target.";
+    adjusted.effectiveWeakeningFromReference = Math.round(Math.abs(result.sphericalEquivalent) * 1e6) / 1e6;
+    return adjusted;
+  }
+
+  function mixedSignPlanoFallback(right, left) {
+    var normalRight = right && right.finalStockPower;
+    var normalLeft = left && left.finalStockPower;
+    var detected = Boolean(right && left && right.valid && left.valid &&
+      isMixedSignPair(normalRight, normalLeft) &&
+      !pairBuildableOnAnyCurrentMask(normalRight, normalLeft));
+    var rightPlanoCloser = detected && planoStrictlyCloserToTarget(right);
+    var leftPlanoCloser = detected && planoStrictlyCloserToTarget(left);
+    var applied = Boolean(detected && rightPlanoCloser && leftPlanoCloser);
+    return {
+      rule: MIXED_SIGN_PLANO_FALLBACK_RULE,
+      detected: detected,
+      applied: applied,
+      normalPair: detected ? { right: normalRight, left: normalLeft } : null,
+      finalPair: applied ? { right: 0, left: 0 } : null,
+      comparisons: detected ? {
+        right: {
+          target: right.preSnapTarget,
+          planoDistance: Math.abs(right.preSnapTarget),
+          selectedDistance: Math.abs(right.preSnapTarget - normalRight),
+          planoStrictlyCloser: rightPlanoCloser
+        },
+        left: {
+          target: left.preSnapTarget,
+          planoDistance: Math.abs(left.preSnapTarget),
+          selectedDistance: Math.abs(left.preSnapTarget - normalLeft),
+          planoStrictlyCloser: leftPlanoCloser
+        }
+      } : null
+    };
+  }
+
   function calculatePrescriptionPairV53(rawRightInput, rawLeftInput) {
-    var right = calculateEyeRecommendationV53(rawRightInput, "Right (OD)");
-    var left = calculateEyeRecommendationV53(rawLeftInput, "Left (OS)");
-    var errors = [].concat(right.errors || [], left.errors || []);
-    var valid = right.valid && left.valid;
+    var normalRight = calculateEyeRecommendationV53(rawRightInput, "Right (OD)");
+    var normalLeft = calculateEyeRecommendationV53(rawLeftInput, "Left (OS)");
+    var errors = [].concat(normalRight.errors || [], normalLeft.errors || []);
+    var valid = normalRight.valid && normalLeft.valid;
+    var fallback = mixedSignPlanoFallback(normalRight, normalLeft);
+    var right = fallback.applied ? planoFallbackEye(normalRight) : normalRight;
+    var left = fallback.applied ? planoFallbackEye(normalLeft) : normalLeft;
     return {
       right: right,
       left: left,
       valid: valid,
       errors: errors,
-      softerAlternative: valid ? lowMinusSofterAlternative(right, left) : null
+      softerAlternative: valid && !fallback.applied ? lowMinusSofterAlternative(right, left) : null,
+      mixedSignPlanoFallback: fallback
     };
   }
 
@@ -1162,6 +1297,11 @@
     plusNearestStockSelection: plusNearestStockSelection,
     lowMinusChoiceSelection: lowMinusChoiceSelection,
     lowMinusSofterAlternative: lowMinusSofterAlternative,
+    isMixedSignPair: isMixedSignPair,
+    pairBuildableOnAnyCurrentMask: pairBuildableOnAnyCurrentMask,
+    planoStrictlyCloserToTarget: planoStrictlyCloserToTarget,
+    mixedSignPlanoFallback: mixedSignPlanoFallback,
+    MIXED_SIGN_PLANO_FALLBACK_RULE: MIXED_SIGN_PLANO_FALLBACK_RULE,
     LOW_MINUS_CHOICE_RULE: LOW_MINUS_CHOICE_RULE,
     PLUS_NEAREST_STOCK_RULE: PLUS_NEAREST_STOCK_RULE,
     EXACT_STOCK_TIE_RULE: EXACT_STOCK_TIE_RULE,

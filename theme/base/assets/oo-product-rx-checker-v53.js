@@ -185,13 +185,15 @@
   // the Closer to Your SPH preference). It never runs with the high-CYL
   // workflow and never changes the V5.3 results it reads.
   function calculate(engine, highCyl, entry, midpoint) {
-    var rightResult = engine.calculateEyeRecommendationV53(engineInput(entry.right), "Right eye");
-    var leftResult = engine.calculateEyeRecommendationV53(engineInput(entry.left), "Left eye");
+    var pairResult = engine.calculatePrescriptionPairV53(engineInput(entry.right), engineInput(entry.left));
+    var rightResult = pairResult.right;
+    var leftResult = pairResult.left;
     var calculation = {
       successful: false,
       entry: JSON.parse(JSON.stringify(entry)),
       rightResult: rightResult,
       leftResult: leftResult,
+      mixedSignPlanoFallback: pairResult.mixedSignPlanoFallback,
       review: false,
       highCylinderPreview: null,
       midpointChoice: null,

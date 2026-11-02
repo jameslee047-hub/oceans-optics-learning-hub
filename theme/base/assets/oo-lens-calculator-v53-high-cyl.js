@@ -147,10 +147,20 @@
     var right = calculateEyeAlternative(rightResult);
     var left = calculateEyeAlternative(leftResult);
     var triggered = right.triggered || left.triggered;
+    var balancedBuildable = V53.pairBuildableOnAnyCurrentMask(
+      right.balancedPower,
+      left.balancedPower
+    );
+    var alternativeBuildable = V53.pairBuildableOnAnyCurrentMask(
+      right.alternativePower,
+      left.alternativePower
+    );
 
     return {
       triggered: triggered,
-      available: triggered && right.available && left.available,
+      available: triggered && right.available && left.available && balancedBuildable && alternativeBuildable,
+      balancedBuildable: balancedBuildable,
+      alternativeBuildable: alternativeBuildable,
       eyes: { right: right, left: left },
       balanced: {
         right: right.balancedRecommendation,

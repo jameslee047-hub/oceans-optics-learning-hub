@@ -154,9 +154,9 @@ async function assertSingleResult(page, right, left) {
   await settle();
   var body = confirmCalls(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", Number(right), Number(left)]);
-  assert.equal(body.calculatorVersion, "5.3.2");
+  assert.equal(body.calculatorVersion, "5.3.5");
   var snap = body.v53Snapshot;
-  assert.equal(snap.calculatorVersion, "5.3.2");
+  assert.equal(snap.calculatorVersion, "5.3.5");
   assert.equal(snap.schemaVersion, "1");
   assert.equal(snap.optionsShown, null);
   assert.equal(snap.optionLabelsShown, null);
@@ -236,7 +236,7 @@ test("default selects Balanced for #336254 (two options); #336246 now converges 
   assert.deepEqual(firstConfirm.body.v53Snapshot.recommendedValues, { right: "+3.00", left: "+3.00" });
   assert.equal(firstConfirm.body.v53Snapshot.selectedStrategy, "balanced", JSON.stringify(firstConfirm.body.v53Snapshot));
   assert.equal(firstConfirm.body.v53Snapshot.selectionEvidence, "default_recommendation");
-  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.2");
+  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.5");
 
   var togglePage = await loadCalculator();
   calculate(togglePage, [4, -0.75], [4.25, -0.75]);
@@ -277,7 +277,7 @@ test("#336262 -1.00/-0.75 x170, -1.75: the left exact tie resolves to -1.50 (clo
   assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
   var snapshot = JSON.parse(url.searchParams.get("_oo_v53_snapshot"));
-  assert.equal(snapshot.calculatorVersion, "5.3.2");
+  assert.equal(snapshot.calculatorVersion, "5.3.5");
   assert.equal(snapshot.selectionEvidence, null);
 });
 
@@ -426,7 +426,7 @@ test("non-tie myopia can keep a printed-SPH Alternative after nearest-stock Bala
   await settle();
   var confirms = confirmCalls(page);
   assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["closer_to_sph", -7, -7.5]);
-  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.2");
+  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.5");
 });
 
 test("UI: the results area has one heading, the why block, the cards, what to expect, one collapsed maths section, then Your Matching Masks", { skip: skipDom }, async function () {
@@ -467,12 +467,33 @@ test("UI: the results area has one heading, the why block, the cards, what to ex
   assert.equal(page.doc.getElementById("oo-v52-guidance").hidden, true);
 });
 
+// Since 5.3.5 no valid prescription on the audit grid leaves an eye unresolved
+// (SE -0.50 was the last one). The blocking review presentation is kept as a
+// defensive path, so these tests force an unresolved right eye.
+function forceUnresolvedRightEye(page) {
+  var V53 = page.win.OOLensCalculatorV53;
+  var real = V53.calculatePrescriptionPairV53;
+  V53.calculatePrescriptionPairV53 = function (right, left) {
+    var pair = real.call(V53, right, left);
+    pair.right = Object.assign({}, pair.right, { recommendation: null, finalStockPower: null, stockStatus: "PLANO_CROSSOVER_REVIEW", manualReview: true });
+    pair.softerAlternative = null;
+    return pair;
+  };
+}
+
 test("UI: genuine warnings still show (manual review); high CYL shows Balanced selected with the why block", { skip: skipDom }, async function () {
   var page = await loadCalculator();
+  forceUnresolvedRightEye(page);
   calculate(page, [-0.25, -0.5], [-3]);
   await settle();
   assert.equal(page.doc.getElementById("oo-v52-guidance").hidden, false);
   assert.match(page.doc.getElementById("oo-v52-guidance").textContent, /We need to review your right-eye prescription/);
+  // The same real prescription (SE -0.50) is plano since 5.3.5, with no review.
+  var real = await loadCalculator();
+  calculate(real, [-0.25, -0.5], [-3]);
+  await settle();
+  assert.equal(real.doc.getElementById("oo-v52-guidance").hidden, true);
+  assert.equal(text(real.doc, "oo-v52-result-right"), "0.00");
   var high = await loadCalculator();
   calculate(high, [-2.75, -3.25], [-2, -3]);
   await settle();
@@ -716,4 +737,23 @@ test("no compatible mask: an explicit message is shown instead of an empty area"
   assert.equal(page.doc.getElementById("oo-v52-products-empty").hidden, false);
   assert.match(page.doc.getElementById("oo-v52-products-empty").textContent, /mixes nearsighted and farsighted/);
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true, "mixed sign never offers a second option");
+});
+
+test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: 0.00 / -1.00 with no review, normal plano copy and masks", { skip: skipDom }, async function () {
+  var page = await loadCalculator();
+  calculate(page, [-0.25, -0.5, 65], [-0.5, -0.25, 50]);
+  await settle();
+  assert.deepEqual([text(page.doc, "oo-v52-result-right"), text(page.doc, "oo-v52-result-left")], ["0.00", "-1.00"]);
+  assert.equal(page.doc.getElementById("oo-v52-guidance").hidden, true, "no review warning");
+  assert.doesNotMatch(page.doc.getElementById("oo-v52-result").textContent, /We need to review/);
+  assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true, "no Alternative");
+  assert.equal(page.doc.getElementById("oo-v52-high-cyl").hidden, true);
+  assert.deepEqual(cardPairs(page.doc), ["R Plano (0.00)L -1.00"]);
+  assert.match(page.doc.getElementById("oo-v52-explain").textContent, /Underwater adjusted strength:0\.00Closest available mask lens:0\.00/);
+  page.doc.querySelector(".oo-v52-product-card__customize").click();
+  await settle();
+  await settle();
+  var body = confirmCalls(page)[0].body;
+  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.5", "balanced", 0, -1]);
+  assert.deepEqual([body.v53Snapshot.optionsShown, body.v53Snapshot.selectionEvidence], [null, null]);
 });

@@ -141,7 +141,7 @@ test("checker: a default Balanced selection is saved with the same per-mask evid
   await settle();
   var expected = {
     schemaVersion: "1",
-    calculatorVersion: "5.3.2",
+    calculatorVersion: "5.3.5",
     source: "product_rx_checker",
     optionsShown: FIXTURE_OPTIONS,
     optionLabelsShown: LABELS,

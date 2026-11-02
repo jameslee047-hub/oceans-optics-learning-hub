@@ -97,11 +97,13 @@ test("4. genuine protected low-minus (SE -1.00 to -0.50) still suppresses Sharpe
   });
 });
 
-test("5. SE exactly -0.50 keeps manual review and no Sharper", function () {
+test("5. SE exactly -0.50 is protected plano (5.3.5; manual review before) and offers no Sharper", function () {
   var choice = pairChoice(eye("-0.50"), eye("-1.75"));
   assert.equal(choice.available, false);
-  assert.equal(choice.reason, "right_manual_review");
+  assert.equal(choice.reason, "right_plano_crossover");
   assert.equal(pairChoice(eye("-0.50"), eye("-0.50")).available, false);
+  // Same protection as any lower plano crossover SE.
+  assert.equal(pairChoice(eye("-0.25"), eye("-1.75")).reason, "right_plano_crossover");
 });
 
 test("6. genuine plano results never offer Sharper", function () {

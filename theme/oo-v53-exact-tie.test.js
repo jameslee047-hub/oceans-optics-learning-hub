@@ -1,6 +1,6 @@
 "use strict";
 
-// V5.3.2 nearest-stock regression fix. Ordinary eyes choose the stocked lens
+// V5.3.2 nearest-stock regression fix, retained by V5.3.5. Ordinary eyes choose the stocked lens
 // nearest the underwater target; only an exact midpoint is resolved toward the
 // original spherical equivalent. Special low-minus / plano safety rules remain.
 // Runs the storefront assets exactly as Shopify loads them.
@@ -28,9 +28,9 @@ function eye(sphere, cylinder, axis) {
 }
 function plain(value) { return JSON.parse(JSON.stringify(value)); }
 
-test("calculator version is 5.3.2 (snapshot schemaVersion is unaffected)", function () {
-  assert.equal(V53.VERSION, "5.3.2");
-  assert.equal(eye(-2).version, "5.3.2");
+test("calculator version is 5.3.5 (snapshot schemaVersion is unaffected)", function () {
+  assert.equal(V53.VERSION, "5.3.5");
+  assert.equal(eye(-2).version, "5.3.5");
 });
 
 test("#336314 OD -2.00 / +0.50 x144, OS -2.50 / +0.75 x156: right tie -1.00 / -1.50 resolves to -1.50; Balanced and Alternative converge to -1.50 / -1.50", function () {
@@ -95,17 +95,17 @@ test("non-tie ordinary results use nearest stock while protected rules remain", 
   assert.equal(eye(5).recommendation, "+5.00");
   assert.equal(eye(0.75).recommendation, "+1.00");
   assert.equal(eye(0.25).recommendation, "0.00");
-  assert.equal(eye(0.5).recommendation, null, "SE +0.50 stays manual review");
+  assert.equal(eye(0.5).recommendation, "0.00", "5.3.4: SE +0.50 has an exact plano target");
   // Plano and plano to first minus gap.
   assert.equal(eye(0).recommendation, "0.00");
   assert.equal(eye(-0.25).recommendation, "0.00");
   assert.equal(eye(-1.25).recommendation, "-1.00");
   assert.equal(eye(-1.25).stockRule, "plano-to-first-minus-gap");
   assert.equal(eye(-1.5).recommendation, "-1.00", "target -1.00 is exact stock");
-  // Low minus choice and SE -0.50 manual review.
+  // Low minus choice; SE -0.50 has an exact plano target (manual review before 5.3.5).
   assert.equal(eye(-0.75).recommendation, "-1.00");
   assert.equal(eye(-0.75).lowMinusChoice, true);
-  assert.equal(eye(-0.5).recommendation, null);
+  assert.equal(eye(-0.5).recommendation, "0.00", "5.3.5: SE -0.50 has an exact plano target");
   // Exact stock targets.
   assert.equal(eye(-4.5).recommendation, "-4.00");
 });
@@ -123,9 +123,10 @@ test("high CYL keeps its workflow; both strategies use nearest stock and the sam
   assert.deepEqual(plain([preview.alternative.right, preview.alternative.left]), ["-3.00", "-2.50"]);
 });
 
-test("mixed sign and manual review pairs never offer a choice", function () {
+test("mixed sign, manual review and plano pairs never offer a choice", function () {
   assert.equal(Choice.calculatePairRecommendationChoice(eye(-3.25), eye(2.5), {}).available, false);
   assert.equal(Choice.calculatePairRecommendationChoice(eye(-0.5), eye(-1.75), {}).available, false);
+  assert.equal(Choice.calculatePairRecommendationChoice(eye(1.5, -3.5), eye(-1.75), {}).available, false);
 });
 
 test("full eye grid: every ordinary buildable result is nearest stock; only exact ties resolve toward SE", function () {

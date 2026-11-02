@@ -175,6 +175,29 @@ function cardTitles(page) {
   });
 }
 
+test("V5.3.3 mixed-sign fallback is a purchasable plano/plano Product Checker result", { skip: skipDom }, async function () {
+  for (var i = 0; i < 2; i += 1) {
+    var handle = i === 0 ? HANDLES.obsidian : HANDLES.farsighted;
+    var page = await loadChecker(handle);
+    check(page, [-1, 0.5, 20], [0.5, 0.5, 150]);
+    await settle();
+    assert.deepEqual(cards(page), [], "no unbuildable mixed-sign option cards");
+    assert.equal(shownPair(page), "Plano (0.00)/Plano (0.00)");
+    assert.equal(page.container.ooRxChecker.state.calculation.mixedSignPlanoFallback.applied, true);
+    apply(page);
+    await settle();
+    assert.deepEqual(
+      [confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft],
+      ["balanced", 0, 0]
+    );
+    assert.deepEqual(
+      [page.applied[0].summary.recommendedRight, page.applied[0].summary.recommendedLeft],
+      [0, 0],
+      "confirmed plano pair reaches the product handoff"
+    );
+  }
+});
+
 test("J. checker -7 case: nearest Balanced -7.00/-8.00 leads; printed-SPH Alternative -7.00/-7.50 remains optional", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
@@ -246,9 +269,9 @@ test("A/J. checker exact ties -2.25 / -1.75 (5.3.1): both resolve toward SE, one
   await settle();
   var body = confirms(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", -2, -1.5]);
-  assert.equal(body.calculatorVersion, "5.3.2");
+  assert.equal(body.calculatorVersion, "5.3.5");
   var snapshot = JSON.parse(JSON.stringify(page.applied[0].summary.v53Snapshot));
-  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.2", null, null, null]);
+  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.5", null, null, null]);
 });
 
 test("UI: checker result has the heading, the why block, the cards, what to expect and one collapsed maths section", { skip: skipDom }, async function () {
@@ -479,4 +502,18 @@ test("checker: customer-facing copy has no hyphens, en dashes or em dashes", { s
   await settle();
   assert.equal(/—/.test(midpoint.container.textContent), false);
   assert.equal(/median/i.test(midpoint.container.textContent), false);
+});
+
+test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: checker shows 0.00 / -1.00 and applies it on the minus mask", { skip: skipDom }, async function () {
+  var page = await loadChecker(HANDLES.obsidian);
+  check(page, [-0.25, -0.5, 65], [-0.5, -0.25, 50]);
+  await settle();
+  assert.deepEqual(cards(page), [], "one Balanced result, no Alternative");
+  assert.equal(shownPair(page), "Plano (0.00)/-1.00");
+  assert.doesNotMatch(page.container.textContent, /needs a quick check by our team/);
+  apply(page);
+  await settle();
+  var body = confirms(page)[0].body;
+  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.5", "balanced", 0, -1]);
+  assert.deepEqual([page.applied[0].summary.recommendedRight, page.applied[0].summary.recommendedLeft], [0, -1]);
 });
