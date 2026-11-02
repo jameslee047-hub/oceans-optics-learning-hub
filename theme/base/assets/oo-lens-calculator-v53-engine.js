@@ -56,7 +56,13 @@
  * high-CYL quarter-CYL Alternative reference keeps the 5.3.3 behaviour. Every
  * other SE, including SE -0.50, is unchanged.
  *
- * Version: 5.3.4
+ * LOW-MINUS EXACT BOUNDARY (5.3.5, 2026-11-02): the mirror case. An SE of
+ * exactly -0.50 also has a continuous underwater target of exactly 0.00, so
+ * it now selects plano instead of manual review. Again this applies to the
+ * spherical equivalent only; the high-CYL quarter-CYL Alternative reference
+ * keeps the 5.3.4 behaviour. Every other SE is unchanged.
+ *
+ * Version: 5.3.5
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
  */
@@ -94,7 +100,7 @@
   // ==========================================================================
 
   var V53_CONFIG = {
-    version: "5.3.4",
+    version: "5.3.5",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE
@@ -624,7 +630,9 @@
   // (-1.00), the primary recommendation is -1.00 so a customer with real
   // myopia keeps correction, and 0.00 is reported as a softer alternative.
   //   SE closer to zero than -0.50   -> unchanged (0.00)
-  //   SE exactly -0.50               -> unchanged (manual review)
+  //   SE exactly -0.50               -> unchanged here; plano since 5.3.5
+  //                                     (manual review before), see
+  //                                     selectStockPower
   //   SE beyond -0.50 to -1.00       -> -1.00, softer alternative 0.00
   //   SE stronger than -1.00         -> unchanged minus selection
   // ==========================================================================
@@ -689,7 +697,7 @@
       // underwater target is exactly plano, so plano is selected as for any
       // lower SE. Only the spherical equivalent path: the high-CYL quarter-CYL
       // reference keeps the 5.3.3 review (exactLowPlusReview). The minus SE
-      // -0.50 review is not affected.
+      // -0.50 mirror is handled in selectStockPower (5.3.5).
       var keepReview = Boolean(options && options.exactLowPlusReview);
       if (!keepReview && lowPlus.stockStatus === "PLANO_CROSSOVER_REVIEW" && Math.abs(target) < EPSILON) {
         lowPlus.power = 0;
@@ -767,6 +775,21 @@
 
     if (Math.abs(se) < Math.abs(corrective) - EPSILON) {
       var crossover = resolvePlanoCrossover(se, target, corrective);
+      // 5.3.5: SE exactly -0.50 is equidistant from plano and -1.00, but its
+      // underwater target is exactly plano, so plano is selected as for any
+      // SE closer to zero. Only the spherical equivalent path: the high-CYL
+      // quarter-CYL reference keeps the 5.3.4 review (exactLowMinusReview).
+      var keepMinusReview = Boolean(options && options.exactLowMinusReview);
+      if (!keepMinusReview && crossover.stockStatus === "PLANO_CROSSOVER_REVIEW" && Math.abs(target) < EPSILON) {
+        crossover.power = 0;
+        crossover.stockStatus = "OK";
+        crossover.reason =
+          "Spherical equivalent (" +
+          se.toFixed(3) +
+          ") is equidistant between plano (0.00) and the weakest corrective stock power (" +
+          formatSigned(corrective) +
+          "), and its continuous underwater target is exactly plano, so plano (0.00) is selected.";
+      }
       crossover.tieCandidates = null;
       crossover.stockCandidates = null;
       crossover.rejectedStrongerCandidates = null;
@@ -932,9 +955,10 @@
       },
       closerToSph: {
         reference: closerToSphReference,
-        // 5.3.4: the exact SE +0.50 plano rule is not applied to this
-        // reference, so the high-CYL Alternative is unchanged from 5.3.3.
-        recommendation: computeV53Recommendation(closerToSphReference, { exactLowPlusReview: true })
+        // 5.3.4 / 5.3.5: the exact SE +0.50 and -0.50 plano rules are not
+        // applied to this reference, so the high-CYL Alternative is unchanged
+        // from 5.3.3.
+        recommendation: computeV53Recommendation(closerToSphReference, { exactLowPlusReview: true, exactLowMinusReview: true })
       }
     };
   }

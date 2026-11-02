@@ -13,7 +13,7 @@ var path = require("node:path");
 var vm = require("node:vm");
 
 var ASSETS = path.join(__dirname, "base", "assets");
-var PROTECTED_ENGINE_SHA256 = "e38e60174bc2eff7ce00fb14cd00066410759cb2843c10ace9aaf30c57028605";
+var PROTECTED_ENGINE_SHA256 = "b2e364f3dcdc21a0d0cc02f089f881d637d3411668add26cc6a3478bf25c55f1";
 var EPSILON = 1e-6;
 
 function loadModules() {
@@ -63,7 +63,7 @@ function second(choice) {
   return choice.available ? [choice.alternativeStrategy, choice.alternative.right, choice.alternative.left] : ["none", choice.reason];
 }
 
-test("the protected V5.3.4 engine matches its release hash", function () {
+test("the protected V5.3.5 engine matches its release hash", function () {
   var source = fs.readFileSync(path.join(ASSETS, "oo-lens-calculator-v53-engine.js"));
   assert.equal(crypto.createHash("sha256").update(source).digest("hex"), PROTECTED_ENGINE_SHA256);
 });

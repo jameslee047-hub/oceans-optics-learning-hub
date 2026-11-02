@@ -398,6 +398,20 @@ test("a stale preview cannot be saved after the prescription is edited", { skip:
   assert.equal(page.opened.length === 0 || page.opened[0].closed === true, true);
 });
 
+// Since 5.3.5 no valid prescription on the audit grid leaves an eye unresolved
+// (SE -0.50 was the last one). The blocking review presentation is kept as a
+// defensive path, so these tests force an unresolved right eye.
+function forceUnresolvedRightEye(page) {
+  var V53 = page.win.OOLensCalculatorV53;
+  var real = V53.calculatePrescriptionPairV53;
+  V53.calculatePrescriptionPairV53 = function (right, left) {
+    var pair = real.call(V53, right, left);
+    pair.right = Object.assign({}, pair.right, { recommendation: null, finalStockPower: null, stockStatus: "PLANO_CROSSOVER_REVIEW", manualReview: true });
+    pair.softerAlternative = null;
+    return pair;
+  };
+}
+
 test("result display is unchanged: plano and review keep the live presentation", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [0], [-0.25]);
@@ -406,12 +420,20 @@ test("result display is unchanged: plano and review keep the live presentation",
   assert.equal(page.doc.getElementById("oo-v52-result-right-state"), null);
 
   var review = await loadCalculator();
+  forceUnresolvedRightEye(review);
   calculate(review, [-0.5], [-3]);
   await settle();
   assert.equal(review.doc.getElementById("oo-v52-result-right").hidden, true);
   assert.equal(eyeText(review.doc, "left"), "-2.50");
   assert.equal(review.doc.getElementById("oo-v52-products").hidden, true);
   assert.equal(review.calls.length, 0);
+
+  // 5.3.5: the real SE -0.50 eye is plano and the pair's masks are shown.
+  var real = await loadCalculator();
+  calculate(real, [-0.5], [-3]);
+  await settle();
+  assert.equal(eyeText(real.doc, "right"), "0.00");
+  assert.equal(real.doc.getElementById("oo-v52-products").hidden, false);
 });
 
 test("protected low-minus pairs keep the normal flow without a choice", { skip: skipDom }, async function () {

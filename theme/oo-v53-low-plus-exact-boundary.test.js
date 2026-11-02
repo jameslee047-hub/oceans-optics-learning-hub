@@ -102,10 +102,10 @@ test("existing low-plus above +0.50 through +1.00 stays +1.00", function () {
   assert.equal(eye(1.5).stockRule, "plus-nearest-stock");
 });
 
-test("minus is unchanged, including the SE -0.50 manual review", function () {
-  assert.equal(eye(-0.5).recommendation, null);
-  assert.equal(eye(-0.5).manualReview, true);
-  assert.equal(eye(-0.5).stockStatus, "PLANO_CROSSOVER_REVIEW");
+test("minus is unchanged (SE -0.50 is plano since 5.3.5, see oo-v53-low-minus-exact-boundary)", function () {
+  assert.equal(eye(-0.5).recommendation, "0.00");
+  assert.equal(eye(-0.5).manualReview, false);
+  assert.equal(eye(-0.5).stockStatus, "OK");
   assert.equal(eye(-0.25).recommendation, "0.00");
   assert.equal(eye(-0.75).recommendation, "-1.00");
   assert.equal(eye(-0.75).lowMinusChoice, true);

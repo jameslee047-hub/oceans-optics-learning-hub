@@ -269,9 +269,9 @@ test("A/J. checker exact ties -2.25 / -1.75 (5.3.1): both resolve toward SE, one
   await settle();
   var body = confirms(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", -2, -1.5]);
-  assert.equal(body.calculatorVersion, "5.3.4");
+  assert.equal(body.calculatorVersion, "5.3.5");
   var snapshot = JSON.parse(JSON.stringify(page.applied[0].summary.v53Snapshot));
-  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.4", null, null, null]);
+  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.5", null, null, null]);
 });
 
 test("UI: checker result has the heading, the why block, the cards, what to expect and one collapsed maths section", { skip: skipDom }, async function () {
@@ -502,4 +502,18 @@ test("checker: customer-facing copy has no hyphens, en dashes or em dashes", { s
   await settle();
   assert.equal(/—/.test(midpoint.container.textContent), false);
   assert.equal(/median/i.test(midpoint.container.textContent), false);
+});
+
+test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: checker shows 0.00 / -1.00 and applies it on the minus mask", { skip: skipDom }, async function () {
+  var page = await loadChecker(HANDLES.obsidian);
+  check(page, [-0.25, -0.5, 65], [-0.5, -0.25, 50]);
+  await settle();
+  assert.deepEqual(cards(page), [], "one Balanced result, no Alternative");
+  assert.equal(shownPair(page), "Plano (0.00)/-1.00");
+  assert.doesNotMatch(page.container.textContent, /needs a quick check by our team/);
+  apply(page);
+  await settle();
+  var body = confirms(page)[0].body;
+  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.5", "balanced", 0, -1]);
+  assert.deepEqual([page.applied[0].summary.recommendedRight, page.applied[0].summary.recommendedLeft], [0, -1]);
 });
