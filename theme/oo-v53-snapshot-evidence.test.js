@@ -135,13 +135,13 @@ var FIXTURE_OPTIONS = { closer_to_sph: { right: "+4.00", left: "+3.00" }, balanc
 
 test("checker: a default Balanced selection is saved with the same per-mask evidence as the other tools", { skip: skipDom }, async function () {
   var page = await loadChecker(FARSIGHTED);
-  check(page, [4, -2, 75], [3, -1.25, 110]);
+  check(page, [4, -1.75, 75], [3, -1.25, 110]);
   await settle();
   page.container.querySelector(".oo-rx-checker__apply").click();
   await settle();
   var expected = {
     schemaVersion: "1",
-    calculatorVersion: "5.3.5",
+    calculatorVersion: "5.3.6",
     source: "product_rx_checker",
     optionsShown: FIXTURE_OPTIONS,
     optionLabelsShown: LABELS,
@@ -160,7 +160,7 @@ test("checker: a default Balanced selection is saved with the same per-mask evid
 
 test("checker: an explicit Alternative selection is saved as closer_to_sph / customer_explicit", { skip: skipDom }, async function () {
   var page = await loadChecker(FARSIGHTED);
-  check(page, [4, -2, 75], [3, -1.25, 110]);
+  check(page, [4, -1.75, 75], [3, -1.25, 110]);
   await settle();
   page.container.querySelector('.oo-rx-checker__choice[data-strategy="closer_to_sph"] input').click();
   await settle();
@@ -198,7 +198,7 @@ test("checker: when this mask shows one pair (second option not buildable), no o
 
 test("multi mask: two checker masks keep independent evidence (Balanced by default, Alternative explicitly)", { skip: skipDom }, async function () {
   var mask1 = await loadChecker(FARSIGHTED);
-  check(mask1, [4, -2, 75], [3, -1.25, 110]);
+  check(mask1, [4, -1.75, 75], [3, -1.25, 110]);
   await settle();
   mask1.container.querySelector(".oo-rx-checker__apply").click();
   await settle();

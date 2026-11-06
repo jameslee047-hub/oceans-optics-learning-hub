@@ -18,7 +18,14 @@
   "use strict";
 
   var EPSILON = 1e-9;
-  var HIGH_CYL_THRESHOLD = 3;
+  // V5.3.6: an eye with |CYL| >= 2.00 is offered the existing SPH + CYL/4
+  // Alternative (5.3.0 to 5.3.5: >= 3.00). At CYL 2.00, CYL/4 equals one
+  // 0.50 D stock step. This threshold controls ONLY which eyes get this
+  // Alternative. It is not the high-cylinder warning / guidance threshold
+  // (HIGH_CYL_WARNING_THRESHOLD, unchanged at 3.00) and has no effect on the
+  // engine's very-high-cylinder manual review (its CYL bands).
+  var QUARTER_CYL_ALTERNATIVE_THRESHOLD = 2;
+  var HIGH_CYL_WARNING_THRESHOLD = 3;
   var STRATEGY_BALANCED = "balanced";
   var STRATEGY_CLOSER_TO_SPH = "closer_to_sph";
 
@@ -82,7 +89,7 @@
     if (!result || !result.valid || !result.normalized) return unchangedEye(result);
 
     var cylinderMagnitude = Math.abs(Number(result.normalized.cylinder));
-    if (cylinderMagnitude < HIGH_CYL_THRESHOLD - EPSILON) return unchangedEye(result);
+    if (cylinderMagnitude < QUARTER_CYL_ALTERNATIVE_THRESHOLD - EPSILON) return unchangedEye(result);
 
     var balancedPower = balancedPowerFor(result);
     if (balancedPower === null) {
@@ -211,7 +218,11 @@
   }
 
   return {
-    HIGH_CYL_THRESHOLD: HIGH_CYL_THRESHOLD,
+    QUARTER_CYL_ALTERNATIVE_THRESHOLD: QUARTER_CYL_ALTERNATIVE_THRESHOLD,
+    HIGH_CYL_WARNING_THRESHOLD: HIGH_CYL_WARNING_THRESHOLD,
+    // Compatibility name: in this module it has always meant the threshold of
+    // the quarter-CYL Alternative workflow, so it follows that value.
+    HIGH_CYL_THRESHOLD: QUARTER_CYL_ALTERNATIVE_THRESHOLD,
     STRATEGY_BALANCED: STRATEGY_BALANCED,
     STRATEGY_CLOSER_TO_SPH: STRATEGY_CLOSER_TO_SPH,
     continuousTargetTowardZero: continuousTargetTowardZero,

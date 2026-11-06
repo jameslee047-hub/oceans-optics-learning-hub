@@ -12,6 +12,10 @@
     "Your left-eye prescription includes higher astigmatism, so we’ve used a spherical-equivalent approach to balance its SPH and CYL values and choose the closest practical lens strength available.";
   var HIGH_CYL_BENEFIT =
     "This gives you the best overall match from our available sphere-only corrective lenses.";
+  // Higher-astigmatism guidance copy above is shown from |CYL| 3.00. This is
+  // warning language only and deliberately separate from the quarter-CYL
+  // Alternative threshold (2.00 since V5.3.6).
+  var HIGH_CYL_GUIDANCE_THRESHOLD = 3;
   var activeRecommendation = null;
   var customerStrategySelected = false;
   var strategySelectionEvidence = null;
@@ -642,7 +646,7 @@
     if (blocked || !module) return null;
     var options = {
       highCylinderTriggered: Boolean(highCylinderPreview && highCylinderPreview.triggered),
-      highCylinderThreshold: window.OOV52HighCylinder ? window.OOV52HighCylinder.HIGH_CYL_THRESHOLD : undefined
+      highCylinderThreshold: window.OOV52HighCylinder ? window.OOV52HighCylinder.QUARTER_CYL_ALTERNATIVE_THRESHOLD : undefined
     };
     var choice = typeof module.calculatePairRecommendationChoice === "function"
       ? module.calculatePairRecommendationChoice(rightResult, leftResult, options)
@@ -763,7 +767,7 @@
     return {
       side: side,
       blocking: blocking,
-      higherCylinder: !blocking && Number(eyeResult.cylinderMagnitude) >= 3
+      higherCylinder: !blocking && Number(eyeResult.cylinderMagnitude) >= HIGH_CYL_GUIDANCE_THRESHOLD
     };
   }
 

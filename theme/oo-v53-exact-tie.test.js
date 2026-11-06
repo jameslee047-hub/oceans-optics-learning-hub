@@ -28,9 +28,9 @@ function eye(sphere, cylinder, axis) {
 }
 function plain(value) { return JSON.parse(JSON.stringify(value)); }
 
-test("calculator version is 5.3.5 (snapshot schemaVersion is unaffected)", function () {
-  assert.equal(V53.VERSION, "5.3.5");
-  assert.equal(eye(-2).version, "5.3.5");
+test("calculator version is 5.3.6 (snapshot schemaVersion is unaffected)", function () {
+  assert.equal(V53.VERSION, "5.3.6");
+  assert.equal(eye(-2).version, "5.3.6");
 });
 
 test("#336314 OD -2.00 / +0.50 x144, OS -2.50 / +0.75 x156: right tie -1.00 / -1.50 resolves to -1.50; Balanced and Alternative converge to -1.50 / -1.50", function () {

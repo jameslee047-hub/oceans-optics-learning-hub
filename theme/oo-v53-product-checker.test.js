@@ -269,9 +269,9 @@ test("A/J. checker exact ties -2.25 / -1.75 (5.3.1): both resolve toward SE, one
   await settle();
   var body = confirms(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", -2, -1.5]);
-  assert.equal(body.calculatorVersion, "5.3.5");
+  assert.equal(body.calculatorVersion, "5.3.6");
   var snapshot = JSON.parse(JSON.stringify(page.applied[0].summary.v53Snapshot));
-  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.5", null, null, null]);
+  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.6", null, null, null]);
 });
 
 test("UI: checker result has the heading, the why block, the cards, what to expect and one collapsed maths section", { skip: skipDom }, async function () {
@@ -349,9 +349,9 @@ test("checker: the mask's own stock decides whether the second option is offered
   assert.deepEqual([confirms(unbuildable)[0].body.recommendationStrategy, confirms(unbuildable)[0].body.recommendedRight], ["balanced", -6]);
 });
 
-test("checker: exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110 on the farsighted mask: Balanced +3/+2 default, Alternative +4/+3, evidence and handoff follow the selection", { skip: skipDom }, async function () {
+test("checker: ordinary plus fixture +4.00/-1.75 x075, +3.00/-1.25 x110 on the farsighted mask: Balanced +3/+2 default, Alternative +4/+3, evidence and handoff follow the selection", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.farsighted);
-  check(page, [4, -2, 75], [3, -1.25, 110]);
+  check(page, [4, -1.75, 75], [3, -1.25, 110]);
   await settle();
   assert.deepEqual(cards(page), ["balanced +3.00/+2.00", "closer_to_sph +4.00/+3.00"]);
   assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"]);
@@ -360,8 +360,8 @@ test("checker: exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110 on the farsighte
   assert.equal(calc().selectionEvidence, "default_recommendation");
   var text = function () { return page.container.querySelector("[data-checker-result]").textContent.replace(/\s+/g, " "); };
   assert.match(text(), /This is our recommended all round option\./);
-  ["Glasses prescription:+4.00 / -2.00", "Sphere only strength:+3.00", "Underwater adjusted strength:+2.50", "Closest available mask lens:+3.00",
-    "Glasses prescription:+3.00 / -1.25", "Sphere only strength:+2.38", "Underwater adjusted strength:+1.88", "Closest available mask lens:+2.00"].forEach(function (needle) {
+  ["Glasses prescription:+4.00 / -1.75", "Sphere only strength:+3.13", "Underwater adjusted starting point:+2.63", "Recommended mask lens:+3.00",
+    "Glasses prescription:+3.00 / -1.25", "Sphere only strength:+2.38", "Underwater adjusted starting point:+1.88", "Recommended mask lens:+2.00"].forEach(function (needle) {
     assert.ok(text().indexOf(needle) !== -1, "missing: " + needle);
   });
 
@@ -514,6 +514,29 @@ test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: chec
   apply(page);
   await settle();
   var body = confirms(page)[0].body;
-  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.5", "balanced", 0, -1]);
+  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.6", "balanced", 0, -1]);
   assert.deepEqual([page.applied[0].summary.recommendedRight, page.applied[0].summary.recommendedLeft], [0, -1]);
+});
+
+// V5.3.6 quarter-CYL Alternative from |CYL| 2.00: same table as the Main
+// Calculator suite (oo-v53-calculator-flow.test.js), so both surfaces agree.
+[
+  { name: "#336483 (CYL < 2.00, unchanged)", right: [-1.25, -1.5, 180], left: [-1.5, -1.75, 175], handle: "obsidian", cards: ["balanced -1.50/-2.00", "closer_to_sph -1.00/-1.50"] },
+  { name: "SPH -3.00 CYL -2.50 (new quarter-CYL)", right: [-3, -2.5, 90], left: [-3, -2.5, 90], handle: "obsidian", cards: ["balanced -4.00/-4.00", "closer_to_sph -3.00/-3.00"] },
+  { name: "SPH -3.00 CYL -3.00 (unchanged)", right: [-3, -3, 90], left: [-3, -3, 90], handle: "obsidian", cards: ["balanced -4.00/-4.00", "closer_to_sph -3.50/-3.50"] },
+  { name: "+4.00/-2.00, +3.00/-1.25 (quarter equals Balanced)", right: [4, -2, 75], left: [3, -1.25, 110], handle: "farsighted", cards: [] }
+].forEach(function (fixture) {
+  test("V5.3.6 Product Rx Checker " + fixture.name, { skip: skipDom }, async function () {
+    var page = await loadChecker(HANDLES[fixture.handle]);
+    check(page, fixture.right, fixture.left);
+    await settle();
+    assert.deepEqual(cards(page), fixture.cards);
+    if (fixture.cards.length) assert.equal(checkedStrategy(page), "balanced");
+    else assert.equal(shownPair(page), "+3.00/+2.00");
+    apply(page);
+    await settle();
+    var body = confirms(page)[0].body;
+    assert.equal(body.calculatorVersion, "5.3.6");
+    assert.equal(body.recommendationStrategy, "balanced");
+  });
 });

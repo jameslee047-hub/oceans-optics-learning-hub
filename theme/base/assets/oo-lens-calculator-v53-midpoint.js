@@ -25,8 +25,9 @@
  * This applies equally to sharper, closer_to_sph and the high-CYL workflow.
  *
  * The
- * high-CYL workflow (lens-calculator-v52-high-cyl.js) keeps its own Balanced /
- * Closer to your SPH pair and suppresses this layer. Every protected V5.3
+ * quarter-CYL workflow (lens-calculator-v52-high-cyl.js; any eye with
+ * |CYL| >= 2.00 since V5.3.6, >= 3.00 before) keeps its own Balanced /
+ * SPH + CYL/4 Alternative pair and suppresses this layer. Every protected V5.3
  * pathway (invalid, manual review, plano crossover, plano gap at SE -1.00 or
  * weaker, low-minus choice, low-plus guard, any 0.00 result, high CYL) and a
  * mixed-sign pair suppress the choice for the whole OD/OS pair.
@@ -57,10 +58,13 @@
   var STRATEGY_BALANCED = "balanced";
   var STRATEGY_SHARPER = "sharper";
   var STRATEGY_CLOSER_TO_SPH = "closer_to_sph";
-  // Same threshold as the existing high-CYL Balanced / Closer to your SPH
-  // workflow (lens-calculator-v52-high-cyl.js); either eye at or above it
-  // keeps that workflow and never shows this choice.
-  var HIGH_CYL_THRESHOLD = 3;
+  // Same threshold as the quarter-CYL Alternative workflow
+  // (lens-calculator-v52-high-cyl.js QUARTER_CYL_ALTERNATIVE_THRESHOLD;
+  // 2.00 since V5.3.6, 3.00 before): either eye at or above it keeps that
+  // workflow and never shows this ordinary choice. It is not a warning or
+  // manual-review threshold.
+  var QUARTER_CYL_ALTERNATIVE_THRESHOLD = 2;
+  var HIGH_CYL_THRESHOLD = QUARTER_CYL_ALTERNATIVE_THRESHOLD;
   var LOW_MINUS_CHOICE_RULE = "low-minus-choice";
   var PLANO_GAP_RULE = "plano-to-first-minus-gap";
   // Engine 5.3.1: an exact stock tie resolved toward the original SE.
@@ -127,7 +131,7 @@
    * (Name kept for compatibility with existing callers.)
    */
   function eyeMidpointAlternative(result, options) {
-    var threshold = options && options.highCylinderThreshold || HIGH_CYL_THRESHOLD;
+    var threshold = options && options.highCylinderThreshold || QUARTER_CYL_ALTERNATIVE_THRESHOLD;
     var balancedPower = finite(result && result.finalStockPower);
     var base = { balancedPower: balancedPower, alternativePower: null, midpoint: false };
     var reason = protectedReason(result, threshold);
@@ -237,7 +241,7 @@
    * the primary lens.
    */
   function eyeCloserToSphPreference(result, options) {
-    var threshold = options && options.highCylinderThreshold || HIGH_CYL_THRESHOLD;
+    var threshold = options && options.highCylinderThreshold || QUARTER_CYL_ALTERNATIVE_THRESHOLD;
     var balancedPower = finite(result && result.finalStockPower);
     var base = { balancedPower: balancedPower, alternativePower: null };
     var reason = protectedReason(result, threshold);
@@ -418,12 +422,19 @@
     expectAlternative: "Balanced remains our recommended all round option.",
     explainerTitle: "See how we calculated this",
     checkerExplainerTitle: "See how we calculated this",
+    // Pathway rows. Sphere only strength is the spherical equivalent
+    // (SPH + CYL/2); the underwater adjusted starting point is that value
+    // after the 0.50 D underwater adjustment, before a stocked lens is chosen.
     rowPrescription: "Glasses prescription",
     rowSphereOnly: "Sphere only strength",
-    rowUnderwater: "Underwater adjusted strength",
-    rowLens: "Closest available mask lens",
+    rowUnderwater: "Underwater adjusted starting point",
+    rowLens: "Recommended mask lens",
     rowAlternativeLens: "Alternative mask lens",
-    mathsNote: "Prescription mask lenses come in fixed strengths, so the final lens may not exactly match the calculated number."
+    // Quarter-CYL Alternative rows: SPH + CYL/4 is a separate reference, never
+    // the spherical equivalent, so it is labelled as the Alternative's own.
+    rowAlternativeSphereOnly: "Alternative sphere only reference",
+    rowAlternativeUnderwater: "Alternative underwater adjusted starting point",
+    mathsNote: "The underwater adjusted starting point is the calculated value before we choose a lens. Prescription mask lenses come in fixed strengths, so the final lens may not exactly match it."
   };
 
   // --------------------------------------------------------------------------
@@ -516,9 +527,10 @@
 
   /**
    * Compact pathway for one eye. context: { strategy, selectedPower,
-   * highCylinderEye (optional), label }. For a high-CYL eye with the Alternative
-   * selected the existing SPH + CYL/4 base and its underwater target are
-   * shown, because that is how that lens was found.
+   * highCylinderEye (optional), label }. For a quarter-CYL eye with the
+   * Alternative selected, the SPH + CYL/4 reference and its own underwater
+   * adjusted starting point are shown, labelled as the Alternative's, because
+   * that is how that lens was found (it is not the spherical equivalent).
    */
   function explainEye(result, context) {
     var settings = context || {};
@@ -545,6 +557,12 @@
       prescription: formatRounded(sphere) + (hasCylinder ? " / " + formatRounded(cylinder) : ""),
       sphereOnlyPower: base,
       sphereOnly: base === null ? null : formatRounded(base),
+      sphereOnlyLabel: quarter ? COPY.rowAlternativeSphereOnly : COPY.rowSphereOnly,
+      // The underwater adjusted starting point (engine preSnapTarget, or the
+      // quarter-CYL reference's own). underwaterTarget* are the original keys.
+      underwaterStartingPointPower: target,
+      underwaterStartingPoint: target === null ? null : formatRounded(target),
+      underwaterLabel: quarter ? COPY.rowAlternativeUnderwater : COPY.rowUnderwater,
       underwaterTargetPower: target,
       underwaterTarget: target === null ? null : formatRounded(target),
       primaryPower: primary,
@@ -701,8 +719,8 @@
     section.appendChild(node(doc, "h3", "oo-rx-explain__eye-title", eye.title));
     var pathway = node(doc, "div", "oo-rx-explain__pathway");
     pathway.appendChild(valueRow(doc, COPY.rowPrescription, eye.prescription));
-    if (eye.sphereOnly !== null) pathway.appendChild(valueRow(doc, COPY.rowSphereOnly, eye.sphereOnly));
-    if (eye.underwaterTarget !== null) pathway.appendChild(valueRow(doc, COPY.rowUnderwater, eye.underwaterTarget));
+    if (eye.sphereOnly !== null) pathway.appendChild(valueRow(doc, eye.sphereOnlyLabel || COPY.rowSphereOnly, eye.sphereOnly));
+    if (eye.underwaterStartingPoint !== null) pathway.appendChild(valueRow(doc, eye.underwaterLabel || COPY.rowUnderwater, eye.underwaterStartingPoint));
     pathway.appendChild(valueRow(doc, eye.lensLabel, eye.lens || "--", "oo-rx-explain__value--lens"));
     section.appendChild(pathway);
     return section;
@@ -752,6 +770,7 @@
     STRATEGY_BALANCED: STRATEGY_BALANCED,
     STRATEGY_SHARPER: STRATEGY_SHARPER,
     STRATEGY_CLOSER_TO_SPH: STRATEGY_CLOSER_TO_SPH,
+    QUARTER_CYL_ALTERNATIVE_THRESHOLD: QUARTER_CYL_ALTERNATIVE_THRESHOLD,
     HIGH_CYL_THRESHOLD: HIGH_CYL_THRESHOLD,
     COPY: COPY,
     BALANCED_TITLE: BALANCED_TITLE,

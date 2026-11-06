@@ -62,7 +62,15 @@
  * spherical equivalent only; the high-CYL quarter-CYL Alternative reference
  * keeps the 5.3.4 behaviour. Every other SE is unchanged.
  *
- * Version: 5.3.5
+ * QUARTER-CYL ALTERNATIVE FROM CYL 2.00 (5.3.6, 2026-11-06): no change in
+ * this engine. Every calculation here, including the Balanced pathway and
+ * computeStrategyRecommendationsV53's quarter-CYL reference, is byte-for-byte
+ * the 5.3.5 logic. Only the version changes, because the choice layers
+ * (oo-lens-calculator-v53-high-cyl.js / -midpoint.js) now offer the existing
+ * SPH + CYL/4 Alternative from |CYL| >= 2.00 instead of >= 3.00. The CYL
+ * bands below still control warning and confidence text only.
+ *
+ * Version: 5.3.6
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
  */
@@ -100,7 +108,7 @@
   // ==========================================================================
 
   var V53_CONFIG = {
-    version: "5.3.5",
+    version: "5.3.6",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE

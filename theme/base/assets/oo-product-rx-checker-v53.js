@@ -212,7 +212,7 @@
     if (midpoint) {
       var options = {
         highCylinderTriggered: Boolean(preview && preview.triggered),
-        highCylinderThreshold: highCyl ? highCyl.HIGH_CYL_THRESHOLD : undefined
+        highCylinderThreshold: highCyl ? highCyl.QUARTER_CYL_ALTERNATIVE_THRESHOLD : undefined
       };
       var choice = typeof midpoint.calculatePairRecommendationChoice === "function"
         ? midpoint.calculatePairRecommendationChoice(rightResult, leftResult, options)

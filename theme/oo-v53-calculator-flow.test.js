@@ -142,6 +142,18 @@ function assertResultFirstOrder(root, cardsSelector) {
   return { cards: cards, expect: expect, accordions: accordions };
 }
 
+// V5.3.6: an eye with |CYL| >= 2.00 is shown the existing quarter-CYL
+// comparison (Balanced first and selected, then the SPH + CYL/4 Alternative).
+function assertQuarterCylResult(page, balanced, alternative) {
+  assert.equal(page.doc.getElementById("oo-v52-high-cyl").hidden, false, "quarter-CYL comparison shown");
+  assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true, "no ordinary second option");
+  assert.deepEqual([text(page.doc, "oo-v52-high-balanced-right"), text(page.doc, "oo-v52-high-balanced-left")], balanced);
+  assert.deepEqual([text(page.doc, "oo-v52-high-alternative-right"), text(page.doc, "oo-v52-high-alternative-left")], alternative);
+  assert.equal(page.doc.getElementById("oo-v52-high-balanced").checked, true, "Balanced is selected automatically");
+  assert.equal(page.doc.getElementById("oo-v52-high-alternative").checked, false);
+  assert.equal(page.win.OOV52CalculatorUI.getActiveRecommendation().recommendationStrategy, "balanced");
+}
+
 // A converged result (5.3.1): one pair, no option cards, no choice evidence.
 async function assertSingleResult(page, right, left) {
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true, "no second option");
@@ -154,9 +166,9 @@ async function assertSingleResult(page, right, left) {
   await settle();
   var body = confirmCalls(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", Number(right), Number(left)]);
-  assert.equal(body.calculatorVersion, "5.3.5");
+  assert.equal(body.calculatorVersion, "5.3.6");
   var snap = body.v53Snapshot;
-  assert.equal(snap.calculatorVersion, "5.3.5");
+  assert.equal(snap.calculatorVersion, "5.3.6");
   assert.equal(snap.schemaVersion, "1");
   assert.equal(snap.optionsShown, null);
   assert.equal(snap.optionLabelsShown, null);
@@ -210,7 +222,7 @@ test("B. -7.00/-0.75 and -7.75/-1.25: nearest Balanced -7.00/-8.00 leads; Altern
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
 });
 
-test("default selects Balanced for #336254 (two options); #336246 now converges to Balanced -4.00/-5.50 (5.3.1 exact tie)", { skip: skipDom }, async function () {
+test("default selects Balanced for #336254 (two options); #336246 (CYL 2.00) gets the quarter-CYL Alternative -3.50/-5.50 (5.3.6)", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   var sharper = page.doc.getElementById("oo-v52-midpoint-sharper");
   var balanced = page.doc.getElementById("oo-v52-midpoint-balanced");
@@ -236,7 +248,7 @@ test("default selects Balanced for #336254 (two options); #336246 now converges 
   assert.deepEqual(firstConfirm.body.v53Snapshot.recommendedValues, { right: "+3.00", left: "+3.00" });
   assert.equal(firstConfirm.body.v53Snapshot.selectedStrategy, "balanced", JSON.stringify(firstConfirm.body.v53Snapshot));
   assert.equal(firstConfirm.body.v53Snapshot.selectionEvidence, "default_recommendation");
-  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.5");
+  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.6");
 
   var togglePage = await loadCalculator();
   calculate(togglePage, [4, -0.75], [4.25, -0.75]);
@@ -258,12 +270,15 @@ test("default selects Balanced for #336254 (two options); #336246 now converges 
   assert.equal(explicitConfirm.body.v53Snapshot.selectedStrategy, "balanced");
   assert.equal(explicitConfirm.body.v53Snapshot.selectionEvidence, "customer_explicit", "an interaction never reverts to default_recommendation");
 
-  // #336246: left SE -5.75 -> target -5.25 is exactly halfway between -5.00 and
-  // -5.50; -5.50 is closer to the SE, so Balanced takes it and the result converges.
+  // #336246: left SE -5.75 -> starting point -5.25 is an exact tie resolved
+  // toward the SE (-5.50), so 5.3.1 to 5.3.5 converged. Its right eye has CYL
+  // 2.00, so from 5.3.6 that eye gets the quarter-CYL Alternative: reference
+  // -3.50 + -2.00/4 = -4.00, starting point -3.50 -> -3.50. The left eye
+  // (CYL 1.50) keeps Balanced -5.50.
   var page336246 = await loadCalculator();
   calculate(page336246, [-3.5, -2], [-5, -1.5]);
   await settle();
-  await assertSingleResult(page336246, "-4.00", "-5.50");
+  assertQuarterCylResult(page336246, ["-4.00", "-5.50"], ["-3.50", "-5.50"]);
 });
 
 test("#336262 -1.00/-0.75 x170, -1.75: the left exact tie resolves to -1.50 (closer to SE -1.75), so the result converges to -1.00/-1.50", { skip: skipDom }, async function () {
@@ -277,7 +292,7 @@ test("#336262 -1.00/-0.75 x170, -1.75: the left exact tie resolves to -1.50 (clo
   assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
   var snapshot = JSON.parse(url.searchParams.get("_oo_v53_snapshot"));
-  assert.equal(snapshot.calculatorVersion, "5.3.5");
+  assert.equal(snapshot.calculatorVersion, "5.3.6");
   assert.equal(snapshot.selectionEvidence, null);
 });
 
@@ -286,14 +301,14 @@ test("#336314 OD -2.00/+0.50 x144, OS -2.50/+0.75 x156: right exact tie -1.00/-1
   calculate(page, [-2, 0.5, 144], [-2.5, 0.75, 156]);
   await settle();
   var explain = visibleText(page.doc, "#oo-v52-explain").replace(/\s+/g, " ");
-  ["Right eye", "Sphere only strength:-1.75", "Underwater adjusted strength:-1.25", "Closest available mask lens:-1.50",
-    "Left eye", "Sphere only strength:-2.13", "Underwater adjusted strength:-1.63", "Closest available mask lens:-1.50"].forEach(function (needle) {
+  ["Right eye", "Sphere only strength:-1.75", "Underwater adjusted starting point:-1.25", "Recommended mask lens:-1.50",
+    "Left eye", "Sphere only strength:-2.13", "Underwater adjusted starting point:-1.63", "Recommended mask lens:-1.50"].forEach(function (needle) {
     assert.ok(explain.indexOf(needle) !== -1, "missing: " + needle);
   });
   await assertSingleResult(page, "-1.50", "-1.50");
 });
 
-test("#336254 default saves the Balanced pair without a click; #336246 saves its converged Balanced pair", { skip: skipDom }, async function () {
+test("#336254 default saves the Balanced pair without a click; #336246 (5.3.6 quarter-CYL) saves Balanced by default", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [4, -0.75], [4.25, -0.75]);
   await settle();
@@ -308,15 +323,22 @@ test("#336254 default saves the Balanced pair without a click; #336246 saves its
   assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["balanced", 3, 3]);
   assert.equal(confirms[0].body.v53Snapshot.selectionEvidence, "default_recommendation");
 
-  var converged = await loadCalculator();
-  calculate(converged, [-3.5, -2], [-5, -1.5]);
+  var quarter = await loadCalculator();
+  calculate(quarter, [-3.5, -2], [-5, -1.5]);
   await settle();
-  await assertSingleResult(converged, "-4.00", "-5.50");
+  assertQuarterCylResult(quarter, ["-4.00", "-5.50"], ["-3.50", "-5.50"]);
+  quarter.doc.querySelector(".oo-v52-product-card__customize").click();
+  await settle();
+  await settle();
+  var body = confirmCalls(quarter)[0].body;
+  assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced", -4, -5.5, "5.3.6"]);
+  assert.deepEqual(body.v53Snapshot.optionsShown, { balanced: { right: "-4.00", left: "-5.50" }, closer_to_sph: { right: "-3.50", left: "-5.50" } });
+  assert.equal(body.v53Snapshot.selectionEvidence, "default_recommendation");
 });
 
-test("exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110: Balanced +3/+2 selected, Alternative +4/+3 visible, explanation follows the selection", { skip: skipDom }, async function () {
+test("ordinary plus fixture +4.00/-1.75 x075, +3.00/-1.25 x110: Balanced +3/+2 selected, Alternative +4/+3 visible, explanation follows the selection", { skip: skipDom }, async function () {
   var page = await loadCalculator();
-  calculate(page, [4, -2, 75], [3, -1.25, 110]);
+  calculate(page, [4, -1.75, 75], [3, -1.25, 110]);
   await settle();
   assert.deepEqual(choiceOrder(page.doc), ["balanced* Balanced Recommended", "closer_to_sph Alternative"]);
   assert.deepEqual([text(page.doc, "oo-v52-midpoint-balanced-right"), text(page.doc, "oo-v52-midpoint-balanced-left")], ["+3.00", "+2.00"]);
@@ -326,9 +348,9 @@ test("exact fixture +4.00/-2.00 x075, +3.00/-1.25 x110: Balanced +3/+2 selected,
   assertResultFirstOrder(page.doc.getElementById("oo-v52-result"), "#oo-v52-midpoint");
   var explain = function () { return visibleText(page.doc, "#oo-v52-explain").replace(/\s+/g, " "); };
   assert.match(explain(), /What to expect underwater\s*This is our recommended all round option\./);
-  ["Right eye", "Glasses prescription:+4.00 / -2.00", "Sphere only strength:+3.00", "Underwater adjusted strength:+2.50", "Closest available mask lens:+3.00",
-    "Left eye", "Glasses prescription:+3.00 / -1.25", "Sphere only strength:+2.38", "Underwater adjusted strength:+1.88", "Closest available mask lens:+2.00",
-    "Prescription mask lenses come in fixed strengths, so the final lens may not exactly match the calculated number."].forEach(function (needle) {
+  ["Right eye", "Glasses prescription:+4.00 / -1.75", "Sphere only strength:+3.13", "Underwater adjusted starting point:+2.63", "Recommended mask lens:+3.00",
+    "Left eye", "Glasses prescription:+3.00 / -1.25", "Sphere only strength:+2.38", "Underwater adjusted starting point:+1.88", "Recommended mask lens:+2.00",
+    "The underwater adjusted starting point is the calculated value before we choose a lens. Prescription mask lenses come in fixed strengths, so the final lens may not exactly match it."].forEach(function (needle) {
     assert.ok(explain().indexOf(needle) !== -1, "missing: " + needle);
   });
   assert.equal(page.doc.querySelector("#oo-v52-explain details.oo-rx-explain__details--why").open, false, "the why accordion starts collapsed");
@@ -402,7 +424,7 @@ test("A. choosing Balanced again announces the current nearest-stock pair", { sk
   assert.equal(page.calls.length, 0);
   assert.match(text(page.doc, "oo-v52-midpoint-selection-status"), /^Balanced selected\. Right -7\.00, left -8\.00\.$/);
   var explain = visibleText(page.doc, "#oo-v52-explain").replace(/\s+/g, " ");
-  assert.ok(explain.indexOf("Closest available mask lens:-7.00") !== -1);
+  assert.ok(explain.indexOf("Recommended mask lens:-7.00") !== -1);
 });
 
 test("A. exact ties -2.25 / -1.75 (targets -1.75 / -1.25): both resolve toward SE, so the result converges to -2.00/-1.50", { skip: skipDom }, async function () {
@@ -426,7 +448,7 @@ test("non-tie myopia can keep a printed-SPH Alternative after nearest-stock Bala
   await settle();
   var confirms = confirmCalls(page);
   assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["closer_to_sph", -7, -7.5]);
-  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.5");
+  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.6");
 });
 
 test("UI: the results area has one heading, the why block, the cards, what to expect, one collapsed maths section, then Your Matching Masks", { skip: skipDom }, async function () {
@@ -534,7 +556,7 @@ test("farsighted alternative: +3.00/-0.75 and +2.50/-0.50 offer Balanced +2.00/+
   assert.deepEqual(cardPairs(page.doc), ["R +3.00L +2.00"]);
   var explain = visibleText(page.doc, "#oo-v52-explain").replace(/\s+/g, " ");
   assert.ok(explain.indexOf("Sphere only strength:+2.63") !== -1);
-  assert.ok(explain.indexOf("Underwater adjusted strength:+2.13") !== -1);
+  assert.ok(explain.indexOf("Underwater adjusted starting point:+2.13") !== -1);
   assert.ok(explain.indexOf("The right lens is stronger than Balanced. Balanced remains our recommended all round option.") !== -1);
   page.doc.querySelector(".oo-v52-product-card__customize").click();
   await settle();
@@ -552,7 +574,7 @@ test("explanation: compact per-eye pathway, one maths section, no repeated defin
   assert.equal(explain.hidden, false);
   var content = explain.textContent;
   ["See how we calculated this", "Glasses prescription:", "-2.75 / -3.25", "Sphere only strength:", "-4.38",
-    "Underwater adjusted strength:", "-3.88", "Closest available mask lens:",
+    "Underwater adjusted starting point:", "-3.88", "Recommended mask lens:",
     "Prescription mask lenses come in fixed strengths"].forEach(function (needle) {
     assert.ok(content.indexOf(needle) !== -1, "missing: " + needle);
   });
@@ -749,11 +771,57 @@ test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: 0.00
   assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true, "no Alternative");
   assert.equal(page.doc.getElementById("oo-v52-high-cyl").hidden, true);
   assert.deepEqual(cardPairs(page.doc), ["R Plano (0.00)L -1.00"]);
-  assert.match(page.doc.getElementById("oo-v52-explain").textContent, /Underwater adjusted strength:0\.00Closest available mask lens:0\.00/);
+  assert.match(page.doc.getElementById("oo-v52-explain").textContent, /Underwater adjusted starting point:0\.00Recommended mask lens:0\.00/);
   page.doc.querySelector(".oo-v52-product-card__customize").click();
   await settle();
   await settle();
   var body = confirmCalls(page)[0].body;
-  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.5", "balanced", 0, -1]);
+  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.6", "balanced", 0, -1]);
   assert.deepEqual([body.v53Snapshot.optionsShown, body.v53Snapshot.selectionEvidence], [null, null]);
+});
+
+// V5.3.6 quarter-CYL Alternative from |CYL| 2.00. The same table is asserted by
+// the Product Rx Checker suite (oo-v53-product-checker.test.js), so the two
+// storefront surfaces are proven to show identical options.
+var V536_SURFACE_FIXTURES = [
+  { name: "#336483 (CYL < 2.00, unchanged)", right: [-1.25, -1.5, 180], left: [-1.5, -1.75, 175], view: "ordinary", balanced: ["-1.50", "-2.00"], alternative: ["-1.00", "-1.50"] },
+  { name: "SPH -3.00 CYL -2.50 (new quarter-CYL)", right: [-3, -2.5, 90], left: [-3, -2.5, 90], view: "quarter", balanced: ["-4.00", "-4.00"], alternative: ["-3.00", "-3.00"] },
+  { name: "SPH -3.00 CYL -3.00 (unchanged)", right: [-3, -3, 90], left: [-3, -3, 90], view: "quarter", balanced: ["-4.00", "-4.00"], alternative: ["-3.50", "-3.50"] },
+  { name: "+4.00/-2.00, +3.00/-1.25 (quarter equals Balanced)", right: [4, -2, 75], left: [3, -1.25, 110], view: "single", balanced: ["+3.00", "+2.00"], alternative: null }
+];
+
+V536_SURFACE_FIXTURES.forEach(function (fixture) {
+  test("V5.3.6 Main Calculator " + fixture.name, { skip: skipDom }, async function () {
+    var page = await loadCalculator();
+    calculate(page, fixture.right, fixture.left);
+    await settle();
+    if (fixture.view === "quarter") assertQuarterCylResult(page, fixture.balanced, fixture.alternative);
+    if (fixture.view === "ordinary") {
+      assert.equal(page.doc.getElementById("oo-v52-high-cyl").hidden, true);
+      assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, false);
+      assert.deepEqual([text(page.doc, "oo-v52-midpoint-balanced-right"), text(page.doc, "oo-v52-midpoint-balanced-left")], fixture.balanced);
+      assert.deepEqual([text(page.doc, "oo-v52-midpoint-sharper-right"), text(page.doc, "oo-v52-midpoint-sharper-left")], fixture.alternative);
+    }
+    // Higher-astigmatism guidance stays at |CYL| 3.00 (warning language only).
+    assert.doesNotMatch(page.doc.getElementById("oo-v52-guidance").textContent, /higher astigmatism/);
+    if (fixture.view === "single") await assertSingleResult(page, fixture.balanced[0], fixture.balanced[1]);
+  });
+});
+
+test("V5.3.6 Main Calculator explanation: the quarter-CYL Alternative shows its own reference rows", { skip: skipDom }, async function () {
+  var page = await loadCalculator();
+  calculate(page, [-3, -2.5, 90], [-3, -2.5, 90]);
+  await settle();
+  var balancedText = page.doc.getElementById("oo-v52-explain").textContent;
+  ["Sphere only strength:-4.25", "Underwater adjusted starting point:-3.75", "Recommended mask lens:-4.00"].forEach(function (needle) {
+    assert.ok(balancedText.indexOf(needle) !== -1, "missing: " + needle);
+  });
+  page.doc.getElementById("oo-v52-high-alternative").click();
+  await settle();
+  var alternativeText = page.doc.getElementById("oo-v52-explain").textContent;
+  ["Alternative sphere only reference:-3.63", "Alternative underwater adjusted starting point:-3.13", "Alternative mask lens:-3.00"].forEach(function (needle) {
+    assert.ok(alternativeText.indexOf(needle) !== -1, "missing: " + needle);
+  });
+  assert.equal(alternativeText.indexOf("Sphere only strength:-3.63"), -1, "the quarter reference is never called the sphere only strength");
+  assert.doesNotMatch(alternativeText, /underwater target/i);
 });

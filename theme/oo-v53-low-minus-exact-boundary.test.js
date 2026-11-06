@@ -40,7 +40,7 @@ test("A. customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050 (ADD +2.5
     { sphere: "-0.25", cylinder: "-0.50", axis: "065", add: "+2.50" },
     { sphere: "-0.50", cylinder: "-0.25", axis: "050", add: "+2.50" }
   );
-  assert.equal(V53.VERSION, "5.3.5");
+  assert.equal(V53.VERSION, "5.3.6");
   assert.equal(pair.valid, true);
   assert.equal(pair.right.sphericalEquivalent, -0.5);
   assert.equal(Math.abs(pair.right.preSnapTarget), 0); // -0: the minus side's zero target

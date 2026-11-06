@@ -13,7 +13,7 @@ var path = require("node:path");
 var vm = require("node:vm");
 
 var ASSETS = path.join(__dirname, "base", "assets");
-var PROTECTED_ENGINE_SHA256 = "b2e364f3dcdc21a0d0cc02f089f881d637d3411668add26cc6a3478bf25c55f1";
+var PROTECTED_ENGINE_SHA256 = "cb4405d051780d1bd2ba595289e082546cc1405b1278911bc534e767440aa777";
 var EPSILON = 1e-6;
 
 function loadModules() {
@@ -63,7 +63,7 @@ function second(choice) {
   return choice.available ? [choice.alternativeStrategy, choice.alternative.right, choice.alternative.left] : ["none", choice.reason];
 }
 
-test("the protected V5.3.5 engine matches its release hash", function () {
+test("the protected V5.3.6 engine matches its release hash", function () {
   var source = fs.readFileSync(path.join(ASSETS, "oo-lens-calculator-v53-engine.js"));
   assert.equal(crypto.createHash("sha256").update(source).digest("hex"), PROTECTED_ENGINE_SHA256);
 });
@@ -175,7 +175,7 @@ test("ranking A. Daniel now converges on nearest-stock Balanced -3.50/-3.50", fu
   assert.deepEqual(defaultOf(right, left), ["balanced", "-3.50/-3.50", "no second option"]);
   var balancedModel = V53.choice.explanationModel({ rightResult: right, leftResult: left, recommendation: { recommendationStrategy: "balanced", recommendedRight: -3.5, recommendedLeft: -3.5 }, choice: choice });
   assert.equal(balancedModel.expectation, "");
-  assert.equal(balancedModel.eyes[0].lensLabel, "Closest available mask lens");
+  assert.equal(balancedModel.eyes[0].lensLabel, "Recommended mask lens");
 });
 
 test("ranking B. nearest Balanced -7.00/-8.00 leads; printed-SPH Alternative is -7.00/-7.50", function () {
@@ -429,8 +429,8 @@ test("relation sentence describes only what the actual pair does", function () {
   assert.equal(rel([-3.5, -3], [-3, -3]).sentence, "The right lens is softer than Balanced.");
 });
 
-test("exact fixture OD +4.00/-2.00 x075, OS +3.00/-1.25 x110: Balanced +3/+2 Recommended, Alternative +4/+3, compact pathway", function () {
-  var right = eye(4, -2, 75);
+test("ordinary plus fixture OD +4.00/-1.75 x075, OS +3.00/-1.25 x110: Balanced +3/+2 Recommended, Alternative +4/+3, compact pathway", function () {
+  var right = eye(4, -1.75, 75);
   var left = eye(3, -1.25, 110);
   var choice = choiceFor(right, left);
   assert.deepEqual(defaultOf(right, left), ["balanced", "+3.00/+2.00", "balanced,closer_to_sph"]);
@@ -443,10 +443,10 @@ test("exact fixture OD +4.00/-2.00 x075, OS +3.00/-1.25 x110: Balanced +3/+2 Rec
   assert.equal(balanced.whyTitle, "Why are my mask lenses different from my glasses?");
   assert.equal(balanced.expectation, V53.choice.COPY.expectBalanced);
   assert.deepEqual(JSON.parse(JSON.stringify(balanced.eyes.map(function (e) { return [e.title, e.prescription, e.sphereOnly, e.underwaterTarget, e.lensLabel, e.lens]; }))), [
-    ["Right eye", "+4.00 / -2.00", "+3.00", "+2.50", "Closest available mask lens", "+3.00"],
-    ["Left eye", "+3.00 / -1.25", "+2.38", "+1.88", "Closest available mask lens", "+2.00"]
+    ["Right eye", "+4.00 / -1.75", "+3.13", "+2.63", "Recommended mask lens", "+3.00"],
+    ["Left eye", "+3.00 / -1.25", "+2.38", "+1.88", "Recommended mask lens", "+2.00"]
   ]);
-  assert.equal(balanced.note, "Prescription mask lenses come in fixed strengths, so the final lens may not exactly match the calculated number.");
+  assert.equal(balanced.note, "The underwater adjusted starting point is the calculated value before we choose a lens. Prescription mask lenses come in fixed strengths, so the final lens may not exactly match it.");
   var alternative = V53.choice.explanationModel({ rightResult: right, leftResult: left, recommendation: V53.choice.recommendationSelection(choice, "closer_to_sph"), choice: choice });
   assert.equal(alternative.expectation, "This gives a stronger correction than Balanced. Balanced remains our recommended all round option.");
   assert.deepEqual(JSON.parse(JSON.stringify(alternative.eyes.map(function (e) { return e.lensLabel + " " + e.lens; }))), ["Alternative mask lens +4.00", "Alternative mask lens +3.00"]);
