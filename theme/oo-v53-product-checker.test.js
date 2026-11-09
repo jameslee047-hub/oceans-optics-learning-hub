@@ -198,17 +198,17 @@ test("V5.3.3 mixed-sign fallback is a purchasable plano/plano Product Checker re
   }
 });
 
-test("J. checker -7 case: nearest Balanced -7.00/-8.00 leads; printed-SPH Alternative -7.00/-7.50 remains optional", { skip: skipDom }, async function () {
+test("J. checker -7 case: nearest Balanced -7.00/-8.00 leads; adjacent softer Alternative -6.50/-7.50 remains optional", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();
-  assert.deepEqual(cards(page), ["balanced -7.00/-8.00", "closer_to_sph -7.00/-7.50"]);
+  assert.deepEqual(cards(page), ["balanced -7.00/-8.00", "closer_to_sph -6.50/-7.50"]);
   assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"]);
   assert.equal(checkedStrategy(page), "balanced");
   assert.equal(shownPair(page), "-7.00/-8.00");
   choose(page, "closer_to_sph");
   await settle();
-  assert.equal(shownPair(page), "-7.00/-7.50");
+  assert.equal(shownPair(page), "-6.50/-7.50");
   assert.deepEqual(cardTitles(page), ["BalancedRecommended", "Alternative"], "Balanced keeps its badge while the Alternative is selected");
   choose(page, "balanced");
   await settle();
@@ -219,24 +219,22 @@ test("J. checker -7 case: nearest Balanced -7.00/-8.00 leads; printed-SPH Altern
   await settle();
   var saved = confirms(page);
   assert.equal(saved.length, 1);
-  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["closer_to_sph", -7, -7.5]);
+  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft], ["closer_to_sph", -6.5, -7.5]);
   assert.equal(page.applied.length, 1);
   assert.equal(page.applied[0].source, "product_rx_checker");
-  assert.equal(page.applied[0].summary.recommendedRight, -7);
+  assert.equal(page.applied[0].summary.recommendedRight, -6.5);
   assert.equal(page.applied[0].summary.recommendedLeft, -7.5);
   assert.deepEqual(page.journey, ["product_rx_checker"]);
   assert.match(page.container.querySelector(".oo-rx-explain").textContent, /See how we calculated this/);
 });
 
-test("J. checker Daniel converges on nearest Balanced -3.50/-3.50", { skip: skipDom }, async function () {
+test("J. checker Daniel: nearest Balanced -3.50/-3.50 is the default; 5.3.7 Alternative -3.00/-3.00", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-3.75, -0.25, 35], [-3.5, -0.75, 175]);
   await settle();
-  assert.deepEqual(cards(page), []);
-  assert.equal(checkedStrategy(page), null);
+  assert.deepEqual(cards(page), ["balanced -3.50/-3.50", "closer_to_sph -3.00/-3.00"]);
+  assert.equal(checkedStrategy(page), "balanced");
   assert.equal(shownPair(page), "-3.50/-3.50");
-  var explain = page.container.querySelector(".oo-rx-explain").textContent;
-  assert.doesNotMatch(explain, /This is our recommended all round option\./);
   assert.equal(page.calls.length, 0);
   assert.deepEqual(page.journey, [], "automatic default selection is not a product click");
   apply(page);
@@ -247,31 +245,32 @@ test("J. checker Daniel converges on nearest Balanced -3.50/-3.50", { skip: skip
   assert.deepEqual(page.journey, ["product_rx_checker"]);
 });
 
-test("J. checker two-option minus case confirms its printed-SPH Alternative", { skip: skipDom }, async function () {
+test("J. checker two-option minus case confirms its adjacent softer Alternative", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-7, -0.75, 15], [-7.75, -1.25, 166]);
   await settle();
   choose(page, "closer_to_sph");
   await settle();
-  assert.equal(shownPair(page), "-7.00/-7.50");
+  assert.equal(shownPair(page), "-6.50/-7.50");
   apply(page);
   await settle();
-  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", -7, -7.5]);
+  assert.deepEqual([confirms(page)[0].body.recommendationStrategy, confirms(page)[0].body.recommendedRight, confirms(page)[0].body.recommendedLeft], ["closer_to_sph", -6.5, -7.5]);
 });
 
-test("A/J. checker exact ties -2.25 / -1.75 (5.3.1): both resolve toward SE, one pair -2.00/-1.50, saved as balanced with no choice evidence", { skip: skipDom }, async function () {
+test("A/J. checker exact ties -2.25 / -1.75: Balanced -2.00/-1.50 saved by default; 5.3.7 also shows Alternative -1.50/-1.00", { skip: skipDom }, async function () {
   var page = await loadChecker(HANDLES.obsidian);
   check(page, [-2.25], [-1.75]);
   await settle();
-  assert.deepEqual(cards(page), [], "converged: no option cards");
+  assert.deepEqual(cards(page), ["balanced -2.00/-1.50", "closer_to_sph -1.50/-1.00"], "5.3.7: ties are included");
   assert.equal(shownPair(page), "-2.00/-1.50");
   apply(page);
   await settle();
   var body = confirms(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", -2, -1.5]);
-  assert.equal(body.calculatorVersion, "5.3.6");
+  assert.equal(body.calculatorVersion, "5.3.7");
   var snapshot = JSON.parse(JSON.stringify(page.applied[0].summary.v53Snapshot));
-  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence], ["5.3.6", null, null, null]);
+  assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence],
+    ["5.3.7", { balanced: { right: "-2.00", left: "-1.50" }, closer_to_sph: { right: "-1.50", left: "-1.00" } }, "balanced", "default_recommendation"]);
 });
 
 test("UI: checker result has the heading, the why block, the cards, what to expect and one collapsed maths section", { skip: skipDom }, async function () {
@@ -310,23 +309,24 @@ test("UI: checker result has the heading, the why block, the cards, what to expe
 });
 
 test("checker: the mask's own stock decides whether the second option is offered", { skip: skipDom }, async function () {
-  // Lumix stocks -1.50 to -6.00. Nearest-stock Balanced is exact -6.00 here.
-  var lumix = await loadChecker(HANDLES.lumix);
-  check(lumix, [-6, -0.75, 90], [-6, -0.75, 90]);
+  // Lumix stocks -1.50 to -6.00. The calculator stays product agnostic; the
+  // checker only offers the Alternative when this mask can build both pairs.
+  // -6.50 sphere: starting point -6.00 is exactly Balanced, so no Alternative.
+  var exact = await loadChecker(HANDLES.lumix);
+  check(exact, [-6.5], [-6.5]);
   await settle();
-  assert.deepEqual(cards(lumix), []);
-  assert.equal(shownPair(lumix), "-6.00/-6.00");
+  assert.deepEqual(cards(exact), []);
+  assert.equal(shownPair(exact), "-6.00/-6.00");
 
-  // -6.25/-6.25 (target -5.75) is an exact tie: 5.3.1 resolves it to -6.00,
-  // which converges and is still buildable on Lumix.
-  var tie = await loadChecker(HANDLES.lumix);
-  check(tie, [-6.25], [-6.25]);
+  // -6.00/-0.75 (target -5.875): Balanced -6.00 is stronger than the start,
+  // and the adjacent softer -5.50 is stocked on Lumix, so both are offered.
+  var both = await loadChecker(HANDLES.lumix);
+  check(both, [-6, -0.75, 90], [-6, -0.75, 90]);
   await settle();
-  assert.deepEqual(cards(tie), []);
-  assert.equal(shownPair(tie), "-6.00/-6.00");
-  assert.ok(tie.container.querySelector(".oo-rx-checker__apply"));
+  assert.deepEqual(cards(both), ["balanced -6.00/-6.00", "closer_to_sph -5.50/-5.50"]);
+  assert.equal(checkedStrategy(both), "balanced");
 
-  // -6.75/-6.75 (target -6.25) is an exact tie that now resolves to -6.50,
+  // -6.75/-6.75 (target -6.25) is an exact tie that resolves to -6.50,
   // beyond Lumix stock: the checker says so and offers masks that can build it.
   var capped = await loadChecker(HANDLES.lumix);
   check(capped, [-6.75], [-6.75]);
@@ -337,16 +337,22 @@ test("checker: the mask's own stock decides whether the second option is offered
   assert.equal(capped.container.querySelector(".oo-rx-checker__notice").dataset.reason, "range");
   assert.ok(capped.container.querySelector('[data-catalog-product="obsidian-nearsighted"]'), "Obsidian (to -9.00) is offered instead");
 
-  // +0.75 CYL gives SE -6.375 / target -5.875: Balanced -6.00 is buildable,
-  // while the printed-SPH preference -6.50 is outside this mask's stock.
+  // -1.75 sphere (target -1.25, tie -> Balanced -1.50): the adjacent softer
+  // Alternative is -1.00, which Lumix does not stock. One pair is shown.
   var unbuildable = await loadChecker(HANDLES.lumix);
-  check(unbuildable, [-6.75, 0.75, 90], [-6.75, 0.75, 90]);
+  check(unbuildable, [-1.75], [-1.75]);
   await settle();
   assert.deepEqual(cards(unbuildable), []);
-  assert.equal(shownPair(unbuildable), "-6.00/-6.00");
+  assert.equal(shownPair(unbuildable), "-1.50/-1.50");
   apply(unbuildable);
   await settle();
-  assert.deepEqual([confirms(unbuildable)[0].body.recommendationStrategy, confirms(unbuildable)[0].body.recommendedRight], ["balanced", -6]);
+  assert.deepEqual([confirms(unbuildable)[0].body.recommendationStrategy, confirms(unbuildable)[0].body.recommendedRight], ["balanced", -1.5]);
+
+  // The same prescription on Obsidian (stocks -1.00) offers the Alternative.
+  var obsidian = await loadChecker(HANDLES.obsidian);
+  check(obsidian, [-1.75], [-1.75]);
+  await settle();
+  assert.deepEqual(cards(obsidian), ["balanced -1.50/-1.50", "closer_to_sph -1.00/-1.00"]);
 });
 
 test("checker: ordinary plus fixture +4.00/-1.75 x075, +3.00/-1.25 x110 on the farsighted mask: Balanced +3/+2 default, Alternative +4/+3, evidence and handoff follow the selection", { skip: skipDom }, async function () {
@@ -425,7 +431,8 @@ test("checker: editing a checked prescription clears its result and option until
   page.doc.querySelector("[data-checker-form]").dispatchEvent(new page.win.Event("submit", { cancelable: true }));
   await settle();
   // The default is recalculated from the new prescription: Balanced again.
-  assert.deepEqual(cards(page), ["balanced -5.50/-8.00", "closer_to_sph -6.00/-7.50"]);
+  // 5.3.7: right -6.00 sphere starts exactly at Balanced -5.50, so it keeps -5.50.
+  assert.deepEqual(cards(page), ["balanced -5.50/-8.00", "closer_to_sph -5.50/-7.50"]);
   assert.equal(checkedStrategy(page), "balanced");
   apply(page);
   await settle();
@@ -452,9 +459,9 @@ test("checker: multiple named prescriptions keep independent values and selectio
   assert.equal(label.value, "");
   label.value = "Airies";
   label.dispatchEvent(new page.win.Event("input"));
-  check(page, [-3, 0, 90], [-3, 0, 90]);
+  check(page, [-3.25], [-3.25]);
   await settle();
-  assert.deepEqual(cards(page), ["balanced -2.50/-2.50", "closer_to_sph -3.00/-3.00"]);
+  assert.deepEqual(cards(page), ["balanced -3.00/-3.00", "closer_to_sph -2.50/-2.50"]);
   assert.equal(checkedStrategy(page), "balanced");
   var tabs = Array.prototype.map.call(page.container.querySelectorAll(".oo-rx-checker__profile-tab"), function (tab) { return tab.textContent; });
   assert.deepEqual(tabs, ["James", "Airies"]);
@@ -462,7 +469,7 @@ test("checker: multiple named prescriptions keep independent values and selectio
   page.container.querySelector('.oo-rx-checker__profile-tab[data-prescription-id="rx-1"]').click();
   await settle();
   assert.equal(label.value, "James");
-  assert.equal(shownPair(page), "-7.00/-7.50", "James keeps his Alternative choice");
+  assert.equal(shownPair(page), "-6.50/-7.50", "James keeps his Alternative choice");
   assert.equal(page.container.querySelector(".oo-rx-checker__suggested-title").textContent, "Suggested Lens Strength for James");
   label.value = "James R";
   label.dispatchEvent(new page.win.Event("input"));
@@ -474,19 +481,19 @@ test("checker: multiple named prescriptions keep independent values and selectio
 
   page.container.querySelector('.oo-rx-checker__profile-tab[data-prescription-id="rx-2"]').click();
   await settle();
-  assert.equal(shownPair(page), "-2.50/-2.50", "Airies keeps Balanced");
+  assert.equal(shownPair(page), "-3.00/-3.00", "Airies keeps Balanced");
   apply(page);
   await settle();
   var saved = confirms(page);
   assert.equal(saved.length, 1);
-  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft, saved[0].body.prescriptionLabel], ["balanced", -2.5, -2.5, "Airies"]);
+  assert.deepEqual([saved[0].body.recommendationStrategy, saved[0].body.recommendedRight, saved[0].body.recommendedLeft, saved[0].body.prescriptionLabel], ["balanced", -3, -3, "Airies"]);
   assert.equal(page.applied[0].summary.prescriptionLabel, "Airies");
 
   page.container.querySelector('.oo-rx-checker__profile-remove[data-prescription-id="rx-2"]').click();
   await settle();
   assert.equal(page.container.querySelectorAll(".oo-rx-checker__profile-tab").length, 0);
   assert.equal(label.value, "James");
-  assert.equal(shownPair(page), "-7.00/-7.50");
+  assert.equal(shownPair(page), "-6.50/-7.50");
 });
 
 test("checker: customer-facing copy has no hyphens, en dashes or em dashes", { skip: skipDom }, async function () {
@@ -514,14 +521,14 @@ test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: chec
   apply(page);
   await settle();
   var body = confirms(page)[0].body;
-  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.6", "balanced", 0, -1]);
+  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.7", "balanced", 0, -1]);
   assert.deepEqual([page.applied[0].summary.recommendedRight, page.applied[0].summary.recommendedLeft], [0, -1]);
 });
 
 // V5.3.6 quarter-CYL Alternative from |CYL| 2.00: same table as the Main
 // Calculator suite (oo-v53-calculator-flow.test.js), so both surfaces agree.
 [
-  { name: "#336483 (CYL < 2.00, unchanged)", right: [-1.25, -1.5, 180], left: [-1.5, -1.75, 175], handle: "obsidian", cards: ["balanced -1.50/-2.00", "closer_to_sph -1.00/-1.50"] },
+  { name: "#336483 (CYL < 2.00, 5.3.7 ordinary minus Alternative)", right: [-1.25, -1.5, 180], left: [-1.5, -1.75, 175], handle: "obsidian", cards: ["balanced -1.50/-2.00", "closer_to_sph -1.50/-1.50"] },
   { name: "SPH -3.00 CYL -2.50 (new quarter-CYL)", right: [-3, -2.5, 90], left: [-3, -2.5, 90], handle: "obsidian", cards: ["balanced -4.00/-4.00", "closer_to_sph -3.00/-3.00"] },
   { name: "SPH -3.00 CYL -3.00 (unchanged)", right: [-3, -3, 90], left: [-3, -3, 90], handle: "obsidian", cards: ["balanced -4.00/-4.00", "closer_to_sph -3.50/-3.50"] },
   { name: "+4.00/-2.00, +3.00/-1.25 (quarter equals Balanced)", right: [4, -2, 75], left: [3, -1.25, 110], handle: "farsighted", cards: [] }
@@ -536,7 +543,7 @@ test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: chec
     apply(page);
     await settle();
     var body = confirms(page)[0].body;
-    assert.equal(body.calculatorVersion, "5.3.6");
+    assert.equal(body.calculatorVersion, "5.3.7");
     assert.equal(body.recommendationStrategy, "balanced");
   });
 });

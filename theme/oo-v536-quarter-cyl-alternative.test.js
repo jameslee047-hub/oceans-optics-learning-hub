@@ -75,8 +75,8 @@ function eyeTrace(sphere, cylinder) {
   };
 }
 
-test("version 5.3.6; the quarter-CYL Alternative threshold (2.00) is separate from the 3.00 guidance threshold", function () {
-  assert.equal(V53.VERSION, "5.3.6");
+test("version 5.3.7; the quarter-CYL Alternative threshold (2.00) is separate from the 3.00 guidance threshold", function () {
+  assert.equal(V53.VERSION, "5.3.7");
   assert.equal(HighCyl.QUARTER_CYL_ALTERNATIVE_THRESHOLD, 2);
   assert.equal(HighCyl.HIGH_CYL_WARNING_THRESHOLD, 3);
   assert.equal(HighCyl.HIGH_CYL_THRESHOLD, 2, "compatibility name follows the Alternative workflow threshold");
@@ -129,9 +129,9 @@ test("boundary table SPH -3.00 (both eyes): 1.75 ordinary; 2.00 to 2.75 new quar
   });
 });
 
-test("#336483 (CYL 1.50 / 1.75) is unchanged: Balanced -1.50/-2.00, Alternative -1.00/-1.50", function () {
+test("#336483 (CYL 1.50 / 1.75): Balanced -1.50/-2.00 unchanged; 5.3.7 ordinary minus Alternative -1.50/-1.50", function () {
   var result = offer(raw(-1.25, -1.5, 180), raw(-1.5, -1.75, 175));
-  assert.deepEqual([result.balanced, result.kind, result.alternative], ["-1.50/-2.00", "closer_to_sph", "-1.00/-1.50"]);
+  assert.deepEqual([result.balanced, result.kind, result.alternative], ["-1.50/-2.00", "closer_to_sph", "-1.50/-1.50"]);
 });
 
 test("SPH -3.00 / CYL -3.00 is unchanged from 5.3.5: SE -4.50, start -4.00, Balanced -4.00, reference -3.75, start -3.25, Alternative -3.50", function () {

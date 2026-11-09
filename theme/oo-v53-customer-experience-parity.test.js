@@ -134,9 +134,12 @@ function checkerState(page) {
 
 var FIXTURES = [
   { name: "ordinary plus fixture +4.00/-1.75 x075, +3.00/-1.25 x110", right: [4, -1.75, 75], left: [3, -1.25, 110], handle: "rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask", balanced: ["+3.00", "+2.00"], alternative: ["+4.00", "+3.00"] },
-  { name: "ordinary printed-SPH preference", right: [-3, 0, 90], left: [-3, 0, 90], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-2.50", "-2.50"], alternative: ["-3.00", "-3.00"] },
+  { name: "5.3.7 ordinary minus fixture A -4.50/-0.50 x157, -4.50/-0.75 x170", right: [-4.5, -0.5, 157], left: [-4.5, -0.75, 170], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-4.50", "-4.50"], alternative: ["-4.00", "-4.00"] },
+  { name: "5.3.7 #336483 -1.25/-1.50 x180, -1.50/-1.75 x175", right: [-1.25, -1.5, 180], left: [-1.5, -1.75, 175], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-1.50", "-2.00"], alternative: ["-1.50", "-1.50"] },
+  { name: "5.3.7 tie #336262 (right never steps into plano)", right: [-1, -0.75, 170], left: [-1.75, 0, 90], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-1.00", "-1.50"], alternative: ["-1.00", "-1.00"] },
+  { name: "5.3.7 tie #336314", right: [-2, 0.5, 144], left: [-2.5, 0.75, 156], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-1.50", "-1.50"], alternative: ["-1.00", "-1.50"] },
   { name: "#336254", right: [4, -0.75, 100], left: [4.25, -0.75, 105], handle: "rx-obsidian-farsighted-prescription-snorkel-scuba-dive-mask", balanced: ["+3.00", "+3.00"], alternative: ["+4.00", "+4.00"] },
-  { name: "-7 case (non tie)", right: [-7, -0.75, 15], left: [-7.75, -1.25, 166], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-7.00", "-8.00"], alternative: ["-7.00", "-7.50"] }
+  { name: "-7 case (non tie)", right: [-7, -0.75, 15], left: [-7.75, -1.25, 166], handle: "the-rx-obsidian-prescription-mask-for-scuba-dive-snorkeling", balanced: ["-7.00", "-8.00"], alternative: ["-6.50", "-7.50"] }
 ];
 
 FIXTURES.forEach(function (fixture) {
@@ -211,11 +214,13 @@ FIXTURES.forEach(function (fixture) {
   });
 });
 
-// 5.3.1 exact stock ties that converge: both surfaces show the same single
-// pair and save the same single-option snapshot.
+// Single minus results (5.3.7): neither eye is stronger than its underwater
+// adjusted starting point, so both surfaces show the same single pair and save
+// the same single-option snapshot. (5.3.1 to 5.3.6 converged exact ties such as
+// #336262 and #336314; from 5.3.7 they are two-option fixtures above.)
 var CONVERGED = [
-  { name: "#336262", right: [-1, -0.75, 170], left: [-1.75, 0], pair: ["-1.00", "-1.50"] },
-  { name: "#336314", right: [-2, 0.5, 144], left: [-2.5, 0.75, 156], pair: ["-1.50", "-1.50"] }
+  { name: "fixture C plain -2.00 (exact start)", right: [-2, 0, 90], left: [-2, 0, 90], pair: ["-1.50", "-1.50"] },
+  { name: "-3.75/-0.75 (already softer than the start)", right: [-3.75, -0.75, 90], left: [-3.75, -0.75, 90], pair: ["-3.50", "-3.50"] }
 ];
 CONVERGED.forEach(function (fixture) {
   test("parity converged " + fixture.name + ": Main and Product show one pair " + fixture.pair.join("/") + " and save the same single-option snapshot", { skip: skipDom }, async function () {
@@ -242,10 +247,10 @@ CONVERGED.forEach(function (fixture) {
     var mainBody = main.calls.filter(function (call) { return /\/confirm$/.test(call.url); })[0].body;
     var checkerBody = checker.calls.filter(function (call) { return /\/confirm$/.test(call.url); })[0].body;
     [mainBody, checkerBody].forEach(function (body) {
-      assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced"].concat(fixture.pair.map(Number), ["5.3.6"]));
+      assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced"].concat(fixture.pair.map(Number), ["5.3.7"]));
       assert.equal(body.v53Snapshot.optionsShown, null);
       assert.equal(body.v53Snapshot.selectionEvidence, null);
-      assert.equal(body.v53Snapshot.calculatorVersion, "5.3.6");
+      assert.equal(body.v53Snapshot.calculatorVersion, "5.3.7");
     });
     assert.deepEqual([checker.applied[0].recommendedRight, checker.applied[0].recommendedLeft], fixture.pair.map(Number));
   });

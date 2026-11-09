@@ -70,7 +70,14 @@
  * SPH + CYL/4 Alternative from |CYL| >= 2.00 instead of >= 3.00. The CYL
  * bands below still control warning and confidence text only.
  *
- * Version: 5.3.6
+ * ORDINARY MINUS ALTERNATIVE (5.3.7, 2026-11-07): no change in this engine.
+ * Every calculation here is byte-for-byte the 5.3.6 logic. Only the version
+ * changes, because the choice layer (oo-lens-calculator-v53-midpoint.js) now
+ * offers all-minus ordinary pairs (|CYL| < 2.00) the adjacent softer stocked
+ * lens instead of the closer-to-SPH preference. Plus pairs and the quarter-CYL
+ * Alternative are unchanged.
+ *
+ * Version: 5.3.7
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
  */
@@ -108,7 +115,7 @@
   // ==========================================================================
 
   var V53_CONFIG = {
-    version: "5.3.6",
+    version: "5.3.7",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE

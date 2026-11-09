@@ -28,12 +28,12 @@ function eye(sphere, cylinder, axis) {
 }
 function plain(value) { return JSON.parse(JSON.stringify(value)); }
 
-test("calculator version is 5.3.6 (snapshot schemaVersion is unaffected)", function () {
-  assert.equal(V53.VERSION, "5.3.6");
-  assert.equal(eye(-2).version, "5.3.6");
+test("calculator version is 5.3.7 (snapshot schemaVersion is unaffected)", function () {
+  assert.equal(V53.VERSION, "5.3.7");
+  assert.equal(eye(-2).version, "5.3.7");
 });
 
-test("#336314 OD -2.00 / +0.50 x144, OS -2.50 / +0.75 x156: right tie -1.00 / -1.50 resolves to -1.50; Balanced and Alternative converge to -1.50 / -1.50", function () {
+test("#336314 OD -2.00 / +0.50 x144, OS -2.50 / +0.75 x156: right tie -1.00 / -1.50 resolves to -1.50 (Balanced -1.50 / -1.50); 5.3.7 includes the tie: Alternative -1.00 / -1.50", function () {
   var right = eye(-2, 0.5, 144);
   var left = eye(-2.5, 0.75, 156);
   assert.equal(right.sphericalEquivalent, -1.75);
@@ -46,12 +46,15 @@ test("#336314 OD -2.00 / +0.50 x144, OS -2.50 / +0.75 x156: right tie -1.00 / -1
   assert.equal(left.recommendation, "-1.50", "no tie: -1.50 is 0.125 D away, -2.00 is 0.375 D away");
   assert.equal(left.tieCandidates, null);
   var choice = Choice.calculatePairRecommendationChoice(right, left, { highCylinderTriggered: false });
-  assert.equal(choice.available, false, "converged: no meaningless second option");
-  assert.equal(choice.reason, "exact_tie_resolved");
+  // 5.3.7 ordinary minus Alternative: the tie eye steps to the adjacent softer
+  // stocked lens; the left eye (-1.50, start -1.625) is already softer.
+  assert.equal(choice.available, true);
+  assert.deepEqual([choice.alternativeStrategy, choice.alternativeMethod, choice.alternative.right, choice.alternative.left], ["closer_to_sph", "adjacent_softer", "-1.00", "-1.50"]);
+  assert.deepEqual([choice.eyes.right.reason, choice.eyes.right.exactTie, choice.eyes.left.reason], ["adjacent_softer", true, "already_softer"]);
   assert.equal(HighCyl.calculatePairAlternative(right, left).triggered, false);
 });
 
-test("#336371 regression: OD midpoint resolves -1.50; OS non-tie chooses nearer -1.50; one converged result", function () {
+test("#336371 regression: OD midpoint resolves -1.50; OS non-tie chooses nearer -1.50; Balanced -1.50 / -1.50, 5.3.7 Alternative -1.00 / -1.00", function () {
   var right = eye(-1, -1.5, 94);
   var left = eye(-1, -1.75, 75);
   assert.deepEqual(plain({
@@ -79,7 +82,8 @@ test("#336371 regression: OD midpoint resolves -1.50; OS non-tie chooses nearer 
   assert.equal(right.stockRule, V53.EXACT_STOCK_TIE_RULE);
   var choice = Choice.calculatePairRecommendationChoice(right, left, { highCylinderTriggered: false });
   assert.equal(HighCyl.calculatePairAlternative(right, left).triggered, false, "both eyes are below the 3.00 D high-CYL threshold");
-  assert.equal(choice.available, false, "Balanced and the former Alternative converge");
+  // 5.3.7: both eyes are stronger than their starts (OD tie, start -1.25; OS start -1.375), so both soften to -1.00.
+  assert.deepEqual([choice.available, choice.alternative && choice.alternative.right, choice.alternative && choice.alternative.left], [true, "-1.00", "-1.00"]);
 });
 
 test("non-tie ordinary results use nearest stock while protected rules remain", function () {

@@ -11,10 +11,22 @@
  *                  underwater-adjusted value as the primary lens and is not
  *                  stronger than the eye's spherical equivalent. (The old
  *                  exact-midpoint case is the "equally close" instance.)
- *   closer_to_sph  Customer preference: per eye, the stocked lens closest to
- *                  the SPH the customer entered, never stronger than that SPH,
- *                  same sign as the primary lens and at most one stock
- *                  interval from it. Offered only when no Sharper pair exists.
+ *   closer_to_sph  The ordinary Alternative (strategy id kept for stored
+ *                  configs, snapshots and decisions):
+ *                  - all-minus pairs (V5.3.7, alternativeMethod
+ *                    "adjacent_softer"): per eye, when the Balanced lens is
+ *                    stronger than its underwater adjusted starting point,
+ *                    the immediately adjacent stocked minus lens toward zero
+ *                    (never plano); an eye whose Balanced lens equals or is
+ *                    softer than its starting point keeps Balanced. Exact
+ *                    stock ties are included: Balanced keeps the 5.3.1 tie
+ *                    toward the SE and the equally close softer lens may be
+ *                    the Alternative.
+ *                  - all other ordinary pairs (plus): the stocked lens
+ *                    closest to the SPH the customer entered, never stronger
+ *                    than that SPH, same sign as the primary lens and at most
+ *                    one stock interval from it (unchanged since V5.3.0).
+ *                  Offered only when no Sharper pair exists.
  *
  * Sharper always takes priority; never more than two choices are offered.
  *
@@ -304,13 +316,85 @@
     return Boolean(result && result.stockRule === EXACT_STOCK_TIE_RULE);
   }
 
+  // V5.3.7 diagnostic (never persisted): how an ordinary Alternative was found.
+  var ALTERNATIVE_METHOD_ADJACENT_SOFTER = "adjacent_softer";
+
+  /**
+   * One eye, V5.3.7 ordinary minus Alternative. Uses only the existing
+   * result's finalStockPower, preSnapTarget (underwater adjusted starting
+   * point), sphericalEquivalent and the stock catalogue for that side: when the
+   * Balanced lens is stronger than the starting point, the immediately
+   * adjacent stocked minus lens toward zero. Never plano, never stronger.
+   */
+  function eyeAdjacentSofter(result, options) {
+    var threshold = options && options.highCylinderThreshold || QUARTER_CYL_ALTERNATIVE_THRESHOLD;
+    var balancedPower = finite(result && result.finalStockPower);
+    var base = { balancedPower: balancedPower, alternativePower: null };
+    var reason = protectedReason(result, threshold);
+    if (reason) return Object.assign(base, { protected: true, reason: reason });
+
+    var start = finite(result.preSnapTarget);
+    var se = finite(result.sphericalEquivalent);
+    if (start === null || se === null) return Object.assign(base, { protected: true, reason: "review" });
+    if (!(balancedPower < 0) || !(start < 0)) return Object.assign(base, { protected: false, reason: "not_myopic" });
+    if (Math.abs(balancedPower - start) <= EPSILON) return Object.assign(base, { protected: false, reason: "exact_start" });
+    if (!(Math.abs(balancedPower) > Math.abs(start) + EPSILON)) return Object.assign(base, { protected: false, reason: "already_softer" });
+
+    var stock = correctiveStock(catalogFor(se, options), -1);
+    var index = -1;
+    stock.forEach(function (power, i) { if (index === -1 && Math.abs(power - balancedPower) < EPSILON) index = i; });
+    if (index === -1) return Object.assign(base, { protected: false, reason: "not_in_stock" });
+    // The next lens toward zero after the weakest minus lens is plano: the
+    // low-minus / plano protections keep this eye on Balanced.
+    if (index === 0) return Object.assign(base, { protected: false, reason: "would_enter_plano" });
+    return Object.assign(base, {
+      protected: false,
+      reason: ALTERNATIVE_METHOD_ADJACENT_SOFTER,
+      alternativePower: stock[index - 1],
+      exactTie: tieResolvedTowardSE(result)
+    });
+  }
+
+  // Both Balanced lenses are minus (a pair with a plano, plus or missing lens
+  // keeps the unchanged closer_to_sph pathway and its protections).
+  function isMinusPair(rightResult, leftResult) {
+    var powers = primaryPowers(rightResult, leftResult);
+    return powers[0] !== null && powers[1] !== null && powers[0] < 0 && powers[1] < 0;
+  }
+
+  function calculatePairAdjacentSofter(rightResult, leftResult, options) {
+    var settings = options || {};
+    var right = eyeAdjacentSofter(rightResult, settings);
+    var left = eyeAdjacentSofter(leftResult, settings);
+    var unavailable = function (reason) {
+      return { available: false, reason: reason, eyes: { right: right, left: left } };
+    };
+    var gate = pairGate(right, left, rightResult, leftResult, settings);
+    if (gate) return Object.assign(unavailable(gate), { gated: true });
+    if (right.alternativePower === null && left.alternativePower === null) return unavailable("no_adjacent_softer_alternative");
+    var altRight = right.alternativePower !== null ? right.alternativePower : right.balancedPower;
+    var altLeft = left.alternativePower !== null ? left.alternativePower : left.balancedPower;
+    if (!V53.pairBuildableOnAnyCurrentMask(altRight, altLeft)) return unavailable("alternative_unbuildable");
+    return {
+      available: true,
+      reason: ALTERNATIVE_METHOD_ADJACENT_SOFTER,
+      eyes: { right: right, left: left },
+      balanced: pairOf(right.balancedPower, left.balancedPower),
+      adjacentSofter: pairOf(altRight, altLeft)
+    };
+  }
+
   /**
    * The one optional second recommendation for an ordinary (non-high-CYL)
-   * pair: Sharper when available, otherwise Closer to your SPH, otherwise none.
-   * When an eye's exact stock tie was resolved toward the original SE (engine
-   * 5.3.1), the pair does not fall back to Closer to your SPH: the lens that
-   * used to be the Sharper option is now the primary pair, so the result
-   * converges instead of surfacing a different, unrelated alternative.
+   * pair: Sharper when available, otherwise the ordinary Alternative
+   * (closer_to_sph), otherwise none.
+   *
+   * V5.3.7: an all-minus pair uses the adjacent-softer method (see
+   * eyeAdjacentSofter); exact stock ties are included, so the 5.3.1
+   * convergence below does not apply to it. Every other pair keeps the
+   * unchanged closer-to-SPH preference: when an eye's exact stock tie was
+   * resolved toward the original SE (engine 5.3.1), that pair does not fall
+   * back to Closer to your SPH and the result converges.
    */
   function calculatePairRecommendationChoice(rightResult, leftResult, options) {
     var settings = options || {};
@@ -326,6 +410,31 @@
         balanced: sharper.balanced,
         alternative: sharper.sharper,
         sharper: sharper.sharper
+      };
+    }
+    // Gated minus pairs (high-CYL workflow, protected eye) are not ordinary:
+    // they fall through to the unchanged 5.3.6 path below, byte for byte.
+    var softer = isMinusPair(rightResult, leftResult) ? calculatePairAdjacentSofter(rightResult, leftResult, settings) : null;
+    if (softer && !softer.gated) {
+      if (softer.available) {
+        return {
+          available: true,
+          reason: "closer_to_sph",
+          alternativeStrategy: STRATEGY_CLOSER_TO_SPH,
+          alternativeMethod: ALTERNATIVE_METHOD_ADJACENT_SOFTER,
+          defaultStrategy: STRATEGY_BALANCED,
+          sharperStrictlyCloser: false,
+          eyes: softer.eyes,
+          balanced: softer.balanced,
+          alternative: softer.adjacentSofter,
+          closerToSph: softer.adjacentSofter
+        };
+      }
+      return {
+        available: false,
+        reason: softer.reason === "no_adjacent_softer_alternative" ? "no_alternative" : softer.reason,
+        alternativeMethod: ALTERNATIVE_METHOD_ADJACENT_SOFTER,
+        eyes: softer.eyes
       };
     }
     var closer = calculatePairCloserToSphPreference(rightResult, leftResult, settings);
@@ -788,6 +897,9 @@
     calculatePairMidpointChoice: calculatePairMidpointChoice,
     calculatePairSharperChoice: calculatePairMidpointChoice,
     eyeCloserToSphPreference: eyeCloserToSphPreference,
+    ALTERNATIVE_METHOD_ADJACENT_SOFTER: ALTERNATIVE_METHOD_ADJACENT_SOFTER,
+    eyeAdjacentSofter: eyeAdjacentSofter,
+    calculatePairAdjacentSofter: calculatePairAdjacentSofter,
     calculatePairCloserToSphPreference: calculatePairCloserToSphPreference,
     calculatePairRecommendationChoice: calculatePairRecommendationChoice,
     recommendationSelection: recommendationSelection,

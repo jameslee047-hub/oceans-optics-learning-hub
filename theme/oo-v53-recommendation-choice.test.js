@@ -13,7 +13,7 @@ var path = require("node:path");
 var vm = require("node:vm");
 
 var ASSETS = path.join(__dirname, "base", "assets");
-var PROTECTED_ENGINE_SHA256 = "cb4405d051780d1bd2ba595289e082546cc1405b1278911bc534e767440aa777";
+var PROTECTED_ENGINE_SHA256 = "a6d1a146db40149b642092877f072397f57f42008b384b9367d2840cb0c876ab";
 var EPSILON = 1e-6;
 
 function loadModules() {
@@ -63,12 +63,12 @@ function second(choice) {
   return choice.available ? [choice.alternativeStrategy, choice.alternative.right, choice.alternative.left] : ["none", choice.reason];
 }
 
-test("the protected V5.3.6 engine matches its release hash", function () {
+test("the protected V5.3.7 engine matches its release hash (only the version and banner changed from 5.3.6)", function () {
   var source = fs.readFileSync(path.join(ASSETS, "oo-lens-calculator-v53-engine.js"));
   assert.equal(crypto.createHash("sha256").update(source).digest("hex"), PROTECTED_ENGINE_SHA256);
 });
 
-test("A. nearest stock becomes Balanced; only the printed-SPH preference remains optional", function () {
+test("A. nearest stock becomes Balanced; the adjacent softer minus pair is the optional Alternative (5.3.7)", function () {
   var right = eye(-7, -0.75, 15);
   var left = eye(-7.75, -1.25, 166);
   assert.equal(right.sphericalEquivalent, -7.375);
@@ -76,35 +76,38 @@ test("A. nearest stock becomes Balanced; only the printed-SPH preference remains
   assert.equal(left.sphericalEquivalent, -8.375);
   assert.equal(left.preSnapTarget, -7.875);
   assert.deepEqual(primary(right, left), ["-7.00", "-8.00"]);
-  assert.deepEqual(second(choiceFor(right, left)), ["closer_to_sph", "-7.00", "-7.50"]);
+  assert.deepEqual(second(choiceFor(right, left)), ["closer_to_sph", "-6.50", "-7.50"]);
+  assert.equal(choiceFor(right, left).alternativeMethod, "adjacent_softer");
   var selection = V53.choice.recommendationSelection(choiceFor(right, left), "closer_to_sph");
-  assert.deepEqual([selection.recommendationStrategy, selection.recommendedRight, selection.recommendedLeft], ["closer_to_sph", -7, -7.5]);
+  assert.deepEqual([selection.recommendationStrategy, selection.recommendedRight, selection.recommendedLeft], ["closer_to_sph", -6.5, -7.5]);
 });
 
-test("B. exact midpoint -3.25 / -2.75 (5.3.1): both ties resolve toward SE, -3.00 / -2.50, and the pair converges", function () {
+test("B. exact midpoint -3.25 / -2.75: both ties resolve toward SE, -3.00 / -2.50; 5.3.7 includes ties, Alternative -2.50 / -2.00", function () {
   var right = eye(-3.25);
   var left = eye(-2.75);
   assert.deepEqual([right.preSnapTarget, left.preSnapTarget], [-2.75, -2.25]);
   assert.deepEqual(primary(right, left), ["-3.00", "-2.50"]);
   assert.deepEqual([right.stockRule, left.stockRule], ["exact-stock-tie-closer-to-se", "exact-stock-tie-closer-to-se"]);
-  // Nothing else to offer: the closer-to-SPH preference matches the resolved lenses.
-  assert.deepEqual(second(choiceFor(right, left)), ["none", "no_alternative"]);
-  assert.equal(V53.choice.calculatePairMidpointChoice(right, left, {}).available, false, "compatibility API (Quiz) agrees");
+  // 5.3.7: exact ties are not converged; each eye steps to the adjacent softer stocked lens.
+  assert.deepEqual(second(choiceFor(right, left)), ["closer_to_sph", "-2.50", "-2.00"]);
+  assert.equal(V53.choice.calculatePairMidpointChoice(right, left, {}).available, false, "Sharper compatibility API (Quiz) still offers nothing");
 });
 
-test("C. a formerly closer Sharper lens is now the single Balanced result", function () {
+test("C. a formerly closer Sharper lens: Balanced -7.00/-3.50; only the stronger-than-start eye softens (5.3.7)", function () {
   var right = eye(-7, -0.75, 15);
   var left = eye(-3.75, -0.75);
   assert.deepEqual(primary(right, left), ["-7.00", "-3.50"]);
-  assert.deepEqual(second(choiceFor(right, left)), ["none", "no_alternative"]);
+  assert.deepEqual(second(choiceFor(right, left)), ["closer_to_sph", "-6.50", "-3.50"]);
+  assert.equal(choiceFor(right, left).eyes.left.reason, "already_softer");
 });
 
-test("D. low region -1.25 / -1.75: the gap eye keeps -1.00; the tie eye resolves to -1.50; converged", function () {
+test("D. low region -1.25 / -1.75: the gap eye keeps -1.00 (never steps into plano); the tie eye softens to -1.00", function () {
   var right = eye(-1.25);
   var left = eye(-1.75);
   assert.deepEqual(primary(right, left), ["-1.00", "-1.50"]);
   assert.equal(right.stockRule, "plano-to-first-minus-gap");
-  assert.deepEqual(second(choiceFor(right, left)), ["none", "no_alternative"]);
+  assert.deepEqual(second(choiceFor(right, left)), ["closer_to_sph", "-1.00", "-1.00"]);
+  assert.equal(choiceFor(right, left).eyes.right.reason, "would_enter_plano");
 });
 
 test("E. primary already closer: no Sharper (target -3.625 is nearer -3.50)", function () {
@@ -116,14 +119,14 @@ test("E. primary already closer: no Sharper (target -3.625 is nearer -3.50)", fu
   assert.deepEqual(second(choiceFor(right, left)), ["none", "no_alternative"]);
 });
 
-test("F. exact stock target: no Sharper merely for preference", function () {
+test("F. exact stock target: no Sharper, and from 5.3.7 no minus Alternative (Balanced is the exact start)", function () {
   var right = eye(-3);
   var left = eye(-3);
   assert.equal(V53.choice.eyeMidpointAlternative(right).reason, "exact_stock");
   var choice = choiceFor(right, left);
   assert.notEqual(choice.alternativeStrategy, "sharper");
-  // The customer may still prefer the lens matching their printed SPH.
-  assert.deepEqual(second(choice), ["closer_to_sph", "-3.00", "-3.00"]);
+  assert.deepEqual(second(choice), ["none", "no_alternative"]);
+  assert.deepEqual([choice.eyes.right.reason, choice.eyes.left.reason], ["exact_start", "exact_start"]);
 });
 
 test("G. farsighted Closer to Your SPH: +3.00/-0.75, +2.50/-0.50", function () {
@@ -164,55 +167,56 @@ function defaultOf(right, left) {
     V53.choice.choiceEntries(choice, right, left).map(function (entry) { return entry.strategy; }).join(",")];
 }
 
-test("ranking A. Daniel now converges on nearest-stock Balanced -3.50/-3.50", function () {
+test("ranking A. Daniel: nearest-stock Balanced -3.50/-3.50 leads; 5.3.7 Alternative -3.00/-3.00", function () {
   var right = eye(-3.75, -0.25, 35);
   var left = eye(-3.5, -0.75, 175);
   assert.deepEqual([right.sphericalEquivalent, left.sphericalEquivalent], [-3.875, -3.875]);
   assert.deepEqual([right.preSnapTarget, left.preSnapTarget], [-3.375, -3.375]);
   assert.deepEqual(primary(right, left), ["-3.50", "-3.50"]);
   var choice = choiceFor(right, left);
-  assert.deepEqual(second(choice), ["none", "no_alternative"]);
-  assert.deepEqual(defaultOf(right, left), ["balanced", "-3.50/-3.50", "no second option"]);
+  assert.deepEqual(second(choice), ["closer_to_sph", "-3.00", "-3.00"]);
+  assert.deepEqual(defaultOf(right, left), ["balanced", "-3.50/-3.50", "balanced,closer_to_sph"]);
   var balancedModel = V53.choice.explanationModel({ rightResult: right, leftResult: left, recommendation: { recommendationStrategy: "balanced", recommendedRight: -3.5, recommendedLeft: -3.5 }, choice: choice });
-  assert.equal(balancedModel.expectation, "");
+  // Two options are shown, so Balanced carries its standard explanation.
+  assert.equal(balancedModel.expectation, "This is our recommended all round option. It is designed to give clear, natural vision underwater while accounting for the way objects appear bigger and closer through a dive mask.");
   assert.equal(balancedModel.eyes[0].lensLabel, "Recommended mask lens");
 });
 
-test("ranking B. nearest Balanced -7.00/-8.00 leads; printed-SPH Alternative is -7.00/-7.50", function () {
+test("ranking B. nearest Balanced -7.00/-8.00 leads; adjacent softer Alternative is -6.50/-7.50", function () {
   assert.deepEqual(defaultOf(eye(-7, -0.75, 15), eye(-7.75, -1.25, 166)), ["balanced", "-7.00/-8.00", "balanced,closer_to_sph"]);
-  assert.deepEqual(second(choiceFor(eye(-7, -0.75, 15), eye(-7.75, -1.25, 166))), ["closer_to_sph", "-7.00", "-7.50"]);
+  assert.deepEqual(second(choiceFor(eye(-7, -0.75, 15), eye(-7.75, -1.25, 166))), ["closer_to_sph", "-6.50", "-7.50"]);
 });
 
-test("ranking A2. exact ties -2.25 / -1.75 (targets -1.75 / -1.25) resolve to -2.00 / -1.50; no second option", function () {
+test("ranking A2. exact ties -2.25 / -1.75 (targets -1.75 / -1.25) resolve to -2.00 / -1.50; 5.3.7 Alternative -1.50 / -1.00", function () {
   var right = eye(-2.25);
   var left = eye(-1.75);
   assert.deepEqual([right.preSnapTarget, left.preSnapTarget], [-1.75, -1.25]);
   assert.deepEqual(primary(right, left), ["-2.00", "-1.50"]);
-  assert.deepEqual(defaultOf(right, left), ["balanced", "-2.00/-1.50", "no second option"]);
+  assert.deepEqual(defaultOf(right, left), ["balanced", "-2.00/-1.50", "balanced,closer_to_sph"]);
+  assert.deepEqual(second(choiceFor(right, left)), ["closer_to_sph", "-1.50", "-1.00"]);
   // Proof of the tie: both bracketing lenses are 0.25 D from the target, and the winner is nearer the SE.
   var tie = right.tieCandidates;
   assert.deepEqual(JSON.parse(JSON.stringify(tie.map(function (c) { return [c.power, c.distanceFromTarget, c.distanceFromSE]; }))), [[-1.5, 0.25, 0.75], [-2, 0.25, 0.25]]);
 });
 
-test("ranking C. exact midpoint -3.25 / -2.75: the primary pair is the former stronger pair; nothing else is offered", function () {
+test("ranking C. exact midpoint -3.25 / -2.75: Balanced -3.00/-2.50 leads; 5.3.7 Alternative -2.50/-2.00", function () {
   var right = eye(-3.25);
   var left = eye(-2.75);
   assert.deepEqual([right.preSnapTarget, left.preSnapTarget], [-2.75, -2.25]);
-  assert.deepEqual(defaultOf(right, left), ["balanced", "-3.00/-2.50", "no second option"]);
+  assert.deepEqual(defaultOf(right, left), ["balanced", "-3.00/-2.50", "balanced,closer_to_sph"]);
 });
 
-test("ranking: nearest-stock ordinary eyes do not retain a redundant Sharper option", function () {
-  assert.deepEqual(defaultOf(eye(-7, -0.75, 15), eye(-3.75, -0.75)), ["balanced", "-7.00/-3.50", "no second option"]);
-  assert.deepEqual(second(choiceFor(eye(-7, -0.75, 15), eye(-3.75, -0.75))), ["none", "no_alternative"]);
-  // The tie eye still suppresses an unrelated closer-to-SPH fallback.
-  assert.deepEqual(defaultOf(eye(-7, -0.75, 15), eye(-3.25)), ["balanced", "-7.00/-3.00", "no second option"]);
-  assert.deepEqual(second(choiceFor(eye(-7, -0.75, 15), eye(-3.25))), ["none", "no_alternative"]);
-  // Only tie eyes (or a tie eye plus no Sharper): converged, no fallback alternative.
-  assert.deepEqual(defaultOf(eye(-3.25), eye(-3.25)), ["balanced", "-3.00/-3.00", "no second option"]);
-  assert.deepEqual(defaultOf(eye(-3.25), eye(-3.75, -0.75)), ["balanced", "-3.00/-3.50", "no second option"]);
-  assert.deepEqual(second(choiceFor(eye(-3.25), eye(-3.75, -0.75))), ["none", "no_alternative"]);
-  // #336314: here the closer-to-SPH fallback WOULD offer R -2.00 / L -1.50, so the tie rule suppresses it.
-  assert.deepEqual(second(choiceFor(eye(-2, 0.5, 144), eye(-2.5, 0.75, 156))), ["none", "exact_tie_resolved"]);
+test("ranking: no redundant Sharper option; 5.3.7 minus pairs step only eyes stronger than their start (ties included)", function () {
+  assert.deepEqual(defaultOf(eye(-7, -0.75, 15), eye(-3.75, -0.75)), ["balanced", "-7.00/-3.50", "balanced,closer_to_sph"]);
+  assert.deepEqual(second(choiceFor(eye(-7, -0.75, 15), eye(-3.75, -0.75))), ["closer_to_sph", "-6.50", "-3.50"]);
+  // A tie eye no longer suppresses the Alternative (no exact_tie_resolved convergence for minus pairs).
+  assert.deepEqual(second(choiceFor(eye(-7, -0.75, 15), eye(-3.25))), ["closer_to_sph", "-6.50", "-2.50"]);
+  assert.deepEqual(second(choiceFor(eye(-3.25), eye(-3.25))), ["closer_to_sph", "-2.50", "-2.50"]);
+  assert.deepEqual(second(choiceFor(eye(-3.25), eye(-3.75, -0.75))), ["closer_to_sph", "-2.50", "-3.50"]);
+  // #336314: the right tie eye softens; the left eye is already softer than its start.
+  assert.deepEqual(second(choiceFor(eye(-2, 0.5, 144), eye(-2.5, 0.75, 156))), ["closer_to_sph", "-1.00", "-1.50"]);
+  // Neither eye stronger than its start: single result.
+  assert.deepEqual(defaultOf(eye(-3.75, -0.75), eye(-3.75, -0.75)), ["balanced", "-3.50/-3.50", "no second option"]);
 });
 
 test("ranking D. stronger candidate farther away: Balanced only", function () {

@@ -288,7 +288,7 @@ test("normal pair with no second option: masks show immediately and nothing is s
   assert.equal(confirmCalls(page)[0].body.recommendationStrategy, "balanced");
 });
 
-test("two options: nearest Balanced masks show at once with a printed-SPH Alternative", { skip: skipDom }, async function () {
+test("two options: nearest Balanced masks show at once with the adjacent softer Alternative", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-7, -0.75], [-7.75, -1.25]);
   await settle();
@@ -301,21 +301,26 @@ test("two options: nearest Balanced masks show at once with a printed-SPH Altern
 
   chooseCard(page.doc, "sharper");
   await settle();
-  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -7.50"]);
+  assert.deepEqual(cardPairs(page.doc), ["R -6.50L -7.50"]);
   for (var i = 0; i < 5; i += 1) chooseCard(page.doc, i % 2 ? "balanced" : "sharper");
   await settle();
   assert.equal(page.calls.length, 0, "no backend request while previewing");
   assert.equal(page.doc.querySelectorAll(".oo-v52-products__grid").length, 1);
 });
 
-test("exact midpoint -3.25 / -2.75 (targets -2.75 / -2.25): both ties resolve toward SE, so one pair -3.00/-2.50 with no second option", { skip: skipDom }, async function () {
+test("exact midpoint -3.25 / -2.75 (targets -2.75 / -2.25): both ties resolve toward SE, Balanced -3.00/-2.50 masks by default; 5.3.7 Alternative -2.50/-2.00", { skip: skipDom }, async function () {
   var page = await loadCalculator();
   calculate(page, [-3.25], [-2.75]);
   await settle();
-  assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true);
+  assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, false);
+  assert.equal(page.doc.getElementById("oo-v52-midpoint-balanced").checked, true);
   assert.deepEqual(cardPairs(page.doc), ["R -3.00L -2.50"]);
   assert.equal(eyeText(page.doc, "right"), "-3.00");
   assert.equal(eyeText(page.doc, "left"), "-2.50");
+  chooseCard(page.doc, "sharper");
+  await settle();
+  assert.deepEqual(cardPairs(page.doc), ["R -2.50L -2.00"]);
+  assert.equal(page.calls.length, 0);
 });
 
 test("two options: choosing a mask while the Alternative is selected confirms it once", { skip: skipDom }, async function () {
@@ -334,14 +339,14 @@ test("two options: choosing a mask while the Alternative is selected confirms it
   assert.equal(confirms.length, 1);
   assert.equal(page.calls.filter(function (call) { return /\/manual\/init$/.test(call.url); }).length, 1);
   assert.equal(confirms[0].body.recommendationStrategy, "closer_to_sph", "the Alternative is saved under its canonical id");
-  assert.equal(confirms[0].body.recommendedRight, -7);
+  assert.equal(confirms[0].body.recommendedRight, -6.5);
   assert.equal(confirms[0].body.recommendedLeft, -7.5);
   assert.equal(page.opened.length, 1);
   var url = new URL(page.opened[0].location.href);
   assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
-  assert.deepEqual(cardPairs(page.doc), ["R -7.00L -7.50"]);
-  assert.equal(eyeText(page.doc, "right"), "-7.00");
+  assert.deepEqual(cardPairs(page.doc), ["R -6.50L -7.50"]);
+  assert.equal(eyeText(page.doc, "right"), "-6.50");
   assert.equal(eyeText(page.doc, "left"), "-7.50");
 });
 
@@ -362,7 +367,7 @@ test("two options: choosing a mask after selecting Balanced again confirms balan
   assert.equal(confirms[0].body.recommendedLeft, -8);
 });
 
-test("one-eye exact ties: only the tie eye moves toward its SE and the result converges (no second option)", { skip: skipDom }, async function () {
+test("one-eye exact ties: the tie eye moves toward its SE for Balanced; 5.3.7 shows the adjacent softer Alternative and Balanced is the default", { skip: skipDom }, async function () {
   // [-3.25] target -2.75 is a tie (-2.50 / -3.00) -> -3.00; [-3] target -2.50 is exact stock.
   // [-1.25] is the plano-to-first-minus gap (-1.00, unchanged); [-1.75] target -1.25 is a tie -> -1.50.
   var cases = [[[-3.25], [-3], "R -3.00L -2.50", -3, -2.5], [[-1.25], [-1.75], "R -1.00L -1.50", -1, -1.5]];
@@ -371,7 +376,8 @@ test("one-eye exact ties: only the tie eye moves toward its SE and the result co
     var page = await loadCalculator();
     calculate(page, c[0], c[1]);
     await settle();
-    assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, true);
+    assert.equal(page.doc.getElementById("oo-v52-midpoint").hidden, false, "5.3.7: tie eyes are included");
+    assert.equal(page.doc.getElementById("oo-v52-midpoint-balanced").checked, true);
     assert.deepEqual(cardPairs(page.doc), [c[2]]);
     assert.equal(page.calls.length, 0);
     page.doc.querySelector(".oo-v52-product-card__customize").click();
