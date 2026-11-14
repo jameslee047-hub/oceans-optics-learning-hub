@@ -219,8 +219,11 @@ test("only the durable config and useful label are injected", function () {
     }
   };
   Handoff.injectShopifyProperties(doc, form, summary());
+  var slot = inputs.find(function (input) { return input.name === "properties[_oo_rx_handoff]"; });
+  assert.match(slot.value, /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/, "per-mask slot id is a random v4 UUID");
   assert.deepEqual(inputs.map(function (input) { return [input.name, input.value]; }), [
     ["properties[_oo_rx_config]", CONFIG_ID],
+    ["properties[_oo_rx_handoff]", slot.value],
     ["properties[Prescription]", "James's"]
   ]);
   assert.doesNotMatch(JSON.stringify(inputs), /confirmedRx|editToken|storagePath|signed|Upload|Anthropic/i);
@@ -248,7 +251,7 @@ test("blank labels are omitted and upload wrappers are only visually suppressed"
   };
 
   Handoff.injectShopifyProperties(doc, form, summary({ prescriptionLabel: null }));
-  assert.deepEqual(inputs.map(function (input) { return input.name; }), ["properties[_oo_rx_config]"]);
+  assert.deepEqual(inputs.map(function (input) { return input.name; }), ["properties[_oo_rx_config]", "properties[_oo_rx_handoff]"]);
   Handoff.setUploadSuppressed({ uploadWrappers: [wrapper] }, true);
   assert.equal(wrapper.suppressed, true);
   assert.equal(wrapper.hidden, false);
@@ -404,8 +407,10 @@ test("oo_source accepts only the exact allowlisted tool values", function () {
 test("allowlisted source is injected alongside the durable config without replacing it", function () {
   var fixture = propertyForm();
   Handoff.injectShopifyProperties(fixture.doc, fixture.form, summary(), "lens_calculator_v53");
+  var slot = fixture.inputs[1].value;
   assert.deepEqual(fixture.inputs.map(function (input) { return [input.name, input.value, input.type]; }), [
     ["properties[_oo_rx_config]", CONFIG_ID, "hidden"],
+    ["properties[_oo_rx_handoff]", slot, "hidden"],
     ["properties[_oo_source]", "lens_calculator_v53", "hidden"],
     ["properties[Prescription]", "James's", "hidden"]
   ]);
@@ -423,7 +428,7 @@ test("missing or non-allowlisted sources never create _oo_source", function () {
 test("failed or cleared handoffs remove the injected source with the durable config", function () {
   var fixture = propertyForm();
   Handoff.injectShopifyProperties(fixture.doc, fixture.form, summary(), "lens_calculator_v53");
-  assert.equal(fixture.inputs.length, 3);
+  assert.equal(fixture.inputs.length, 4);
   Handoff.removeInjectedProperties(fixture.form);
   assert.equal(fixture.inputs.length, 0);
 });

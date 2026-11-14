@@ -62,6 +62,36 @@
     return UUID_PATTERN.test(String(value || "").trim());
   }
 
+  // Per-mask slot id (_oo_rx_handoff): a fresh random v4 UUID for every
+  // applied handoff and every add-to-cart submission, so two masks never share
+  // a slot even with the same config, product or lenses. The cart guard
+  // (oo-rx-cart-handoff.js) keeps it, with the config, through cart edits and
+  // mirrors it into the cart-level _oo_rx_handoffs fallback.
+  var HANDOFF_PROPERTY_NAME = "properties[_oo_rx_handoff]";
+
+  function newHandoffId() {
+    var cryptoApi = typeof crypto !== "undefined" ? crypto : null;
+    if (cryptoApi && typeof cryptoApi.randomUUID === "function") return cryptoApi.randomUUID().toLowerCase();
+    var bytes = [];
+    for (var i = 0; i < 16; i += 1) {
+      bytes.push(cryptoApi && typeof cryptoApi.getRandomValues === "function"
+        ? cryptoApi.getRandomValues(new Uint8Array(1))[0]
+        : Math.floor(Math.random() * 256));
+    }
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    var text = bytes.map(function (byte) { return (byte + 256).toString(16).slice(1); }).join("");
+    return [text.slice(0, 8), text.slice(8, 12), text.slice(12, 16), text.slice(16, 20), text.slice(20)].join("-");
+  }
+
+  // The same properties with a new slot id (for the next cart line).
+  function withFreshHandoffId(properties) {
+    var id = newHandoffId();
+    return (properties || []).map(function (entry) {
+      return entry[0] === HANDOFF_PROPERTY_NAME ? [entry[0], id] : entry;
+    });
+  }
+
   function readConfigId(search) {
     var params = new URLSearchParams(search || "");
     if (!params.has("oo_rx")) return null;
@@ -332,8 +362,9 @@
   }
 
   // The hidden line-item properties for a confirmed handoff, in order.
-  function handoffProperties(doc, summary, source) {
-    var properties = [["properties[_oo_rx_config]", summary.configId]];
+  function handoffProperties(doc, summary, source, handoffId) {
+    var slot = isUuid(handoffId) ? String(handoffId).trim().toLowerCase() : newHandoffId();
+    var properties = [["properties[_oo_rx_config]", summary.configId], [HANDOFF_PROPERTY_NAME, slot]];
     if (ALLOWED_SOURCES.indexOf(source) >= 0) {
       // _oo_source stays the tool that applied this config (conversion
       // source). The journey first records that tool, so earlier tools are
@@ -526,8 +557,13 @@
     doc.addEventListener("submit", function (event) {
       var active = view[ACTIVE_PROPERTY];
       if (!isActiveProductForm(doc, event.target, active)) return;
-      if (handoffAppliesTo(event.target, active)) writeProperties(doc, event.target, active.properties);
-      else clearProperties(event.target);
+      if (handoffAppliesTo(event.target, active)) {
+        // Each submission is one cart line: give it its own slot id.
+        active.properties = withFreshHandoffId(active.properties);
+        writeProperties(doc, event.target, active.properties);
+      } else {
+        clearProperties(event.target);
+      }
     }, true);
     // A lens change after this config was added to the cart: say whether the
     // saved prescription will follow these lenses. Avis updates its mirrors
@@ -1047,6 +1083,8 @@
     applyAvisValues: applyAvisValues,
     injectShopifyProperties: injectShopifyProperties,
     handoffProperties: handoffProperties,
+    newHandoffId: newHandoffId,
+    withFreshHandoffId: withFreshHandoffId,
     isActiveProductForm: isActiveProductForm,
     withHandoffParameters: withHandoffParameters,
     sourceJourney: sourceJourney,
