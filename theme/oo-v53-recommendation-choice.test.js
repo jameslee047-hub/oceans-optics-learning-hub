@@ -13,7 +13,7 @@ var path = require("node:path");
 var vm = require("node:vm");
 
 var ASSETS = path.join(__dirname, "base", "assets");
-var PROTECTED_ENGINE_SHA256 = "a6d1a146db40149b642092877f072397f57f42008b384b9367d2840cb0c876ab";
+var PROTECTED_ENGINE_SHA256 = "0bd5f7b7f84e7a606bceaf5a9dc4a59b52a3f52573ebed8a954c24d25463f51b";
 var EPSILON = 1e-6;
 
 function loadModules() {
@@ -63,7 +63,7 @@ function second(choice) {
   return choice.available ? [choice.alternativeStrategy, choice.alternative.right, choice.alternative.left] : ["none", choice.reason];
 }
 
-test("the protected V5.3.7 engine matches its release hash (only the version and banner changed from 5.3.6)", function () {
+test("the protected V5.3.8 engine matches its release hash (only the version and banner changed from 5.3.7)", function () {
   var source = fs.readFileSync(path.join(ASSETS, "oo-lens-calculator-v53-engine.js"));
   assert.equal(crypto.createHash("sha256").update(source).digest("hex"), PROTECTED_ENGINE_SHA256);
 });
@@ -311,9 +311,17 @@ function checkPair(right, left, stats) {
   assert.equal(options.highCylinderTriggered, false, "never with high CYL");
   [["right", right], ["left", left]].forEach(function (entry) {
     var result = entry[1];
-    assert.equal(V53.choice.protectedReason(result, 3), null, "no protected eye in an offered pair");
     var primaryPower = result.finalStockPower;
     var alternative = choice.alternative[entry[0] + "Power"];
+    if (choice.lowPlusFrozenEye === entry[0]) {
+      // 5.3.8: the one protected eye allowed in an offered pair is the
+      // low-plus guard eye of an all-plus pair, frozen exactly on Balanced.
+      assert.ok(V53.choice.lowPlusGuarded(choice.eyes[entry[0]], result), "frozen eye is low-plus guarded");
+      assert.ok(primaryPower > 0 && Math.abs(alternative - primaryPower) < EPSILON, "frozen eye keeps Balanced");
+      assert.equal(choice.alternativeStrategy, "closer_to_sph");
+      return;
+    }
+    assert.equal(V53.choice.protectedReason(result, 3), null, "no protected eye in an offered pair");
     if (Math.abs(alternative - primaryPower) < EPSILON) return;
     assert.ok(Math.sign(alternative) === Math.sign(primaryPower), "never crosses sign");
     assert.ok(Math.abs(stockIndex(alternative) - stockIndex(primaryPower)) <= 1, "at most one stock interval");

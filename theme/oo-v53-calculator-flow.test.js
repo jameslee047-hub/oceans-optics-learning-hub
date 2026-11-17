@@ -166,9 +166,9 @@ async function assertSingleResult(page, right, left) {
   await settle();
   var body = confirmCalls(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", Number(right), Number(left)]);
-  assert.equal(body.calculatorVersion, "5.3.7");
+  assert.equal(body.calculatorVersion, "5.3.8");
   var snap = body.v53Snapshot;
-  assert.equal(snap.calculatorVersion, "5.3.7");
+  assert.equal(snap.calculatorVersion, "5.3.8");
   assert.equal(snap.schemaVersion, "1");
   assert.equal(snap.optionsShown, null);
   assert.equal(snap.optionLabelsShown, null);
@@ -194,7 +194,7 @@ async function assertTwoOptionDefault(page, balanced, alternative) {
   await settle();
   await settle();
   var body = confirmCalls(page)[0].body;
-  assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced", Number(balanced[0]), Number(balanced[1]), "5.3.7"]);
+  assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced", Number(balanced[0]), Number(balanced[1]), "5.3.8"]);
   var snap = body.v53Snapshot;
   assert.equal(snap.selectionEvidence, "default_recommendation");
   assert.deepEqual(JSON.parse(JSON.stringify(snap.optionsShown)), {
@@ -273,7 +273,7 @@ test("default selects Balanced for #336254 (two options); #336246 (CYL 2.00) get
   assert.deepEqual(firstConfirm.body.v53Snapshot.recommendedValues, { right: "+3.00", left: "+3.00" });
   assert.equal(firstConfirm.body.v53Snapshot.selectedStrategy, "balanced", JSON.stringify(firstConfirm.body.v53Snapshot));
   assert.equal(firstConfirm.body.v53Snapshot.selectionEvidence, "default_recommendation");
-  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.7");
+  assert.equal(firstConfirm.body.v53Snapshot.calculatorVersion, "5.3.8");
 
   var togglePage = await loadCalculator();
   calculate(togglePage, [4, -0.75], [4.25, -0.75]);
@@ -317,7 +317,7 @@ test("#336262 -1.00/-0.75 x170, -1.75: Balanced -1.00/-1.50; 5.3.7 Alternative -
   assert.equal(url.searchParams.get("oo_rx"), CONFIG_ID);
   assert.equal(url.searchParams.get("oo_source"), "lens_calculator_v53");
   var snapshot = JSON.parse(url.searchParams.get("_oo_v53_snapshot"));
-  assert.equal(snapshot.calculatorVersion, "5.3.7");
+  assert.equal(snapshot.calculatorVersion, "5.3.8");
   assert.equal(snapshot.selectionEvidence, "default_recommendation");
 });
 
@@ -356,7 +356,7 @@ test("#336254 default saves the Balanced pair without a click; #336246 (5.3.6 qu
   await settle();
   await settle();
   var body = confirmCalls(quarter)[0].body;
-  assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced", -4, -5.5, "5.3.7"]);
+  assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced", -4, -5.5, "5.3.8"]);
   assert.deepEqual(body.v53Snapshot.optionsShown, { balanced: { right: "-4.00", left: "-5.50" }, closer_to_sph: { right: "-3.50", left: "-5.50" } });
   assert.equal(body.v53Snapshot.selectionEvidence, "default_recommendation");
 });
@@ -473,7 +473,7 @@ test("non-tie myopia can keep a printed-SPH Alternative after nearest-stock Bala
   await settle();
   var confirms = confirmCalls(page);
   assert.deepEqual([confirms[0].body.recommendationStrategy, confirms[0].body.recommendedRight, confirms[0].body.recommendedLeft], ["closer_to_sph", -6.5, -7.5]);
-  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.7");
+  assert.equal(confirms[0].body.v53Snapshot.calculatorVersion, "5.3.8");
 });
 
 test("UI: the results area has one heading, the why block, the cards, what to expect, one collapsed maths section, then Your Matching Masks", { skip: skipDom }, async function () {
@@ -803,7 +803,7 @@ test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: 0.00
   await settle();
   await settle();
   var body = confirmCalls(page)[0].body;
-  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.7", "balanced", 0, -1]);
+  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.8", "balanced", 0, -1]);
   assert.deepEqual([body.v53Snapshot.optionsShown, body.v53Snapshot.selectionEvidence], [null, null]);
 });
 

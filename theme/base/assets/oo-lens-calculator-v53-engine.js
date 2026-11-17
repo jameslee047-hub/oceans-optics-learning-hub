@@ -77,7 +77,14 @@
  * lens instead of the closer-to-SPH preference. Plus pairs and the quarter-CYL
  * Alternative are unchanged.
  *
- * Version: 5.3.7
+ * LOW-PLUS PER-EYE FREEZE (5.3.8, 2026-11-17): no change in this engine.
+ * Every calculation here is byte-for-byte the 5.3.7 logic. Only the version
+ * changes, because the choice layer no longer lets an eye protected solely by
+ * the low-plus guard (SE above 0 to +1.00) block the other, ordinary plus eye
+ * of an all-plus pair from offering its existing closer-to-SPH Alternative;
+ * the low-plus eye itself always keeps its Balanced lens.
+ *
+ * Version: 5.3.8
  * Created: 2026-09-26 from the unchanged V5.2 engine
  * ============================================================================
  */
@@ -115,7 +122,7 @@
   // ==========================================================================
 
   var V53_CONFIG = {
-    version: "5.3.7",
+    version: "5.3.8",
 
     // CYL magnitude band boundaries (inclusive upper bounds). Retained
     // from V5.0 unchanged. As of V5.1 these control WARNING/CONFIDENCE

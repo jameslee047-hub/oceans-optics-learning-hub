@@ -75,8 +75,8 @@ function eyeTrace(sphere, cylinder) {
   };
 }
 
-test("version 5.3.7; the quarter-CYL Alternative threshold (2.00) is separate from the 3.00 guidance threshold", function () {
-  assert.equal(V53.VERSION, "5.3.7");
+test("version 5.3.8; the quarter-CYL Alternative threshold (2.00) is separate from the 3.00 guidance threshold", function () {
+  assert.equal(V53.VERSION, "5.3.8");
   assert.equal(HighCyl.QUARTER_CYL_ALTERNATIVE_THRESHOLD, 2);
   assert.equal(HighCyl.HIGH_CYL_WARNING_THRESHOLD, 3);
   assert.equal(HighCyl.HIGH_CYL_THRESHOLD, 2, "compatibility name follows the Alternative workflow threshold");

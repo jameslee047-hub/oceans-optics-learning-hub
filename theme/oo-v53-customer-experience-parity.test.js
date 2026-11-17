@@ -247,10 +247,10 @@ CONVERGED.forEach(function (fixture) {
     var mainBody = main.calls.filter(function (call) { return /\/confirm$/.test(call.url); })[0].body;
     var checkerBody = checker.calls.filter(function (call) { return /\/confirm$/.test(call.url); })[0].body;
     [mainBody, checkerBody].forEach(function (body) {
-      assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced"].concat(fixture.pair.map(Number), ["5.3.7"]));
+      assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft, body.calculatorVersion], ["balanced"].concat(fixture.pair.map(Number), ["5.3.8"]));
       assert.equal(body.v53Snapshot.optionsShown, null);
       assert.equal(body.v53Snapshot.selectionEvidence, null);
-      assert.equal(body.v53Snapshot.calculatorVersion, "5.3.7");
+      assert.equal(body.v53Snapshot.calculatorVersion, "5.3.8");
     });
     assert.deepEqual([checker.applied[0].recommendedRight, checker.applied[0].recommendedLeft], fixture.pair.map(Number));
   });

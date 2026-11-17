@@ -26,6 +26,10 @@
  *                    closest to the SPH the customer entered, never stronger
  *                    than that SPH, same sign as the primary lens and at most
  *                    one stock interval from it (unchanged since V5.3.0).
+ *                    V5.3.8: in an all-plus pair, an eye protected solely by
+ *                    the engine's low-plus guard (SE above 0 to +1.00) is
+ *                    frozen on its Balanced lens and no longer blocks the
+ *                    other, ordinary plus eye from offering this Alternative.
  *                  Offered only when no Sharper pair exists.
  *
  * Sharper always takes priority; never more than two choices are offered.
@@ -42,7 +46,10 @@
  * SPH + CYL/4 Alternative pair and suppresses this layer. Every protected V5.3
  * pathway (invalid, manual review, plano crossover, plano gap at SE -1.00 or
  * weaker, low-minus choice, low-plus guard, any 0.00 result, high CYL) and a
- * mixed-sign pair suppress the choice for the whole OD/OS pair.
+ * mixed-sign pair suppress the choice for the whole OD/OS pair. The one
+ * exception (V5.3.8) is the low-plus guard inside an all-plus pair: that eye
+ * stays on Balanced while the other ordinary plus eye may still offer its
+ * closer-to-SPH Alternative (see calculatePairLowPlusFrozenAlternative).
  *
  * The engine (lens-calculator-v53.js) is not modified and nothing here
  * recalculates a target, an adjustment, or a stock rule.
@@ -316,6 +323,84 @@
     return Boolean(result && result.stockRule === EXACT_STOCK_TIE_RULE);
   }
 
+  // Both Balanced lenses are plus (corrective, never plano).
+  function isPlusPair(rightResult, leftResult) {
+    var powers = primaryPowers(rightResult, leftResult);
+    return powers[0] !== null && powers[1] !== null && powers[0] > EPSILON && powers[1] > EPSILON;
+  }
+
+  // V5.3.8: the engine's low-plus guard (SE above 0 to +1.00 resolved by its
+  // plano crossover to the weakest plus lens) reaches protectedReason() as
+  // "plano_crossover" (an OK result carrying planoCrossoverCandidates) or, if
+  // the engine ever omitted those candidates, as "low_plus". Both name the
+  // same guard; a plano (0.00) result from that crossover is "plano
+  // crossover" too but is never plus, so it is never frozen, it still blocks.
+  var LOW_PLUS_REASON = "low_plus";
+  var PLANO_CROSSOVER_REASON = "plano_crossover";
+
+  // An eye protected solely by the low-plus guard: a plus Balanced lens whose
+  // spherical equivalent is in the guard's band (above 0 to +1.00), with
+  // stock OK and no manual review (protectedReason() checks those first).
+  function lowPlusGuarded(eye, result) {
+    if (!eye || eye.protected !== true) return false;
+    if (eye.reason !== PLANO_CROSSOVER_REASON && eye.reason !== LOW_PLUS_REASON) return false;
+    var balanced = finite(eye.balancedPower);
+    var se = finite(result && result.sphericalEquivalent);
+    return balanced !== null && balanced > EPSILON &&
+      se !== null && se > EPSILON && se <= LOW_PLUS_SE_LIMIT + EPSILON;
+  }
+
+  function lowPlusGateReason(reason) {
+    return reason === "right_" + PLANO_CROSSOVER_REASON || reason === "left_" + PLANO_CROSSOVER_REASON ||
+      reason === "right_" + LOW_PLUS_REASON || reason === "left_" + LOW_PLUS_REASON;
+  }
+
+  /**
+   * V5.3.8 per-eye low-plus freeze. Reached only when the unchanged
+   * closer-to-SPH pair gate failed on a low-plus guard reason (see
+   * lowPlusGuarded). In an ordinary all-plus pair, the eye protected solely by
+   * the engine's low-plus guard keeps its Balanced lens (it never gets an
+   * Alternative of its own) and no longer blocks the other, ordinary plus eye
+   * from offering the closer-to-SPH Alternative it already had.
+   *
+   * Returns null (the pair stays single with its original gate reason) when:
+   * the high-CYL workflow is triggered; either Balanced lens is not plus (so a
+   * mixed-sign or plano pair never relaxes); both eyes are low-plus; the other
+   * eye is protected for any reason or has no valid Alternative; an eye's
+   * exact stock tie was resolved toward the SE (the 5.3.1 convergence keeps
+   * the pair single); or the pair is not buildable. Minus pairs never reach
+   * this function (a minus Balanced lens is never low-plus guarded).
+   */
+  function calculatePairLowPlusFrozenAlternative(closer, rightResult, leftResult, options) {
+    var settings = options || {};
+    if (!closer || closer.available || !closer.eyes) return null;
+    if (!lowPlusGateReason(closer.reason)) return null;
+    if (settings.highCylinderTriggered === true) return null;
+    if (!isPlusPair(rightResult, leftResult)) return null;
+    var right = closer.eyes.right;
+    var left = closer.eyes.left;
+    var frozenRight = lowPlusGuarded(right, rightResult);
+    var frozenLeft = lowPlusGuarded(left, leftResult);
+    if (frozenRight === frozenLeft) return null;
+    var ordinary = frozenRight ? left : right;
+    if (ordinary.protected || ordinary.alternativePower === null || ordinary.alternativePower === undefined) return null;
+    if (tieResolvedTowardSE(rightResult) || tieResolvedTowardSE(leftResult)) return null;
+    var altRight = frozenRight ? right.balancedPower : right.alternativePower;
+    var altLeft = frozenLeft ? left.balancedPower : left.alternativePower;
+    if (!V53.pairBuildableOnAnyCurrentMask(altRight, altLeft)) return null;
+    return {
+      available: true,
+      reason: "closer_to_sph",
+      eyes: {
+        right: Object.assign({}, right, { lowPlusFrozen: frozenRight }),
+        left: Object.assign({}, left, { lowPlusFrozen: frozenLeft })
+      },
+      lowPlusFrozenEye: frozenRight ? "right" : "left",
+      balanced: pairOf(right.balancedPower, left.balancedPower),
+      closerToSph: pairOf(altRight, altLeft)
+    };
+  }
+
   // V5.3.7 diagnostic (never persisted): how an ordinary Alternative was found.
   var ALTERNATIVE_METHOD_ADJACENT_SOFTER = "adjacent_softer";
 
@@ -395,6 +480,10 @@
    * unchanged closer-to-SPH preference: when an eye's exact stock tie was
    * resolved toward the original SE (engine 5.3.1), that pair does not fall
    * back to Closer to your SPH and the result converges.
+   *
+   * V5.3.8: an all-plus pair whose only gate reason is one low-plus eye keeps
+   * that eye on Balanced and still offers the other eye's closer-to-SPH
+   * Alternative (calculatePairLowPlusFrozenAlternative). No other gate changes.
    */
   function calculatePairRecommendationChoice(rightResult, leftResult, options) {
     var settings = options || {};
@@ -440,6 +529,23 @@
     var closer = calculatePairCloserToSphPreference(rightResult, leftResult, settings);
     if (closer.available && (tieResolvedTowardSE(rightResult) || tieResolvedTowardSE(leftResult))) {
       return { available: false, reason: "exact_tie_resolved", eyes: closer.eyes };
+    }
+    // V5.3.8: an all-plus pair gated only by one low-plus eye may still offer
+    // the other eye's Alternative; every other gate reason is returned as is.
+    var lowPlusFrozen = closer.available ? null : calculatePairLowPlusFrozenAlternative(closer, rightResult, leftResult, settings);
+    if (lowPlusFrozen) {
+      return {
+        available: true,
+        reason: "closer_to_sph",
+        alternativeStrategy: STRATEGY_CLOSER_TO_SPH,
+        defaultStrategy: STRATEGY_BALANCED,
+        sharperStrictlyCloser: false,
+        lowPlusFrozenEye: lowPlusFrozen.lowPlusFrozenEye,
+        eyes: lowPlusFrozen.eyes,
+        balanced: lowPlusFrozen.balanced,
+        alternative: lowPlusFrozen.closerToSph,
+        closerToSph: lowPlusFrozen.closerToSph
+      };
     }
     if (closer.available) {
       return {
@@ -901,6 +1007,8 @@
     eyeAdjacentSofter: eyeAdjacentSofter,
     calculatePairAdjacentSofter: calculatePairAdjacentSofter,
     calculatePairCloserToSphPreference: calculatePairCloserToSphPreference,
+    lowPlusGuarded: lowPlusGuarded,
+    calculatePairLowPlusFrozenAlternative: calculatePairLowPlusFrozenAlternative,
     calculatePairRecommendationChoice: calculatePairRecommendationChoice,
     recommendationSelection: recommendationSelection,
     defaultStrategyOf: defaultStrategyOf,

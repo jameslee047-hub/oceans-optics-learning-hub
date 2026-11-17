@@ -267,10 +267,10 @@ test("A/J. checker exact ties -2.25 / -1.75: Balanced -2.00/-1.50 saved by defau
   await settle();
   var body = confirms(page)[0].body;
   assert.deepEqual([body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["balanced", -2, -1.5]);
-  assert.equal(body.calculatorVersion, "5.3.7");
+  assert.equal(body.calculatorVersion, "5.3.8");
   var snapshot = JSON.parse(JSON.stringify(page.applied[0].summary.v53Snapshot));
   assert.deepEqual([snapshot.calculatorVersion, snapshot.optionsShown, snapshot.selectedStrategy, snapshot.selectionEvidence],
-    ["5.3.7", { balanced: { right: "-2.00", left: "-1.50" }, closer_to_sph: { right: "-1.50", left: "-1.00" } }, "balanced", "default_recommendation"]);
+    ["5.3.8", { balanced: { right: "-2.00", left: "-1.50" }, closer_to_sph: { right: "-1.50", left: "-1.00" } }, "balanced", "default_recommendation"]);
 });
 
 test("UI: checker result has the heading, the why block, the cards, what to expect and one collapsed maths section", { skip: skipDom }, async function () {
@@ -521,7 +521,7 @@ test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: chec
   apply(page);
   await settle();
   var body = confirms(page)[0].body;
-  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.7", "balanced", 0, -1]);
+  assert.deepEqual([body.calculatorVersion, body.recommendationStrategy, body.recommendedRight, body.recommendedLeft], ["5.3.8", "balanced", 0, -1]);
   assert.deepEqual([page.applied[0].summary.recommendedRight, page.applied[0].summary.recommendedLeft], [0, -1]);
 });
 
@@ -543,7 +543,7 @@ test("V5.3.5 customer fixture OD -0.25 / -0.50 x065, OS -0.50 / -0.25 x050: chec
     apply(page);
     await settle();
     var body = confirms(page)[0].body;
-    assert.equal(body.calculatorVersion, "5.3.7");
+    assert.equal(body.calculatorVersion, "5.3.8");
     assert.equal(body.recommendationStrategy, "balanced");
   });
 });

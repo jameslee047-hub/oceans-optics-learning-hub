@@ -61,8 +61,8 @@ function summary(right, left) {
   };
 }
 
-test("version 5.3.7 with the new method id exported; strategy ids unchanged", function () {
-  assert.equal(V53.engine.VERSION, "5.3.7");
+test("version 5.3.8 with the 5.3.7 method id exported; strategy ids unchanged", function () {
+  assert.equal(V53.engine.VERSION, "5.3.8");
   assert.equal(V53.choice.ALTERNATIVE_METHOD_ADJACENT_SOFTER, "adjacent_softer");
   assert.equal(V53.choice.STRATEGY_CLOSER_TO_SPH, "closer_to_sph");
   assert.equal(V53.choice.STRATEGY_BALANCED, "balanced");
