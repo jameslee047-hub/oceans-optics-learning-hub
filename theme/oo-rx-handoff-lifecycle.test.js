@@ -425,22 +425,27 @@ test("6/7. reload and back/forward re-validate the same explicit handoff from th
 
 // --- 8-13: returning visitor, second mask, reuse, mixed sources --------------
 
-test("8/9. returning visitor: ordinary navigation never resurrects config A; a new link with config B wins and A cannot override it", { skip: skipDom }, async function () {
+test("8/9 (#336633). returning visitor: a calculator config that never reached the cart is re-applied on a compatible mask only; a new link with config B wins", { skip: skipDom }, async function () {
   var tab = newTab();
   var first = await open(tab, FAR, handoffSearch(FAR, CFG.calcA, "lens_calculator_v53"));
   assert.equal(statusClass(first), "is-success");
-  // Later, ordinary navigation to the same product and to another product.
-  var plain = await open(tab, FAR, "?variant=" + FAR.variant);
+  assert.equal(tab.items.length, 0, "the customer leaves without adding");
+  // Later, ordinary navigation: a nearsighted mask cannot take +2.00/+2.00.
   var other = await open(tab, MYO, "");
-  [plain, other].forEach(function (page) {
-    assert.deepEqual(page.summaries, [], "nothing is fetched");
-    assert.equal(statusClass(page), null, "no prescription status");
-    assert.deepEqual(injected(page), [], "no OO properties on the form");
-  });
-  choose(plain, "(OD) Right", "+2.00");
-  choose(plain, "(OS) Left", "+2.00");
+  await settle(60);
+  assert.deepEqual(other.summaries, [], "nothing is fetched on an incompatible mask");
+  assert.equal(statusClass(other), null);
+  assert.deepEqual(injected(other), []);
+  // Back to the same mask through a plain URL: the saved config is validated again and applied.
+  var plain = await open(tab, FAR, "?variant=" + FAR.variant);
+  await settle(60);
+  assert.deepEqual(plain.summaries, [CFG.calcA]);
+  assert.equal(statusClass(plain), "is-success");
+  assert.match(plain.doc.getElementById("oo-rx-handoff-status").textContent, /entered in the Lens Calculator/);
   await addToCart(plain);
-  assert.deepEqual(oo(tab.items[0]), { config: null, source: null }, "same lenses typed by hand: still no config");
+  assert.deepEqual(oo(tab.items[0]), { config: CFG.calcA, source: "lens_calculator_v53" });
+  assert.equal(lenses(tab.items[0]), "+2.00/+2.00");
+  assert.equal(tab.local.oo_rx_calculator_handoff, undefined, "single use: spent once it reaches the cart");
 
   var fresh = await open(tab, FAR, handoffSearch(FAR, CFG.calcB, "lens_calculator_v53"));
   assert.deepEqual(fresh.summaries, [CFG.calcB]);
@@ -873,15 +878,17 @@ test("a new Quiz session supersedes the remembered handoff, and an expired one i
   assert.deepEqual(oo(tab.items[0]), { config: null, source: null });
 });
 
-test("another tool's handoff supersedes a remembered Quiz handoff; calculator handoffs are never remembered", { skip: skipDom }, async function () {
+test("another tool's handoff supersedes a remembered Quiz handoff, and a Quiz link supersedes a remembered calculator handoff", { skip: skipDom }, async function () {
   var tab = newTab();
   await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
   await open(tab, FAR, handoffSearch(FAR, CFG.calcA, "lens_calculator_v53"));
-  assert.equal(remembered(tab), null);
+  assert.equal(remembered(tab), null, "the calculator link replaced the remembered Quiz handoff");
+  assert.equal(JSON.parse(tab.local.oo_rx_calculator_handoff).configId, CFG.calcA);
   var plain = await open(tab, FAR, "?variant=" + FAR.variant);
   await settle(60);
-  assert.deepEqual(plain.summaries, []);
-  assert.equal(statusClass(plain), null);
+  assert.deepEqual(plain.summaries, [CFG.calcA], "only the newer calculator config is ever re-applied");
+  await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
+  assert.equal(tab.local.oo_rx_calculator_handoff, undefined, "the Quiz link replaced the remembered calculator handoff");
 });
 
 test("a remembered config that no longer validates attaches nothing and shows no error", { skip: skipDom }, async function () {
@@ -889,6 +896,10 @@ test("a remembered config that no longer validates attaches nothing and shows no
   await quizArrival(tab, FAR, CFG.q336414, SESSION_336414);
   var failing = await open(tab, FAR, "?variant=" + FAR.variant, { summaryFailures: 3 });
   await settle(400);
+  // While the remembered config is checked (with retries), Add is held.
+  await addToCart(failing);
+  assert.equal(tab.items.length, 0, "held while the remembered config is still being checked");
+  await settle(3000);
   assert.equal(statusClass(failing), null, "no failure message on a plain visit");
   assert.deepEqual(injected(failing), []);
   await addToCart(failing);

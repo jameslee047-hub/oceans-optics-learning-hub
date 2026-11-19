@@ -27,6 +27,16 @@
   //     it. It reaches the Shopify order as a note attribute, so OO-Orders can
   //     still resolve a mask whose line properties were lost, deterministically
   //     and only when exactly one slot fits (see OO-Orders lib/cartRxHandoffs).
+  //  3. Independent add record (order #336633): the product handoff tells this
+  //     script, at submit time, which slot / config / product / variant it is
+  //     adding (expectAdd). The matching /cart/add request (same slot, or the
+  //     same variant within a minute) is followed to its successful response
+  //     and its slot is written to _oo_rx_handoffs straight from that
+  //     expectation, so the cart fallback no longer depends on Shopify having
+  //     kept the line properties. Until a cart read shows the slot in the map
+  //     it is kept in sessionStorage and retried on every page; if neither the
+  //     line nor the map holds the config after the retries, the page is told
+  //     (event "oo:rx-handoff:unsaved") instead of continuing silently.
   // Only opaque ids, tool names and Shopify product/variant ids are stored:
   // never prescription values, labels, files or URLs.
 
@@ -42,6 +52,12 @@
   var UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
   var SOURCES = ["lens_calculator_v53", "product_rx_checker", "quiz_v53"];
   var INSTALLED = "__ooRxCartHandoffInstalled";
+  // Per tab: confirmed cart adds whose slot is not yet seen in the cart map.
+  var PENDING_STORAGE_KEY = "oo_rx_cart_pending";
+  var PENDING_TTL_MS = 24 * 60 * 60 * 1000;
+  var EXPECT_TTL_MS = 60 * 1000;
+  var VERIFY_ATTEMPTS = 3;
+  var UNSAVED_EVENT = "oo:rx-handoff:unsaved";
 
   function isUuid(value) {
     return typeof value === "string" && UUID_PATTERN.test(value.trim());
@@ -125,8 +141,20 @@
   // product is no longer in the cart at all is dropped. A slot whose product
   // is still in the cart is kept even when that line lost its properties:
   // that is exactly the case the fallback exists for.
-  function reconcileEntries(entries, cart) {
+  // pending: slots from confirmed add operations (see expectAdd). One is
+  // added when the map does not have its slot yet; a line carrying the same
+  // slot still wins, so both paths always agree.
+  function reconcileEntries(entries, cart, pending) {
     var next = entries.map(function (entry) { return Object.assign({}, entry); });
+    (Array.isArray(pending) ? pending : []).forEach(function (record) {
+      var entry = cleanEntry(record);
+      if (!entry || next.some(function (existing) { return existing.h === entry.h; })) return;
+      if (!entry.p && entry.v) {
+        var line = cartItems(cart).find(function (item) { return String(item.variant_id) === entry.v; });
+        if (line && /^\d{1,20}$/.test(String(line.product_id || ""))) entry.p = String(line.product_id);
+      }
+      if (entry.p) next.push(entry);
+    });
     cartItems(cart).forEach(function (item) {
       var kept = durableProperties(item);
       if (!kept || !isUuid(kept[HANDOFF_PROPERTY])) return;
@@ -207,7 +235,43 @@
   }
 
   var CHANGE_PATH = /^\/cart\/change(?:\.js)?$/;
+  var ADD_PATH = /^\/cart\/add(?:\.js)?$/;
   var MUTATION_PATH = /^\/cart\/(?:add|change|update|clear)(?:\.js)?$/;
+
+  function optionalText(value) {
+    return typeof value === "string" && value.trim() ? value.trim() : null;
+  }
+
+  // The lines a /cart/add request adds: the variant id and the OO slot /
+  // config / source the request itself carries (null when it carries none).
+  // FormData / urlencoded: one line; JSON: `id`, or each entry of `items`.
+  function addRequestItems(body) {
+    var items = [];
+    if (typeof body === "string" && body.trim().charAt(0) === "{") {
+      var data;
+      try { data = JSON.parse(body); } catch (error) { return []; }
+      var list = data && Array.isArray(data.items) ? data.items : (data && data.id !== undefined ? [data] : []);
+      items = list.map(function (item) {
+        var properties = item && item.properties && typeof item.properties === "object" ? item.properties : {};
+        return {
+          v: String(item && item.id !== undefined && item.id !== null ? item.id : "").trim(),
+          h: optionalText(properties[HANDOFF_PROPERTY]),
+          c: optionalText(properties[CONFIG_PROPERTY]),
+          s: optionalText(properties[SOURCE_PROPERTY])
+        };
+      });
+    } else {
+      var adapter = bodyAdapter(body);
+      if (!adapter) return [];
+      items = [{
+        v: String(adapter.get("id") || "").trim(),
+        h: optionalText(adapter.get("properties[" + HANDOFF_PROPERTY + "]")),
+        c: optionalText(adapter.get("properties[" + CONFIG_PROPERTY + "]")),
+        s: optionalText(adapter.get("properties[" + SOURCE_PROPERTY + "]"))
+      }];
+    }
+    return items.filter(function (item) { return /^\d{1,20}$/.test(item.v); });
+  }
 
   // The cart line a /cart/change request targets: `id` is a line key
   // ("variant:hash") or a variant id (Shopify: the first line of that
@@ -251,7 +315,145 @@
     if (!view || view[INSTALLED]) return view && view[INSTALLED];
     var settings = options || {};
     var originalFetch = typeof view.fetch === "function" ? view.fetch.bind(view) : null;
-    var state = { cart: null, loading: null, timer: null, lastMap: null, restoredCount: 0 };
+    var state = { cart: null, loading: null, timer: null, lastMap: null, restoredCount: 0, expected: [], pending: [], verifyTimer: null };
+
+    function now() {
+      return typeof settings.now === "function" ? Number(settings.now()) : Date.now();
+    }
+
+    function sessionStore() {
+      try { return view.sessionStorage || null; } catch (error) { return null; }
+    }
+
+    function loadPending() {
+      var store = sessionStore();
+      if (!store) return [];
+      try {
+        var list = JSON.parse(store.getItem(PENDING_STORAGE_KEY) || "[]");
+        return (Array.isArray(list) ? list : []).map(function (record) {
+          var entry = cleanEntry(record);
+          var at = Number(record && record.at);
+          return entry && Number.isFinite(at) && now() - at < PENDING_TTL_MS ? Object.assign(entry, { at: at }) : null;
+        }).filter(Boolean);
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function savePending() {
+      var store = sessionStore();
+      if (!store) return;
+      try {
+        if (state.pending.length) {
+          store.setItem(PENDING_STORAGE_KEY, JSON.stringify(state.pending.map(function (record) {
+            var copy = cleanEntry(record);
+            copy.at = record.at;
+            return copy;
+          })));
+        } else {
+          store.removeItem(PENDING_STORAGE_KEY);
+        }
+      } catch (error) {
+        // Storage unavailable: the in-page record still applies.
+      }
+    }
+
+    state.pending = loadPending();
+
+    // The product handoff's add, recorded before the request is sent.
+    function expectAdd(entry) {
+      var clean = cleanEntry(entry);
+      if (!clean || !clean.v) return false;
+      state.expected = state.expected.filter(function (item) {
+        return item.entry.h !== clean.h && now() - item.at < EXPECT_TTL_MS;
+      });
+      state.expected.push({ entry: clean, at: now() });
+      return true;
+    }
+
+    // The expectation this request line belongs to: by its own slot when it
+    // carries one, otherwise (line properties lost) by the exact variant.
+    function takeExpectation(item) {
+      state.expected = state.expected.filter(function (expected) { return now() - expected.at < EXPECT_TTL_MS; });
+      var slot = isUuid(item.h) ? item.h.trim().toLowerCase() : null;
+      var index = state.expected.findIndex(function (expected) {
+        return slot ? expected.entry.h === slot : expected.entry.v === item.v;
+      });
+      return index < 0 ? null : state.expected.splice(index, 1)[0].entry;
+    }
+
+    function addEntryFor(item) {
+      var expected = takeExpectation(item);
+      if (expected) {
+        // The request's own config, when present, must agree; a disagreement
+        // is never resolved by guessing.
+        if (isUuid(item.c) && item.c.trim().toLowerCase() !== expected.c) return null;
+        return Object.assign({}, expected);
+      }
+      return cleanEntry({ h: item.h, c: item.c, s: item.s, v: item.v });
+    }
+
+    function addPending(entry) {
+      state.pending = state.pending.filter(function (record) { return record.h !== entry.h; });
+      state.pending.push(Object.assign({}, entry, { at: now(), tries: 0 }));
+      savePending();
+    }
+
+    function lineCarries(cart, record) {
+      return cartItems(cart).some(function (item) {
+        var kept = durableProperties(item);
+        return Boolean(kept) && kept[CONFIG_PROPERTY].trim().toLowerCase() === record.c;
+      });
+    }
+
+    function notifyUnsaved(record) {
+      try {
+        var EventConstructor = view.CustomEvent;
+        if (typeof EventConstructor !== "function" || !view.document) return;
+        view.document.dispatchEvent(new EventConstructor(UNSAVED_EVENT, { detail: { handoff: record.h, config: record.c } }));
+      } catch (error) {
+        // Never interfere with the page.
+      }
+    }
+
+    // Drops pending slots the cart map now holds (confirmed), whose product
+    // has left the cart, or that expired; counts a failed verification.
+    function settlePending(cart, current) {
+      var before = state.pending.length;
+      state.pending = state.pending.filter(function (record) {
+        if (now() - record.at >= PENDING_TTL_MS) return false;
+        if (current.some(function (entry) { return entry.h === record.h; })) return false;
+        return cartItems(cart).some(function (item) {
+          return String(item.variant_id) === record.v || (record.p && String(item.product_id) === record.p);
+        });
+      });
+      if (state.pending.length !== before) savePending();
+    }
+
+    function afterAdd(entries, response) {
+      if (!entries.length || !response || !response.ok) return;
+      entries.forEach(addPending);
+      reconcileNow();
+      // The response's added line gives the product id when the form had none.
+      if (typeof response.clone !== "function") return;
+      try {
+        response.clone().json().then(function (data) {
+          var items = data && Array.isArray(data.items) ? data.items : (data && data.variant_id !== undefined ? [data] : []);
+          var changed = false;
+          state.pending.forEach(function (record) {
+            if (record.p) return;
+            var line = items.find(function (item) { return item && String(item.variant_id) === record.v; });
+            if (line && /^\d{1,20}$/.test(String(line.product_id || ""))) {
+              record.p = String(line.product_id);
+              changed = true;
+            }
+          });
+          if (changed) savePending();
+        }, function () {});
+      } catch (error) {
+        // An unreadable response still leaves the variant to find the line.
+      }
+    }
 
     function loadCart() {
       if (!originalFetch) return Promise.resolve(null);
@@ -295,19 +497,55 @@
           credentials: "same-origin",
           body: JSON.stringify({ attributes: attributes })
         });
-      return Promise.resolve(request).catch(function () { state.lastMap = null; });
+      // A refused write (non-2xx) is written again on the next reconcile.
+      return Promise.resolve(request).then(function (response) {
+        if (response && response.ok === false) state.lastMap = null;
+      }, function () { state.lastMap = null; });
     }
 
     // Brings _oo_rx_handoffs in line with the cart's lines.
-    function reconcile(cart) {
+    // verifying: a dedicated re-read after writing pending slots.
+    function reconcile(cart, verifying) {
       if (!cart) return Promise.resolve(null);
       var current = cartMap(cart);
-      var next = reconcileEntries(current, cart);
+      settlePending(cart, current);
+      if (verifying === true && state.pending.length) checkPending(cart);
+      var next = reconcileEntries(current, cart, state.pending);
       var text = serializeMap(next);
       var existing = String((cart.attributes || {})[ATTRIBUTE] || "");
-      if (text === existing || text === state.lastMap) return Promise.resolve(next);
-      state.lastMap = text;
-      return writeMap(text).then(function () { return next; });
+      var changed = text !== existing && text !== state.lastMap;
+      if (changed) state.lastMap = text;
+      return (changed ? writeMap(text) : Promise.resolve()).then(function () {
+        if (state.pending.length) verifySoon();
+        return next;
+      });
+    }
+
+    // A pending slot still missing from a verification read is written again
+    // (up to VERIFY_ATTEMPTS reads); after that, the page is told when the
+    // line has no config either. Storage keeps it for the next page.
+    function checkPending(cart) {
+      state.pending.forEach(function (record) {
+        record.tries = (record.tries || 0) + 1;
+        state.lastMap = null;
+        if (record.tries === VERIFY_ATTEMPTS && !lineCarries(cart, record)) notifyUnsaved(record);
+      });
+    }
+
+    function verifySoon() {
+      if (state.verifyTimer) return;
+      var unsettled = state.pending.some(function (record) { return (record.tries || 0) < VERIFY_ATTEMPTS; });
+      if (!unsettled) return;
+      state.verifyTimer = view.setTimeout(function () {
+        state.verifyTimer = null;
+        state.cart = null;
+        loadCart().then(function (cart) { return reconcile(cart, true); });
+      }, settings.verifyDelayMs || 800);
+    }
+
+    function reconcileNow() {
+      state.cart = null;
+      return loadCart().then(reconcile);
     }
 
     function refreshSoon() {
@@ -348,9 +586,14 @@
         var method = String((init && init.method) || "GET").toUpperCase();
         if (!url || method !== "POST" || !isCartPath(view, url, MUTATION_PATH)) return originalFetch(input, init);
         var mutation = isMutation(url, init && init.body);
+        var added = [];
+        if (isCartPath(view, url, ADD_PATH)) {
+          try { added = addRequestItems(init && init.body).map(addEntryFor).filter(Boolean); } catch (error) { added = []; }
+        }
         return guarded(url, init && init.body).then(function (body) {
           var nextInit = Object.assign({}, init, { body: body });
           var response = originalFetch(input, nextInit);
+          if (added.length) response.then(function (result) { afterAdd(added, result); }, function () {});
           if (mutation) response.then(refreshSoon, function () {});
           return response;
         });
@@ -371,6 +614,15 @@
         var info = xhr.__ooRxCart;
         if (!info || info.method !== "POST" || !isCartPath(view, info.url, MUTATION_PATH)) return send.apply(xhr, arguments);
         if (isMutation(info.url, body)) xhr.addEventListener("loadend", refreshSoon);
+        if (isCartPath(view, info.url, ADD_PATH)) {
+          var added = [];
+          try { added = addRequestItems(body).map(addEntryFor).filter(Boolean); } catch (error) { added = []; }
+          if (added.length) {
+            xhr.addEventListener("loadend", function () {
+              afterAdd(added, { ok: xhr.status >= 200 && xhr.status < 300 });
+            });
+          }
+        }
         // A synchronous request can only be guarded with a snapshot in hand.
         if (!isCartPath(view, info.url, CHANGE_PATH)) return send.apply(xhr, arguments);
         if (info.sync) {
@@ -387,7 +639,14 @@
 
     var handle = {
       ready: ready,
-      reconcile: function () { state.cart = null; return loadCart().then(reconcile); },
+      reconcile: reconcileNow,
+      // The page's "Try again": write every pending slot again and verify.
+      retry: function () {
+        state.lastMap = null;
+        state.pending.forEach(function (record) { record.tries = 0; });
+        return reconcileNow();
+      },
+      expectAdd: expectAdd,
       state: state
     };
     view[INSTALLED] = handle;
@@ -397,11 +656,21 @@
     return handle;
   }
 
+  // The product handoff's hook: record the add it is about to submit.
+  function expectAdd(view, entry) {
+    var handle = view && view[INSTALLED];
+    return Boolean(handle && typeof handle.expectAdd === "function" && handle.expectAdd(entry));
+  }
+
   return {
     ATTRIBUTE: ATTRIBUTE,
     CONFIG_PROPERTY: CONFIG_PROPERTY,
     HANDOFF_PROPERTY: HANDOFF_PROPERTY,
     MAX_ENTRIES: MAX_ENTRIES,
+    PENDING_STORAGE_KEY: PENDING_STORAGE_KEY,
+    UNSAVED_EVENT: UNSAVED_EVENT,
+    addRequestItems: addRequestItems,
+    expectAdd: expectAdd,
     isUuid: isUuid,
     newHandoffId: newHandoffId,
     durableProperties: durableProperties,

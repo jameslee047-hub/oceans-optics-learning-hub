@@ -86,3 +86,27 @@
     gap: 6px 14px;
   }
 }
+
+/* Held while the saved prescription loads (oo-rx-product-handoff.js gate). */
+form.oo-rx-handoff-waiting button[name="add"],
+form.oo-rx-handoff-waiting button[type="submit"] {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+.oo-rx-handoff-status__retry {
+  margin-top: 8px;
+  padding: 6px 14px;
+  border: 1px solid #023059;
+  border-radius: 4px;
+  background: #023059;
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.oo-rx-handoff-status__retry:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}

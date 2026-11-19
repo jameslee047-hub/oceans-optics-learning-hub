@@ -52,11 +52,31 @@
   var QUIZ_HANDOFF_TTL_MS = 72 * 60 * 60 * 1000;
   var QUIZ_SESSION_PATTERN = /^qs_\d{10,16}_[a-z0-9]{4,16}$/;
   var QUIZ_SOURCE = "quiz_v53";
+  // Per browser (all tabs): the last confirmed Lens Calculator handoff that
+  // has not reached the cart yet (order #336633: the customer opened the
+  // calculator's product link, then came back to the mask later through
+  // ordinary navigation and chose the lenses by hand). Single use: it is
+  // removed as soon as that config is added to the cart, is never applied
+  // while a cart line or the cart's handoff map already carries it, expires,
+  // and is replaced by any other tool's handoff. Opaque ids, the recommended
+  // pair and timestamps only; never prescription values.
+  var CALCULATOR_SOURCE = "lens_calculator_v53";
+  var CALCULATOR_HANDOFF_STORAGE_KEY = "oo_rx_calculator_handoff";
+  var CALCULATOR_HANDOFF_TTL_MS = 72 * 60 * 60 * 1000;
+  // Per page: set while a confirmed handoff for this page is still loading.
+  // The mask's own add-to-cart is held until it applies or visibly fails, so
+  // an Rx mask can never be added without the config it arrived with.
+  var GATE_PROPERTY = "__ooRxHandoffGate";
+  var GATE_HOOKS_PROPERTY = "__ooRxHandoffGateHooks";
+  var WAITING_CLASS = "oo-rx-handoff-waiting";
   // Purchase sources that may become the hidden _oo_source line-item property.
   // Only these exact values are accepted, from the oo_source parameter or from
   // an on-page tool; quiz_v53 is the Quiz / Face Fit handoff. Reserved: face_fit.
   var ALLOWED_SOURCES = ["lens_calculator_v53", "product_rx_checker", "quiz_v53"];
   var FAILURE_MESSAGE = "We couldn't load your saved prescription. Please select your lens strengths or upload your prescription below.";
+  var RETRY_LABEL = "Try again";
+  var UNSAVED_MESSAGE = "We couldn't save your prescription with this mask. Please try again before checkout, or contact us and we will attach it for you.";
+  var UNSAVED_EVENT = "oo:rx-handoff:unsaved";
 
   function isUuid(value) {
     return UUID_PATTERN.test(String(value || "").trim());
@@ -470,9 +490,35 @@
     return readAdded(view).indexOf(addedKey(pathname, configId)) !== -1;
   }
 
+  function handoffSlotOf(properties) {
+    var entry = (properties || []).find(function (item) { return item[0] === HANDOFF_PROPERTY_NAME; });
+    return entry ? entry[1] : null;
+  }
+
+  function expectCartAdd(view, active, form) {
+    var guard = view && view.OORxCartHandoff;
+    if (!guard || typeof guard.expectAdd !== "function") return false;
+    var variant = form && typeof form.querySelector === "function" ? form.querySelector('input[name="id"]') : null;
+    try {
+      return guard.expectAdd(view, {
+        h: handoffSlotOf(active.properties),
+        c: active.configId,
+        s: active.source,
+        p: productIdOf(form) || active.productId,
+        v: variant ? variant.value : null
+      });
+    } catch (error) {
+      return false;
+    }
+  }
+
   function markAdded(view, active) {
     if (!view || !active) return;
     active.added = true;
+    // A remembered calculator handoff is single use: once its config is in
+    // the cart it is never applied to another mask.
+    var remembered = storedCalculatorHandoff(view);
+    if (remembered && remembered.configId === active.configId) clearCalculatorHandoff(view);
     try {
       var key = addedKey(active.pathname, active.configId);
       var list = readAdded(view).filter(function (item) { return item !== key; });
@@ -561,6 +607,9 @@
         // Each submission is one cart line: give it its own slot id.
         active.properties = withFreshHandoffId(active.properties);
         writeProperties(doc, event.target, active.properties);
+        // The cart guard records this exact add from the handoff itself, so
+        // the cart fallback survives even if the line loses its properties.
+        expectCartAdd(view, active, event.target);
       } else {
         clearProperties(event.target);
       }
@@ -796,8 +845,137 @@
     status.appendChild(note);
   }
 
-  function renderFailure(doc, controls) {
-    renderMessage(doc, controls, "is-error", "alert", FAILURE_MESSAGE);
+  // onRetry: shows a "Try again" button that loads the saved prescription
+  // again. Without Avis controls the message sits just above the mask form.
+  function renderFailure(doc, controls, onRetry, message) {
+    var status = controls
+      ? renderMessage(doc, controls, "is-error", "alert", message || FAILURE_MESSAGE)
+      : renderMessageNearForm(doc, "is-error", "alert", message || FAILURE_MESSAGE);
+    if (!status || typeof onRetry !== "function") return status;
+    var retry = doc.createElement("button");
+    retry.type = "button";
+    retry.className = "oo-rx-handoff-status__retry";
+    retry.textContent = RETRY_LABEL;
+    retry.addEventListener("click", function () {
+      retry.disabled = true;
+      onRetry();
+    });
+    status.appendChild(doc.createTextNode(" "));
+    status.appendChild(retry);
+    return status;
+  }
+
+  function renderMessageNearForm(doc, className, role, message) {
+    var existing = doc.getElementById("oo-rx-handoff-status");
+    var form = findProductForm(doc);
+    if (!existing && (!form || !form.parentNode)) return null;
+    var status = existing || doc.createElement("section");
+    if (!existing) {
+      status.id = "oo-rx-handoff-status";
+      status.setAttribute("aria-live", "polite");
+      form.parentNode.insertBefore(status, form);
+    }
+    status.className = "oo-rx-handoff-status " + className;
+    status.setAttribute("role", role);
+    status.textContent = message;
+    return status;
+  }
+
+  // --- add-to-cart gate -------------------------------------------------------
+
+  // This product's own add-to-cart forms (the main form, a sticky bar for the
+  // same product); never another product's quick-add form.
+  function isMainProductForm(doc, form) {
+    if (!form || form.tagName !== "FORM") return false;
+    if (!/\/cart\/add/.test(String(form.getAttribute("action") || ""))) return false;
+    var main = findProductForm(doc);
+    if (!main) return false;
+    if (form === main) return true;
+    var productId = productIdOf(main);
+    return Boolean(productId) && productIdOf(form) === productId;
+  }
+
+  function markWaiting(doc, waiting) {
+    Array.from(doc.querySelectorAll('form[action*="/cart/add"]')).forEach(function (form) {
+      if (!isMainProductForm(doc, form)) return;
+      form.classList.toggle(WAITING_CLASS, waiting);
+      Array.from(form.querySelectorAll('button[name="add"], button[type="submit"]')).forEach(function (button) {
+        if (waiting) button.setAttribute("aria-busy", "true");
+        else button.removeAttribute("aria-busy");
+      });
+    });
+  }
+
+  function installGate(doc) {
+    var view = doc && doc.defaultView;
+    if (!view || view[GATE_HOOKS_PROPERTY]) return;
+    view[GATE_HOOKS_PROPERTY] = true;
+    // Capture phase on the document runs before the theme's and Avis' own
+    // submit / click handlers, so a held add never reaches /cart/add.
+    function hold(event) {
+      if (!view[GATE_PROPERTY]) return;
+      var target = event.target;
+      var form = null;
+      if (event.type === "submit") {
+        form = target;
+      } else {
+        var button = target && typeof target.closest === "function"
+          ? target.closest('button[name="add"], button[type="submit"], input[type="submit"]')
+          : null;
+        form = button ? button.form || button.closest("form") : null;
+      }
+      if (!isMainProductForm(doc, form)) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      var controls = findAvisControls(doc);
+      if (controls) renderPending(doc, controls);
+      else renderMessageNearForm(doc, "is-pending", "status", PENDING_MESSAGE);
+    }
+    doc.addEventListener("submit", hold, true);
+    doc.addEventListener("click", hold, true);
+  }
+
+  function holdAddToCart(doc, reason) {
+    var view = doc && doc.defaultView;
+    if (!view) return;
+    installGate(doc);
+    view[GATE_PROPERTY] = { reason: reason };
+    markWaiting(doc, true);
+  }
+
+  function releaseAddToCart(doc) {
+    var view = doc && doc.defaultView;
+    if (!view) return;
+    view[GATE_PROPERTY] = null;
+    markWaiting(doc, false);
+  }
+
+  // A remembered handoff that did not apply leaves no "loading" notice behind
+  // (shown only if the customer pressed Add while it was being checked).
+  function releaseQuietly(doc) {
+    releaseAddToCart(doc);
+    var status = doc && typeof doc.getElementById === "function" ? doc.getElementById("oo-rx-handoff-status") : null;
+    if (status && status.classList.contains("is-pending")) status.remove();
+  }
+
+  function isAddToCartHeld(doc) {
+    var view = doc && doc.defaultView;
+    return Boolean(view && view[GATE_PROPERTY]);
+  }
+
+  // The cart guard could not keep this mask's config on the line or in the
+  // cart's handoff map: say so, with a retry, instead of staying silent.
+  function installUnsavedNotice(doc) {
+    var view = doc && doc.defaultView;
+    if (!view || view.__ooRxHandoffUnsavedHook || typeof doc.addEventListener !== "function") return;
+    view.__ooRxHandoffUnsavedHook = true;
+    doc.addEventListener(UNSAVED_EVENT, function () {
+      var controls = findAvisControls(doc);
+      renderFailure(doc, controls, function () {
+        var handle = view.__ooRxCartHandoffInstalled;
+        if (handle && typeof handle.retry === "function") handle.retry();
+      }, UNSAVED_MESSAGE);
+    });
   }
 
   // options.fromUrl: applied from this page's oo_rx link (see activateHandoff).
@@ -812,6 +990,9 @@
       setUploadSuppressed(controls, true);
       suppressLateUploadControls(controls);
       renderSuccess(doc, controls, safeSummary, source);
+      // A config the Product Rx Checker confirms on this page supersedes a
+      // remembered calculator handoff.
+      if (source === "product_rx_checker") clearCalculatorHandoff(doc.defaultView);
       return safeSummary;
     } catch (error) {
       selection.rollback();
@@ -953,6 +1134,149 @@
     return record;
   }
 
+  // --- Lens Calculator handoff persistence -----------------------------------
+
+  function storedCalculatorHandoff(view) {
+    var store = localStore(view);
+    if (!store) return null;
+    try {
+      var record = JSON.parse(store.getItem(CALCULATOR_HANDOFF_STORAGE_KEY) || "null");
+      return record && typeof record === "object" ? record : null;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function clearCalculatorHandoff(view) {
+    var store = localStore(view);
+    if (!store) return;
+    try { store.removeItem(CALCULATOR_HANDOFF_STORAGE_KEY); } catch (error) { /* Storage unavailable. */ }
+  }
+
+  // Remembers a confirmed Lens Calculator handoff from this page's link,
+  // unless this tab has already added it to the cart.
+  function saveCalculatorHandoff(view, summary, search, settings) {
+    var store = localStore(view);
+    if (!store || !summary || !isUuid(summary.configId)) return null;
+    var snapshot = snapshotText(new URLSearchParams(search || "").get("_oo_v53_snapshot"));
+    var savedAt = nowMs(settings);
+    var record = {
+      version: 1,
+      configId: summary.configId,
+      source: CALCULATOR_SOURCE,
+      recommendedRight: summary.recommendedRight,
+      recommendedLeft: summary.recommendedLeft,
+      calculatorVersion: calculatorVersionOf(snapshot),
+      snapshot: snapshot,
+      confirmedAt: new Date(savedAt).toISOString(),
+      expiresAt: new Date(savedAt + CALCULATOR_HANDOFF_TTL_MS).toISOString()
+    };
+    try {
+      store.setItem(CALCULATOR_HANDOFF_STORAGE_KEY, JSON.stringify(record));
+      return record;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  // The remembered calculator handoff while it is still valid; an expired or
+  // malformed one is removed.
+  function readCalculatorHandoff(view, settings) {
+    var record = storedCalculatorHandoff(view);
+    if (!record) return null;
+    var expiresAt = Date.parse(record.expiresAt);
+    var valid = record.version === 1 &&
+      record.source === CALCULATOR_SOURCE &&
+      isUuid(record.configId) &&
+      Number.isFinite(Number(record.recommendedRight)) && Number.isFinite(Number(record.recommendedLeft)) &&
+      Number.isFinite(expiresAt) && expiresAt > nowMs(settings);
+    if (!valid) {
+      clearCalculatorHandoff(view);
+      return null;
+    }
+    return record;
+  }
+
+  // Every config the cart already holds: on a line (or bundle component) and
+  // in the cart's _oo_rx_handoffs fallback map.
+  async function cartHeldConfigIds(fetchImpl) {
+    var response = await fetchImpl("/cart.js", { method: "GET", headers: { Accept: "application/json" }, credentials: "same-origin", cache: "no-store" });
+    if (!response || !response.ok) throw new Error("The cart could not be read.");
+    var cart = await response.json();
+    var ids = [];
+    (function collect(items) {
+      (Array.isArray(items) ? items : []).forEach(function (item) {
+        var value = item && item.properties && item.properties._oo_rx_config;
+        if (typeof value === "string" && isUuid(value)) ids.push(value.trim().toLowerCase());
+        collect(item && (item.item_components || item.components));
+      });
+    })(cart && cart.items);
+    try {
+      var map = JSON.parse(String((cart && cart.attributes && cart.attributes._oo_rx_handoffs) || "null"));
+      (map && Array.isArray(map.h) ? map.h : []).forEach(function (entry) {
+        if (entry && isUuid(entry.c)) ids.push(String(entry.c).trim().toLowerCase());
+      });
+    } catch (error) {
+      // An unreadable map holds nothing.
+    }
+    return ids;
+  }
+
+  // A product page reached without oo_rx after a calculator handoff that never
+  // reached the cart: re-apply it only on an Rx mask offering the saved pair,
+  // only while the cart does not hold that config, and only once the public
+  // summary confirms it again. Add to cart is held while this is checked.
+  async function restoreCalculatorHandoff(doc, settings) {
+    var view = doc && doc.defaultView;
+    var record = readCalculatorHandoff(view, settings);
+    if (!record) return { state: "idle" };
+    var controls;
+    try {
+      controls = await waitForAvisControls(doc, typeof settings.timeoutMs === "number" ? settings.timeoutMs : AVIS_WAIT_MS);
+    } catch (error) {
+      return { state: "idle", reason: "no_lens_selectors" };
+    }
+    if (!offersPair(controls, Number(record.recommendedRight), Number(record.recommendedLeft))) {
+      return { state: "idle", reason: "incompatible_product" };
+    }
+    holdAddToCart(doc, "restore");
+    try {
+      try {
+        if ((await cartHeldConfigIds(settings.fetch)).indexOf(record.configId) !== -1) {
+          clearCalculatorHandoff(view);
+          return { state: "idle", reason: "already_in_cart" };
+        }
+      } catch (error) {
+        return { state: "idle", reason: "cart_unavailable" };
+      }
+      var summary;
+      try {
+        summary = await fetchSummary(settings.fetch, record.configId, settings.backendUrl, settings.retryDelays);
+      } catch (error) {
+        return { state: "idle", reason: "summary_unavailable" };
+      }
+      if (!offersPair(controls, summary.recommendedRight, summary.recommendedLeft)) {
+        return { state: "idle", reason: "incompatible_product" };
+      }
+      // Another tab may have used or replaced it while this loaded.
+      var current = storedCalculatorHandoff(view);
+      if (!current || current.configId !== record.configId) {
+        return { state: "idle", reason: "superseded" };
+      }
+      summary.v53Snapshot = record.snapshot || null;
+      var kept = {};
+      if (record.snapshot) kept._oo_v53_snapshot = record.snapshot;
+      try {
+        applyConfirmedHandoff(doc, controls, summary, CALCULATOR_SOURCE, { fromUrl: false, keptParameters: kept });
+      } catch (error) {
+        return { state: "idle", reason: "apply_failed" };
+      }
+      return { state: "restored", summary: summary, source: CALCULATOR_SOURCE };
+    } finally {
+      releaseQuietly(doc);
+    }
+  }
+
   // Whether this product's lens selectors offer both eyes of the pair.
   function offersPair(controls, right, left) {
     try {
@@ -995,41 +1319,59 @@
     if (!offersPair(controls, record.recommendedRight, record.recommendedLeft)) {
       return { state: "idle", reason: "incompatible_product" };
     }
+    // Add to cart is held while the remembered config is checked.
+    holdAddToCart(doc, "restore");
     try {
-      if ((await cartConfigIds(settings.fetch)).indexOf(record.configId) !== -1) {
-        return { state: "idle", reason: "already_in_cart" };
+      try {
+        if ((await cartConfigIds(settings.fetch)).indexOf(record.configId) !== -1) {
+          return { state: "idle", reason: "already_in_cart" };
+        }
+      } catch (error) {
+        return { state: "idle", reason: "cart_unavailable" };
       }
-    } catch (error) {
-      return { state: "idle", reason: "cart_unavailable" };
+      var summary;
+      try {
+        summary = await fetchSummary(settings.fetch, record.configId, settings.backendUrl, settings.retryDelays);
+      } catch (error) {
+        return { state: "idle", reason: "summary_unavailable" };
+      }
+      if (!offersPair(controls, summary.recommendedRight, summary.recommendedLeft)) {
+        return { state: "idle", reason: "incompatible_product" };
+      }
+      summary.v53Snapshot = record.snapshot || null;
+      var kept = { quiz_session_id: record.quizSessionId };
+      if (record.quizProductId) kept.quiz_product_id = record.quizProductId;
+      if (record.snapshot) kept._oo_v53_snapshot = record.snapshot;
+      try {
+        applyConfirmedHandoff(doc, controls, summary, QUIZ_SOURCE, { fromUrl: false, keptParameters: kept });
+      } catch (error) {
+        return { state: "idle", reason: "apply_failed" };
+      }
+      return { state: "restored", summary: summary, source: QUIZ_SOURCE };
+    } finally {
+      releaseQuietly(doc);
     }
-    var summary;
-    try {
-      summary = await fetchSummary(settings.fetch, record.configId, settings.backendUrl, settings.retryDelays);
-    } catch (error) {
-      return { state: "idle", reason: "summary_unavailable" };
-    }
-    if (!offersPair(controls, summary.recommendedRight, summary.recommendedLeft)) {
-      return { state: "idle", reason: "incompatible_product" };
-    }
-    summary.v53Snapshot = record.snapshot || null;
-    var kept = { quiz_session_id: record.quizSessionId };
-    if (record.quizProductId) kept.quiz_product_id = record.quizProductId;
-    if (record.snapshot) kept._oo_v53_snapshot = record.snapshot;
-    try {
-      applyConfirmedHandoff(doc, controls, summary, QUIZ_SOURCE, { fromUrl: false, keptParameters: kept });
-    } catch (error) {
-      return { state: "idle", reason: "apply_failed" };
-    }
-    return { state: "restored", summary: summary, source: QUIZ_SOURCE };
+  }
+
+  // No oo_rx on this page: a remembered Quiz handoff (current Quiz session)
+  // first, otherwise a remembered, not yet added Lens Calculator handoff.
+  async function restoreRememberedHandoff(doc, settings) {
+    var view = doc && doc.defaultView;
+    if (readQuizHandoff(view, settings)) return restoreQuizHandoff(doc, settings);
+    return restoreCalculatorHandoff(doc, settings);
   }
 
   async function start(doc, options) {
     var settings = options || {};
     var search = settings.search || "";
-    if (!hasConfigParameter(search)) return restoreQuizHandoff(doc, settings);
+    installUnsavedNotice(doc);
+    if (!hasConfigParameter(search)) return restoreRememberedHandoff(doc, settings);
     var configId = readConfigId(search);
     var source = readSource(search);
     var controls;
+    // This page arrived with a saved prescription: its mask cannot be added
+    // until that prescription has applied or visibly failed.
+    holdAddToCart(doc, "loading");
     // The summary loads while Avis renders, instead of after it.
     var settled = false;
     var summaryRequest = isUuid(configId)
@@ -1042,18 +1384,29 @@
       if (!settled) renderPending(doc, controls);
       var summary = await summaryRequest;
       applyConfirmedHandoff(doc, controls, summary, source, { fromUrl: true });
-      // Remember a Quiz handoff for later compatible visits; any other
-      // tool's handoff supersedes a remembered Quiz one.
-      if (source === QUIZ_SOURCE) saveQuizHandoff(doc.defaultView, summary, search, settings);
-      else clearQuizHandoff(doc.defaultView);
+      releaseAddToCart(doc);
+      var view = doc.defaultView;
+      // Remember a Quiz handoff for later compatible visits, and a calculator
+      // handoff until it reaches the cart; any other tool's handoff
+      // supersedes a remembered one.
+      if (source === QUIZ_SOURCE) saveQuizHandoff(view, summary, search, settings);
+      else clearQuizHandoff(view);
+      var alreadyAdded = Boolean(view[ACTIVE_PROPERTY] && view[ACTIVE_PROPERTY].added);
+      if (source === CALCULATOR_SOURCE && !alreadyAdded) saveCalculatorHandoff(view, summary, search, settings);
+      else if (source !== CALCULATOR_SOURCE || (storedCalculatorHandoff(view) || {}).configId === summary.configId) clearCalculatorHandoff(view);
       return { state: "confirmed", summary: summary, source: source };
     } catch (error) {
+      releaseAddToCart(doc);
       if (controls) {
         removeInjectedProperties(controls.form);
         setUploadSuppressed(controls, false);
-        renderFailure(doc, controls);
       }
-      // A remembered Quiz handoff whose own link no longer validates is dropped.
+      // A visible failure with a retry; the customer may also continue by
+      // choosing lenses or uploading the prescription.
+      renderFailure(doc, controls || null, function () {
+        start(doc, settings);
+      });
+      // A remembered handoff whose own link no longer validates is dropped.
       var remembered = readQuizHandoff(doc.defaultView, settings);
       if (remembered && remembered.configId === configId) clearQuizHandoff(doc.defaultView);
       return { state: "fallback", error: error };
@@ -1070,6 +1423,15 @@
     readQuizHandoff: readQuizHandoff,
     saveQuizHandoff: saveQuizHandoff,
     restoreQuizHandoff: restoreQuizHandoff,
+    CALCULATOR_HANDOFF_STORAGE_KEY: CALCULATOR_HANDOFF_STORAGE_KEY,
+    CALCULATOR_HANDOFF_TTL_MS: CALCULATOR_HANDOFF_TTL_MS,
+    readCalculatorHandoff: readCalculatorHandoff,
+    saveCalculatorHandoff: saveCalculatorHandoff,
+    restoreCalculatorHandoff: restoreCalculatorHandoff,
+    isAddToCartHeld: isAddToCartHeld,
+    RETRY_LABEL: RETRY_LABEL,
+    UNSAVED_MESSAGE: UNSAVED_MESSAGE,
+    UNSAVED_EVENT: UNSAVED_EVENT,
     isUuid: isUuid,
     readConfigId: readConfigId,
     hasConfigParameter: hasConfigParameter,
