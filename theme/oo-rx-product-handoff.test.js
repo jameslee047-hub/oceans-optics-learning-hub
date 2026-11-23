@@ -377,9 +377,10 @@ function propertyForm() {
 }
 
 test("oo_source accepts only the exact allowlisted calculator value", function () {
-  assert.deepEqual(Handoff.ALLOWED_SOURCES, ["lens_calculator_v53", "product_rx_checker", "quiz_v53"]);
+  assert.deepEqual(Handoff.ALLOWED_SOURCES, ["lens_calculator_v53", "product_rx_checker", "quiz_v53", "facefit_v53"]);
   assert.equal(Handoff.readSource("?oo_source=product_rx_checker"), "product_rx_checker");
   assert.equal(Handoff.readSource("?oo_source=quiz_v53"), "quiz_v53");
+  assert.equal(Handoff.readSource("?oo_source=facefit_v53"), "facefit_v53");
   assert.equal(Handoff.readSource("?oo_rx=" + CONFIG_ID + "&oo_source=lens_calculator_v53"), "lens_calculator_v53");
   assert.equal(Handoff.readSource("?oo_source=%20lens_calculator_v53%20"), "lens_calculator_v53");
   [
@@ -413,6 +414,15 @@ test("quiz_v53 is recorded as its own source, distinct from the full calculator"
   assert.deepEqual(fixture.inputs.map(function (input) { return [input.name, input.value]; }).slice(0, 2), [
     ["properties[_oo_rx_config]", CONFIG_ID],
     ["properties[_oo_source]", "quiz_v53"]
+  ]);
+});
+
+test("facefit_v53 is recorded as its own source", function () {
+  var fixture = propertyForm();
+  Handoff.injectShopifyProperties(fixture.doc, fixture.form, summary(), "facefit_v53");
+  assert.deepEqual(fixture.inputs.map(function (input) { return [input.name, input.value]; }).slice(0, 2), [
+    ["properties[_oo_rx_config]", CONFIG_ID],
+    ["properties[_oo_source]", "facefit_v53"]
   ]);
 });
 
