@@ -67,6 +67,15 @@ test("a Quiz arrival records the Quiz even without a prescription, and syncs car
   assert.equal(JSON.stringify(p.fetchCalls[0]), JSON.stringify({ url: "/cart/update.js", attributes: { _oo_first_source: "quiz_v53", _oo_source_history: "quiz_v53" } }));
 });
 
+test("a FaceFit arrival records FaceFit and syncs the shared source journey", async function () {
+  var p = page({ search: "?facefit_session_id=ffrx_1790000000000_abc123&oo_source=facefit_v53" });
+  await settle();
+  assert.equal(p.journey.snapshot().first_source, "facefit_v53");
+  assert.equal(sources(p.journey.snapshot()), "facefit_v53");
+  assert.equal(p.fetchCalls[0].attributes._oo_first_source, "facefit_v53");
+  assert.equal(p.fetchCalls[0].attributes._oo_source_history, "facefit_v53");
+});
+
 test("history is ordered and de-duplicated; the first source never changes", function () {
   var p = page();
   p.journey.record("quiz_v53");
@@ -77,10 +86,12 @@ test("history is ordered and de-duplicated; the first source never changes", fun
   assert.equal(view.source_history_text, "quiz_v53,lens_calculator_v53,product_rx_checker");
 });
 
-test("only the three known tools are accepted", function () {
+test("only the four canonical tools are accepted", function () {
   var p = page();
+  ["quiz_v53", "facefit_v53", "lens_calculator_v53", "product_rx_checker"].forEach(function (value) { p.journey.record(value); });
+  assert.equal(sources(p.journey.snapshot()), "quiz_v53,facefit_v53,lens_calculator_v53,product_rx_checker");
   ["face_fit", "QUIZ_V53", "", null, "lens_calculator_v53<script>"].forEach(function (value) { p.journey.record(value); });
-  assert.equal(p.journey.snapshot().source_history.length, 0);
+  assert.equal(p.journey.snapshot().source_history.length, 4);
 });
 
 test("the journey persists across pages and expires after 30 days", function () {
@@ -234,6 +245,12 @@ test("cart attribute updates are serialised so a new cart never loses attributes
     { _oo_first_source: "quiz_v53", _oo_source_history: "quiz_v53" },
     { quiz_session_id: "qs_7" }
   ]));
+});
+
+test("FaceFit and Quiz sessions are both recognized by the attribution script", function () {
+  assert.match(snippet, /facefit_session_id/);
+  assert.match(snippet, /active_tool = 'facefit'/);
+  assert.match(snippet, /facefit_session_id: activeFaceFit/);
 });
 
 test("the quiz attribution sync goes through the shared cart queue", function () {
