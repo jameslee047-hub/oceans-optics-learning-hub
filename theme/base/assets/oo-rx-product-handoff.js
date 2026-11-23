@@ -71,8 +71,8 @@
   var WAITING_CLASS = "oo-rx-handoff-waiting";
   // Purchase sources that may become the hidden _oo_source line-item property.
   // Only these exact values are accepted, from the oo_source parameter or from
-  // an on-page tool; quiz_v53 is the Quiz / Face Fit handoff. Reserved: face_fit.
-  var ALLOWED_SOURCES = ["lens_calculator_v53", "product_rx_checker", "quiz_v53"];
+  // an on-page tool. Quiz and standalone FaceFit have distinct canonical sources.
+  var ALLOWED_SOURCES = ["lens_calculator_v53", "product_rx_checker", "quiz_v53", "facefit_v53"];
   var FAILURE_MESSAGE = "We couldn't load your saved prescription. Please select your lens strengths or upload your prescription below.";
   var RETRY_LABEL = "Try again";
   var UNSAVED_MESSAGE = "We couldn't save your prescription with this mask. Please try again before checkout, or contact us and we will attach it for you.";

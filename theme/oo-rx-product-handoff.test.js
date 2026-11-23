@@ -386,9 +386,10 @@ function propertyForm() {
 }
 
 test("oo_source accepts only the exact allowlisted tool values", function () {
-  assert.deepEqual(Handoff.ALLOWED_SOURCES, ["lens_calculator_v53", "product_rx_checker", "quiz_v53"]);
+  assert.deepEqual(Handoff.ALLOWED_SOURCES, ["lens_calculator_v53", "product_rx_checker", "quiz_v53", "facefit_v53"]);
   assert.equal(Handoff.readSource("?oo_source=quiz_v53"), "quiz_v53");
   assert.equal(Handoff.readSource("?oo_source=product_rx_checker"), "product_rx_checker");
+  assert.equal(Handoff.readSource("?oo_source=facefit_v53"), "facefit_v53");
   assert.equal(Handoff.readSource("?oo_rx=" + CONFIG_ID + "&oo_source=lens_calculator_v53"), "lens_calculator_v53");
   assert.equal(Handoff.readSource("?oo_source=%20lens_calculator_v53%20"), "lens_calculator_v53");
   [
@@ -412,6 +413,18 @@ test("allowlisted source is injected alongside the durable config without replac
     ["properties[_oo_rx_config]", CONFIG_ID, "hidden"],
     ["properties[_oo_rx_handoff]", slot, "hidden"],
     ["properties[_oo_source]", "lens_calculator_v53", "hidden"],
+    ["properties[Prescription]", "James's", "hidden"]
+  ]);
+});
+
+test("facefit_v53 is injected as its own source alongside the durable config", function () {
+  var fixture = propertyForm();
+  Handoff.injectShopifyProperties(fixture.doc, fixture.form, summary(), "facefit_v53");
+  var slot = fixture.inputs[1].value;
+  assert.deepEqual(fixture.inputs.map(function (input) { return [input.name, input.value, input.type]; }), [
+    ["properties[_oo_rx_config]", CONFIG_ID, "hidden"],
+    ["properties[_oo_rx_handoff]", slot, "hidden"],
+    ["properties[_oo_source]", "facefit_v53", "hidden"],
     ["properties[Prescription]", "James's", "hidden"]
   ]);
 });

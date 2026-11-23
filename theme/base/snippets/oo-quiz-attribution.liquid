@@ -1,7 +1,153 @@
 <script>
+/*
+  Oceans Optics tool journey (window.OOSourceJourney).
+  A 30-day, first-party record of which Oceans Optics tools a shopper used,
+  kept in localStorage as `oo_source_journey`:
+    { first: "quiz_v53", history: [{ source, at }], updated_at }
+  Only quiz_v53, facefit_v53, lens_calculator_v53 and product_rx_checker are accepted;
+  history is ordered and de-duplicated, and a tool never removes another.
+  The journey is mirrored to the cart attributes `_oo_first_source` and
+  `_oo_source_history` (underscore-prefixed, hidden at checkout). Only tool
+  names and timestamps are stored.
+*/
+(function (root) {
+  'use strict';
+  if (!root || root.OOSourceJourney) return;
+
+  var STORAGE_KEY = 'oo_source_journey';
+  var SYNC_KEY = 'oo_source_journey_synced';
+  var MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+  var SOURCES = ['quiz_v53', 'facefit_v53', 'lens_calculator_v53', 'product_rx_checker'];
+
+  function isSource(value) {
+    return SOURCES.indexOf(value) >= 0;
+  }
+
+  function empty() {
+    return { first: null, history: [], updated_at: null };
+  }
+
+  function read() {
+    var data;
+    try {
+      data = JSON.parse(root.localStorage.getItem(STORAGE_KEY) || 'null');
+    } catch (e) {
+      data = null;
+    }
+    if (!data || typeof data !== 'object') return empty();
+    var updated = Date.parse(data.updated_at || '');
+    if (!updated || Date.now() - updated > MAX_AGE_MS) return empty();
+    var seen = [];
+    var history = (Array.isArray(data.history) ? data.history : []).filter(function (entry) {
+      if (!entry || !isSource(entry.source) || seen.indexOf(entry.source) >= 0) return false;
+      seen.push(entry.source);
+      return true;
+    }).map(function (entry) {
+      return { source: entry.source, at: String(entry.at || '') };
+    });
+    var first = isSource(data.first) ? data.first : (history[0] ? history[0].source : null);
+    return { first: first, history: history, updated_at: data.updated_at };
+  }
+
+  function write(journey) {
+    try {
+      root.localStorage.setItem(STORAGE_KEY, JSON.stringify(journey));
+    } catch (e) {}
+  }
+
+  function snapshot(journey) {
+    var current = journey || read();
+    var sources = current.history.map(function (entry) { return entry.source; });
+    return {
+      first_source: current.first,
+      source_history: sources,
+      source_history_text: sources.join(',')
+    };
+  }
+
+  function cartToken() {
+    var match = String(root.document && root.document.cookie || '').match(/(?:^|;\s*)cart=([^;]+)/);
+    return match ? match[1] : '';
+  }
+
+  var pendingSignature = null;
+  var cartQueue = Promise.resolve();
+
+  // Cart attribute updates run one at a time. On a brand-new cart two
+  // concurrent /cart/update.js calls can each create a cart, losing one set
+  // of attributes; queued, the first call creates the cart and the next
+  // reuses it. The quiz attribution sync below uses the same queue.
+  function cartUpdate(attributes) {
+    var run = cartQueue.then(function () {
+      return root.fetch('/cart/update.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ attributes: attributes })
+      });
+    });
+    cartQueue = run.catch(function () {});
+    return run;
+  }
+
+  // Mirrors the journey onto the cart once per journey state and cart.
+  function syncCart(force) {
+    var view = snapshot();
+    if (!view.source_history.length || !root.fetch) return;
+    var signature = JSON.stringify([view.first_source, view.source_history_text, cartToken()]);
+    if (!force && pendingSignature === signature) return;
+    try {
+      if (!force && root.sessionStorage.getItem(SYNC_KEY) === signature) return;
+    } catch (e) {}
+    pendingSignature = signature;
+    cartUpdate({
+      _oo_first_source: view.first_source || '',
+      _oo_source_history: view.source_history_text
+    }).then(function () {
+      try {
+        root.sessionStorage.setItem(SYNC_KEY, signature);
+      } catch (e) {}
+    }).catch(function () {
+      pendingSignature = null;
+    });
+  }
+
+  // Appends a tool use (no-op when already recorded) and returns the snapshot.
+  function record(source) {
+    if (!isSource(source)) return snapshot();
+    var journey = read();
+    var known = journey.history.some(function (entry) { return entry.source === source; });
+    var now = new Date().toISOString();
+    if (!known) journey.history.push({ source: source, at: now });
+    if (!journey.first) journey.first = journey.history[0].source;
+    journey.updated_at = now;
+    write(journey);
+    syncCart(false);
+    return snapshot(journey);
+  }
+
+  root.OOSourceJourney = {
+    SOURCES: SOURCES.slice(),
+    read: read,
+    record: record,
+    snapshot: function () { return snapshot(); },
+    syncCart: syncCart,
+    cartUpdate: cartUpdate
+  };
+
+  // Quiz and standalone FaceFit arrivals count as tool use, with or without Rx.
+  try {
+    var params = new URLSearchParams(root.location.search || '');
+    if (params.get('facefit_session_id') || params.get('oo_source') === 'facefit_v53') record('facefit_v53');
+    else if (params.get('quiz_session_id') || params.get('oo_source') === 'quiz_v53') record('quiz_v53');
+  } catch (e) {}
+  syncCart(false);
+})(typeof window !== 'undefined' ? window : null);
+</script>
+<script>
 (function () {
   var QUIZ_KEYS = [
     'quiz_session_id',
+    'facefit_session_id',
     'quiz_product_id',
     'quiz_source',
     'quiz_page_type',
@@ -59,6 +205,14 @@
     return !!(data && data.quiz_session_id);
   }
 
+  function hasFaceFitAttribution(data) {
+    return !!(data && data.facefit_session_id);
+  }
+
+  function hasToolAttribution(data) {
+    return hasQuizAttribution(data) || hasFaceFitAttribution(data);
+  }
+
   function mergeAttribution(existingData, urlData) {
     var merged = Object.assign({}, existingData || {});
 
@@ -66,7 +220,11 @@
       if (urlData[key]) merged[key] = urlData[key];
     });
 
-    if (hasQuizAttribution(merged)) {
+    if (urlData && urlData.facefit_session_id) {
+      merged.active_tool = 'facefit';
+      merged.facefit_captured_at = new Date().toISOString();
+    } else if (urlData && urlData.quiz_session_id) {
+      merged.active_tool = 'quiz';
       merged.quiz_captured_at = new Date().toISOString();
     }
 
@@ -77,6 +235,7 @@
     var attributes = {};
 
     if (data.quiz_session_id) attributes.quiz_session_id = data.quiz_session_id;
+    if (data.facefit_session_id) attributes.facefit_session_id = data.facefit_session_id;
     if (data.quiz_product_id) attributes.quiz_product_id = data.quiz_product_id;
     if (data.quiz_source) attributes.quiz_source = data.quiz_source;
     if (data.quiz_page_type) attributes.quiz_page_type = data.quiz_page_type;
@@ -94,12 +253,13 @@
     if (data.wbraid) attributes.quiz_wbraid = data.wbraid;
 
     if (data.quiz_captured_at) attributes.quiz_captured_at = data.quiz_captured_at;
+    if (data.facefit_captured_at) attributes.facefit_captured_at = data.facefit_captured_at;
 
     return attributes;
   }
 
   function syncCartAttributes(data) {
-    if (!hasQuizAttribution(data)) return;
+    if (!hasToolAttribution(data)) return;
 
     var attributes = buildCartAttributes(data);
     var syncSignature = JSON.stringify(attributes);
@@ -108,16 +268,21 @@
       if (window.sessionStorage.getItem(ATTR_SYNC_KEY) === syncSignature) return;
     } catch (e) {}
 
-    fetch('/cart/update.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        attributes: attributes
-      })
-    })
+    var journey = window.OOSourceJourney;
+    var update = journey && typeof journey.cartUpdate === 'function'
+      ? journey.cartUpdate(attributes)
+      : fetch('/cart/update.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({
+          attributes: attributes
+        })
+      });
+
+    update
       .then(function () {
         try {
           window.sessionStorage.setItem(ATTR_SYNC_KEY, syncSignature);
@@ -277,14 +442,18 @@
   function buildAddToCartPayload(details) {
     var attribution = getStoredAttribution();
 
-    if (!hasQuizAttribution(attribution)) return null;
+    if (!hasToolAttribution(attribution)) return null;
 
     details = details || {};
+    var activeFaceFit = attribution.active_tool === 'facefit' && attribution.facefit_session_id;
+    var activeQuiz = attribution.active_tool === 'quiz' && attribution.quiz_session_id;
+    if (!activeFaceFit && !activeQuiz) activeFaceFit = attribution.facefit_session_id && !attribution.quiz_session_id;
 
     return {
       event: 'add_to_cart',
-      quiz_session_id: safeString(attribution.quiz_session_id, 120),
-      quiz_product_id: safeString(attribution.quiz_product_id, 160),
+      quiz_session_id: activeFaceFit ? undefined : safeString(attribution.quiz_session_id, 120),
+      facefit_session_id: activeFaceFit ? safeString(attribution.facefit_session_id, 120) : undefined,
+      quiz_product_id: activeFaceFit ? undefined : safeString(attribution.quiz_product_id, 160),
       product_id: safeString(details.product_id || PAGE_PRODUCT.product_id, 120),
       variant_id: safeString(details.variant_id || details.id, 120),
       product_title: safeString(details.product_title || PAGE_PRODUCT.product_title || getDomProductTitle(), 300),
@@ -315,7 +484,7 @@
   function makeEventKey(payload) {
     return [
       payload.event,
-      payload.quiz_session_id,
+      payload.facefit_session_id || payload.quiz_session_id || '',
       payload.quiz_product_id || '',
       payload.product_id || '',
       payload.variant_id || '',
@@ -344,7 +513,7 @@
   }
 
   function sendQuizEvent(payload, preferBeacon) {
-    if (!payload || !payload.quiz_session_id) return;
+    if (!payload || (!payload.quiz_session_id && !payload.facefit_session_id)) return;
     if (shouldSkipDuplicate(payload)) return;
 
     var body = JSON.stringify(payload);
@@ -480,7 +649,7 @@
   var urlData = getUrlAttribution();
   var mergedData = mergeAttribution(existingData, urlData);
 
-  if (hasQuizAttribution(mergedData)) {
+  if (hasToolAttribution(mergedData)) {
     setStoredAttribution(mergedData);
     syncCartAttributes(mergedData);
   }
