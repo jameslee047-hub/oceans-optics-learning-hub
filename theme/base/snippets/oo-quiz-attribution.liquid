@@ -4,7 +4,7 @@
   A 30-day, first-party record of which Oceans Optics tools a shopper used,
   kept in localStorage as `oo_source_journey`:
     { first: "quiz_v53", history: [{ source, at }], updated_at }
-  Only quiz_v53, lens_calculator_v53 and product_rx_checker are accepted;
+  Only quiz_v53, facefit_v53, lens_calculator_v53 and product_rx_checker are accepted;
   history is ordered and de-duplicated, and a tool never removes another.
   The journey is mirrored to the cart attributes `_oo_first_source` and
   `_oo_source_history` (underscore-prefixed, hidden at checkout). Only tool
@@ -17,7 +17,7 @@
   var STORAGE_KEY = 'oo_source_journey';
   var SYNC_KEY = 'oo_source_journey_synced';
   var MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
-  var SOURCES = ['quiz_v53', 'lens_calculator_v53', 'product_rx_checker'];
+  var SOURCES = ['quiz_v53', 'facefit_v53', 'lens_calculator_v53', 'product_rx_checker'];
 
   function isSource(value) {
     return SOURCES.indexOf(value) >= 0;
@@ -134,10 +134,11 @@
     cartUpdate: cartUpdate
   };
 
-  // A Quiz arrival counts as Quiz use, with or without a prescription.
+  // Quiz and standalone FaceFit arrivals count as tool use, with or without Rx.
   try {
     var params = new URLSearchParams(root.location.search || '');
-    if (params.get('quiz_session_id') || params.get('oo_source') === 'quiz_v53') record('quiz_v53');
+    if (params.get('facefit_session_id') || params.get('oo_source') === 'facefit_v53') record('facefit_v53');
+    else if (params.get('quiz_session_id') || params.get('oo_source') === 'quiz_v53') record('quiz_v53');
   } catch (e) {}
   syncCart(false);
 })(typeof window !== 'undefined' ? window : null);
@@ -146,6 +147,7 @@
 (function () {
   var QUIZ_KEYS = [
     'quiz_session_id',
+    'facefit_session_id',
     'quiz_product_id',
     'quiz_source',
     'quiz_page_type',
@@ -203,6 +205,14 @@
     return !!(data && data.quiz_session_id);
   }
 
+  function hasFaceFitAttribution(data) {
+    return !!(data && data.facefit_session_id);
+  }
+
+  function hasToolAttribution(data) {
+    return hasQuizAttribution(data) || hasFaceFitAttribution(data);
+  }
+
   function mergeAttribution(existingData, urlData) {
     var merged = Object.assign({}, existingData || {});
 
@@ -210,7 +220,11 @@
       if (urlData[key]) merged[key] = urlData[key];
     });
 
-    if (hasQuizAttribution(merged)) {
+    if (urlData && urlData.facefit_session_id) {
+      merged.active_tool = 'facefit';
+      merged.facefit_captured_at = new Date().toISOString();
+    } else if (urlData && urlData.quiz_session_id) {
+      merged.active_tool = 'quiz';
       merged.quiz_captured_at = new Date().toISOString();
     }
 
@@ -221,6 +235,7 @@
     var attributes = {};
 
     if (data.quiz_session_id) attributes.quiz_session_id = data.quiz_session_id;
+    if (data.facefit_session_id) attributes.facefit_session_id = data.facefit_session_id;
     if (data.quiz_product_id) attributes.quiz_product_id = data.quiz_product_id;
     if (data.quiz_source) attributes.quiz_source = data.quiz_source;
     if (data.quiz_page_type) attributes.quiz_page_type = data.quiz_page_type;
@@ -238,12 +253,13 @@
     if (data.wbraid) attributes.quiz_wbraid = data.wbraid;
 
     if (data.quiz_captured_at) attributes.quiz_captured_at = data.quiz_captured_at;
+    if (data.facefit_captured_at) attributes.facefit_captured_at = data.facefit_captured_at;
 
     return attributes;
   }
 
   function syncCartAttributes(data) {
-    if (!hasQuizAttribution(data)) return;
+    if (!hasToolAttribution(data)) return;
 
     var attributes = buildCartAttributes(data);
     var syncSignature = JSON.stringify(attributes);
@@ -426,14 +442,18 @@
   function buildAddToCartPayload(details) {
     var attribution = getStoredAttribution();
 
-    if (!hasQuizAttribution(attribution)) return null;
+    if (!hasToolAttribution(attribution)) return null;
 
     details = details || {};
+    var activeFaceFit = attribution.active_tool === 'facefit' && attribution.facefit_session_id;
+    var activeQuiz = attribution.active_tool === 'quiz' && attribution.quiz_session_id;
+    if (!activeFaceFit && !activeQuiz) activeFaceFit = attribution.facefit_session_id && !attribution.quiz_session_id;
 
     return {
       event: 'add_to_cart',
-      quiz_session_id: safeString(attribution.quiz_session_id, 120),
-      quiz_product_id: safeString(attribution.quiz_product_id, 160),
+      quiz_session_id: activeFaceFit ? undefined : safeString(attribution.quiz_session_id, 120),
+      facefit_session_id: activeFaceFit ? safeString(attribution.facefit_session_id, 120) : undefined,
+      quiz_product_id: activeFaceFit ? undefined : safeString(attribution.quiz_product_id, 160),
       product_id: safeString(details.product_id || PAGE_PRODUCT.product_id, 120),
       variant_id: safeString(details.variant_id || details.id, 120),
       product_title: safeString(details.product_title || PAGE_PRODUCT.product_title || getDomProductTitle(), 300),
@@ -464,7 +484,7 @@
   function makeEventKey(payload) {
     return [
       payload.event,
-      payload.quiz_session_id,
+      payload.facefit_session_id || payload.quiz_session_id || '',
       payload.quiz_product_id || '',
       payload.product_id || '',
       payload.variant_id || '',
@@ -493,7 +513,7 @@
   }
 
   function sendQuizEvent(payload, preferBeacon) {
-    if (!payload || !payload.quiz_session_id) return;
+    if (!payload || (!payload.quiz_session_id && !payload.facefit_session_id)) return;
     if (shouldSkipDuplicate(payload)) return;
 
     var body = JSON.stringify(payload);
@@ -629,7 +649,7 @@
   var urlData = getUrlAttribution();
   var mergedData = mergeAttribution(existingData, urlData);
 
-  if (hasQuizAttribution(mergedData)) {
+  if (hasToolAttribution(mergedData)) {
     setStoredAttribution(mergedData);
     syncCartAttributes(mergedData);
   }
